@@ -1,0 +1,62 @@
+# $Id: Makefile.msvc,v 1.23 2002/11/24 00:15:49 rossta Exp $
+
+!include ../Make.msvc
+
+!if defined(static) || defined(STATIC)
+TARGET     = $(OPENFT_STATIC)
+!else
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+OPENFT_DEF = "../win32/openft_api.def"
+TARGET     = $(OPENFT_DLL)
+!endif
+
+OBJECTS = \
+	ft_event$(O) \
+	ft_html$(O) \
+	ft_http_client$(O) \
+	ft_http_server$(O) \
+	ft_netorg$(O) \
+	ft_node$(O) \
+	ft_openft$(O) \
+	ft_packet$(O) \
+	ft_protocol$(O) \
+	ft_search$(O) \
+	ft_search_exec$(O) \
+	ft_session$(O) \
+	ft_share$(O) \
+	ft_share_file$(O) \
+	ft_shost$(O) \
+	ft_stats$(O) \
+	ft_stream$(O) \
+	ft_utils$(O) \
+	ft_version$(O) \
+	ft_xfer$(O)
+
+all : $(TARGET)
+
+install : $(TARGET)
+!if !defined(static) && !defined(STATIC)
+	@copy /y $(TARGET) ..\win32-dist\OpenFT.dll
+!endif
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+
+!if defined(static) || defined(STATIC)
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+!else
+$(TARGET) : $(OBJECTS) $(OPENFT_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(OPENFT_DEF) $(LIBS) \
+	       $(OBJECTS)
+!endif
+
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

@@ -1,0 +1,923 @@
+# giFTcurs - curses interface to giFT
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Avenger <giFTcurs@avenger.8m.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3.3\n"
+"POT-Creation-Date: 2003-05-01 01:17+0200\n"
+"PO-Revision-Date: 2002-03-25 15:00-300\n"
+"Last-Translator: Avenger <giFTcurs@avenger.8m.com>\n"
+"Language-Team: Avenger <giFTcurs@avenger.8m.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+#: src/get.c:49
+msgid "A source search for this file is already in progress."
+msgstr "Pesquisa de origem para este arquivo já iniciada."
+
+#: src/get.c:88
+#, fuzzy
+msgid "Already downloading from this source"
+msgstr "Já baixando %s."
+
+#: src/get.c:92
+msgid "Downloading from a single source"
+msgstr ""
+
+#: src/get.c:99
+#, c-format
+msgid "Revived '%s'."
+msgstr "Ressucitado '%s'."
+
+#: src/get.c:106
+#, fuzzy, c-format
+msgid "I have no sources for '%s'."
+msgstr "Iniciada pesquisa de novas origens para %s"
+
+#: src/get.c:120
+#, fuzzy, c-format
+msgid "Already downloading '%s'."
+msgstr "Já baixando %s."
+
+#: src/get.c:123
+msgid "Downloading..."
+msgstr "Baixando..."
+
+#: src/get.c:156
+#, fuzzy, c-format
+msgid "Source search complete for '%s'."
+msgstr "Pesquisa de origens completa para %s"
+
+#: src/get.c:195
+#, fuzzy, c-format
+msgid "Started a source search for '%s'."
+msgstr "Iniciada pesquisa de novas origens para %s"
+
+#: src/gift.c:97
+#, fuzzy
+msgid "The connection with the daemon was unexpectedly closed!"
+msgstr "Conecçäo ao giFT daemon fechada inesperadamente!"
+
+#: src/gift.c:111
+#, fuzzy, c-format
+msgid "Can't connect to the daemon at %s:%s"
+msgstr "Impossível conectar ao giFT daemon em %s:%d"
+
+#: src/main.c:110
+#, fuzzy, c-format
+msgid "%s v%s - This is Free Software. Press F1 or M-1 for more info."
+msgstr ""
+"%s v%s - Este software eh livre(gratuito). Pressione F1 ou M-1 para mais "
+"info."
+
+#: src/main.c:163
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr "%s versäo %s, compilado %s %s\n"
+
+#: src/main.c:198
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr "%s - interface curses para giFT\n"
+
+#: src/main.c:199
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr "Uso: %s [OPÇÄO]...\n"
+
+#: src/main.c:200
+#, fuzzy, c-format
+msgid ""
+"Options:\n"
+"  -a, --stickchars        use 7-bit chars for line drawing\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%s]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+"Opçöes:\n"
+"  -a, --stickchars        usar caracteres de 7 bits para preencher as "
+"linhas\n"
+"  -h, --help              mostra essa ajuda e retorna ao aviso de comando\n"
+"  -V, --version           mostra informaçöes de versäo e retorna ao aviso\n"
+"  -v, --verbose           irá floodar stderr com informaçöes de depuraçäo\n"
+"  -s, --server=host:porta especifica o endereço do servidor [%s:%d]\n"
+"  -p, --profile=nome      selecionar qual esquema de usuário (profile) a "
+
+#: src/main.c:209
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr "  -d, --nomouse           näo usar o mouse\n"
+
+#: src/misc.c:160
+#, c-format
+msgid "The daemon reported the following sync status: %s"
+msgstr ""
+
+#: src/misc.c:165
+msgid "Daemon reported that sharing now is enabled."
+msgstr ""
+
+#: src/misc.c:172
+msgid "Daemon reported that sharing now is disabled."
+msgstr ""
+
+#: src/misc.c:195
+#, c-format
+msgid "Attached to %s v%s."
+msgstr ""
+
+#: src/misc.c:215
+#, fuzzy
+msgid "never mind"
+msgstr "tudo"
+
+#: src/misc.c:217
+#, c-format
+msgid ""
+"A message from the daemon:\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/misc.c:219
+msgid ""
+"There is an important message from the daemon! It will be shown at exit."
+msgstr ""
+
+#: src/screen.c:71
+msgid "standard"
+msgstr "standard"
+
+#: src/screen.c:72
+msgid "header"
+msgstr "cabeçalho"
+
+#: src/screen.c:73
+msgid "search box"
+msgstr "caixa de pesquisa"
+
+#: src/screen.c:74
+msgid "result box"
+msgstr "caixa de resultados"
+
+#: src/screen.c:75
+#, fuzzy
+msgid "statistics box"
+msgstr "caixa de statísticas"
+
+#: src/screen.c:76
+#, fuzzy
+msgid "statistics data"
+msgstr "dados estatísticos"
+
+#: src/screen.c:77
+#, fuzzy
+msgid "bad statistics"
+msgstr "estatísticas ruins"
+
+#: src/screen.c:78
+msgid "info box"
+msgstr "caixa de informaçöes"
+
+#: src/screen.c:79
+msgid "download box"
+msgstr "caixa de downloads"
+
+#: src/screen.c:80
+msgid "upload box"
+msgstr "caixa de uploads"
+
+#: src/screen.c:81
+msgid "help box"
+msgstr "caixa de ajuda"
+
+#: src/screen.c:82
+#, fuzzy
+msgid "good hits"
+msgstr "ítem bom"
+
+#: src/screen.c:83
+#, fuzzy
+msgid "bad hits"
+msgstr "ítem ruim"
+
+#: src/screen.c:84
+msgid "progress bar"
+msgstr "barra de progresso"
+
+#: src/screen.c:85
+#, fuzzy
+msgid "total progress"
+msgstr "progresso total"
+
+#: src/screen.c:86
+msgid "scroll indicator"
+msgstr "indicador de rolagem vertical"
+
+#: src/screen.c:87
+#, fuzzy
+msgid "selection"
+msgstr "seleçäo"
+
+#: src/screen.c:88
+msgid "button bar"
+msgstr ""
+
+#: src/screen.c:89
+#, fuzzy
+msgid "button bar selection"
+msgstr "seleçäo"
+
+#: src/screen.c:94
+msgid "black"
+msgstr "preto"
+
+#: src/screen.c:95
+msgid "red"
+msgstr "vermelho"
+
+#: src/screen.c:96
+msgid "green"
+msgstr "verde"
+
+#: src/screen.c:97
+msgid "yellow"
+msgstr "amarelo"
+
+#: src/screen.c:98
+msgid "blue"
+msgstr "azul"
+
+#: src/screen.c:99
+msgid "magenta"
+msgstr ""
+
+#: src/screen.c:100
+msgid "cyan"
+msgstr "ciano"
+
+#: src/screen.c:101
+msgid "white"
+msgstr "branco"
+
+#: src/screen.c:103
+msgid "default"
+msgstr "padräo"
+
+#: src/search.c:311
+#, fuzzy, c-format
+msgid "Search complete. We got %i unique hit for %s."
+msgid_plural "Search complete. We got %i unique hits for %s."
+msgstr[0] "Pesquisa concluída. Conseguimos %i ítem distinto."
+msgstr[1] "Pesquisa concluída. Conseguimos %i ítens distintos."
+
+#: src/search.c:360
+#, fuzzy, c-format
+msgid "The limit of %d unique hits was reached."
+msgstr "Limite de %d ítens distintos atingido."
+
+#: src/settings.c:117
+#, c-format
+msgid "Could not rename %s to %s"
+msgstr ""
+
+#: src/settings.c:146
+#, c-format
+msgid "# %s configuration file created by v%s.\n"
+msgstr "# %s arquivo de configuraçöes criado por v%s.\n"
+
+#: src/settings.c:147
+msgid "# Available colors:"
+msgstr "# Cores disponíveis:"
+
+#: src/settings.c:153
+#, fuzzy
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals.\n"
+msgstr ""
+"\n"
+"# 'default' significa 'sem cores', ou 'transparente' em alguns terminais."
+
+#: src/settings.c:154
+msgid "# See giFTcurs.conf(5) for more information.\n"
+msgstr ""
+
+#: src/transfer.c:43
+msgid "Waiting"
+msgstr "Aguardando"
+
+#: src/transfer.c:44
+#, fuzzy
+msgid "Paused"
+msgstr "Pausado"
+
+#: src/transfer.c:45
+msgid "Queued (Remotely)"
+msgstr "Agendado (Remotamente)"
+
+#: src/transfer.c:46
+msgid "Queued"
+msgstr "Agendado"
+
+#: src/transfer.c:47
+msgid "Active"
+msgstr "Ativo"
+
+#: src/transfer.c:48
+#, fuzzy
+msgid "Complete"
+msgstr "Concluído"
+
+#: src/transfer.c:49
+#, fuzzy
+msgid "Cancelled (Remotely)"
+msgstr "Cancelado (Remotamente)"
+
+#: src/transfer.c:50
+#, fuzzy
+msgid "Timed out"
+msgstr "Tempo expirado"
+
+#: src/transfer.c:51
+msgid "Awaiting connection"
+msgstr ""
+
+#: src/transfer.c:52
+msgid "Connecting"
+msgstr ""
+
+#: src/transfer.c:53
+msgid "Receiving"
+msgstr ""
+
+#: src/transfer.c:54
+#, fuzzy
+msgid "Verifying"
+msgstr "tudo"
+
+#: src/transfer.c:56
+msgid "Sending"
+msgstr ""
+
+#: src/transfer.c:57
+msgid "Received HTTP PUSH"
+msgstr ""
+
+#: src/transfer.c:58
+msgid "Received HTTP headers"
+msgstr ""
+
+#: src/transfer.c:59
+msgid "Sent HTTP request"
+msgstr ""
+
+#: src/transfer.c:60
+msgid "Malformed HTTP header"
+msgstr ""
+
+#: src/transfer.c:61
+msgid "Remote host had an aneurism"
+msgstr ""
+
+#: src/transfer.c:62
+msgid "Connection closed"
+msgstr ""
+
+#: src/transfer.c:63
+msgid "Connection refused"
+msgstr ""
+
+#: src/transfer.c:64
+msgid "File not found"
+msgstr ""
+
+#: src/transfer.c:65
+msgid "Local read error"
+msgstr ""
+
+#: src/transfer.c:66
+msgid "Incorrect chunk size"
+msgstr ""
+
+#: src/transfer.c:67
+msgid "No route to host"
+msgstr ""
+
+#: src/transfer.c:155
+#, fuzzy
+msgid "Inactive"
+msgstr "Ativo"
+
+#: src/transfer.c:185 src/ui_transfer.c:609
+#, fuzzy
+msgid "Unknown status"
+msgstr "Status desconhecido"
+
+#: src/transfer.c:540
+#, c-format
+msgid "Download of %s completed."
+msgstr "Download de %s concluído."
+
+#: src/transfer.c:541
+#, fuzzy, c-format
+msgid "Download of %s cancelled."
+msgstr "Download de %s cancelado remotamente."
+
+#: src/transfer.c:549
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: src/ui.c:108 src/ui.c:134
+msgid "And now a few words from our sponsor:"
+msgstr ""
+
+#: src/ui.c:111 src/ui.c:130
+#, c-format
+msgid "Message %i of %i."
+msgstr ""
+
+#: src/ui.c:141
+msgid "Press any key to continue..."
+msgstr ""
+
+#: src/ui.c:245 src/ui_help.c:154
+msgid "Help"
+msgstr "Ajuda"
+
+#: src/ui.c:246
+#, fuzzy
+msgid "Searches"
+msgstr "Pesquisar"
+
+#: src/ui.c:247
+msgid "Transfers"
+msgstr ""
+
+#: src/ui.c:248
+msgid "Settings"
+msgstr ""
+
+#: src/ui.c:249
+msgid "Exit"
+msgstr ""
+
+#: src/ui_help.c:43
+#, fuzzy
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"Key list:\n"
+"Bupa/Bdowna        select item in list\n"
+"BPgUpa/BPgDowna    scroll list one screen at a time\n"
+"Btaba            move to the next input field\n"
+"BF1a             this help screen\n"
+"BF2a             the main screen\n"
+"    Bentera      download the highlighted file\n"
+"    Blefta/Brighta change sorting method\n"
+"    Bea          expand/collapse search results\n"
+"    Bja/Bka        scroll information box\n"
+"    Bpa          change network in statistics box\n"
+"    Bua          browse selected user\n"
+"    Bia          ignore selected user\n"
+"BF3a             the transfer screen\n"
+"    Bentera/Bea    expand/collapse transfer\n"
+"    Blefta/Brighta change sorting method\n"
+"    Bja/Bka        move window splitter\n"
+"BF4a             the settings screen\n"
+"BF10a/Bqa          exit the program\n"
+"\n"
+"See giFTcurs(1) and giFTcurs.conf(5) for more information.\n"
+"\n"
+msgstr ""
+"Bem-vindo ao giFTcurs!\n"
+"\n"
+"Lista de comandos:\n"
+"Bseta acimaa/Bseta abaixoa   seleciona um item na lista\n"
+"BPgUpa/BPgDna    descer/subir  uma tela pela listagem\n"
+"Btaba      mover para o proximo campo de entrada de dados\n"
+"BF1a       essa tela de ajuda\n"
+"BF2a       tela principal\n"
+"  Bentera    fazer download do arquivo selecionado\n"
+"  Bseta à esquerdaa/Bseta à direitaa) trocar ordenacao\n"
+"  Bea        expandir/colapsar resultados da pesquisa\n"
+"BF3a       tela de transferências\n"
+"  Bentera/Bea     expandir/colapsar a transferencia\n"
+"  Bja/Bka         move a divisória\n"
+"BF4a       tela de configuraçöes\n"
+"BF10a      sair do programa, downloads continuaräo em plano de fundo "
+"(background)\n"
+"\n"
+"BAlt-na pode ser usado ao invés das teclas de funçäo (BFa-keys).\n"
+"\n"
+"Cores também podem ser personalizadas editando ~/.giFT/ui/giFTcurs.conf\n"
+"\n"
+"Copyright (C) 2001, 2002  Göran Weinholt.\n"
+"Co-developed by Christian Häggström.\n"
+"Nossa home page é em http://giFTcurs.sourceforge.net/.\n"
+"Traduçäo pr_BR (português do Brasil) por Avenger <giFTcurs@avenger.8m.com>\n"
+"\n"
+
+#. TRANSLATORS: The authors' names are spellt Göran Weinholt and
+#. Christian Häggström, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:72
+#, fuzzy
+msgid ""
+"Copyright (C) 2001, 2002, 2003 Goran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright (C) 2003 Christian Haggstrom <chm@c00.info>.\n"
+"Our homepage is at http://giFTcurs.sourceforge.net/.\n"
+"\n"
+msgstr ""
+"Copyright (C) 2001, 2002  Goran Weinholt.\n"
+"Co-desenvolvido por Christian Haggstrom.\n"
+"Nossa homepage estah em http://giFTcurs.sourceforge.net/.\n"
+"\n"
+
+#: src/ui_main.c:126
+msgid "everything"
+msgstr "tudo"
+
+#: src/ui_main.c:126
+msgid "audio"
+msgstr "audio"
+
+#: src/ui_main.c:126
+msgid "video"
+msgstr "vídeo"
+
+#: src/ui_main.c:127
+msgid "images"
+msgstr "imagens"
+
+#: src/ui_main.c:127
+msgid "text documents"
+msgstr "documentos de texto"
+
+#: src/ui_main.c:127
+msgid "software"
+msgstr "programas"
+
+#: src/ui_main.c:128
+msgid "user"
+msgstr "usuário"
+
+#: src/ui_main.c:128
+msgid "hash"
+msgstr "mistura"
+
+#: src/ui_main.c:128
+#, fuzzy
+msgid "list my shares"
+msgstr "Exibir compartilhamentos"
+
+#: src/ui_main.c:245 src/ui_main.c:291
+#, fuzzy
+msgid "Couldn't start search!"
+msgstr "Iniciar pesquisa"
+
+#: src/ui_main.c:249
+msgid "Retrieving file list..."
+msgstr ""
+
+#: src/ui_main.c:295
+#, fuzzy
+msgid "Searching..."
+msgstr " Pesquisando"
+
+#: src/ui_main.c:311
+msgid "No previous search pattern."
+msgstr "Padräo de pesquisa anterior inexistente."
+
+#: src/ui_main.c:315
+msgid "No hits to search on."
+msgstr "Nenhum item a procurar."
+
+#: src/ui_main.c:338
+#, c-format
+msgid "Pattern not found: '%s'."
+msgstr "Padräo näo encontrado: '%s'."
+
+#: src/ui_main.c:443
+#, fuzzy
+msgid "Search stopped."
+msgstr "Pesquisa encerrada."
+
+#: src/ui_main.c:446
+msgid "Search cleared."
+msgstr "Pesquisa apagada."
+
+#: src/ui_main.c:449
+msgid "A magical search appears, but it is cancelled too soon."
+msgstr "Itens incríveis apareceriam, mas a pesquisa foi cancelada muito cedo."
+
+#: src/ui_main.c:477 src/ui_transfer.c:327
+#, fuzzy, c-format
+msgid "Sorting order changed to %s."
+msgstr "Ordenaçäo modificada para ordem %s."
+
+#: src/ui_main.c:518
+#, c-format
+msgid "Ignoring results from '%s'"
+msgstr ""
+
+#: src/ui_main.c:567
+msgid "Search"
+msgstr "Pesquisar"
+
+#: src/ui_main.c:571
+msgid "Extra Information"
+msgstr "Informaçöes Adicionais"
+
+#: src/ui_main.c:576
+msgid "Search Results"
+msgstr "Resultado da Pesquisa"
+
+#: src/ui_main.c:587
+msgid "Statistics"
+msgstr "Estatísticas"
+
+#: src/ui_main.c:589
+msgid "Users online"
+msgstr "Usuários online"
+
+#: src/ui_main.c:590
+msgid "Total shared"
+msgstr "Total compartilhado"
+
+#: src/ui_main.c:591
+msgid "Local shares"
+msgstr "Arquivos locais compartilhados"
+
+#: src/ui_main.c:592
+msgid " Shared/user"
+msgstr ""
+
+#: src/ui_main.c:624 src/ui_main.c:630
+msgid "Query"
+msgstr "Informaçöes"
+
+#: src/ui_main.c:627 src/ui_main.c:633
+msgid "Realm"
+msgstr "Reino"
+
+#: src/ui_main.c:640
+msgid "Start search"
+msgstr "Iniciar pesquisa"
+
+#: src/ui_main.c:645
+msgid "Stop search"
+msgstr "Parar pesquisa"
+
+#: src/ui_main.c:645
+#, fuzzy
+msgid "Clear search"
+msgstr "Apagar pesquisa"
+
+#: src/ui_main.c:666
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui_main.c:696
+msgid "Nothing selected."
+msgstr "Nada selecionado."
+
+#: src/ui_main.c:735 src/ui_main.c:740
+#, c-format
+msgid "f%sBE/f%s"
+msgstr ""
+
+#: src/ui_main.c:743
+msgid "Hidden"
+msgstr ""
+
+#: src/ui_main.c:747
+#, c-format
+msgid "f%sB"
+msgstr ""
+
+#: src/ui_settings.c:150
+msgid "Color theme saved."
+msgstr "Tema de cores salvo."
+
+#: src/ui_settings.c:159
+msgid "Default color theme loaded."
+msgstr "Tema de cores padräo carregado."
+
+#: src/ui_settings.c:192
+msgid "Color Theme"
+msgstr "Tema de Cores"
+
+#: src/ui_settings.c:197
+msgid "Item"
+msgstr "Ítem"
+
+#: src/ui_settings.c:199
+msgid "Foreground"
+msgstr "Primeiro Plano"
+
+#: src/ui_settings.c:201
+msgid "Background"
+msgstr "Plano de Fundo"
+
+#: src/ui_settings.c:210
+msgid "Save theme"
+msgstr "Salvar tema"
+
+#: src/ui_settings.c:213
+msgid "Load defaults"
+msgstr "Carregar padröes"
+
+#: src/ui_settings.c:218
+#, fuzzy
+msgid "Sharing"
+msgstr " Pesquisando"
+
+#: src/ui_settings.c:222
+#, fuzzy
+msgid "Sync shares"
+msgstr "Exibir compartilhamentos"
+
+#: src/ui_settings.c:228
+#, fuzzy
+msgid "Unknown sharing status"
+msgstr "Status desconhecido"
+
+#: src/ui_settings.c:228
+msgid "Hide shares"
+msgstr "Ocultar arquivos compartilhados"
+
+#: src/ui_settings.c:228
+#, fuzzy
+msgid "Show shares"
+msgstr "Exibir compartilhamentos"
+
+#: src/ui_transfer.c:99
+msgid ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+msgstr ""
+
+#: src/ui_transfer.c:106
+msgid ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+msgstr ""
+
+#: src/ui_transfer.c:114
+msgid ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:ki}B{endif}{space}Total: {transferred:ki}/{filesize:ki} at "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+
+#: src/ui_transfer.c:121
+msgid ""
+"{progress filesize transferred}{space}Total: {transferred:ki}/{filesize:ki} "
+"at {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+
+#: src/ui_transfer.c:346
+msgid "find more sources"
+msgstr ""
+
+#: src/ui_transfer.c:347
+msgid "kill transfer"
+msgstr ""
+
+#: src/ui_transfer.c:348
+msgid "clear finished"
+msgstr ""
+
+#: src/ui_transfer.c:349
+msgid "(un)pause"
+msgstr ""
+
+#: src/ui_transfer.c:365
+msgid "Downloads"
+msgstr ""
+
+#: src/ui_transfer.c:366
+msgid "Uploads"
+msgstr ""
+
+#~ msgid "alphabetical"
+#~ msgstr "alfabética"
+
+#, fuzzy
+#~ msgid "alphabetical by path"
+#~ msgstr "alfabética por caminho"
+
+#~ msgid "size-based"
+#~ msgstr "de tamanho"
+
+#~ msgid "availability- and size-based"
+#~ msgstr "por disponibilidade e tamanho"
+
+#~ msgid "number of sources- and size-based"
+#~ msgstr "numero de origens e tamanho"
+
+#, fuzzy
+#~ msgid "Queued (%d)"
+#~ msgstr "Agendado"
+
+#, fuzzy
+#~ msgid "Queued (position %d)"
+#~ msgstr "Agendado"
+
+#~ msgid "Total: %s/%s at %sB/s"
+#~ msgstr "Total: %s/%s a %sB/s"
+
+#, fuzzy
+#~ msgid "Disk: %s free"
+#~ msgstr "Mídia de armazenamento: %s livre(s)"
+
+#~ msgid "Overrun"
+#~ msgstr "Superposto"
+
+#~ msgid "Size"
+#~ msgstr "Tamanho"
+
+#~ msgid "Net"
+#~ msgstr "Rede"
+
+#~ msgid "User"
+#~ msgstr "Usuário"
+
+#~ msgid "Path"
+#~ msgstr "Caminho"
+
+#~ msgid " Searching"
+#~ msgstr " Pesquisando"
+
+#, fuzzy
+#~ msgid "Toggle sharing"
+#~ msgstr "Ativa/Des auto-remoçäo"
+
+#, fuzzy
+#~ msgid "Daemon was told to sync shares."
+#~ msgstr "giFT daemon instruído a reler arquivos compartilhados."
+
+#~ msgid "Your shares are now available."
+#~ msgstr "Seus arquivos compartilhados estäo agora disponíveis."
+
+#~ msgid "Got new source from %s"
+#~ msgstr "Adquirida nova origem para %s"
+
+#~ msgid "Completed"
+#~ msgstr "Concluído"
+
+#~ msgid "Couldn't start search! Check the log for errors."
+#~ msgstr "Impossível iniciar pesquisa! Cheque os registros por errors."
+
+#~ msgid "Search in progress..."
+#~ msgstr "Pesquisa em progresso..."
+
+#~ msgid "giFT plugins"
+#~ msgstr "plug-ins do giFT"
+
+#~ msgid "Your shares are temporarily hidden."
+#~ msgstr "Seus arquivos compartilhados estäo temporariamente ocultos."
+
+#~ msgid "Completed transfers are automatically removed."
+#~ msgstr "Transferências concluídas säo automaticamente removidas."
+
+#~ msgid "Completed transfers remain on screen."
+#~ msgstr "Transferências concluídas permanecem na tela."
+
+#~ msgid "Tools and Actions"
+#~ msgstr "Ferramentas e Açöes"
+
+#~ msgid "Reread shared directories"
+#~ msgstr "Re-ler diretórios compartilhados"
+
+#~ msgid "Speed"
+#~ msgstr "Velocidade"
+
+#~ msgid "Already connected."
+#~ msgstr "Já conectado."
+
+#~ msgid "More search options visible."
+#~ msgstr "Mais opçöes de pesquisa visíveis."
+
+#~ msgid "Less search options visible."
+#~ msgstr "Menos opçöes de pesquisa visíveis."
+
+#~ msgid "Reconnect to daemon"
+#~ msgstr "Reconectar ao giFT daemon"
+
+#~ msgid "Toggle search constraints"
+#~ msgstr "Ativa/Des os confinamentes da pesquisa"
+
+#~ msgid "BSa - find more sources  BXa - kill transfer  BCa - clear finished"
+#~ msgstr ""
+#~ "BSa - encontrar mais origens  BXa - cancelar transferência  BCa - limpar "
+#~ "concluídos"

@@ -1,0 +1,129 @@
+#!/usr/bin/perl
+
+# uri2gift - Takes a URI and feeds it to a giFT daemon.
+# Copyright (C) 2003 Göran Weinholt <weinholt@dtek.chalmers.se>.
+# Released under the GNU General Public License 2 or later.
+
+# November 12, 2003
+# Philip Walls <malverian@user.sf.net>
+# Changed to use my Gift perl module. Now adds all sources properly
+
+use URI::Escape;
+
+use Gift::Interface;
+use Gift::Config;
+
+my $url = $ARGV[0] || <>;
+$url = uri_unescape($url);
+my $hash, $filesize, $filename;
+
+my $client = "uri2gift", $version = "2.0";
+
+if ($url =~ /^sig2dat/) 
+{
+	# FastTrack URI.
+	# sig2dat://|File: filename|filesize: 1234|UUHash: =hash=|
+	# Other slightly non-standard formats have been observed... *sigh*
+	($filename, $filesize, $hash) = $url =~ /sig2dat:[\/]+\|[^:]+:[ ]*([^|]+)\|[^:]+:[ ]*(\d*)[^|]*\|[^:]+:[ ]*=([^|]+)=.*\|/;
+	$hash = "FTH:" . unpack ( "H*", decode_base64 ($hash) );
+}
+elsif ($url =~ /^magnet/)
+{
+	# MAGNET URI, used for Gnutella files. We don't try to implement all of it.
+	# magnet:?xt=urn:sha1:hash&dn=filename
+	# http://magnet-uri.sourceforge.net/ for more info.
+	($algo, $hash) = $url =~ /magnet:.*xt=urn:(.+):([^&]+)&*/;
+	($filename) = $url =~ /magnet:.*dn=([^&]+)&*/;
+	$algo =~ tr/a-z/A-Z/ or die "Could not find algorithm in MAGNET URL!\n";
+	$hash = "$algo:$hash";
+}
+elsif ($url =~ /^ed2k/)
+{
+	# edonkey2k URI.
+	# ed2k://|file|filename|size|hash
+	($filename, $filesize, $hash) = $url =~ /ed2k:\/\/\|file\|([^|]+)\|(\d+)\|(.+)/;
+	$hash = "ED2K:$hash";
+	die "Don't know what to prefix ed2k URL's with!\n";
+}
+else
+{
+	die "Don't know what to do with this URL!\n";
+}
+
+die "Could not parse hash!\n" if ($hash !~ /.+:.+/);
+
+my $Interface = new Gift::Interface;
+my $Config = new Gift::Config;
+
+$Interface->debugmessage ("-all");
+
+my $host = $Config->read("ui/ui.conf", "daemon", "host");
+my $port = $Config->read("ui/ui.conf", "daemon", "port");
+
+$Interface->connect ($host, $port);
+$Interface->attach;
+$Interface->locate ($hash);
+
+my $ids;
+
+while ($Interface->can_read)
+{
+	my ($head,%tree) = $Interface->read;
+
+	if ($head eq "ITEM")
+	{
+		my ($id, $hash, $file);
+		
+		$tree{'file'} =~ /^\/(.*)\/(.*)$/;
+		($file = $2) ||= $tree{'file'};
+
+		$hash = $tree{'hash'};
+		
+		$last unless $hash;
+
+		if ($ids{$hash}{'id'})
+		{
+			$id = $ids{$hash}{'id'};
+			$file = $ids{$hash}{'file'};
+			$ids{$hash}{'sources'}++;
+		}
+		else
+		{
+			my $showfile;
+			if (length ($file) >= 36)
+			{
+				$showfile = substr ($file, 0, 40) . "..." . substr ($file, -3);			
+			}
+			$showfile ||= $file;
+			
+			print STDOUT "\n[\e[1;32m!\e[m]\tStarting new download ($tree{'id'})\n";
+			print STDOUT "\t($tree{'mime'}) $showfile\n";
+			print STDOUT "\tFile attributes:\n";
+			print STDOUT "\t\tSize: $tree{'size'} bytes\n";
+			print STDOUT "\t\tHash: $hash\n\n";
+		}
+
+		$id = $Interface->download
+		(
+			$tree{'url'},
+			$hash,
+			$tree{'size'},
+			$file,
+			$tree{'user'},
+			$id
+		);
+		
+		my $sources = $ids{$hash}{'sources'};
+		my $out = "[\e[1;32m!\e[m]\tAdding source [$sources] ($tree{'user'})";
+		
+		$out = $out . " " x (80 - length($out));
+		print STDOUT "$out\r";
+
+		$ids{$hash}{'id'} = $id;
+		$ids{$hash}{'file'} = $file;
+	}
+}
+
+my $out = "[\e[1;32m!\e[m]\tFinished adding $ids{$hash}{'sources'} sources";
+$out = $out . " " x (80 - length($out));
+print STDOUT "$out\n\n";

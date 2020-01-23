@@ -1,0 +1,36 @@
+We are the authors of giFTcurs:
+
+Göran Weinholt <weinholt@dtek.chalmers.se>
+Christian Häggström <chm@c00.info>
+
+
+These people have made contributions:
+
+Andreas Nilsson - designed the web page
+Bertrand Petit - improvement of format strings
+Daniel Arnold - many suggestions and bug reports
+Daniel van Eeden - .deb's for Debian GNU/Linux sid on SPARC
+Daniel Phillips - fixed an annoying bug in the transfer lists
+François Revol - BeOS port
+Jan Morén - suggestions for interface improvements
+Josh Guilfoyle - many suggestions, feature requests, and fixes
+Per von Zweigbergk - a few patches and suggestions
+Philip Walls - finding out why gettext 0.11.x didn't work
+Ross Smith - cygwin port
+
+
+These people have contributed translations:
+
+Alexander Poquet - French translation
+Alexandre Bourget - improved French translation
+Andreas Kleist Svendsen - Danish translation
+Artur Skura - Polish translation
+Avenger - Brazilian Portuguese translation
+Daniel Arnold - German translation
+Diego Carretero - Spanish and Catalan translations
+Eelco Lempsink - Dutch translation
+Fabio R. P. Franco 'duke' - improved Brazilian Portuguese translation
+Stefano Palmeri - Italian translation
+
+
+If you feel that you should be included here, please tell us.

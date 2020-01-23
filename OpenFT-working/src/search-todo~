@@ -1,0 +1,37 @@
+Another OpenFT search patch. New this time round:
+
+ * Exclusion queries (but not quoted exclusions).
+
+ * Minor efficiency increase by sorting the entire query tokens list
+   rather than just moving the shortest to the front.
+
+ * ORDER_* constants separated out, and used in ft_search_db.c too.
+
+ * A few comments attempting to explain what's going on.
+
+Patches attached (note that they contain the previous patches too).
+
+More things TODO:
+
+ * Make ft_tokenize_* return NULL for empty queries, and fix the
+   breakage that this causes.
+
+ * Find a replacement hash algorithm for tokenization that is evenly
+   distributed over the output space.
+
+ * Work out the optimal size for a bitvector of possibly known
+   tokens. I'm expecting somewhere between 2^14 and 2^20 bits (I'm
+   hoping they'll be fairly sparse unless there are a lot of
+   children). It could even be variable.
+
+ * Implement calculating the aforementioned bitvector and sharing it
+   with peers. A single message type, xor, should suffice for both
+   insertions and removals. Use this to restrict who to send searches
+   to when ttl=1.
+
+ * Fix the ttl oddity whereby search nodes effectively gain an extra
+   hop when searching. Possibly increase the peer count now that
+   searches aren't being broadcast indiscriminately.
+
+ * Restrict propagation of repeated identical searches. (The first
+   step in making "search more" work usefully.)

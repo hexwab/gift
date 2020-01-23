@@ -1,0 +1,95 @@
+/*
+* $Id: ft_routing.c,v 1.3 2004/09/04 21:38:53 hexwab Exp $
+ *
+ * Copyright (C) 2004 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "ft_openft.h"
+#include "ft_bloom.h"
+#include "ft_netorg.h"
+#include "ft_routing.h"
+
+SyncFilter md5_filter = { NULL, NULL };
+
+timer_id   sync_timer;
+
+static BOOL sync_filters (SyncFilter *f);
+
+BOOL ft_routing_init (void)
+{
+	md5_filter.filter = ft_bloom_new (MD5_FILTER_BITS, MD5_FILTER_HASHES,
+				    16 << 3, TRUE);
+
+	if (!md5_filter.filter)
+		return FALSE;
+
+	md5_filter.sync = ft_bloom_clone (md5_filter.filter);
+
+	if (!md5_filter.sync)
+		return FALSE;
+
+	sync_timer = timer_add (FILTER_SYNC_INTERVAL, (TimerCallback)sync_filters, &md5_filter);
+
+	if (!sync_timer)
+		return FALSE;
+
+	return TRUE;
+}
+
+BOOL ft_routing_free (void)
+{
+	timer_remove (sync_timer);
+  
+	ft_bloom_free (md5_filter.filter);
+	ft_bloom_free (md5_filter.sync);
+
+	return TRUE;
+}
+
+static BOOL sync_filter (FTNode *node, FTPacket *pkt)
+{
+	/* TODO */
+	return FALSE;
+}
+
+/* Sends updated routing information to all peers. */
+static BOOL sync_filters (SyncFilter *f)
+{
+	FTPacket *pkt;
+
+	if (!(pkt = ft_packet_new (FT_FILTER_SYNC, 0)))
+		return FALSE;
+
+	ft_bloom_diff (f->filter, f->sync);
+
+	if (!ft_bloom_empty (f->sync))
+	{
+		int n;
+
+		ft_packet_put_ustr (pkt, f->sync->table, 1 << (f->sync->bits-3));
+		
+		n = ft_netorg_foreach (FT_NODE_SEARCH, FT_NODE_CONNECTED, 0,
+                           FT_NETORG_FOREACH(sync_filter), pkt);
+
+		FT->DBGFN (FT, "sent routing update to %d peers (density %f)",
+			   n, ft_bloom_density (f->sync));
+	}
+
+	ft_bloom_free (f->sync);
+	
+	f->sync = ft_bloom_clone (f->filter);
+
+	ft_packet_free (pkt);
+
+	return TRUE;
+}

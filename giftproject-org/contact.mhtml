@@ -1,0 +1,161 @@
+<%perl>
+###############################################################################
+##
+## $Id: contact.mhtml,v 1.4 2004/08/28 02:53:55 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'Get Involved'
+</%attr>
+
+<h2>How to contact the staff?</h2>
+
+<p>
+	We strongly encourage users and fellow developers from the community to get
+	in touch with the giFT staffers, however we would ask that you carefully
+	choose your forum before posting questions or puzzles for discussion.
+</p>
+
+<h3>Mailing Lists</h3>
+
+<dl>
+
+	<li>
+		<dt>
+			<a href="http://lists.sourceforge.net/lists/listinfo/gift-users">gift-users</a>
+		</dt>
+		<dd>
+			Discussion forum for regular giFT users (simple bug reports are
+			acceptable here).  Generally speaking, if you don't know C, aren't
+			planning on making contributions to the project, or do
+			not know how to use gdb (or some other capable debugger), you should
+			probably post here.  We will attempt to staff some user-friendly
+			admins willing to help you through some of the more basic giFT
+			problems.
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			<a href="http://lists.sourceforge.net/lists/listinfo/gift-devel">gift-devel</a>
+		</dt>
+		<dd>
+			This list is reserved for complex technical discussions specifically
+			about giFT (as opposed to OpenFT).  This list also serves as the
+			notification address for tracker changes on the sourceforge.net
+			project page and as such can be considered moderately high traffic.
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			<a href="http://lists.sourceforge.net/lists/listinfo/gift-openft">gift-openft</a>
+		</dt>
+		<dd>
+			Similar to gift-devel, except that discussion here is related
+			specifically to the OpenFT protocol.
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			gift-gnutella
+		</dt>
+		<dd>
+			This list does not presently exist, but ought to.  Bug the developers
+			if you'd like to see it created.
+		</dd>
+	</li>
+
+</dl>
+
+<h3>Sourceforge.net Modules</h3>
+
+<dl>
+
+	<li>
+		<dt>
+			<a href="http://sourceforge.net/tracker/?group_id=34618&atid=411725">Bug Tracker</a>
+		</dt>
+		<dd>
+			Bug management/tracking system provided by sourceforge.net.
+You should note that this is not directly read by the core
+giFT developers, it is instead filtered by some of the
+less programmatic-inclined staffers.  More complex bugs
+may take a while longer to get noticed by the people who
+can actually fix them.
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			<a href="http://sourceforge.net/tracker/?group_id=34618&atid=411727">Patches</a>
+		</dt>
+		<dd>
+			Similar to the bug tracker, but specifically designed to manage
+			user-supplied patches.  Make sure you read README.dev (can be found in
+			CVS) before submitting patches.   
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			<a href="http://sourceforge.net/forum/forum.php?forum_id=108384">Public Forum</a>
+		</dt>
+		<dd>
+			Open discussion forum for the giFT project.  This is very rarely
+			frequented by the core developers as most of the posts here appear to
+			be quite miscellaneous.  If none of the other contact methods seem
+			appropriate, try this one but keep in mind that your post may go
+			unanswered for very long periods of time
+		</dd>
+	</li>
+
+</dl>
+
+<h3>Direct Contact</h3>
+
+<ul>
+
+	<li>
+		<dt>
+			<a href="http://sourceforge.net/project/memberlist.php?group_id=34618">Developers</a>
+		</dt>
+		<dd>
+			Each individual developer is listed here and their direct email
+			contact information.  You should probably avoid using these if any of
+			the above contact channels seem more appropriate.
+		</dd>
+	</li>
+
+	<li>
+		<dt>
+			<a href="http://www.freenode.net">IRC</a> (irc.freenode.net:#gift)
+		</dt>
+		<dd>
+			Last but not least is our somewhat private IRC channel.  Please please
+			please <em>please</em> read the above methods before contacting us
+			here.  This channel is ONLY used for direct development-oriented
+			communication with the core developers and possibly some of the other
+			staff members.  If you are interested in helping with development,
+			just want to idly listen to jasta's insane ramblings, or you have some
+			topic of conversation that is much easier addressed in real-time, you
+			should use this channel.  Please, <em>no</em> basic support questions.
+		</dd>
+	</li>
+
+</ul>

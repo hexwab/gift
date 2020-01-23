@@ -1,0 +1,106 @@
+/*
+ * $Id: content.css,v 1.2 2004/08/28 02:46:56 jasta Exp $
+ *
+ * Copyright (C) 2004 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*****************************************************************************/
+
+#pageContent li
+{
+	list-style-type:   square;
+}
+
+#pageContent a
+{
+	text-decoration:   underline;
+}
+
+#pageContent a:hover
+{
+	color:             #999900;
+}
+
+#pageContent h2, h3
+{
+	color:             #4c6289;
+	border-bottom:     1px solid #cccccc;
+	margin-top:        0px;
+	padding-top:       0.2em;
+}
+
+#pageContent h3
+{
+	font-size:         1em;
+}
+
+/*****************************************************************************/
+
+acronym
+{
+	border-bottom:     none;
+}
+
+/*****************************************************************************/
+
+span.comp
+{
+	font-family:       monospace;
+}
+/*****************************************************************************/
+
+dl
+{
+	padding-left:      2em;
+}
+
+dd
+{
+	margin-top:        0.1em;
+	padding-bottom:    1em;
+}
+
+/*****************************************************************************/
+
+#userInterfaces
+{
+	margin-left:       1em;
+}
+
+/*****************************************************************************/
+/* Section: PROJECT NEWS */
+
+div.newsItem h2
+{
+	margin:            0px;
+	padding:           0px;
+}
+
+div.newsItem h2 a
+{
+	color:             #4c6289;
+	text-decoration:   none;
+}
+
+div.newsItem .newsDate
+{
+	font-size:         80%;
+}
+
+/*****************************************************************************/
+/* Section: SOFTWARE */
+
+dd.screenshot
+{
+	float:             right;
+}

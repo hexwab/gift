@@ -1,0 +1,137 @@
+Index: ft_netorg.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.c,v
+retrieving revision 1.19
+diff -u -r1.19 ft_netorg.c
+--- ft_netorg.c	10 Aug 2003 14:36:11 -0000	1.19
++++ ft_netorg.c	4 Sep 2003 03:17:49 -0000
+@@ -45,6 +45,14 @@
+  */
+ static Dataset *nodes = NULL;
+ 
++#define NUM_STATES 4
++#define NUM_CLASSES 12
++
++/* yes, there is an (intentional) off-by-one error here */
++static unsigned int lengths[NUM_STATES * NUM_CLASSES + 1] = { 0 };
++
++#define length_index(state, log2class) (&lengths[state + log2class * NUM_STATES]) 
++
+ /*****************************************************************************/
+ 
+ static struct conn_list *get_conn_list (FTNodeState state)
+@@ -115,6 +123,34 @@
+ 	return TRUE;
+ }
+ 
++static void update_lengths (FTNode *node,
++			    FTNodeClass klass,
++			    FTNodeState state,
++			    FTNodeClass class_orig,
++			    FTNodeState state_orig)
++{
++	int cbit;
++
++	int state_changed = (state != state_orig);
++	int class_changed;
++
++	if (state_changed)
++		class_changed = klass | class_orig;
++	else
++		class_changed = klass ^ class_orig;
++
++	for (cbit=0; class_changed; cbit++, class_changed>>=1)
++	{
++		if (class_changed & 1)
++		{
++			*length_index(state, cbit) += (klass & (1 << cbit)) ? 1 : -1;
++
++			if (state_changed)
++				*length_index(state_orig, cbit) -= (klass & (1 << cbit)) ? 1 : -1;
++		}
++	}
++}
++
+ void ft_netorg_add (FTNode *node)
+ {
+ 	if (!node || node->ip == 0)
+@@ -129,6 +165,12 @@
+ 		nodes = dataset_new (DATASET_HASH);
+ 
+ 	dataset_insert (&nodes, &node->ip, sizeof (node->ip), node, 0);
++
++#if 0
++	FT->DBGFN (FT, "%s %x %x", net_ip_str (node->ip), node->klass, node->state);
++#endif
++
++	update_lengths (node, node->klass, node->state, 0, node->state);
+ }
+ 
+ /*****************************************************************************/
+@@ -166,23 +208,35 @@
+ 
+ 	rem_conn_list (node->state, node);
+ 	dataset_remove (nodes, &node->ip, sizeof (node->ip));
++
++#if 0
++	FT->DBGFN (FT, "%s %x %x", net_ip_str (node->ip), node->klass, node->state);
++#endif
++
++	update_lengths (node, 0, node->state, node->klass, node->state);
+ }
+ 
+ /*****************************************************************************/
+ 
+-/* NOTE: class changes are currently ignored, as they have no bearing on
+- * this subsystem */
+ void ft_netorg_change (FTNode *node,
+                        FTNodeClass class_orig,
+                        FTNodeState state_orig)
+ {
++	if (!node->ip)
++		return;
++
++	update_lengths (node, node->klass, node->state, class_orig, state_orig);
++
++#if 0
++	FT->DBGFN (FT, "%s %x %x", net_ip_str (node->ip), node->klass, node->state);
++#endif
++
+ 	/* no change, you lie! */
+ 	if (node->state == state_orig)
+ 		return;
+ 
+ 	/* not inserted anywhere, how do you expect us to change it? */
+-	if (!ft_netorg_lookup (node->ip))
+-		return;
++	assert (ft_netorg_lookup (node->ip));
+ 
+ 	rem_conn_list (state_orig, node);
+ 	add_conn_list (node->state, node);
+@@ -376,10 +430,24 @@
+ 
+ int ft_netorg_length (FTNodeClass klass, FTNodeState state)
+ {
+-	int len;
++	int len=0;
++
++	int cbit;
++
++	int oldlen;
+ 
+ 	/* TODO: eventually we should be able to optimize away a loop here */
+-	len = ft_netorg_foreach (klass, state, 0, FT_NETORG_FOREACH(dummy), NULL);
++	oldlen = ft_netorg_foreach (klass, state, 0, FT_NETORG_FOREACH(dummy), NULL);
++
++	for (cbit=0; klass; cbit++, klass>>=1)
++		if (klass & 1)
++			len += *length_index (state, cbit);
++
++#if 0
++	FT->DBGFN (FT, "%x %x (=%d)", klass, state, len);
++#endif
++
++	assert (len == oldlen);
+ 
+ 	return len;
+ }

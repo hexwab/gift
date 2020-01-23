@@ -1,0 +1,52 @@
+This project is not closed to developers contributing, however the maintainer
+is very very anal about design and style.  I strongly suggest you clear
+absolutely all design changes with him prior to hacking and absolutely never
+write code with a different style (unless you wish to anger the beast ;)
+
+Please send your patches to gift-openft@lists.sourceforge.net.
+
+Here are a few basic style guidelines that _MUST_ be followed before getting
+CVS write access.
+
+ * Absolutely _NO_ trailing whitespace of any kind
+ * \t's _ONLY_ for indentation.  Any formatting after the leading whitespace
+   MUST be with spaces only.  If your code doesn't format exactly how jasta
+   likes it with his tab stops, you'll be shot on spot :)
+ * Whitespace before __EVERY__ begin parenthesis.  THIS IS VERY IMPORTANT.
+ * Braces must always be on the line following the statement/declaration.  No
+   K&R.
+ * End braces must have an extra blank line following them _if_ the next
+   character is beginning a statement.  Example:
+
+	if (this)
+	{
+		test ();
+		bla ();
+	}
+
+	statement ();
+
+    - or -
+
+	for (;;)
+	{
+		if (this)
+		{
+			test ();
+			bla ();
+		}
+	}
+
+
+ * Avoid using { } when the if conditional has only one line of code following
+   it.  If you wish to comment the code or otherwise require more than one
+   line, you must always use braces.
+ * Never use more than one \n consecutively.  This is very annoying.
+ * And lastly, just look at the rest of the code!  If yours is noticably
+   different, change it!
+
+If your code is not formatted correctly, please use indent to clean it up (the
+.indent.pro's are located in src, lib, and OpenFT).  This seems to come the
+closest to format code to our requirements.  Please note that indent is only
+to do the rough cleanup -- you may actually undo some of the custom formatting
+jasta likes.

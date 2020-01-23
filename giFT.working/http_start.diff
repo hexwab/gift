@@ -1,0 +1,38 @@
+Index: ft_openft.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_openft.c,v
+retrieving revision 1.12
+diff -u -r1.12 ft_openft.c
+--- ft_openft.c	25 Nov 2002 01:51:02 -0000	1.12
++++ ft_openft.c	29 Nov 2002 01:30:55 -0000
+@@ -86,6 +86,9 @@
+ 	Connection *c;
+ 	int         fd = -1;
+ 
++	if (!OPENFT->ft)
++		return NULL;
++
+ 	if (port > 0)
+ 	{
+ 		if ((fd = net_bind (port, FALSE)) < 0)
+@@ -125,8 +128,8 @@
+ 	 * ensure that the user sees this error message */
+ 	if (klass & NODE_SEARCH)
+ 	{
+-		GIFT_ERROR (("dropping NODE_SEARCH status due to lacking libdb "
+-		             "support"));
++		GIFT_ERROR (("NODE_SEARCH status unavailable due to lacking"
++		             "libdb support"));
+ 		return NULL;
+ 	}
+ #endif /* !USE_LIBDB */
+@@ -211,8 +214,7 @@
+ 	 * return FALSE here ;) */
+ 	if (!OPENFT->ft || !OPENFT->http)
+ 	{
+-		GIFT_ERROR (("unable to successfully bind listening ports, aborting "
+-		             "OpenFT startup"));
++		GIFT_ERROR (("OpenFT startup failed - aborting"));
+ 		return FALSE;
+ 	}
+ 

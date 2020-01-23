@@ -1,0 +1,346 @@
+? ltconfig
+? gift.spec
+? diff
+? cvslog
+? data/Makefile.in
+? data/Makefile
+? data/OpenFT/Makefile.in
+? data/OpenFT/Makefile
+? src/enum.c
+? src/enum.h
+? src/meta.c
+? src/meta.h
+? src/data/Makefile.in
+? src/data/Makefile
+? src/dc/Makefile.in
+? src/dc/Makefile
+? src/dc/.deps
+? ui/perl/Makefile.in
+? ui/perl/Makefile
+Index: giFT-setup
+===================================================================
+RCS file: /cvsroot/gift/giFT/Attic/giFT-setup,v
+retrieving revision 1.32
+diff -r1.32 giFT-setup
+16a17
+> my $pdir = "/usr/local/lib/giFT";
+52,53c53,54
+<         	"http_port" =>
+<         	{
+---
+>         "http_port" =>
+>         {
+58d58
+< 
+63c63
+< 			"info" => "OpenFT's binary protocol listening port.\n*NOTE* Users without a direct Internet connection should choose '0' here!"
+---
+> 			"info" => "OpenFT's binary protocol listening port.\n*NOTE* If you are within a corporate firewall, a NAT gateway, or on a college campus you are likely using an indirect Internet connection and you should select '0' here.  This notifies OpenFT that you will not be able to accept incoming connections from other users on the network."
+65d64
+< 
+73d71
+< 
+76,83c74,81
+<  # ui/ui.conf (giFT-fe Configuration)
+<  "ui/ui.conf" =>
+<  {
+< 	 # [daemon]
+< 	 "daemon" =>
+< 	 {
+< 		 "host" =>
+< 		 {
+---
+> # ui/ui.conf (giFT-fe Configuration)
+> "ui/ui.conf" =>
+> {
+> 	# [daemon]
+> 	"daemon" =>
+> 	{
+> 		"host" =>
+> 		{
+86c84
+< 			"info"    => "giFT interface host"
+---
+> 			"info"    => "giFT-fe's interface host.  If you have the daemon running on the same machine as the interface, please use the default here."
+88d85
+< 
+93c90
+< 			"info"    => "giFT interface port"
+---
+> 			"info"    => "Interface port."
+111c108
+< 			"default" => "/usr/local/lib/giFT/libOpenFT.so",
+---
+> 			"default" => "$pdir/libOpenFT.so",
+116d112
+< 
+149,150d144
+< if ($FIRSTRUN) { print STDOUT "\nNow run OpenFT/build_shares.pl to build your shares list and begin sharing.\n\n"; }
+< 
+258c252
+< 			if (!opendir(CHECK,"@PATH"))      { mkdir("@PATH") or die "@PATH: $!\n"; }
+---
+> 			if (!opendir(CHECK,"@PATH"))      { mkdir("@PATH", 0755) or die "@PATH: $!\n"; }
+261c255
+< 			if (!opendir(CHECK,"@PATH/$dir")) { mkdir("@PATH/$dir") or die "@PATH/$dir: $!\n"; }
+---
+> 			if (!opendir(CHECK,"@PATH/$dir")) { mkdir("@PATH/$dir", 0755) or die "@PATH/$dir: $!\n"; }
+Index: OpenFT/Makefile.am
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/Makefile.am,v
+retrieving revision 1.14
+diff -r1.14 Makefile.am
+22c22
+< 	netorg.c   netorg.h
+---
+> 	netorg.c   netorg.h
+\ No newline at end of file
+Index: OpenFT/packet.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/packet.c,v
+retrieving revision 1.11
+diff -r1.11 packet.c
+89c89
+< char *ft_packet_data (char *fmt, va_list args, int *len)
+---
+> char *ft_packet_data (char *fmt, va_list args, int *len, char *input)
+92,93c92,93
+< 	char *output  = malloc (4096);
+< 	int   out_len = 0;
+---
+> 	char *output;
+> 	int   out_len;
+97a98,106
+> 	if (input)
+> 	{
+> 		output = input;
+> 		out_len = *len;
+> 	} else {
+> 		output = malloc (4096);
+> 		out_len = 0;
+> 	}
+> 
+125a135,161
+> 			case 'p': /* packed int */
+> 				ul = va_arg (args, unsigned long);
+> 				{
+> 					unsigned long i;
+> 					unsigned char buf[8],*ptr=buf;
+> 					int len=1;
+> 					i=ul;
+> 					while (i>127)
+> 					{
+> 						len++;
+> 						i>>=7;
+> 					}
+> 					
+> 					ptr+=len;
+> 					i=ul;
+> 					while (i>127)
+> 					{
+> 						*(--ptr)=(i &0x7f)|0x80;
+> 						i>>=7;
+> 					}
+> 					*(--ptr)=i |0x80;
+> 					ptr[len-1]&=0x7f;
+> 					PACKET_APPEND (output, out_len, buf, len);
+> 
+> 					TRACE(("sending packed int 0x%x, len %d",ul, len));
+> 				}
+> 				break;
+208a245,281
+> 
+> 
+> ft_uint32 ft_packet_get_packed_int (FTPacket *packet)
+> {
+> 	ft_uint32 data = 0;
+> 	char *start, *ptr;
+> 	int i;
+> 
+> 	assert (packet);
+> 
+> 	i      = packet->len - packet->offset;
+> 	start  = ptr = packet->data + packet->offset;
+> 
+> 	while (i-- > 0)
+> 	{
+> 		data <<= 7;
+> 		data |= (*ptr & 0x7f);
+> 		if (!(*ptr++ & 0x80))
+> 			break;
+> 	}
+> 
+> 	if (i <= 0)
+> 	{
+> 		packet->offset = packet->len;  /* no subsequent calls will allow this
+> 		                                * packet anymore */
+> 		TRACE(("truncated packet"));
+> 		return 0;
+> 	}
+> 
+> 	packet->offset += (ptr-start);
+> 
+> 	TRACE(("returning %u - %u",data, start-ptr));
+> 	return data;
+> }
+> 
+> 
+> 
+274c347
+< 		data = ft_packet_data (fmt, args, &len);
+---
+> 		data = ft_packet_data (fmt, args, &len, NULL);
+313c386
+< 		data = ft_packet_data (fmt, args, &len);
+---
+> 		data = ft_packet_data (fmt, args, &len, NULL);
+Index: OpenFT/packet.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/packet.h,v
+retrieving revision 1.4
+diff -r1.4 packet.h
+44c44
+< char     *ft_packet_data    (char *fmt, va_list args, int *len);
+---
+> char     *ft_packet_data    (char *fmt, va_list args, int *len, char *input);
+45a46
+> ft_uint32 ft_packet_get_packed_int (FTPacket *packet);
+Index: OpenFT/protocol.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/protocol.c,v
+retrieving revision 1.109
+diff -r1.109 protocol.c
+25a26,27
+> #include "meta.h"
+> #include "enum.h"
+32a35,40
+> struct _search_result_data {
+> 	Connection *c;
+> 	char *packet;
+> };
+> 
+> 
+218c226
+< 	if (NODE (c)->ip != openft->host)
+---
+> 	if (NODE (c)->ip != openft->host) 
+222,225c230,244
+< 		ft_packet_send (c, FT_SEARCH_RESPONSE, "%lu%lu%hu%hu%lu%s%s", id,
+< 		              ntohl (openft->host), openft->port, openft->http_port,
+< 		              file->size, file->md5,
+< 					  (file->hpath ? file->hpath : file->path));
+---
+> 		int len = 0;
+> 		struct _search_result_data sr;
+> 		char *data = ft_packet_data (c, "%lu%lu%hu%hu%lu%s%s", id,
+> 					     ntohl (openft->host), openft->port, openft->http_port,
+> 					     file->size, file->md5,
+> 					     (file->hpath ? file->hpath : file->path), &len, NULL);
+> 
+> 		sr.c=c;
+> 		sr.file=file;
+> 		sr.openft=openft;
+> 
+> 		/* add the tags one by one */
+> 		list_foreach(file->metadata, search_request_callback, &sr);
+> 
+> 		ft_packet_send_data (c, FT_SEARCH_RESPONSE, data, len);
+230a250,272
+> static void search_request_callback(void *data, void *udata)
+> {
+> 	Metadata *md=data;
+> 	struct _search_result_data *sr=udata;
+> 	switch (md->type) {
+> 	case META_INTEGER:
+> 		TRACE(("int: %d", md->value.int_val));
+> 		sr->packet = ft_packet_data (sr->c, "%p", md->value.int_val,
+> 					     &sr->len, sr->packet);
+> 		break;
+> 	case META_STRING:
+> 		TRACE(("string: %s", md->value.str_val));
+> 		sr->packet = ft_packet_data (sr->c, "%s", md->value.str_val,
+> 					     &sr->len, sr->packet);
+> 		break;
+> 	case META_ENUM:
+> 		TRACE(("enum: %d", md->value.enum_val));
+> 		sr->packet = ft_packet_data (sr->c, "%p", md->value.enum_val,
+> 					     &sr->len, sr->packet);
+> 		break;
+> 	}
+> }
+> 
+284a327,328
+> 	ft_uint32  tag;
+> 	List      *metadata;
+298a343,366
+> 		metadata  = NULL;
+> 
+> 		while ((tag = ft_packet_get_packed_int(packet))) {
+> 			TRACE(("Processing tag 0x%x",tag));
+> 			switch (tag & META_MASK) {
+> 			case META_INTEGER:
+> 				add_tag_integer(&metadata, tag, ft_packet_get_packed_int(packet));
+> 				break;
+> 			case META_STRING:
+> 				add_tag_string(&metadata, tag, ft_packet_get_str(packet));
+> 				break;
+> 			case META_ENUM:
+> 				add_tag_enum(&metadata, tag, ft_packet_get_packed_int(packet));
+> 				break;
+> 			}
+> 			/* XXX this trace has a memory leak */
+> 			TRACE(("tag: %s=%s", get_tag_name(((Metadata *)(list_last(metadata)->data))->type), tag_to_string(list_last(metadata)->data)));
+> 		}
+> 
+> #if 0
+> 		add_tag_enum(&metadata, TAG_REALM, 3);
+> 		/* XXX this trace has a memory leak */
+> 		TRACE(("tag: %s=%s", get_tag_name(((Metadata *)(list_last(metadata)->data))->type), tag_to_string(list_last(metadata)->data)));
+> #endif
+Index: src/Makefile.am
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/Makefile.am,v
+retrieving revision 1.30
+diff -r1.30 Makefile.am
+31a32,33
+> 	meta.h	      meta.c \
+> 	enum.h	      enum.c \
+Index: src/network.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/network.h,v
+retrieving revision 1.9
+diff -r1.9 network.h
+36a37,40
+> #ifndef SHUT_RDWR
+> #define SHUT_RDWR 2
+> #endif
+> 
+Index: src/sharing.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.c,v
+retrieving revision 1.15
+diff -r1.15 sharing.c
+34a35
+> #include "meta.h"
+37a39
+> 
+156a159
+> 	file->meta  = NULL;
+169a173
+> 	free_metadata (file->meta);
+Index: src/sharing.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.h,v
+retrieving revision 1.7
+diff -r1.7 sharing.h
+29a30
+> 	List         *meta;
+Index: ui/ui.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/ui/ui.h,v
+retrieving revision 1.6
+diff -r1.6 ui.h
+23c23
+< #define DEF_WIDTH  800
+---
+> #define DEF_WIDTH  600

@@ -1,0 +1,145 @@
+Index: src/ft_netorg.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.c,v
+retrieving revision 1.34
+diff -u -r1.34 ft_netorg.c
+--- src/ft_netorg.c	2 Nov 2003 12:09:05 -0000	1.34
++++ src/ft_netorg.c	26 Apr 2004 13:13:34 -0000
+@@ -446,6 +446,61 @@
+ 
+ /*****************************************************************************/
+ 
++static void randomize_conn_iptr (ft_state_t state)
++{
++	struct conn_list *clist = NULL;
++	int new_pos;
++
++	if (!(clist = get_conn_list (state)))
++		return;
++
++	if (clist->list == NULL || clist->count == 0)
++		return;
++
++	/* set clist->iptr to random point in list */
++	new_pos = rand() % clist->count;
++	clist->iptr = list_nth (clist->list->list, new_pos);
++
++	/* just in case anything went wrong */
++	if (clist->iptr == NULL)
++		clist->iptr = (clist->list ? clist->list->list : NULL);
++}
++
++int ft_netorg_random (ft_class_t klass, ft_state_t state, int iter,
++                      FTNetorgForeach func, void *udata)
++{
++	int looped = 0;
++
++	if (!func)
++		return 0;
++
++	if (state)
++	{
++		randomize_conn_iptr (state);
++		looped = foreach_list (klass, state, iter, func, udata);
++	}
++	else
++	{
++		/* state = 0x00 indicates that all states should be processed,
++		 * therefore requiring multiple calls to foreach_list that are
++		 * capable of persisting iteration data */
++		randomize_conn_iptr (FT_NODE_CONNECTED);
++		randomize_conn_iptr (FT_NODE_CONNECTING);
++		randomize_conn_iptr (FT_NODE_DISCONNECTED);
++
++		iter_state (klass, FT_NODE_CONNECTED, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_CONNECTING, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_DISCONNECTED, iter, &looped, func, udata);
++	}
++
++	if (iter)
++		assert (looped <= iter);
++
++	return looped;
++}
++
++/*****************************************************************************/
++
+ int ft_netorg_length (ft_class_t klass, ft_state_t state)
+ {
+ 	int klass_idx, state_idx;
+Index: src/ft_netorg.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.h,v
+retrieving revision 1.13
+diff -u -r1.13 ft_netorg.h
+--- src/ft_netorg.h	25 Oct 2003 23:55:21 -0000	1.13
++++ src/ft_netorg.h	26 Apr 2004 13:13:35 -0000
+@@ -105,6 +105,14 @@
+                        FTNetorgForeach func, void *udata);
+ 
+ /**
++ * Does the same as ft_netorg_foreach but starts at a random position in each
++ * list instead of the last access / beginning.
++ */
++int ft_netorg_random (ft_class_t klass, ft_state_t state, int iter,
++                      FTNetorgForeach func, void *udata);
++
++
++/**
+  * Efficient means of accessing the total length of the list that would be
+  * iterated over using a similar call to ::ft_netorg_foreach.  This routine
+  * accesses a separately maintained data structure which has the length
+Index: src/ft_session.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_session.c,v
+retrieving revision 1.89
+diff -u -r1.89 ft_session.c
+--- src/ft_session.c	23 Dec 2003 21:29:39 -0000	1.89
++++ src/ft_session.c	26 Apr 2004 13:13:36 -0000
+@@ -432,7 +432,7 @@
+ 		if (need_search)
+ 		{
+ 			ft_packet_put_uint16 (pkt, (uint16_t)FT_NODE_SEARCH, TRUE);
+-			ft_packet_put_uint16 (pkt, 10, TRUE);
++			ft_packet_put_uint16 (pkt, 15, TRUE);
+ 		}
+ 
+ 		if (need_index)
+Index: src/proto/ft_handshake.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/proto/ft_handshake.c,v
+retrieving revision 1.23
+diff -u -r1.23 ft_handshake.c
+--- src/proto/ft_handshake.c	23 Dec 2003 18:32:45 -0000	1.23
++++ src/proto/ft_handshake.c	26 Apr 2004 13:13:36 -0000
+@@ -334,15 +334,15 @@
+ {
+ 	int n;
+ 
+-	n = ft_netorg_foreach (FT_NODE_SEARCH | FT_NODE_INDEX, FT_NODE_CONNECTED, 15,
+-	                       FT_NETORG_FOREACH(nodelist_add), args);
++	n = ft_netorg_random (FT_NODE_SEARCH | FT_NODE_INDEX, 0, 15,
++	                      FT_NETORG_FOREACH(nodelist_add), args);
+ 
+ 	/* we weren't able to come up with enough search/index nodes, try to give
+ 	 * them at least something */
+ 	if (n < 10)
+ 	{
+-		n += ft_netorg_foreach (FT_NODE_USER, FT_NODE_CONNECTED, 20,
+-		                        FT_NETORG_FOREACH(nodelist_add), args);
++		n += ft_netorg_random (FT_NODE_USER, 0, 20,
++		                       FT_NETORG_FOREACH(nodelist_add), args);
+ 	}
+ 
+ 	return n;
+@@ -367,8 +367,8 @@
+ 		/* otherwise we should respond only to the connected classes that
+ 		 * they requested (this is used to graph the network through third
+ 		 * party tools) */
+-		nodes = ft_netorg_foreach (klass, FT_NODE_CONNECTED, nreq,
+-		                           FT_NETORG_FOREACH(nodelist_add), &args);
++		nodes = ft_netorg_random (klass, 0, nreq,
++		                          FT_NETORG_FOREACH(nodelist_add), &args);
+ 	}
+ 
+ 	/* we're done w/ this :) */

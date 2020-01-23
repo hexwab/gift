@@ -1,0 +1,27 @@
+Index: draw.py
+===================================================================
+RCS file: /cvsroot/gift/openft-map/draw.py,v
+retrieving revision 1.14
+diff -u -r1.14 draw.py
+--- draw.py	18 May 2003 21:16:06 -0000	1.14
++++ draw.py	9 Nov 2003 19:00:48 -0000
+@@ -251,6 +251,10 @@
+     im = Image.new("RGB", imgSz)
+     draw = ImageDraw.Draw(im)
+ 
++    snTotal=0
++    for i in range(len(searchNodes)):
++        snTotal+=log(float(len(searchNodes[i].nodeList)))
++
+     snAngAcc=0                          # angle accumulator
+ 
+     ### hack: make sure the nth smallest cluster is followed by the nth biggest one
+@@ -274,7 +278,7 @@
+         #sN.pos=[imgSzCenter[0]+snRadius*scaleX*cos(snAngAcc),imgSzCenter[1]+snRadius*scaleY*sin(snAngAcc)]
+ 
+         # linear proportion {
+-        slice=3.14*float(len(sN.nodeList))/float(len(userNodes))
++        slice=3.14*log(float(len(sN.nodeList)))/snTotal
+ 
+         snIncr=snAngAcc+slice
+         snAngAcc=snAngAcc+2*slice

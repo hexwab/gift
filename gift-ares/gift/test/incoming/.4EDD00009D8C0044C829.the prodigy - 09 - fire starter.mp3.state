@@ -1,0 +1,11 @@
+[transfer]
+uniq = 4EDD00009D8C0044C829.the prodigy - 09 - fire starter.mp3
+filename = the prodigy - 09 - fire starter.mp3
+hash = SHA1:AGJGNZCUNNZFCVYGLBKIIFFNIDEJHFCP
+path = ./incoming/4EDD00009D8C0044C829.the prodigy - 09 - fire starter.mp3
+transmit = 3662500
+total = 4507689
+max_seek = 4225959
+paused = 0
+chunks = 2535576-2817306 1408654-1690384 3662498-3944228 845193-1126923 3099037-3380767 4225959-4507689 
+

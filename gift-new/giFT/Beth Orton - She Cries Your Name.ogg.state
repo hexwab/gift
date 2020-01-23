@@ -1,0 +1,15 @@
+[transfer]
+uniq = 03760007C01500404B65.Beth Orton - She Cries Your Name.ogg
+filename = Beth Orton - She Cries Your Name.ogg
+hash = c1e698895925a717e19367ce4338644a
+path =  `@ x@xÉ*@ÀÙ(@œğÿ¿”P@ğ)@ˆğÿ¿ `@¬ğÿ¿øé¦}} x@„=@/€h
+transmit = 1394428
+total = 4213605
+max_seek = 1394428
+chunks = 1394428-4213605 
+
+[source0]
+user = 64.34.181.157
+url = OpenFT://64.34.181.157:2525/ogg/Girls%20Rule/Beth%20Orton%20-%20She%20Cries%20Your%20Name.ogg
+
+

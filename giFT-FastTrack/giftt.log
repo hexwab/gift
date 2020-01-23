@@ -1,0 +1,136 @@
+[02:25:54] giftd 0.11.5 (Nov 18 2003 00:57:45) started
+[02:25:54] FastTrack: fst_fasttrack.c:350(fst_giftcb_start): starting up
+[02:25:54] FastTrack: fst_fasttrack.c:385(fst_giftcb_start): Loaded 1 supernode addresses from nodes file "/home/HEx/.giFT/FastTrack/nodes"
+[02:25:54] *** GIFT-WARNING: FastTrack: Local file "/home/HEx/.giFT/FastTrack/banlist" does not exist, copying default from "/usr/local/share/giFT/FastTrack/banlist"
+[02:25:54] *** GIFT-ERROR: unable to open /usr/local/share/giFT/FastTrack/banlist (read): No such file or directory
+[02:25:54] *** GIFT-ERROR: FastTrack: Unable to copy default file "/usr/local/share/giFT/FastTrack/banlist"
+[02:25:54] *** GIFT-WARNING: FastTrack: Couldn't find banlist "/home/HEx/.giFT/FastTrack/banlist"
+[02:25:54] FastTrack: fst_fasttrack.c:424(fst_giftcb_start): Port set to zero. Http server not started.
+[02:25:54] FastTrack: fst_fasttrack.c:453(fst_giftcb_start): adding fm2.imesh.com:1214 as temporary index node
+[02:25:54] FastTrack: fst_session.c:107(fst_session_connect): connecting to fm2.imesh.com(212.179.35.118):1214
+[02:25:54] *** GIFT-WARNING: updating index...
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.B93D000DA756051E9000.Mars University.avi.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.CBC6000D10DE2BB53800.The Lord of The Rings - The Fellowship of The Ring [CD1, Perfect].avi.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.5E4D0007C4F300BAEE62.No_Mans_Land.mp3.state: corrupt state file
+[02:25:54] giFT: share_cache.c:906(share_write_index): entered
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.CB3E51E7CAE3A92.2. Molto vivace.mp3.state: corrupt state file
+[02:25:54] giFT: share_cache.c:613(share_build_index): entered
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.EADB87A8D5B1856.Peter Gabriel - Security - 07 - Peter Gabriel - Wallflower.ogg.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.102B0005299F00533AEE.Air - Moon Safari - 02 - Sexy Boy.ogg.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.CB37155C108ABD6.3. Adagio molto e cantabile - Andante moderato.mp3.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.CB3FD82B017CED3A.4. Presto - Allagro assai.mp3.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.CB53174D4F2E8FE.1. Allegro ma non troppo un poco maestoso.mp3.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.103C000DF4B300376FA2.Air - Moon Safari - 10 - Le Voyage De Penelope.ogg.state: corrupt state file
+[02:25:54] giFT: download_state.c:271(read_state): /home/HEx/.giFT/incoming/.4050000535F6003E582C.Ozzy-10-Avh.mp3.state: corrupt state file
+[02:25:54] giFT: download_state.c:277(read_state): awaking state transfer 10 - Beth Orton - Devil Song.ogg
+[02:25:54] giFT: download_state.c:277(read_state): awaking state transfer 11 - Beth Orton - Feel To Believe.ogg
+[02:25:54] giFT: download_state.c:277(read_state): awaking state transfer 12 - Flinty Kind Of Woman.mp3
+[02:25:54] *** GIFT-WARNING: unable to lookup protocol OpenFT: not loaded
+[02:25:54] giFT: download_state.c:277(read_state): awaking state transfer Indigo Girls & Ani Difranco - Not A Pretty Girl(live).mp3
+[02:25:54] giFT: giftd.c:715(init_transfer): recovered 4 state transfers
+[02:25:55] giFT: share_cache.c:944(share_write_index): descending root: /mnt/mp3...
+[02:25:55] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3...
+[02:25:55] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/1972...
+[02:25:58] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio...
+[02:25:58] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded...
+[02:25:58] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/alanis...
+[02:25:58] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - (16) Heart of the house.2.mp3: Permission denied
+[02:25:58] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Head Over Feet.mp3: Permission denied
+[02:25:58] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Perfect.mp3: Permission denied
+[02:25:59] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Thank U.mp3: Permission denied
+[02:25:59] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette-You Oughta Know.mp3: Permission denied
+[02:25:59] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/you_learn.mp3: Permission denied
+[02:25:59] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/(Alanis Morissette)-09-Mary Jane.mp3: Permission denied
+[02:25:59] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/01_All I Really Want.mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - forgiven (acoustic).mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - i was hoping.mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - king of pain.mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - pollyanna flower.mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - right through you (acoustic).mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Ironic.mp3: Permission denied
+[02:26:00] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/alanis morissette - uninvited (acoustic piano only).mp3: Permission denied
+[02:26:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Right Through You.mp3: Permission denied
+[02:26:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - Mary Jane.mp3: Permission denied
+[02:26:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - hand in my pocket.mp3: Permission denied
+[02:26:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - 12 - Wake Up.ogg: Permission denied
+[02:26:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/alanis/Alanis Morissette - 06 - Forgiven.ogg: Permission denied
+[02:26:02] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/bnl...
+[02:26:02] FastTrack: fst_session.c:141(fst_session_disconnect): disconnected from fm2.imesh.com:1214
+[02:26:02] FastTrack: fst_session.c:107(fst_session_connect): connecting to 81.6.243.136(81.6.243.136):1214
+[02:26:02] FastTrack: fst_fasttrack.c:151(fst_plugin_session_callback): local ip: 81.6.243.136
+[02:26:02] FastTrack: fst_session.c:540(session_do_handshake): outgoing enc_type: 0x29, incoming enc_type: 0x29
+[02:26:02] FastTrack: fst_session.c:374(session_decrypt_packet): remote network name is "KaZaA"
+[02:26:02] FastTrack: fst_session.c:566(session_greet_suppernode): sending ip, bandwidth and user name to supernode
+[02:26:02] FastTrack: fst_fasttrack.c:158(fst_plugin_session_callback): supernode connection established to 81.6.243.136:1214, load: 0%
+[02:26:02] FastTrack: fst_fasttrack.c:200(fst_plugin_session_callback): added 1 received supernode IPs to nodes list
+[02:26:02] FastTrack: fst_fasttrack.c:251(fst_plugin_session_callback): received network name: "KaZaA", sending ours: "KaZaA"
+[02:26:02] FastTrack: fst_fasttrack.c:274(fst_plugin_session_callback): received external ip: 81.6.243.136
+[02:26:02] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 0 files, 0 GB
+[02:26:08] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/Copland-Rodeo_Hoedown.mp3: Permission denied
+[02:26:09] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/entrain...
+[02:26:13] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/countingcrows...
+[02:26:15] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/Copy of Sheryl Crow - My Favorite Mistake.mp3: Permission denied
+[02:26:16] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/madness...
+[02:26:18] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/madonna...
+[02:26:21] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos...
+[02:26:21] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/corrupt...
+[02:26:21] *** GIFT-WARNING: cannot open dir /mnt/mp3/audio/downloaded/toriamos/corrupt: Permission denied
+[02:26:21] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/ftcgh...
+[02:26:21] *** GIFT-WARNING: cannot open dir /mnt/mp3/audio/downloaded/toriamos/ftcgh: Permission denied
+[02:26:21] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/yktr...
+[02:26:22] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 2 files, 0 GB
+[02:26:24] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/le...
+[02:26:24] *** GIFT-WARNING: cannot open dir /mnt/mp3/audio/downloaded/toriamos/le: Permission denied
+[02:26:24] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/mp...
+[02:26:25] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/toriamos/misc...
+[02:26:32] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 54 files, 0 GB
+[02:26:36] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 103 files, 0 GB
+[02:26:38] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler...
+[02:26:38] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd10...
+[02:26:41] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd9...
+[02:26:42] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 162 files, 0 GB
+[02:26:43] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd2...
+[02:26:44] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd8...
+[02:26:45] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/sym8...
+[02:26:45] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd7...
+[02:26:46] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 268 files, 1 GB
+[02:26:47] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd3...
+[02:26:48] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd4...
+[02:26:51] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd5...
+[02:26:52] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 3 users, 370 files, 2 GB
+[02:26:52] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/mahler/cd6...
+[02:26:54] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/liszt...
+[02:26:56] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 4 users, 404 files, 2 GB
+[02:26:59] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/brahms...
+[02:27:01] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/Copland-Appalachian_Spring.mp3: Permission denied
+[02:27:02] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/Copland - Rodeo (Saturday Night Waltz).mp3: Permission denied
+[02:27:04] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/guster...
+[02:27:04] *** GIFT-WARNING: cannot open dir /mnt/mp3/audio/downloaded/guster: Permission denied
+[02:27:04] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 4 users, 510 files, 4 GB
+[02:27:04] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/suzannevega...
+[02:27:05] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/suzannevega/suzanne vega - world before columbus.mp3: Permission denied
+[02:27:06] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/suzannevega/suzanne vega - headshots.mp3: Permission denied
+[02:27:06] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/suzannevega/suzanne vega - lolita.mp3: Permission denied
+[02:27:07] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/suzannevega/suzanne vega - tombstone.mp3: Permission denied
+[02:27:07] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/tompetty...
+[02:27:08] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/tompetty/tom petty - i won't back down.mp3: Permission denied
+[02:27:08] *** GIFT-WARNING: no mime type found for /mnt/mp3/audio/downloaded/tompetty/tom petty - it's good to be king.mp3.wab: using application/octet-stream...
+[02:27:08] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/tompetty/tom petty - refugee.mp3: Permission denied
+[02:27:08] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/tompetty/tom petty - roll another joint.mp3: Permission denied
+[02:27:08] *** GIFT-ERROR: can't open /mnt/mp3/audio/downloaded/tompetty/tom petty - runnin' down a dream.mp3: Permission denied
+[02:27:09] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/kevinhearn...
+[02:27:10] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/hhgttg...
+[02:27:12] FastTrack: fst_fasttrack.c:241(fst_plugin_session_callback): received network stats: 4 users, 558 files, 4 GB
+[02:27:12] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/enya...
+[02:27:14] giFT: share_cache.c:522(path_traverse): descending /mnt/mp3/audio/downloaded/ani...
+[02:27:16] *** GIFT-ERROR: poll: Interrupted system call
+[02:27:16] giFT: download.c:361(cancel_sources): *sigh*...notify jasta
+[02:27:16] giFT: download.c:321(handle_next_queue): 10 - Beth Orton - Devil Song.ogg
+[02:27:16] giFT: download.c:321(handle_next_queue): 11 - Beth Orton - Feel To Believe.ogg
+[02:27:16] giFT: download.c:321(handle_next_queue): 12 - Flinty Kind Of Woman.mp3
+[02:27:16] giFT: download.c:303(activate_next_queued): unable to find a waiting transfer in the queue...
+[02:27:16] giFT: download.c:361(cancel_sources): *sigh*...notify jasta
+[02:27:16] giFT: download.c:361(cancel_sources): *sigh*...notify jasta
+[02:27:16] giFT: download.c:321(handle_next_queue): Indigo Girls & Ani Difranco - Not A Pretty Girl(live).mp3
+[02:27:16] FastTrack: fst_fasttrack.c:469(fst_giftcb_destroy): shutting down
+[02:27:16] FastTrack: fst_fasttrack.c:499(fst_giftcb_destroy): saved 1 supernode addresses to nodes file "/home/HEx/.giFT/FastTrack/nodes"

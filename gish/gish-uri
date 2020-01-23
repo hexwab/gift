@@ -1,0 +1,418 @@
+#!/usr/bin/env perl
+###############################################################################
+##
+## $Id: gish-uri,v 1.1.1.1 2003/11/22 00:48:10 malverian Exp $
+##
+## Powerful tool capable of providing URI scheme implementations for the giFT
+## system.  This tool is intended to be used directly via the command-line
+## but implementations in web browsers and other systems are encouraged.
+##
+## Copyright (C) 2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+
+use strict;
+use Data::Dumper;
+
+use Getopt::Long;
+
+use URI::Escape;
+use MIME::Base64;
+
+use Socket;                            # scheme_openft
+use LWP::UserAgent;                    # ...
+
+my $GISH = "./gish";
+
+###############################################################################
+
+my $handler =
+{
+	#
+	# The MAGNET-URI project is a standardized and open specification for
+	# content found on most peer-to-peer networks, accessible via predefined
+	# hashing algorithms.  Please note that this implementation only provides
+	# support for a small subset of what magnet allows.  The full working
+	# specification may be found at:
+	#
+	#  http://magnet-uri.sourceforge.net/
+	#
+	'magnet' => \&scheme_magnet,
+
+	#
+	# URI scheme used by FastTrack.  I am uncertain if this scheme is
+	# actually borrowed from another open and/or documented standard, or if
+	# it is in use by any other systems.
+	#
+	'sig2dat' => \&scheme_sig2dat,
+
+	#
+	# OpenFT URIs are internally used by the OpenFT plugin to describe
+	# specific resources available via OpenFT's transport protocol, which is
+	# presently HTTP/1.0.  Please note that we gather meta data through HTTP
+	# HEAD requests rather than querying the OpenFT plugin via giFT as there
+	# are no meta data extraction facilities currently available.
+	#
+	'openft' => \&scheme_openft
+};
+
+###############################################################################
+
+# there's got to be some cool perl magic to do this that i just can't think of
+# right now...
+my $options =
+{
+	'help'    => 0,
+	'verbose' => 1,
+	'quiet'   => 0,
+};
+
+my %options =
+(
+	'help'    => \$options->{'help'},
+	'verbose' => \$options->{'verbose'},
+	'quiet'   => \$options->{'quiet'},
+);
+
+###############################################################################
+
+sub main
+{
+	my $prog = shift;
+
+	# process command line arguments and initialize the $options global above;
+	# this may exit
+	my @args = handle_options ($prog, @_);
+
+	if (@args)
+	{
+		# handle all URIs specified on the command line
+		handle_uri ($_) foreach (@args);
+	}
+	else
+	{
+		# handle URIs from stdin
+		handle_uri ($_) while (<STDIN>);
+	}
+}
+
+sub handle_uri
+{
+	my $uri = shift;
+
+	$options->{'verbose'} > 0 and
+	  print STDERR "Processing $uri...\n";
+
+	my ($scheme) = $uri =~ m/^([a-zA-Z0-9\+\-\.]+)/;
+
+	unless (exists ($handler->{$scheme}))
+	{
+		warn "$uri: No scheme handler provided by this implementation.\n";
+		return 0;
+	}
+
+	# call the scheme handler defined at the top of this script
+	return $handler->{$scheme}->($uri);
+}
+
+sub handle_options
+{
+	my $prog = shift;
+
+	local @ARGV = @_;
+	my $ret = GetOptions (%options);
+
+	usage ($prog) if (!$ret || $options->{'help'});
+
+	$options->{'verbose'} -= $options->{'quiet'};
+
+	return @ARGV;
+}
+
+sub usage
+{
+	my $prog = shift;
+
+	# get the list of supported URI schemes
+	my $supported = join ("\n    ", keys %$handler);
+
+	die << "EOF";
+
+Usage: $prog [ options ] [ <uri1> [ <uri2> [ <uriN...> ] ] ]
+
+If no URI is specified on the command-line, a list of line-delimited URIs
+will be read from stdin.
+
+Supported options:
+
+    -h, --help                         Print this help message.
+    -v, --verbose                      Increase verbosity level [1]
+    -q, --quiet                        Decrease verbosity level [1]
+
+The following URI schemes are supported in some form or another:
+
+    $supported
+
+EOF
+}
+
+###############################################################################
+
+#
+# MAGNET URI scheme.  We only support the following subset:
+#
+#  magnet:? <pair1> [ & <pair2> [ & <pairN...> ] ]
+#
+# Only the `xt' and `dn' key pairs are evaluated.  This implementation
+# considers it an error to specify multiple `xt' entities; `xt' entities may
+# exist only in the form "urn:<hashname>:<hashdata>".
+#
+# Example:
+#
+#  magnet:?xt=urn:md5:94691d3ca097538863e694dd4c199359
+#
+sub scheme_magnet
+{
+	my $uri = shift;
+
+	# access what should hopefully look like a set of foo=bar&key=value&...
+	# pairs similar to HTTP query strings
+	my ($params_str) = $uri =~ m/^magnet:\?(.*)$/i;
+
+	# hehe, I know too much Perl for my own good :)
+	my %params = map { split ('=', $_, 2) } split ('&', $params_str);
+
+	my $xt = uri_unescape ($params{'xt'}) or
+	  die "magnet: Must specify an `xt' entity.\n";
+
+	my ($hashname, $hashdata) = $xt =~
+	  m/^urn:(\w+):([^:]+)/i;
+
+	unless (defined $hashname)
+	{
+		warn "magnet: No hashing algorithm specified in `xt' entity.\n";
+		return 0;
+	}
+
+	unless (defined $hashdata)
+	{
+		warn "magnet: No hash specified in `xt' entity.\n";
+		return 0;
+	}
+
+	# use giFT's LOCATE command to find the rest of the data and add
+	# the resulting sources
+	gish_locate_addsource (make_hash ($hashname => $hashdata), $params{'dt'});
+
+	1;
+}
+
+#
+# FastTrack URI scheme.  Observed and supported format:
+#
+#  sig2dat://|File:<filename>|Length:<length>|UUHash:=<hash>=|
+#
+# It is this author's opinion that this is one of the most horrific
+# and non-compliant abonimations ever produced.  Sigh, but we should support
+# it for our users.
+#
+# Example:
+#
+#  sig2dat:///|File:Cube.avi|Length:659245056Bytes,643794KB|UUHash:=kRfD+TBDcvEwHNt0/YghiuR1lAo=|
+#
+sub scheme_sig2dat
+{
+	my $uri = uri_unescape (shift);    # ask weinholt
+
+	# absolutely _HIDEOUS_ regular expression borrowed from weinholt's
+	# original uri2gift.pl script
+	my ($filename, $filesize, $hash) = $uri =~
+	  m/sig2dat:[\/]+\|[^:]+:[ ]*([^|]+)\|[^:]+:[ ]*(\d*)[^|]*\|[^:]+:[ ]*=([^|]+)=.*\|/i;
+
+	$hash = unpack ("H*", decode_base64 ($hash));
+
+	gish_locate_addsource (make_hash ("fth" => $hash), $filename, $filesize);
+
+	1;
+}
+
+#
+# OpenFT URI scheme used internally by the OpenFT plugin.  Supported format:
+#
+#  openft:// <host> [ : <port> ] / <method> / <parameters>
+#
+# This scheme handler supports only a subset of the full format.  No proxy
+# requests will be handled here, and only the "path" method is currently
+# supported.  We will secretly translate the URL into the old URL form
+# until the support is more widely distributed.
+#
+# Example:
+#
+#  openft://localhost:1216/path/humor/eddie_izzard_-_dress_to_kill.avi
+#
+sub scheme_openft
+{
+	my $uri = shift;
+
+	my ($hostpart, $method, $params) = $uri =~
+	  m!^openft://(.+?)/(\w+)/(.*)$!i;
+
+	# apply processing to the host/port entities before we proceed
+	my ($host, $port) = split (/:/, $hostpart, 2);
+
+	my @hostent = split (/\./, $host);
+	my $suffix = pop @hostent;
+
+	if ($suffix =~ m/^[a-z0-9\-]+$/)
+	{
+		# RFC1034 compliant domain name, lets resolve it...
+		my $addr = gethostbyname ($host);
+
+		unless (defined $addr)
+		{
+			warn "openft: Unable to resolve hostname `$host'.\n";
+			return 0;
+		}
+
+		# replace the hostname part with an ip
+		$host = inet_ntoa ($addr);
+	}
+
+	$port ||= 1216;
+
+	unless ($port =~ m/^\d+$/)
+	{
+		warn "openft: Invalid port specified `$port'.\n";
+		return 0;
+	}
+
+	unless ($method eq 'path')
+	{
+		warn "openft: Unsupported method `$method'.\n";
+		return 0;
+	}
+
+	# produce the old-style url format which is currently recognized by
+	# the plugin
+	my $old_url = sprintf ("OpenFT://%s:%hu/%s", $host, $port, $params);
+
+	# translate the openft scheme URL to http which is currently used for
+	# implementation
+	my $http_url = sprintf ("http://%s:%hu/%s", $host, $port, $params);
+	my $resp = _scheme_openft_head ($http_url);
+
+	# access the arguments necessary for adding the source to giFT
+	my $hash = $resp->header ('Content-MD5');
+	my $size = $resp->header ('Content-Length');
+
+	unless (defined $hash && $size > 0)
+	{
+		warn "openft: Invalid header response: $!.\n";
+		return 0;
+	}
+
+	my $alias = $resp->header ('X-OpenftAlias');
+	my $user;
+
+	$user = sprintf ('%s@', $alias) if defined $alias;
+	$user .= $host;
+
+	my ($name) = $params =~ m/([^\/]+)$/;
+
+	unless (defined $name)
+	{
+		warn "openft: Invalid scheme parameters.\n";
+		return 0;
+	}
+
+	# finally send the addsource to giFT
+	gish_addsource ($user, make_hash ("md5" => $hash), $old_url, $name, $size);
+
+	1;
+}
+
+sub _scheme_openft_head
+{
+	my $http_url = shift;
+
+	my $ua = LWP::UserAgent->new;
+	my $req = HTTP::Request->new ('HEAD' => $http_url);
+
+	return $ua->request ($req);
+}
+
+###############################################################################
+
+sub make_hash
+{
+	my ($type, $data) = @_;
+
+	# produce the hash string that giFT expects
+	return sprintf ("%s:%s", uc $type, $data);
+}
+
+sub gish_locate_addsource
+{
+	my $hashexp = shift || die;
+	my $nameexp = shift;
+	my $sizeexp = shift;
+
+	# malverian: ask for explanation of all of these
+	my $cmd_getsrc =
+	  qq{$GISH --printf "%H\t%s\t%u\t%O\t%f\n" locate "$hashexp"};
+
+	# add --verbose later
+	print Dumper $cmd_getsrc;
+
+	#
+	# Call gish the "hard way" so that we can intercept output and have
+	# finer filtering control over what actually goes to the `gish source'
+	# command.
+	#
+	open (my $gish, "$cmd_getsrc |") or
+	  die "Failed to execute `$cmd_getsrc': $!\n";
+
+	while (<$gish>)
+	{
+		print Dumper $_;
+
+		my ($hash, $size, $user, $url, $name) = split (/\t/, $_, 5) or
+		  die "Confused by gish output";
+
+		# make sure that the universe hasn't imploded before proceeding
+		die unless lc $hashexp eq lc $hash;
+
+		# be sure to honor explicitly specified filename and size
+		$name = $nameexp if defined $nameexp;
+		die if (defined $sizeexp && $sizeexp != $size);
+
+		gish_addsource ($user, $hash, $url, $name, $size);
+	}
+
+	close $gish;
+}
+
+sub gish_addsource
+{
+	my ($user, $hash, $url, $name, $size) = @_;
+
+	my $cmd_addsrc =
+	  qq{$GISH source add "$hash" "$url" -s $size -f "$name" -u "$user"};
+
+	system ($cmd_addsrc) == 0 or
+	  die "Failed to execute `$cmd_addsrc': $!\n";
+}
+
+###############################################################################
+
+main ($0, @ARGV);

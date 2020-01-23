@@ -1,0 +1,43 @@
+#!/usr/bin/perl -w
+
+use giFT::Daemon;
+
+my $daemon=new giFT::Daemon(undef,undef,1,1);
+
+{
+    my $done;
+    sub wait_until_done {
+	$done=0;
+	do {
+	    $daemon->poll;
+	} while !$done;
+    }
+    
+    sub done {
+	$done=1;
+    }
+}
+
+#my $op=shift;
+
+#&{map { $_ or \&usage } 
+#	{
+#		sync=>\&sync,
+#
+#$op};
+
+sync(1);
+
+sub sync {
+    my $wait=shift;
+
+    use giFT::Shares;
+    my $cb_sync=sub {
+	done;
+	0;
+    };
+    
+    my $shares=new giFT::Shares($daemon, 1, $cb_sync);
+    $shares->sync;
+    wait_until_done if ($wait);
+}

@@ -1,0 +1,55 @@
+<%perl>
+###############################################################################
+##
+## $Id: guis.mhtml,v 1.3 2004/08/28 02:54:10 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'User Interfaces'
+</%attr>
+
+<%init>
+	my $title = $m->base_comp()->attr ('title');
+	my $p = $m->comp ('/software/get-projects.m', sect => $title);
+</%init>
+
+<h2><% $title %></h2>
+
+<p>
+	GUIs are good.  GUIs are great!
+</p>
+
+<div id="userInterfaces">
+
+% foreach ($p->getAllChildren())
+% {
+
+%	next if $_->isLeaf();
+
+		<h3><% $_->getNodeValue %></h3>
+		<dl>
+
+%	foreach my $sub ($_->getAllChildren())
+%	{
+			<& '/software/show-project.m', project => $sub->getNodeValue &>
+%	}
+
+		</dl>
+
+% }
+
+</div>

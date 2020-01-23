@@ -1,0 +1,315 @@
+? ft_bloom
+? ft_routing.c
+? ft_routing.h
+? ft_tokenize
+? gmon.out
+? localchild.diff
+? random_nodes.diff
+Index: ft_bloom.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_bloom.c,v
+retrieving revision 1.6
+diff -u -r1.6 ft_bloom.c
+--- ft_bloom.c	3 Sep 2004 01:45:53 -0000	1.6
++++ ft_bloom.c	3 Sep 2004 16:00:26 -0000
+@@ -341,6 +341,21 @@
+ 		memset (bf->count, 0, 1 << bf->bits);
+ }
+ 
++BOOL ft_bloom_empty (BloomFilter *bf)
++{
++	int i, max;
++	uint32_t *ptr;
++
++	max = 1 << (bf->bits - 5);
++	ptr = (uint32_t *)bf->table;
++
++	for (i=0; i<max; i++)
++		if (*(ptr++))
++			return FALSE;
++
++	return TRUE;
++}
++
+ /*******************************************************************/
+ 
+ #if 0
+Index: ft_bloom.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_bloom.h,v
+retrieving revision 1.3
+diff -u -r1.3 ft_bloom.h
+--- ft_bloom.h	3 Sep 2004 01:45:53 -0000	1.3
++++ ft_bloom.h	3 Sep 2004 16:00:26 -0000
+@@ -128,6 +128,13 @@
+  */
+ BOOL ft_bloom_unmerge (BloomFilter *new, BloomFilter *old);
+ 
++/**
++ * Checks if a filter has no bits set.
++ *
++ * @retval TRUE if empty.
++ */
++BOOL ft_bloom_empty (BloomFilter *bf);
++
+ /*****************************************************************************/
+ 
+ #endif /* __FT_BLOOM_H */
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	3 Sep 2004 16:00:27 -0000
+@@ -63,6 +63,10 @@
+ #define FT_CFG_NODE_CLASS_ALLOW   ft_cfg_get_int("main/class_allow=3");
+ #define FT_CFG_NODE_ALIAS         ft_cfg_get_str("main/alias")
+ 
++#define FT_CFG_VER_MINPARENT      ft_cfg_get_str("version/min_parent=131331")
++#define FT_CFG_VER_MINPEER        ft_cfg_get_str("version/min_peer=131331")
++#define FT_CFG_VER_MINCHILD       ft_cfg_get_str("version/min_child=131329")
++
+ #define FT_CFG_NODES_CACHE_MAX    (500)
+ 
+ #define FT_CFG_SEARCH_VFY         (0)
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.68
+diff -u -r1.68 ft_http_server.c
+--- ft_http_server.c	11 May 2004 21:25:18 -0000	1.68
++++ ft_http_server.c	3 Sep 2004 16:00:27 -0000
+@@ -788,8 +788,9 @@
+ 	assert (f != NULL);
+ 
+ 	/* overflowing shouldnt be possible, but just in case.... */
++#if 0
+ 	assert (c->start + c->transmit < c->stop);
+-
++#endif
+ 	/*
+ 	 * Ask giFT for the size we should send.  If this returns 0, the upload
+ 	 * was suspended.
+Index: ft_openft.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.c,v
+retrieving revision 1.59
+diff -u -r1.59 ft_openft.c
+--- ft_openft.c	2 Aug 2004 23:53:40 -0000	1.59
++++ ft_openft.c	3 Sep 2004 16:00:28 -0000
+@@ -25,6 +25,7 @@
+ #include "ft_node_cache.h"
+ #include "ft_search.h"
+ #include "ft_search_db.h"
++#include "ft_routing.h"
+ 
+ #include "ft_transfer.h"
+ #include "ft_http_server.h"
+@@ -265,6 +266,9 @@
+ 	{
+ 		if (!(ret = ft_search_db_init (FT_CFG_SEARCH_ENV_PATH, FT_CFG_SEARCH_ENV_CACHE)))
+ 			return ret;
++
++		if (!(ret = ft_routing_init ()))
++			return ret;
+ 	}
+ 
+ 	/* OpenFT, here we come :) */
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.122
+diff -u -r1.122 ft_search_db.c
+--- ft_search_db.c	23 Aug 2004 20:42:09 -0000	1.122
++++ ft_search_db.c	3 Sep 2004 16:00:31 -0000
+@@ -26,6 +26,7 @@
+ #include "md5.h"
+ 
+ #include "ft_search_db.h"
++#include "ft_routing.h"
+ 
+ /*****************************************************************************/
+ 
+@@ -318,6 +319,7 @@
+ 	if (sdb->node && sdb->node->session)
+ 		assert (sdb->node->session->search_db != sdb);
+ 
++	free (sdb->filter);
+ 	free (sdb->share_idx_name);
+ 	free (sdb);
+ }
+@@ -1217,6 +1219,9 @@
+ 
+ 	ft_tokenize_free (t);
+ 
++	if (success)
++		ft_bloom_add (sdb->filter, hash);
++
+ 	return success;
+ }
+ 
+@@ -1671,6 +1676,12 @@
+ 	 */
+ 	sdb->node = NULL;
+ 
++	ft_bloom_unmerge (sdb->old_filter, md5_filter.filter);
++	ft_bloom_free (sdb->filter);
++	ft_bloom_free (sdb->old_filter);
++
++	sdb->filter = sdb->old_filter = NULL;
++
+ 	/*
+ 	 * Initialize the cursor and other data objects necessary to perform
+ 	 * the non-blocking removal.
+@@ -2701,6 +2712,8 @@
+ 	}
+ 
+ 	local_child = search_db_new (NULL);
++	local_child->filter = md5_filter.filter;
++
+ #endif /* USE_LIBDB */
+ 
+ 	return db_initialized;
+@@ -2805,7 +2818,8 @@
+ 		return FALSE;
+ 
+ #ifdef USE_LIBDB
+-	ret = db_insert (local_child, share);
++	if (!db_insert (local_child, share))
++		return FALSE;
+ #endif /* USE_LIBDB */
+ 
+ 	return ret;
+@@ -2889,23 +2903,31 @@
+ 
+ BOOL ft_search_db_open (FTNode *node)
+ {
++	FTSearchDB *sdb;
++
+ 	if (!node)
+ 		return FALSE;
+ 
+ #ifdef USE_LIBDB
+ 	/* if this is our first time operating on this node, create a search
+ 	 * database handle */
+-	if (!FT_SEARCH_DB(node))
++	if (!(sdb = FT_SEARCH_DB(node)))
+ 	{
+ 		/* the internal interface will access the node object circularly to
+ 		 * improve isolation of this interface */
+-		if (!(FT_SEARCH_DB(node) = search_db_new (node)))
++		if (!(sdb = FT_SEARCH_DB(node) = search_db_new (node)))
+ 			return FALSE;
+ 	}
+ 
+ 	/* open the only database that is likely to be closed */
+-	if (!(db_shareidx (FT_SEARCH_DB(node), TRUE)))
++	if (!(db_shareidx (sdb, TRUE)))
+ 		return FALSE;
++
++	sdb->filter = ft_bloom_new (MD5_FILTER_BITS, MD5_FILTER_HASHES,
++				    16 << 3, FALSE);
++	assert (sdb->filter);
++
++	sdb->old_filter = ft_bloom_clone (sdb->filter);
+ #endif /* USE_LIBDB */
+ 
+ 	return TRUE;
+@@ -2925,16 +2947,26 @@
+ 
+ BOOL ft_search_db_close (FTNode *node, BOOL rm)
+ {
+-	BOOL ret = FALSE;
++	FTSearchDB *sdb;
+ 
+ 	if (!node)
+ 		return FALSE;
+ 
+ #ifdef USE_LIBDB
+-	ret = db_close (FT_SEARCH_DB(node), rm);
++	sdb = FT_SEARCH_DB(node);
++
++	if (!db_close (sdb, rm))
++		return FALSE;
++
++	ft_bloom_unmerge (sdb->old_filter, md5_filter.filter);
++	ft_bloom_merge (sdb->filter, md5_filter.filter);
++	ft_bloom_free (sdb->old_filter);
++	ft_bloom_free (sdb->filter);
++
++	sdb->filter = sdb->old_filter = NULL;
+ #endif /* USE_LIBDB */
+ 
+-	return ret;
++	return TRUE;
+ }
+ 
+ /*****************************************************************************/
+@@ -2949,6 +2981,42 @@
+ 
+ #ifdef USE_LIBDB
+ 	ret = db_lookup_md5 (FT_SEARCH_DB(node), md5, NULL);
++
++	/* a little paranoia never hurt anybody */ 
++#if 1
++	{
++		static int total=0, hits=0, misses=0,
++			misfiltered=0, unsynced=0;
++		
++		BOOL fret = ft_bloom_lookup (FT_SEARCH_DB(node), md5);
++
++		total++;
++
++		if (ret)
++		{
++			hits++;
++
++			/* we got at least one hit, make sure we
++			 * wouldn't have discarded it */
++			if (!fret)
++			{
++				assert (ft_search_db_isopen (node));
++				
++				unsynced++;
++			}
++		}
++		else
++		{
++			misses++;
++
++			if (fret)
++				misfiltered++;
++		}
++		
++		if (total % 1000 == 0)
++			FT->DBGFN (FT, "total=%d, hits=%d, misses=%d, misf=%d, unsynced=%d, fpos=%f", total, hits, misses, misfiltered, unsynced, ((double)misfiltered)/misses);
++	}
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return ret;
+Index: ft_search_db.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.h,v
+retrieving revision 1.26
+diff -u -r1.26 ft_search_db.h
+--- ft_search_db.h	22 Aug 2004 01:52:39 -0000	1.26
++++ ft_search_db.h	3 Sep 2004 16:00:31 -0000
+@@ -89,6 +89,7 @@
+ #endif /* USE_LIBDB */
+ 
+ #include "ft_tokenize.h"
++#include "ft_bloom.h"
+ 
+ /*****************************************************************************/
+ 
+@@ -109,6 +110,8 @@
+ 	                                    *   each individual share when a
+ 	                                    *   host removal operation is
+ 	                                    *   requested */
++	BloomFilter  *filter;
++	BloomFilter  *old_filter;
+ #endif /* USE_LIBDB */
+ 
+ 	unsigned long shares;              /**< total files currently shared */

@@ -1,0 +1,1 @@
+s/\s*ebx = eax;\n\s*ebx = 0 - ebx;\n\s*ebx = ebx + (0x.*?);\neax = call (ebx/call ($1 - eax/g

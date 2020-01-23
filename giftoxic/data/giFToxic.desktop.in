@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=giFToxic
+Comment[de]=Eine auf GTK+2 basierende GUI für das Filesharing Tool giFT
+Comment=A GTK+2 based GUI for the filesharing tool giFT
+Exec=giFToxic
+StartupNotify=true
+Terminal=0
+Type=Application
+Icon=@PIXMAPDIR@/giFToxic-48.png
+Categories=Application;Network;

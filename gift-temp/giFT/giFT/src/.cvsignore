@@ -1,0 +1,17 @@
+*.o
+*core*
+.deps
+.libs
+giFT
+giFTget
+Makefile
+Makefile.in
+
+*.idb
+*.obj
+*.pdb
+giFT*.dll
+giFT*.exe
+giFT*.exp
+giFT*.ilk
+giFT*.lib

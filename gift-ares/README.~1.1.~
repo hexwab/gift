@@ -1,0 +1,73 @@
+ $Id: README,v 1.1 2004/11/28 21:10:02 mkern Exp $
+---------------------
+
+This is an Ares (www.aresgalaxy.org) plugin for giFT
+(www.giftproject.org).
+
+
+Compilation & Installation
+--------------------------
+
+Needed tools to build giFT-Ares are as follows:
+
+automake    >= 1.6 (not if you use the tarball release)
+autoconf    >= 2.5 (not if you use the tarball release)
+libtool     >= 1.4 (not if you use the tarball release)
+pkg-config
+giFT
+
+
+Next run './configure' in the top source dir if you are using a TARBALL RELEASE.
+Or run './autogen.sh' if you got the sources from CVS.
+
+If you have giFT installed in a non-standard location (according to
+pkg-config), you must make sure that PKG_CONFIG_PATH is set to the
+directory where libgift.pc is located.
+
+For example:
+  export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" (for bash)
+or
+  setenv PKG_CONFIG_PATH "/usr/local/lib/pkgconfig" (for tcsh)
+
+
+The next step is to run 'make' and 'make install' which will compile
+and install the plugin.
+
+Then add Ares to the [main]/plugins line in ~/.giFT/gift.conf,
+like so:
+
+old:
+	[main]
+	plugins = OpenFT:Gnutella
+
+new:
+	[main]
+	plugins = OpenFT:Gnutella:Ares
+
+You may also use a fully qualified path to the plugin filename:
+ 
+	[main]
+	plugins = OpenFT:/usr/local/lib/giFT/libAres.la
+ 
+The plugin will copy the configuration files from the
+$PREFIX/share/giFT/Ares/ directory if necessary.
+
+
+Running Ares behind a NAT
+------------------------------
+
+If you are behind a NAT and you still want to download from other
+NATed / firewalled users you must forward the port in the config file
+(default is 1214) and set the config option main/forwarding=1.
+
+
+Contact
+-------
+
+Project Page:   http://developer.berlios.de/projects/gift-ares/
+
+Mailing Lists:  gift-ares-checkins@lists.berlios.de [Notifies about cvs checkins]
+
+IRC:            #giFT-FastTrack on irc.freenode.net [The best place for up to date info]
+
+See the file AUTHORS for a list of authors.

@@ -1,0 +1,57 @@
+--- #meta.c#	Sat Sep 21 19:58:52 2002
++++ meta.c	Mon Sep 23 04:18:52 2002
+@@ -24,27 +24,32 @@
+ #include "meta_ogg.h"
+ #include "meta_jpeg.h"
+ 
++#include <ctype.h>
++
+ /*****************************************************************************/
+ 
+ void meta_set (FileShare *file, char *key, char *value)
+ {
+ 	Dataset **ds;
+ 	char     *old;
++	char     *key_low;
+ 
+-	if (!file || !key)
++	if (!file || !key || !(key_low = string_lower (STRDUP (key))))
+ 		return;
+ 
+ 	ds = &SHARE_DATA(file)->meta;
+ 
+ 	/* remove any data already present here */
+-	if ((old = dataset_lookup (*ds, key, STRLEN_0 (key))))
++	if ((old = dataset_lookup (*ds, key_low, STRLEN_0 (key_low))))
+ 	{
+ 		free (old);
+-		dataset_remove (*ds, key, STRLEN_0 (key));
++		dataset_remove (*ds, key_low, STRLEN_0 (key_low));
+ 	}
+ 
+ 	if (value)
+-		dataset_insert (ds, key, STRLEN_0 (key), (void *) STRDUP (value));
++		dataset_insert (ds, key_low, STRLEN_0 (key_low), STRDUP (value));
++
++	free (key_low);
+ }
+ 
+ void meta_clear (FileShare *file)
+@@ -71,17 +76,11 @@
+ 
+ /*****************************************************************************/
+ 
+-#define TRY_TYPE (f, m) if (f (file)) { file->mime = m; return TRUE; }
+-
+ /* fills the supplied structure with as much meta data as can be found */
+ int meta_run (FileShare *file)
+ {
+ 	if (!file)
+ 		return FALSE;
+-
+-	TRY_TYPE (meta_mp3_run, "audio/mpeg");
+-	TRY_TYPE (meta_ogg_run, "application/x-ogg"); /* not just vorbis */
+-	TRY_TYPE (meta_jpeg_run, "image/jpeg");
+ 
+ 	/* if file->mime already exists it means that we loaded it from the cache,
+ 	 * avoid recalculating it when not necessary */

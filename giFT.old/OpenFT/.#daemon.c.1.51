@@ -1,0 +1,232 @@
+#include "openft.h"
+
+#include "opt.h"
+
+#include "search.h"
+
+/*****************************************************************************/
+
+/**/extern Connection *ft_self;
+/**/extern unsigned long search_unique_id;
+
+/*****************************************************************************/
+
+typedef void (*EventCallback) (Protocol *p, Connection *c, Event *event);
+#define EV_HANDLER(func) static void ft_##func (Protocol *p, Connection *c, Event *event)
+
+EV_HANDLER (daemon_promote);
+EV_HANDLER (daemon_connect);
+EV_HANDLER (daemon_search);
+EV_HANDLER (daemon_share);
+EV_HANDLER (daemon_stats);
+
+/*****************************************************************************/
+
+struct _daemon_event
+{
+	char *name;
+	EventCallback cb;
+}
+daemon_events[] =
+{
+	{ "promote",    ft_daemon_promote },
+	{ "ft_connect", ft_daemon_connect },
+	{ "search",     ft_daemon_search  },
+	{ "share",      ft_daemon_share   },
+	{ "stats",      ft_daemon_stats   },
+	{ NULL,         NULL              },
+};
+
+/*****************************************************************************/
+
+void ft_daemon_callback (Protocol *p, Connection *c, Event *event)
+{
+	struct _daemon_event *ptr;
+
+	for (ptr = daemon_events; ptr->name; ptr++)
+	{
+		if (strcmp (ptr->name, event->name))
+			continue;
+
+		/* found the appropriate event */
+		(*ptr->cb) (p, c, event);
+
+		return;
+	}
+
+	printf ("no handler found for %s\n", event->name);
+}
+
+/*****************************************************************************/
+
+static Connection *broadcast_status (Connection *c, Node *node, void *data)
+{
+	ft_node_send (c, FT_CLASS_RESPONSE, "%hu", NODE (ft_self)->class);
+
+	return NULL;
+}
+
+EV_HANDLER (daemon_promote)
+{
+	node_class_add (ft_self, NODE_SEARCH);
+
+	conn_foreach ((ConnForeachFunc) broadcast_status, NULL, NODE_USER);
+}
+
+/*****************************************************************************/
+
+EV_HANDLER (daemon_connect)
+{
+	char *ip, *port;
+
+	ip   = event_get_value (event, "ip");
+	port = event_get_value (event, "port");
+
+	if (!ip || !port)
+		return;
+
+	ft_connect (p, ip, atoi (port));
+}
+
+/*****************************************************************************/
+
+static Connection *broadcast_search (Connection *c, Node *node,
+									 Dataset *dataset)
+{
+	Connection   *conn  = dataset_lookup (dataset, "connection");
+	unsigned long type  = (unsigned long) dataset_lookup (dataset, "type");
+	char         *query = dataset_lookup (dataset, "query");
+
+	printf ("\t%s:%hu\n", net_ip_str (node->ip), node->port);
+
+	if (!search_unique_id)
+		search_unique_id++;
+
+	ft_node_send (c, FT_SEARCH_REQUEST, "%lu%hu%s",
+				  search_unique_id, (unsigned short) type, query);
+
+	search_id_new (search_unique_id, conn, type, query);
+
+	dataset_insert (dataset, "ref", (void *) 1);
+
+	return NULL;
+}
+
+EV_HANDLER (daemon_search)
+{
+	Dataset *dataset = NULL;
+	int      search_type;
+	char    *query;
+	char    *realm;
+
+	query = event_get_value (event, "query");
+	realm = event_get_value (event, "realm");
+
+	if (!query)
+		return;
+
+	search_type = SEARCH_FILENAME;
+
+	if (realm)
+	{
+		/* TODO - this is a hack, dont use realm for this */
+		if (!strcasecmp (realm, "md5"))
+			search_type = SEARCH_MD5;
+		else if (!strcasecmp (realm, "user"))
+			search_type = SEARCH_HOST;
+	}
+
+	dataset_insert (dataset, "connection", c);
+	dataset_insert (dataset, "query",      query);
+	dataset_insert (dataset, "type",       (void *) search_type);
+
+	printf ("bouncing search for '%s' to ...\n", query);
+
+	if (NODE (ft_self)->class & NODE_SEARCH)
+	{
+		List *ptr;
+
+		trace();
+		printf ("\tmyself\n");
+
+		for (ptr = ft_search (search_type, query); ptr; ptr = ptr->next)
+		{
+			FileShare *file = ptr->data;
+
+			printf("local search result: %s\n", file->file);
+			/* ignore local shares */
+			if (file->host != 0)
+				search_reply (p, c, 0, ft_self, file);
+		}
+
+		search_reply (p, c, 0, ft_self, NULL);
+	}
+
+	conn_foreach ((ConnForeachFunc) broadcast_search, dataset, NODE_SEARCH);
+
+	/* this will be NULL if broadcast_search found no one to send to */
+	if (dataset_lookup (dataset, "ref")) {
+	  trace();
+		search_unique_id++;
+	}
+	else
+	{
+	  trace();
+		close (c->fd);
+		input_remove (c);
+		connection_destroy (c);
+		/* dc_connection_close (c); */
+	}
+
+	dataset_clear (dataset);
+}
+
+/*****************************************************************************/
+
+static Connection *share_sync (Connection *c, Node *node, void *data)
+{
+	ft_node_send (c, FT_SHARE_REQUEST, NULL);
+	share_local_submit (c->protocol, c);
+
+	return NULL;
+}
+
+EV_HANDLER (daemon_share)
+{
+	char *action;
+
+	if (!(action = event_get_value (event, "action")))
+		return;
+
+	if (strcmp (action, "sync"))
+		return;
+
+	/* sync == re-read ~/.giFT/OpenFT/shares */
+	share_local_import ();
+	conn_foreach ((ConnForeachFunc) share_sync, NULL, NODE_SEARCH);
+}
+
+/*****************************************************************************/
+
+static Connection *stats (Connection *c, Node *node, Connection *dc)
+{
+	dc_connection_send (dc->protocol, dc, 3, "NODE",
+						"HOST",    OPT_TYPE_STRING, net_ip_str (node->ip),
+						"PORT",    OPT_TYPE_INT,    node->port,
+						"CLASS",   OPT_TYPE_STRING, node_class_str (node));
+
+	return NULL;
+}
+
+EV_HANDLER (daemon_stats)
+{
+	trace ();
+
+	c->protocol = p;
+	conn_foreach ((ConnForeachFunc) stats, c, NODE_USER);
+
+#if 0
+	close (c->fd);
+	input_remove (c);
+#endif
+}

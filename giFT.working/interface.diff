@@ -1,0 +1,36 @@
+Index: interface.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/interface.c,v
+retrieving revision 1.33
+diff -u -r1.33 interface.c
+--- interface.c	11 Jun 2003 12:06:13 -0000	1.33
++++ interface.c	9 Jul 2003 13:18:16 -0000
+@@ -226,14 +226,17 @@
+ 	if ((keyname = strrchr (keypath, '/')))
+ 		*keyname++ = 0;
+ 	else
++	{
+ 		keyname = keypath;
++		keypath = NULL;
++	}
+ 
+ 	node = lookup (p, keypath);
+ 
+ 	if ((inode = inode_new (keyname, value)))
+ 		inode->node = tree_insert (&p->tree, node, NULL, inode);
+ 
+-	free (keypath);
++	free (keypath ? keypath : keyname);
+ 	return TRUE;
+ }
+ 
+@@ -779,6 +782,9 @@
+ 		return NULL;
+ 
+ 	interface_put (p, "query", "foo (bar)");
++	interface_put (p, "test", "123");
++	interface_put (p, "test", "456");
++	interface_put (p, "test", "789");
+ 	interface_put (p, "meta", NULL);
+ 	interface_put (p, "meta/bitrate", ">=192");
+ 	interface_put (p, "meta/foo", "bar");

@@ -1,0 +1,64 @@
+.TH giFT 1 "28 September 2002" "giFT version 0.10.0" 
+.SH NAME
+giFT \- the giFT daemon
+.SH SYNOPSIS
+.BR giFT " [ " options "... ]"
+.RI "[ " protocol-libs "... ]"
+.SH DESCRIPTION
+.B giFT 
+is like a `bridge'. It can handle multiple file sharing protocols. The
+protocols will be dynamically loaded as `plugins'. That's one side of
+the bridge.
+.P
+The other side of the bridge is a bastardized XML-like protocol, which provides
+the frontend a unified method to work with all file sharing protocols.
+.SH OPTIONS
+.TP
+.BI -h
+Show a short overview of all options
+.TP
+.BI -v
+Shows the version
+.TP
+.BI -d
+Causes 
+.B giFT 
+to fork to the background
+.TP
+.BI protocol-libs
+The file locations of the protocol plugins that must be loaded. Normally
+configured in 
+.BR gift.conf (5)
+.SH FILES
+.TP
+.I ~/.giFT/gift.conf
+Generic configuration for giFT, see 
+.BR gift.conf (5)
+for more information
+.TP
+.I ~/.giFT/gift.log
+Debug information. A clean file is used every startup.
+.TP
+.I ~/.giFT/access.log
+Apache-style access log. Can be used to generate fancy statistics, although
+it's not very reliable. (Often only chunks of files have been downloaded from
+you.)
+.TP
+.I ~/.giFT/shares
+File containing information about your shared files.
+.TP
+.I ~/.giFT/gift.pl
+Perl script that will be loaded on giFT startup (if build with Perl enabled).
+Can contain `hooks' for monitoring giFT's data traffic. Useful for
+automatically playing or sorting downloaded files, for example. See 
+.BR gift.pl (5)
+for more information.
+.SH BUGS
+giFT is in development. Don't worry if you get a segfault or two, but just
+report it to us. Make sure you're always using the most recent version of giFT.
+.SH AUTHOR
+Eelco Lempsink <eelco@33lc0.net>
+.SH "SEE ALSO"
+.BR gift.conf (5),
+.BR OpenFT.conf (5),
+http://gift.sourceforge.net/docs/

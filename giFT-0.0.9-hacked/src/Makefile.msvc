@@ -1,0 +1,104 @@
+# $Id: Makefile.msvc,v 1.31 2003/06/11 04:36:49 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../lib -I..
+
+LOADEROBJ = "..\win32\loader$(O)"
+
+OBJECTS = \
+	daemon$(O) \
+	plugin$(O) \
+	download$(O) \
+	download_state$(O) \
+	if_event$(O) \
+	if_port$(O) \
+	if_message$(O) \
+	if_search$(O) \
+	if_share$(O) \
+	if_stats$(O) \
+	if_transfer$(O) \
+	giftd$(O) \
+	mime$(O) \
+	meta$(O) \
+	meta_mp3$(O) \
+	meta_ogg$(O) \
+	meta_image$(O) \
+	meta_avi$(O) \
+	opt$(O) \
+	share_cache$(O) \
+	share_db$(O) \
+	transfer$(O) \
+	upload$(O)
+
+TARGET = $(GIFT_EXE)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+GIFTAPI_DEF ="../win32/gift_api.def"
+
+LIBS = $(LIBS) $(LIBGIFT_LIB) $(LIBGIFTPROTO_LIB) $(LIBPROTO_LIB)
+TARGETDLL = $(GIFT_DLL)
+TARGETLIB = $(GIFT_LIB)
+
+all: $(TARGETDLL) $(TARGET)
+
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGETDLL): $(OBJECTS) $(GIFTAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(GIFTAPI_DEF) $(LIBS) $(OBJECTS)
+
+$(TARGET): $(LOADEROBJ) $(TARGETDLL)
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(TARGETLIB) $(LOADEROBJ)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+LIBS      = $(LIBS) $(LIBGIFT_STATIC) $(LIBGIFTPROTO_STATIC) $(LIBPROTO_STATIC)
+LDFLAGS   = $(LDFLAGS) \
+		-libpath:"../lib" \
+		-libpath:"../plugin" \
+		-libpath:"../OpenFT" \
+		-libpath:"../OpenFT/proto" \
+		-libpath:"../Gnutella"
+GIFT_LIBS = $(OPENFT_STATIC) $(GNUTELLA_STATIC)
+
+!if exists(../FastTrack)
+
+LDFLAGS   = $(LDFLAGS) -libpath:"../FastTrack/src"
+GIFT_LIBS = $(GIFT_LIBS) $(FASTTRACK_STATIC)
+
+!endif # exists(../FastTrack)
+
+all: $(TARGET)
+
+install: $(TARGET)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(GIFT_LIBS) $(OBJECTS)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+!if defined(dynamic) || defined(DYNAMIC)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+!endif # defined(dynamic) || defined(DYNAMIC)
+	@-del /Q /F $(LOADEROBJ)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

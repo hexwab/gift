@@ -1,0 +1,86 @@
+
+
+The Ares arlnk format
+---------------------
+
+When exporting a hash link for a file Ares creates this:
+
+<begin export>
+
+HashLinks for file: 
+C:\ares\re\My Shared Folder\Wagner - Ride of the Valkyries.mp3
+Size: 9.723.402 bytes
+
+Simple HashLink
+arlnk://F5eflEAb7NODj7ZAFWXbCyi6EUl8VL/ndBRXm/CuiZA4znqPa3HLsiHUPl+pvf3hG9heBjvOl4aWz7ESZFa4Eg6tPIUqEeUtaVcpZPU=
+
+HashLink including yourself as a source
+arlnk://F5eflEAb7NODj7ZAFWXbCyi6EUl8VL/ndBRXm/CuiZA4znqPa3HLsiHUPl+pvf3hGzgjVq5CcXyKItNcA4CsZTuVVtB2FqWMJwOwXha0oZf6ETE2
+
+Magnet URIs (UTF-8 and URL-Encoded)
+magnet:?xt=urn:sha1:LO7LDHEUVKLTY7AYDMVL4YACGE7NJMQG&dn=Wagner - Ride of the Valkyries.mp3
+magnet:?xt=urn:sha1:LO7LDHEUVKLTY7AYDMVL4YACGE7NJMQG&dn=Wagner%20-%20Ride%20of%20the%20Valkyries.mp3
+
+<end export>
+
+
+Minimum accepted length by Ares is 0x32 chars without arlnk://
+(does this assume it cannot be compressed further?)
+
+Steps to plaintext:
+
+1. decode the link using base64
+
+2. decrypt it using:
+
+	as_uint8 c;
+	as_uint16 key = 0x6F13; 
+	int i;
+
+	for (i = 0; i < len; i++)
+	{
+		c = data[i] ^ (key >> 8);
+		key = (key + data[i]) * 0x5AB3 + 0x8D1E;
+		data[i] = c;
+	}
+
+3. apply zlib inflate
+
+
+Decrypting the simple hashlink from above sample this way gives:
+
+0000000000000000 | 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
+.^..Wagner - Rid | 0a 5e 94 00 57 61 67 6e 65 72 20 2d 20 52 69 64
+e of the Valkyri | 65 20 6f 66 20 74 68 65 20 56 61 6c 6b 79 72 69
+es.mp3..Wagner.. | 65 73 2e 6d 70 33 00 02 57 61 67 6e 65 72 00 08
+[......<|..*.`.1 | 5b be b1 9c 94 aa 97 3c 7c 18 1b 2a be 60 02 31
+>...             | 3e d4 b2 06
+
+
+
+Contents:
+
+16 "0000000000000000" (hardcoded, why?)
+4  filesize
+n  filename, zero terminated
+
+metadata follows:
+1  type
+n  data
+
+types:
+1: title
+2: artist
+3: album
+4: genre
+5: year
+(all zero-terminated strings so far)
+
+specific to arlnk: 
+1  0x07 
+6  source IP and port
+
+1  0x08
+20 SHA1
+
+SHA1 seems to always be the last tag.

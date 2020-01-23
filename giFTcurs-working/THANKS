@@ -1,0 +1,47 @@
+We'd like to thank these people for contributing in some way to giFTcurs:
+
+
+Alexander Poquet <atpoquet@ucdavis.edu>
+	The first French translation.
+
+Alexandre Bourget <alex@bourget.cc>
+ 	Improved the French translation.
+
+Andreas Kleist Svendsen <andreas@fabel.dk>
+	The Danish translation.
+
+Andreas Nilsson <nisses.mail@home.se>
+	Designed the web page.
+
+Artur Skura <arturs@linuxpl.org>
+	The Polish translation.
+
+Avenger <giFTcurs@avenger.8m.com>
+	The Brazilian Portuguese translation.
+
+Daniel Arnold <danniheld@gmx.de>
+	The German translation. Thanks also for the many suggestions and bug reports.
+
+Daniel Phillips <phillips@arcor.de>
+	Fixed an annoying bug in the transfer lists.
+
+Diego Carretero <dcarrete@bpo.hp.com>
+	The Spanish and the Catalan translations.
+
+Eelco Lempsink <eelco@33lc0.net>
+	The Dutch translation.
+
+Jan Morén <jan.moren@lucs.lu.se>
+	A few suggestions for interface improvements.
+
+Josh Guilfoyle <jasta@gotlinux.org>
+	Many fine suggestions and fixes.
+
+Per von Zweigbergk <pvz@linux.se>
+	A few patches and suggestions.
+
+Philip Walls <malverian@users.sourceforge.net>
+	Figuring out why gettext 0.11.x didn't work.
+
+
+If you feel that you should be included here, please tell us.

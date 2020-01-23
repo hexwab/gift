@@ -1,0 +1,128 @@
+# $Id: zlib.msvc,v 1.2 2005/12/18 17:17:23 mkern Exp $
+
+#
+# This makefile is for zlib 1.2.3!
+# Copy this file into $(BUILD_ROOT)\zlib and use it there to compile zlib
+#
+
+# make release by default
+!if !defined(debug) && !defined(DEBUG)
+RELEASE=1
+!endif
+
+# make static library by default
+#DYNAMIC = 1
+
+!if !defined(dynamic) && !defined(DYNAMIC)
+STATIC=1
+!endif
+
+CC = cl
+LD = link
+O  =.obj
+
+CFLAGS  = -nologo -W3
+LDFLAGS = -nologo /subsystem:console binmode.obj oldnames.lib /machine:I386
+
+!if defined(release) || defined(RELEASE)
+D=
+CFLAGS  = $(CFLAGS)  -Ox -GA3s
+DEFS    = $(DEFS)    -DNDEBUG -U_DEBUG
+LDFLAGS = $(LDFLAGS) -release
+!else
+D=d
+CFLAGS  = $(CFLAGS)  -Od
+DEFS    = $(DEFS)    -D_DEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+!endif
+
+!if defined(static) || defined(STATIC)
+CFLAGS  = $(CFLAGS) -MT$(D)
+!else
+CFLAGS  = $(CFLAGS) -MD$(D)
+!endif
+
+OBJECTS  =  \
+	adler32$(O) \
+	compress$(O) \
+	crc32$(O) \
+	deflate$(O) \
+	gzio$(O) \
+	infback$(O) \
+	inffast$(O) \
+	inflate$(O) \
+	inftrees$(O) \
+	trees$(O) \
+	uncompr$(O) \
+	zutil$(O)
+
+ZLIB_DLL = zlib$(D).dll
+ZLIB_LIB = zlib$(D).lib
+ZLIB_LIB_STATIC = zlib$(D).lib
+
+!if defined(static) || defined(STATIC)
+all:  $(ZLIB_LIB_STATIC)
+!else
+all:  $(ZLIB_DLL)
+!endif
+
+adler32.obj: adler32.c zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+compress.obj: compress.c zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+crc32.obj: crc32.c zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+deflate.obj: deflate.c deflate.h zutil.h zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+gzio.obj: gzio.c zutil.h zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+infback.obj: infback.c zutil.h zlib.h zconf.h inftrees.h 
+	$(CC) -c $(CFLAGS) $*.c
+
+inflate.obj: inflate.c zutil.h zlib.h zconf.h 
+	$(CC) -c $(CFLAGS) $*.c
+
+inftrees.obj: inftrees.c zutil.h zlib.h zconf.h inftrees.h
+	$(CC) -c $(CFLAGS) $*.c
+
+inffast.obj: inffast.c zutil.h zlib.h zconf.h inftrees.h inffast.h
+	$(CC) -c $(CFLAGS) $*.c
+
+trees.obj: trees.c deflate.h zutil.h zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+uncompr.obj: uncompr.c zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+zutil.obj: zutil.c zutil.h zlib.h zconf.h
+	$(CC) -c $(CFLAGS) $*.c
+
+$(ZLIB_LIB_STATIC): $(OBJECTS)
+	@if exist $(ZLIB_LIB_STATIC) del $(ZLIB_LIB_STATIC)
+	lib /OUT:$(ZLIB_LIB_STATIC) $(OBJECTS)
+
+$(ZLIB_DLL): $(OBJECTS)
+	@if exist $(ZLIB_LIB) del $(ZLIB_LIB)
+	@if exist $(ZLIB_DLL) del $(ZLIB_DLL)
+	$(LD) $(dlllflags) -dll -out:$(ZLIB_DLL) -implib:$(ZLIB_LIB) $(OBJECTS) -def:win32\zlib.def
+  
+clean:
+	-del *.obj
+	-del *.lib
+	-del *.dll
+	-del *.exe
+	-del *.ilk
+	-del *.pdb
+	-del *.exp
+
+half-clean:
+	-del *.obj
+	-del *.exe
+	-del *.ilk
+	-del *.pdb
+	-del *.exp

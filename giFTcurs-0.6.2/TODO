@@ -1,0 +1,49 @@
+
+                             The giFTcurs TODO
+
+
+STUFF LIKELY TO BE DONE
+-----------------------
+
+     · A debugging key. You press it and it dumps info about the marked
+       item in the console.
+
+     · Hilight new transfers.
+
+     · Ability to tag search results and perform an action on all tagged
+       ones.
+
+     · Ability to search on meta data.
+
+     · Ability to choose filename for downloads.
+
+     · More documentation (e.g., a FAQ, something documenting hidden
+       features.)
+
+     · A screen where you browse users.
+
+     · Numbered links, as in lynx. Like say you move on page down with
+       space and then you see foobar.ogg as entry 39 and you press 3 and 9
+       and then enter. Request from b0ef.
+
+     · Move away from glib's logging facility, since it has a silly buffer
+       that is 1025 bytes in size. We need more. (Maybe this isn't needed,
+       what with the new interface protocol and all.)
+
+     · Mark some more strings for translation. The sort methods aren't
+       being translated right now.
+
+     · Download whole directories with the push of a button. The files
+       would be saved in a seperate directory in completed/.
+
+UNLIKELY STUFF
+--------------
+
+     · World domination and so on.
+
+     · Client to client chat.
+
+     · Use readline(3) for the input fields. This is probably not a good
+       idea, and not even needed anymore.
+
+Never forget, we must fight the feature creep!

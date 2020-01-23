@@ -1,0 +1,19 @@
+# Bart Verwilst [23 july 2002] 
+	- Fixed few bugs that caused LokiPoki to use 85% CPU :o)
+  	- Integrated new parser
+
+# Bart Verwilst [25 july 2002]
+	- Start of integrating the new protocol
+	- Tabs remove/add properly now
+	- General cleanups
+
+# Bart Verwilst [31 july 2002]
+	- Threading switched to QT threads, segfaults are history!
+	- Searching works
+	- Cleaned up search output
+	- Fixed incorrect numbering for results
+	- Tab 1 wouldn't display popupmenu, fixed
+
+# Bart Verwilst [1 aug 2002]
+	- Selecting a search result now selects the whole row
+	- Fixed b0rked popupmenu

@@ -1,0 +1,54 @@
+Index: src/upload.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/upload.c,v
+retrieving revision 1.102
+diff -u -r1.102 upload.c
+--- src/upload.c	15 Jul 2003 16:56:08 -0000	1.102
++++ src/upload.c	16 Jul 2003 17:30:27 -0000
+@@ -547,6 +547,13 @@
+ 	unsigned int open_slots = (unsigned int)(upload_availability ());
+ 	int ret;
+ 
++	/* just in case */
++	if (info)
++	{
++		info->queue_pos = 0;
++		info->queue_ttl = 0;
++	}
++
+ 	if (max_peruser > 0)
+ 	{
+ 		if (active_uls >= max_peruser)
+Index: OpenFT/gt_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/gt_http_server.c,v
+retrieving revision 1.49
+diff -u -r1.49 gt_http_server.c
+--- OpenFT/gt_http_server.c	11 Jul 2003 13:57:21 -0000	1.49
++++ OpenFT/gt_http_server.c	16 Jul 2003 17:30:29 -0000
+@@ -1,5 +1,5 @@
+ /*
+- * $Id: gt_http_server.c,v 1.49 2003/07/11 13:57:21 jasta Exp $
++ * $Id: ft_http_server.c,v 1.49 2003/07/11 13:57:21 jasta Exp $
+  *
+  * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+  *
+@@ -388,10 +388,15 @@
+ 	char *buf_retry;
+ 
+ 	buf_retry = stringf_dup ("%u", (30 * SECONDS));
+-	buf_pos   = stringf_dup ("%u of %u",
+-	                         auth_info->queue_pos, auth_info->queue_ttl);
+ 
+-	dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
++	if (auth_info->queue_pos && auth_info->queue_ttl)
++	{
++		buf_pos = stringf_dup ("%u of %u",
++				       auth_info->queue_pos,
++				       auth_info->queue_ttl);
++		dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
++	}
++
+ 	dataset_insertstr (&reply->keylist, "X-QueueRetry",    buf_retry);
+ }
+ 

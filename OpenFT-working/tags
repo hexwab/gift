@@ -1,0 +1,623 @@
+DB_COMPAREFN	src/ft_search_db.c	/^# define DB_COMPAREFN(cmpfn) int cmpfn (DB *dbp, c/
+ERR_DB	src/ft_search_db.c	/^#define ERR_DB(method,ret)                 \\$/
+ERR_DB_NODE	src/ft_search_db.c	/^#define ERR_DB_NODE(method,ret,node)       \\$/
+ERR_DB_PATH	src/ft_search_db.c	/^#define ERR_DB_PATH(method,ret,path,db)    \\$/
+ERR_DB_SDB	src/ft_search_db.c	/^#define ERR_DB_SDB(method,ret,sdb)         \\$/
+F1	src/md5.c	/^# define F1(x, y, z) (z ^ (x & (y ^ z)))$/
+F2	src/md5.c	/^# define F2(x, y, z) F1(z, x, y)$/
+F3	src/md5.c	/^# define F3(x, y, z) (x ^ y ^ z)$/
+F4	src/md5.c	/^# define F4(x, y, z) (y ^ (x | ~z))$/
+FT_CONN	src/ft_node.h	/^#define FT_CONN(node) (node ? (node->session ? nod/
+FT_HANDLER	src/ft_protocol.h	/^#define FT_HANDLER(hfunc) \\$/
+FT_NETORG_FOREACH	src/ft_netorg.h	/^#define FT_NETORG_FOREACH(func) ((FTNetorgForeach)/
+FT_NODE	src/ft_node.h	/^#define FT_NODE(c)       ((FTNode *)c->udata)$/
+FT_NODE_INFO	src/ft_node.h	/^#define FT_NODE_INFO(c)  (&(FT_NODE(c)->ninfo))$/
+FT_SEARCH_DB	src/ft_search_db.h	/^#define FT_SEARCH_DB(node) ((node)->session->searc/
+FT_SEARCH_METHOD	src/ft_search_obj.h	/^#define FT_SEARCH_METHOD(flags) ((flags) & 0x03)$/
+FT_SESSION	src/ft_session.h	/^#define FT_SESSION(c) ((FT_NODE(c)) ? FT_NODE(c)->/
+FT_VERSION_CMP	src/ft_version.h	/^#define FT_VERSION_CMP(a,b) ((a & COMPAT_MASK) - (/
+FT_VERSION_EQ	src/ft_version.h	/^#define FT_VERSION_EQ(a,b) ((a & COMPAT_MASK) == (/
+FT_VERSION_GT	src/ft_version.h	/^#define FT_VERSION_GT(a,b) ((a & COMPAT_MASK) > (b/
+FT_VERSION_LT	src/ft_version.h	/^#define FT_VERSION_LT(a,b) ((a & COMPAT_MASK) < (b/
+KLASS_INDEX	src/ft_netorg.c	/^#define KLASS_INDEX(klass)   \\$/
+LOGMSG	src/test/db_bench.c	/^#define LOGMSG(fmt,pfx)                           /
+MD5Final	src/md5.c	/^static void MD5Final(unsigned char digest[HASH_LEN/
+MD5Init	src/md5.c	/^static void MD5Init(struct MD5Context *ctx)$/
+MD5STEP	src/md5.c	/^# define MD5STEP(f, w, x, y, z, data, s) ( w += f(/
+MD5Transform	src/md5.c	/^static void MD5Transform(uint32_t buf[4], uint32_t/
+MD5Update	src/md5.c	/^static void MD5Update(struct MD5Context *ctx, unsi/
+Mdb_bench	src/test/db_bench.c	/^int main (int argc, char **argv)$/
+Mft_guid	src/ft_guid.c	/^int main (int argc, char **argv)$/
+Mft_http	src/ft_http.c	/^int main (int argc, char **argv)$/
+Mft_version	src/ft_version.c	/^int main ()$/
+Mmd5	src/md5.c	/^int main (int argc, char **argv)$/
+OpenFT_init	src/ft_openft.c	/^BOOL OpenFT_init (Protocol *p)$/
+SHIFT	src/ft_version.c	/^#define SHIFT(x,y)       (((x) & 0xff) << (y))$/
+STATE_INDEX	src/ft_netorg.c	/^#define STATE_INDEX(state)   (int)(state)$/
+UNSHIFT	src/ft_version.c	/^#define UNSHIFT(v,x,y)   if (x) *x = (((v) >> (y))/
+accept_test_port	src/ft_utils.c	/^static void accept_test_port (TCPC *c, in_port_t p/
+accept_test_result	src/ft_utils.c	/^static void accept_test_result (TCPC *c, TCPC *ver/
+accept_test_verify	src/ft_utils.c	/^static void accept_test_verify (int fd, input_id i/
+access_log	src/ft_xfer.c	/^static void access_log (FTTransfer *xfer)$/
+access_nodes_share	src/ft_http_server.c	/^static Share *access_nodes_share (FTHttpRequest *r/
+acquire_new_stuff	src/ft_conn.c	/^static int acquire_new_stuff (void)$/
+active_search	src/proto/ft_query.c	/^static int active_search (sparams_t *params)$/
+add_class	src/ft_node.c	/^static void add_class (String *s, int *first, char/
+add_conn_list	src/ft_netorg.c	/^static int add_conn_list (ft_state_t state, FTNode/
+add_download	src/ft_transfer.c	/^static void add_download (FTTransfer *xfer)$/
+add_keylist	src/ft_http.c	/^static void add_keylist (ds_data_t *key, ds_data_t/
+add_meta	src/ft_share.c	/^static void add_meta (ds_data_t *key, ds_data_t *v/
+add_reply_503_hidden	src/ft_http_server.c	/^static void add_reply_503_hidden (FTHttpReply *rep/
+add_reply_503_queued	src/ft_http_server.c	/^static void add_reply_503_queued (FTHttpReply *rep/
+add_reply_success	src/ft_http_server.c	/^static void add_reply_success (FTHttpReply *reply,/
+add_result	src/ft_search_exec.c	/^static void add_result (SearchData *sdata, FileSha/
+add_search_result	src/ft_search_db.c	/^static BOOL add_search_result (Array **a, FTSearch/
+add_sorted	src/ft_netorg.c	/^static int add_sorted (FTNode *a, FTNode *b)$/
+alloc_udata	src/ft_openft.c	/^static struct openft_data *alloc_udata (Protocol */
+allow_dups	src/ft_search_db.c	/^static int allow_dups (DB *dbp, DBCompareFn cmpfun/
+array_ho	src/ft_packet.c	/^static void array_ho (unsigned char *ptr, size_t s/
+array_range	src/ft_packet.c	/^static int array_range (FTPacket *packet, size_t s/
+array_sentinel	src/ft_packet.c	/^static int array_sentinel (unsigned char *ptr, siz/
+auth_child	src/proto/ft_sharing.c	/^static BOOL auth_child (FTNode *node)$/
+auth_get_request	src/ft_http_server.c	/^static Share *auth_get_request (TCPC *c, FTHttpReq/
+auth_http_code	src/ft_http_server.c	/^static int auth_http_code (int response)$/
+auth_search_handle	src/proto/ft_query.c	/^static BOOL auth_search_handle (FTNode *node)$/
+auth_search_request	src/proto/ft_query.c	/^static BOOL auth_search_request (FTNode *node)$/
+auth_search_response	src/proto/ft_query.c	/^static BOOL auth_search_response (FTNode *node)$/
+bin_to_hex	src/md5.c	/^static int bin_to_hex (unsigned char *bin, char *h/
+bm_close_db	src/ft_search_db.c	/^static void bm_close_db (DB *dbp)$/
+bm_open_db	src/ft_search_db.c	/^static DB *bm_open_db (const char *file, const cha/
+browse_begin	src/ft_search_obj.c	/^static int browse_begin (FTBrowse *browse)$/
+browse_by_event	src/ft_search_obj.c	/^static int browse_by_event (ds_data_t *key, ds_dat/
+browse_free	src/ft_search_obj.c	/^static void browse_free (FTBrowse *browse)$/
+browse_timeout	src/ft_search_obj.c	/^static int browse_timeout (FTBrowse *browse)$/
+build_openft_url	src/ft_search.c	/^static char *build_openft_url (struct search_resul/
+byteReverse	src/md5.c	/^# define byteReverse(buf, len)$/
+calc_shortest	src/ft_search_db.c	/^static void calc_shortest (struct cursor_stream *s/
+check_local_allow	src/ft_conn.c	/^static int check_local_allow (FTNode *node)$/
+check_overrun	src/ft_packet.c	/^static BOOL check_overrun (FTPacket *packet, size_/
+clamp_openft_params	src/ft_openft.c	/^static BOOL clamp_openft_params (Protocol *p, stru/
+clamp_params	src/proto/ft_query.c	/^static BOOL clamp_params (sparams_t *params)$/
+clean_db_path	src/ft_search_db.c	/^static void clean_db_path (const char *path)$/
+cleanup_conn	src/ft_openft.c	/^static BOOL cleanup_conn (FTNode *node, void *data/
+cleanup_cursors	src/ft_search_db.c	/^static int cleanup_cursors (struct cursor_stream */
+cleanup_matches	src/ft_search_db.c	/^static int cleanup_matches (DBT *data, void *udata/
+clear_sdata	src/ft_search_exec.c	/^static void clear_sdata (SearchData *sdata)$/
+clear_search	src/proto/ft_query.c	/^static int clear_search (ds_data_t *key, ds_data_t/
+clear_searches	src/proto/ft_query.c	/^static int clear_searches (void *udata)$/
+clear_stream	src/ft_stream.c	/^static int clear_stream (ds_data_t *key, ds_data_t/
+client_send_get_request	src/ft_http_client.c	/^static int client_send_get_request (FTTransfer *xf/
+close	src/md5.c	/^# define close(p1) _close(p1)$/
+close_db	src/ft_search_db.c	/^static int close_db (DB *dbp, char *path, char *da/
+cmp_filename	src/ft_search_exec.c	/^static BOOL cmp_filename (SearchData *sdata, FileS/
+cmp_host	src/ft_search_exec.c	/^static BOOL cmp_host (SearchData *sdata, FileShare/
+cmp_md5	src/ft_search_exec.c	/^static BOOL cmp_md5 (SearchData *sdata, FileShare /
+cmp_sdata	src/ft_search_exec.c	/^static BOOL cmp_sdata (SearchData *sdata, FileShar/
+cmp_sources	src/ft_transfer.c	/^static int cmp_sources (Source *a, struct ft_sourc/
+cmp_token	src/ft_search_exec.c	/^static int cmp_token (const void *a, const void *b/
+conn_list_iter	src/ft_netorg.c	/^static int conn_list_iter (struct conn_list *clist/
+connect_complete	src/ft_session.c	/^static void connect_complete (TCPC *c, int fd, inp/
+construct_reply	src/ft_http_server.c	/^static FTHttpReply *construct_reply (FTHttpRequest/
+create_nodes_share	src/ft_http_server.c	/^static BOOL create_nodes_share (Share *share)$/
+create_result	src/proto/ft_query.c	/^static BOOL create_result (TCPC *c, FTPacket *pack/
+create_session	src/ft_session.c	/^static FTSession *create_session (FTNode *node)$/
+cursor_md5idx_md5	src/ft_search_db.c	/^static DBC *cursor_md5idx_md5 (DB *dbp, unsigned c/
+db_abort	src/ft_search_db.c	/^static BOOL db_abort (FTSearchDB *sdb)$/
+db_close	src/ft_search_db.c	/^static BOOL db_close (FTSearchDB *sdb, BOOL rm)$/
+db_destroy	src/ft_search_db.c	/^static void db_destroy (const char *envpath)$/
+db_init	src/ft_search_db.c	/^static BOOL db_init (const char *envpath, u_int32_/
+db_insert	src/ft_search_db.c	/^static BOOL db_insert (FTSearchDB *sdb, Share *sha/
+db_insert_md5idx	src/ft_search_db.c	/^static BOOL db_insert_md5idx (FTSearchDB *sdb, Has/
+db_insert_sharedata	src/ft_search_db.c	/^static BOOL db_insert_sharedata (FTSearchDB *sdb, /
+db_insert_shareidx	src/ft_search_db.c	/^static BOOL db_insert_shareidx (FTSearchDB *sdb, H/
+db_insert_tokenidx	src/ft_search_db.c	/^static BOOL db_insert_tokenidx (FTSearchDB *sdb, H/
+db_lookup_md5	src/ft_search_db.c	/^static Share *db_lookup_md5 (FTSearchDB *sdb, unsi/
+db_master	src/ft_search_db.c	/^static DB *db_master (DB **dbpp, DBCompareFn cmpfu/
+db_md5idx	src/ft_search_db.c	/^static DB *db_md5idx (void)$/
+db_remove	src/ft_search_db.c	/^static BOOL db_remove (FTSearchDB *sdb, unsigned c/
+db_remove_host_finish	src/ft_search_db.c	/^static void db_remove_host_finish (FTSearchDB *sdb/
+db_remove_host_init	src/ft_search_db.c	/^static BOOL db_remove_host_init (FTSearchDB *sdb)$/
+db_remove_host_next	src/ft_search_db.c	/^static BOOL db_remove_host_next (FTSearchDB *sdb)$/
+db_remove_host_next_scheduled	src/ft_search_db.c	/^static FTSearchDB *db_remove_host_next_scheduled (/
+db_remove_host_schedule	src/ft_search_db.c	/^static BOOL db_remove_host_schedule (FTSearchDB *s/
+db_remove_host_timer	src/ft_search_db.c	/^static BOOL db_remove_host_timer (FTSearchDB *sdb)/
+db_remove_md5idx	src/ft_search_db.c	/^static BOOL db_remove_md5idx (FTSearchDB *sdb, uns/
+db_remove_sharedata	src/ft_search_db.c	/^static BOOL db_remove_sharedata (FTSearchDB *sdb, /
+db_remove_shareidx	src/ft_search_db.c	/^static BOOL db_remove_shareidx (FTSearchDB *sdb, u/
+db_remove_tokenidx	src/ft_search_db.c	/^static BOOL db_remove_tokenidx (FTSearchDB *sdb,$/
+db_remove_tokenidx_token	src/ft_search_db.c	/^static BOOL db_remove_tokenidx_token (DBC *dbcp, F/
+db_search_md5	src/ft_search_db.c	/^static int db_search_md5 (Array **a, unsigned char/
+db_search_tokens	src/ft_search_db.c	/^static int db_search_tokens (Array **a, char *real/
+db_sharedata	src/ft_search_db.c	/^static DB *db_sharedata (void)$/
+db_shareidx	src/ft_search_db.c	/^static DB *db_shareidx (FTSearchDB *sdb, BOOL allo/
+db_shareidx_path	src/ft_search_db.c	/^static char *db_shareidx_path (FTSearchDB *sdb, ch/
+db_sync	src/ft_search_db.c	/^static BOOL db_sync (FTSearchDB *sdb)$/
+db_tokenidx	src/ft_search_db.c	/^static DB *db_tokenidx (void)$/
+dbg_wrapper	src/test/db_bench.c	/^static int dbg_wrapper (Protocol *p, char *fmt, ../
+dec_value_from_hex	src/ft_http.c	/^static int dec_value_from_hex (char hex_char)$/
+decompose_source	src/ft_transfer.c	/^static BOOL decompose_source (struct ft_source *sr/
+delete_key_data	src/ft_search_db.c	/^static BOOL delete_key_data (DBC *dbcp, DBT *key, /
+deliver_result	src/ft_search.c	/^static BOOL deliver_result (IFEvent *event, struct/
+destroy_result	src/proto/ft_query.c	/^static void destroy_result (Share *share, ft_nodei/
+direct_md5_hash	src/ft_search_db.c	/^static u_int32_t direct_md5_hash (DB *dbp, const v/
+do_benchmarks	src/test/db_bench.c	/^int do_benchmarks() {$/
+drop_notalive	src/ft_conn.c	/^static BOOL drop_notalive (FTNode *node, void *uda/
+drop_parent_full	src/proto/ft_sharing.c	/^static BOOL drop_parent_full (FTNode *node)$/
+dummy	src/test/db_bench.c	/^void dummy (FTNode *f) $/
+dump_node	src/ft_netorg.c	/^static int dump_node (FTNode *node, void *udata)$/
+empty_result	src/proto/ft_query.c	/^static void empty_result (TCPC *c, ft_guid_t *guid/
+err_wrapper	src/test/db_bench.c	/^static int err_wrapper (Protocol *p, char *fmt, ../
+exec_browse	src/ft_search.c	/^static int exec_browse (Protocol *p, IFEvent *even/
+exec_search	src/ft_search.c	/^static int exec_search (Protocol *p, IFEvent *even/
+fill_params	src/proto/ft_query.c	/^static int fill_params (sparams_t *params, FTNode /
+fill_sdata	src/ft_search_exec.c	/^static int fill_sdata (SearchData *sdata, int nmax/
+final_match	src/ft_search_exec.c	/^static int final_match (FileShare *file, SearchDat/
+find_open	src/ft_xfer.c	/^static int find_open (TCPC *c, in_addr_t *ip)$/
+finish_params	src/ft_search_obj.c	/^static void finish_params (ft_search_parms_t *para/
+finish_source	src/ft_transfer.c	/^static void finish_source (struct ft_source *src)$/
+flush_queue	src/ft_node.c	/^static void flush_queue (Array **queue)$/
+foreach_list	src/ft_netorg.c	/^static int foreach_list (ft_class_t klass, ft_stat/
+forward_search	src/proto/ft_query.c	/^static int forward_search (TCPC *c, sparams_t *par/
+forward_search_peer	src/proto/ft_query.c	/^static int forward_search_peer (FTNode *node, spar/
+free_conn_list	src/ft_netorg.c	/^static void free_conn_list (struct conn_list *clis/
+free_source	src/ft_transfer.c	/^static void free_source (struct ft_source *src)$/
+free_udata	src/ft_openft.c	/^static void free_udata (struct openft_data *openft/
+ft_accept_test	src/ft_utils.c	/^void ft_accept_test (TCPC *c)$/
+ft_browse_disable	src/ft_search_obj.c	/^void ft_browse_disable (FTBrowse *browse)$/
+ft_browse_find	src/ft_search_obj.c	/^FTBrowse *ft_browse_find (ft_guid_t *guid, in_addr/
+ft_browse_find_by_event	src/ft_search_obj.c	/^FTBrowse *ft_browse_find_by_event (IFEvent *event)/
+ft_browse_finish	src/ft_search_obj.c	/^void ft_browse_finish (FTBrowse *browse)$/
+ft_browse_new	src/ft_search_obj.c	/^FTBrowse *ft_browse_new (IFEvent *event, in_addr_t/
+ft_browse_reply	src/ft_search.c	/^BOOL ft_browse_reply (FTBrowse *browse, ft_nodeinf/
+ft_cfg_get_int	src/ft_conf.c	/^int ft_cfg_get_int (char *keypath)$/
+ft_cfg_get_path	src/ft_conf.c	/^char *ft_cfg_get_path (char *keypath, char *def)$/
+ft_cfg_get_str	src/ft_conf.c	/^char *ft_cfg_get_str (char *keypath)$/
+ft_conn_auth	src/ft_conn.c	/^BOOL ft_conn_auth (FTNode *node, int outgoing)$/
+ft_conn_children_left	src/ft_conn.c	/^int ft_conn_children_left (void)$/
+ft_conn_initial	src/ft_conn.c	/^BOOL ft_conn_initial (void)$/
+ft_conn_maintain	src/ft_conn.c	/^int ft_conn_maintain (void *udata)$/
+ft_conn_need_index	src/ft_conn.c	/^BOOL ft_conn_need_index (void)$/
+ft_conn_need_parents	src/ft_conn.c	/^BOOL ft_conn_need_parents (void)$/
+ft_conn_need_peers	src/ft_conn.c	/^BOOL ft_conn_need_peers (void)$/
+ft_downloads_access	src/ft_transfer.c	/^Array *ft_downloads_access (void)$/
+ft_guid_dup	src/ft_guid.c	/^ft_guid_t *ft_guid_dup (ft_guid_t *src)$/
+ft_guid_fmt	src/ft_guid.c	/^char *ft_guid_fmt (ft_guid_t *guid)$/
+ft_guid_free	src/ft_guid.c	/^void ft_guid_free (ft_guid_t *guid)$/
+ft_guid_new	src/ft_guid.c	/^ft_guid_t *ft_guid_new (void)$/
+ft_http_client_get	src/ft_http_client.c	/^BOOL ft_http_client_get (FTTransfer *xfer)$/
+ft_http_client_push	src/ft_http_client.c	/^BOOL ft_http_client_push (in_addr_t ip, in_port_t /
+ft_http_reply_free	src/ft_http.c	/^void ft_http_reply_free (FTHttpReply *reply)$/
+ft_http_reply_new	src/ft_http.c	/^FTHttpReply *ft_http_reply_new (int code)$/
+ft_http_reply_send	src/ft_http.c	/^int ft_http_reply_send (FTHttpReply *reply, TCPC */
+ft_http_reply_serialize	src/ft_http.c	/^char *ft_http_reply_serialize (FTHttpReply *reply,/
+ft_http_reply_unserialize	src/ft_http.c	/^FTHttpReply *ft_http_reply_unserialize (char *data/
+ft_http_request_free	src/ft_http.c	/^void ft_http_request_free (FTHttpRequest *req)$/
+ft_http_request_new	src/ft_http.c	/^FTHttpRequest *ft_http_request_new (const char *me/
+ft_http_request_send	src/ft_http.c	/^int ft_http_request_send (FTHttpRequest *req, TCPC/
+ft_http_request_serialize	src/ft_http.c	/^char *ft_http_request_serialize (FTHttpRequest *re/
+ft_http_request_unserialize	src/ft_http.c	/^FTHttpRequest *ft_http_request_unserialize (char */
+ft_http_server_incoming	src/ft_http_server.c	/^void ft_http_server_incoming (int fd, input_id id,/
+ft_netorg_add	src/ft_netorg.c	/^void ft_netorg_add (FTNode *node)$/
+ft_netorg_change	src/ft_netorg.c	/^void ft_netorg_change (FTNode *node,$/
+ft_netorg_clear	src/ft_netorg.c	/^void ft_netorg_clear (FTNetorgForeach func, void */
+ft_netorg_dump	src/ft_netorg.c	/^void ft_netorg_dump (void)$/
+ft_netorg_foreach	src/ft_netorg.c	/^int ft_netorg_foreach (ft_class_t klass, ft_state_/
+ft_netorg_length	src/ft_netorg.c	/^int ft_netorg_length (ft_class_t klass, ft_state_t/
+ft_netorg_lookup	src/ft_netorg.c	/^FTNode *ft_netorg_lookup (in_addr_t ip)$/
+ft_netorg_remove	src/ft_netorg.c	/^void ft_netorg_remove (FTNode *node)$/
+ft_node_add_class	src/ft_node.c	/^void ft_node_add_class (FTNode *node, ft_class_t k/
+ft_node_cache_update	src/ft_node_cache.c	/^int ft_node_cache_update (void)$/
+ft_node_class	src/ft_node.c	/^ft_class_t ft_node_class (FTNode *node, BOOL sessi/
+ft_node_classstr	src/ft_node.c	/^char *ft_node_classstr (ft_class_t klass)$/
+ft_node_classstr_full	src/ft_node.c	/^char *ft_node_classstr_full (ft_class_t klass)$/
+ft_node_err	src/ft_node.c	/^void ft_node_err (FTNode *node, ft_error_t err, co/
+ft_node_fmt	src/ft_node.c	/^char *ft_node_fmt (FTNode *node)$/
+ft_node_free	src/ft_node.c	/^void ft_node_free (FTNode *node)$/
+ft_node_fw	src/ft_node.c	/^BOOL ft_node_fw (FTNode *node)$/
+ft_node_geterr	src/ft_node.c	/^char *ft_node_geterr (FTNode *node)$/
+ft_node_new	src/ft_node.c	/^FTNode *ft_node_new (in_addr_t ip)$/
+ft_node_queue	src/ft_node.c	/^void ft_node_queue (FTNode *node, FTPacket *packet/
+ft_node_register	src/ft_node.c	/^FTNode *ft_node_register (in_addr_t ip)$/
+ft_node_register_full	src/ft_node.c	/^FTNode *ft_node_register_full (in_addr_t ip,$/
+ft_node_remove_class	src/ft_node.c	/^void ft_node_remove_class (FTNode *node, ft_class_/
+ft_node_set_alias	src/ft_node.c	/^char *ft_node_set_alias (FTNode *node, const char /
+ft_node_set_class	src/ft_node.c	/^void ft_node_set_class (FTNode *node, ft_class_t k/
+ft_node_set_http_port	src/ft_node.c	/^void ft_node_set_http_port (FTNode *node, in_port_/
+ft_node_set_port	src/ft_node.c	/^void ft_node_set_port (FTNode *node, in_port_t por/
+ft_node_set_state	src/ft_node.c	/^void ft_node_set_state (FTNode *node, ft_state_t s/
+ft_node_statestr	src/ft_node.c	/^char *ft_node_statestr (ft_state_t state)$/
+ft_node_unregister	src/ft_node.c	/^void ft_node_unregister (FTNode *node)$/
+ft_node_unregister_ip	src/ft_node.c	/^void ft_node_unregister_ip (in_addr_t ip)$/
+ft_node_user	src/ft_node.c	/^char *ft_node_user (FTNode *node)$/
+ft_node_user_host	src/ft_node.c	/^char *ft_node_user_host (in_addr_t host, const cha/
+ft_packet_command	src/ft_packet.c	/^uint16_t ft_packet_command (FTPacket *packet)$/
+ft_packet_dup	src/ft_packet.c	/^FTPacket *ft_packet_dup (FTPacket *packet)$/
+ft_packet_flags	src/ft_packet.c	/^uint16_t ft_packet_flags (FTPacket *packet)$/
+ft_packet_fmt	src/ft_packet.c	/^char *ft_packet_fmt (FTPacket *packet)$/
+ft_packet_free	src/ft_packet.c	/^void ft_packet_free (FTPacket *packet)$/
+ft_packet_get_array	src/ft_packet.c	/^void *ft_packet_get_array (FTPacket *packet, size_/
+ft_packet_get_arraynul	src/ft_packet.c	/^void *ft_packet_get_arraynul (FTPacket *packet, si/
+ft_packet_get_ip	src/ft_packet.c	/^in_addr_t ft_packet_get_ip (FTPacket *packet)$/
+ft_packet_get_raw	src/ft_packet.c	/^unsigned char *ft_packet_get_raw (FTPacket *packet/
+ft_packet_get_str	src/ft_packet.c	/^char *ft_packet_get_str (FTPacket *packet)$/
+ft_packet_get_uint	src/ft_packet.c	/^uint32_t ft_packet_get_uint (FTPacket *packet, siz/
+ft_packet_get_uint16	src/ft_packet.c	/^uint16_t ft_packet_get_uint16 (FTPacket *packet, i/
+ft_packet_get_uint32	src/ft_packet.c	/^uint32_t ft_packet_get_uint32 (FTPacket *packet, i/
+ft_packet_get_uint8	src/ft_packet.c	/^uint8_t ft_packet_get_uint8 (FTPacket *packet)$/
+ft_packet_get_ustr	src/ft_packet.c	/^unsigned char *ft_packet_get_ustr (FTPacket *packe/
+ft_packet_length	src/ft_packet.c	/^uint16_t ft_packet_length (FTPacket *packet)$/
+ft_packet_new	src/ft_packet.c	/^FTPacket *ft_packet_new (uint16_t cmd, uint16_t fl/
+ft_packet_overrun	src/ft_packet.c	/^size_t ft_packet_overrun (FTPacket *packet)$/
+ft_packet_put_ip	src/ft_packet.c	/^BOOL ft_packet_put_ip (FTPacket *packet, in_addr_t/
+ft_packet_put_raw	src/ft_packet.c	/^BOOL ft_packet_put_raw (FTPacket *packet, unsigned/
+ft_packet_put_str	src/ft_packet.c	/^BOOL ft_packet_put_str (FTPacket *packet, char *st/
+ft_packet_put_uarray	src/ft_packet.c	/^BOOL ft_packet_put_uarray (FTPacket *packet, int s/
+ft_packet_put_uint	src/ft_packet.c	/^BOOL ft_packet_put_uint (FTPacket *packet, void *d/
+ft_packet_put_uint16	src/ft_packet.c	/^BOOL ft_packet_put_uint16 (FTPacket *packet, uint1/
+ft_packet_put_uint32	src/ft_packet.c	/^BOOL ft_packet_put_uint32 (FTPacket *packet, uint3/
+ft_packet_put_uint8	src/ft_packet.c	/^BOOL ft_packet_put_uint8 (FTPacket *packet, uint8_/
+ft_packet_put_ustr	src/ft_packet.c	/^BOOL ft_packet_put_ustr (FTPacket *packet, unsigne/
+ft_packet_remaining	src/ft_packet.c	/^size_t ft_packet_remaining (FTPacket *packet)$/
+ft_packet_send	src/ft_packet.c	/^int ft_packet_send (TCPC *c, FTPacket *packet)$/
+ft_packet_sendto	src/ft_packet.c	/^int ft_packet_sendto (in_addr_t to, FTPacket *pack/
+ft_packet_sendva	src/ft_packet.c	/^int ft_packet_sendva (TCPC *c, uint16_t cmd, uint1/
+ft_packet_serialize	src/ft_packet.c	/^unsigned char *ft_packet_serialize (FTPacket *pack/
+ft_packet_set_command	src/ft_packet.c	/^void ft_packet_set_command (FTPacket *packet, uint/
+ft_packet_set_flags	src/ft_packet.c	/^void ft_packet_set_flags (FTPacket *packet, uint16/
+ft_packet_set_length	src/ft_packet.c	/^void ft_packet_set_length (FTPacket *packet, uint1/
+ft_packet_unserialize	src/ft_packet.c	/^FTPacket *ft_packet_unserialize (unsigned char *da/
+ft_protocol_handle	src/ft_protocol.c	/^BOOL ft_protocol_handle (TCPC *c, FTPacket *packet/
+ft_search	src/ft_search_exec.c	/^int ft_search (int nmax, FTSearchResultFn resultfn/
+ft_search_cmp	src/ft_search_exec.c	/^BOOL ft_search_cmp (Share *file, ft_search_flags_t/
+ft_search_db_close	src/ft_search_db.c	/^BOOL ft_search_db_close (FTNode *node, BOOL rm)$/
+ft_search_db_destroy	src/ft_search_db.c	/^void ft_search_db_destroy (void)$/
+ft_search_db_init	src/ft_search_db.c	/^BOOL ft_search_db_init (const char *envpath, unsig/
+ft_search_db_insert	src/ft_search_db.c	/^BOOL ft_search_db_insert (FTNode *node, Share *sha/
+ft_search_db_isopen	src/ft_search_db.c	/^BOOL ft_search_db_isopen (FTNode *node)$/
+ft_search_db_lookup_md5	src/ft_search_db.c	/^Share *ft_search_db_lookup_md5 (FTNode *node, unsi/
+ft_search_db_md5	src/ft_search_db.c	/^int ft_search_db_md5 (Array **a, unsigned char *md/
+ft_search_db_open	src/ft_search_db.c	/^BOOL ft_search_db_open (FTNode *node)$/
+ft_search_db_remove	src/ft_search_db.c	/^BOOL ft_search_db_remove (FTNode *node, unsigned c/
+ft_search_db_remove_host	src/ft_search_db.c	/^BOOL ft_search_db_remove_host (FTNode *node)$/
+ft_search_db_sync	src/ft_search_db.c	/^BOOL ft_search_db_sync (FTNode *node)$/
+ft_search_db_tokens	src/ft_search_db.c	/^int ft_search_db_tokens (Array **a, char *realm,$/
+ft_search_disable	src/ft_search_obj.c	/^void ft_search_disable (FTSearch *srch)$/
+ft_search_find	src/ft_search_obj.c	/^FTSearch *ft_search_find (ft_guid_t *guid)$/
+ft_search_find_by_event	src/ft_search_obj.c	/^FTSearch *ft_search_find_by_event (IFEvent *event)/
+ft_search_finish	src/ft_search_obj.c	/^void ft_search_finish (FTSearch *srch)$/
+ft_search_fwd_find	src/ft_search_obj.c	/^FTSearchFwd *ft_search_fwd_find (ft_guid_t *guid, /
+ft_search_fwd_finish	src/ft_search_obj.c	/^unsigned int ft_search_fwd_finish (FTSearchFwd *sf/
+ft_search_fwd_new	src/ft_search_obj.c	/^FTSearchFwd *ft_search_fwd_new (ft_guid_t *guid, i/
+ft_search_new	src/ft_search_obj.c	/^FTSearch *ft_search_new (IFEvent *event, ft_search/
+ft_search_rcvdfrom	src/ft_search_obj.c	/^unsigned int ft_search_rcvdfrom (FTSearch *srch, i/
+ft_search_reply	src/ft_search.c	/^BOOL ft_search_reply (FTSearch *srch,$/
+ft_search_reply_self	src/ft_search.c	/^BOOL ft_search_reply_self (FTSearch *srch, ft_node/
+ft_search_sentto	src/ft_search_obj.c	/^unsigned int ft_search_sentto (FTSearch *srch, in_/
+ft_search_tokenize	src/ft_search_exec.c	/^uint32_t *ft_search_tokenize (const char *string)$/
+ft_search_tokenizef	src/ft_search_exec.c	/^uint32_t *ft_search_tokenizef (Share *file)$/
+ft_session_add_purpose	src/ft_session.c	/^void ft_session_add_purpose (FTNode *node, ft_purp/
+ft_session_connect	src/ft_session.c	/^int ft_session_connect (FTNode *node, ft_purpose_t/
+ft_session_drop_purpose	src/ft_session.c	/^BOOL ft_session_drop_purpose (FTNode *node, ft_pur/
+ft_session_incoming	src/ft_session.c	/^void ft_session_incoming (int fd, input_id id, TCP/
+ft_session_queue	src/ft_session.c	/^int ft_session_queue (TCPC *c, FTPacket *packet)$/
+ft_session_remove_purpose	src/ft_session.c	/^ft_purpose_t ft_session_remove_purpose (FTNode *no/
+ft_session_set_purpose	src/ft_session.c	/^void ft_session_set_purpose (FTNode *node, ft_purp/
+ft_session_stage	src/ft_session.c	/^void ft_session_stage (TCPC *c, unsigned char curr/
+ft_session_start	src/ft_session.c	/^BOOL ft_session_start (TCPC *c, int incoming)$/
+ft_session_stop	src/ft_session.c	/^void ft_session_stop (TCPC *c)$/
+ft_session_uptime	src/ft_session.c	/^time_t ft_session_uptime (TCPC *c)$/
+ft_share_complete	src/ft_share_file.c	/^BOOL ft_share_complete (Share *file)$/
+ft_share_free	src/ft_share_file.c	/^void ft_share_free (Share *file)$/
+ft_share_free_data	src/ft_share_file.c	/^void ft_share_free_data (Share *file, FTShare *sha/
+ft_share_local_flush	src/ft_share.c	/^void ft_share_local_flush ()$/
+ft_share_local_submit	src/ft_share.c	/^void ft_share_local_submit (TCPC *c)$/
+ft_share_new	src/ft_share_file.c	/^Share *ft_share_new (FTNode *node, off_t size,$/
+ft_share_new_data	src/ft_share_file.c	/^FTShare *ft_share_new_data (Share *file, FTNode *n/
+ft_share_ref	src/ft_share_file.c	/^unsigned int ft_share_ref (Share *file)$/
+ft_share_unref	src/ft_share_file.c	/^unsigned int ft_share_unref (Share *file)$/
+ft_source_free	src/ft_xfer.c	/^static void ft_source_free (struct _ft_source *src/
+ft_source_new	src/ft_xfer.c	/^static struct _ft_source *ft_source_new (char *url/
+ft_stats_collect	src/ft_stats.c	/^BOOL ft_stats_collect (ft_stats_t *collect)$/
+ft_stats_insert	src/ft_stats.c	/^void ft_stats_insert (in_addr_t depend, in_addr_t /
+ft_stats_remove	src/ft_stats.c	/^void ft_stats_remove (in_addr_t depend, in_addr_t /
+ft_stats_remove_dep	src/ft_stats.c	/^void ft_stats_remove_dep (in_addr_t depend)$/
+ft_stream_clear	src/ft_stream.c	/^int ft_stream_clear (TCPC *c, ft_stream_dir_t dir)/
+ft_stream_clear_all	src/ft_stream.c	/^int ft_stream_clear_all (TCPC *c)$/
+ft_stream_finish	src/ft_stream.c	/^void ft_stream_finish (FTStream *stream)$/
+ft_stream_free	src/ft_stream.c	/^void ft_stream_free (FTStream *stream)$/
+ft_stream_get	src/ft_stream.c	/^FTStream *ft_stream_get (TCPC *c, ft_stream_dir_t /
+ft_stream_recv	src/ft_stream.c	/^int ft_stream_recv (FTStream *stream, FTPacket *st/
+ft_stream_send	src/ft_stream.c	/^int ft_stream_send (FTStream *stream, FTPacket *pa/
+ft_transfer_cancel	src/ft_xfer.c	/^static void ft_transfer_cancel (Chunk *chunk, Tran/
+ft_transfer_close	src/ft_xfer.c	/^void ft_transfer_close (FTTransfer *xfer, int forc/
+ft_transfer_free	src/ft_transfer.c	/^static void ft_transfer_free (FTTransfer *xfer)$/
+ft_transfer_get_chunk	src/ft_transfer.c	/^Chunk *ft_transfer_get_chunk (FTTransfer *xfer)$/
+ft_transfer_get_fhandle	src/ft_transfer.c	/^FILE *ft_transfer_get_fhandle (FTTransfer *xfer)$/
+ft_transfer_get_source	src/ft_transfer.c	/^Source *ft_transfer_get_source (FTTransfer *xfer)$/
+ft_transfer_get_transfer	src/ft_transfer.c	/^Transfer *ft_transfer_get_transfer (FTTransfer *xf/
+ft_transfer_log	src/ft_xfer.c	/^void ft_transfer_log (FTTransfer *xfer)$/
+ft_transfer_new	src/ft_transfer.c	/^FTTransfer *ft_transfer_new (TransferType dir,$/
+ft_transfer_open_request	src/ft_xfer.c	/^FILE *ft_transfer_open_request (FTTransfer *xfer, /
+ft_transfer_ref	src/ft_xfer.c	/^void ft_transfer_ref (TCPC *c, Chunk *chunk, FTTra/
+ft_transfer_set_chunk	src/ft_transfer.c	/^void ft_transfer_set_chunk (FTTransfer *xfer, Chun/
+ft_transfer_set_fhandle	src/ft_transfer.c	/^void ft_transfer_set_fhandle (FTTransfer *xfer, FI/
+ft_transfer_set_request	src/ft_xfer.c	/^int ft_transfer_set_request (FTTransfer *xfer, cha/
+ft_transfer_set_source	src/ft_transfer.c	/^void ft_transfer_set_source (FTTransfer *xfer, Sou/
+ft_transfer_set_transfer	src/ft_transfer.c	/^void ft_transfer_set_transfer (FTTransfer *xfer, T/
+ft_transfer_status	src/ft_transfer.c	/^void ft_transfer_status (FTTransfer *xfer, SourceS/
+ft_transfer_stop	src/ft_transfer.c	/^void ft_transfer_stop (FTTransfer *xfer)$/
+ft_transfer_stop_status	src/ft_transfer.c	/^void ft_transfer_stop_status (FTTransfer *xfer, So/
+ft_transfer_unref	src/ft_xfer.c	/^void ft_transfer_unref (TCPC **r_c, Chunk **r_chun/
+ft_upload_avail	src/ft_transfer.c	/^unsigned long ft_upload_avail (void)$/
+ft_version	src/ft_version.c	/^ft_version_t ft_version (uint8_t major, uint8_t mi/
+ft_version_eq	src/ft_version.c	/^BOOL ft_version_eq (ft_version_t a, ft_version_t b/
+ft_version_gt	src/ft_version.c	/^BOOL ft_version_gt (ft_version_t a, ft_version_t b/
+ft_version_local	src/ft_version.c	/^ft_version_t ft_version_local ()$/
+ft_version_lt	src/ft_version.c	/^BOOL ft_version_lt (ft_version_t a, ft_version_t b/
+ft_version_parse	src/ft_version.c	/^void ft_version_parse (ft_version_t version,$/
+fwd_free	src/ft_search_obj.c	/^static void fwd_free (FTSearchFwd *sfwd)$/
+fwd_insert	src/ft_search_obj.c	/^static void fwd_insert (FTSearchFwd *sfwd, ft_guid/
+fwd_remove	src/ft_search_obj.c	/^static unsigned int fwd_remove (FTSearchFwd *sfwd)/
+fwd_tick_by_addr	src/ft_search_obj.c	/^static int fwd_tick_by_addr (ds_data_t *key, ds_da/
+fwd_tick_by_guid	src/ft_search_obj.c	/^static int fwd_tick_by_guid (ds_data_t *key, ds_da/
+fwd_timeout	src/ft_search_obj.c	/^static int fwd_timeout (void *udata)$/
+gather_stats	src/ft_conn.c	/^static BOOL gather_stats (FTNode *node, void *udat/
+gen_nodepage	src/ft_xfer.c	/^static char *gen_nodepage (in_addr_t ip, char *sec/
+generate_msg	src/proto/ft_handshake.c	/^static char *generate_msg (Dataset *upgset)$/
+get_client_request	src/ft_http_server.c	/^void get_client_request (int fd, input_id id, TCPC/
+get_complete_connect	src/ft_http_client.c	/^void get_complete_connect (int fd, input_id id, FT/
+get_conn_list	src/ft_netorg.c	/^static struct conn_list *get_conn_list (ft_state_t/
+get_connection	src/ft_transfer.c	/^static TCPC *get_connection (Transfer *t, Chunk *c/
+get_cost	src/ft_conn.c	/^static int get_cost (FTNode *node, time_t current)/
+get_cursor	src/ft_search_db.c	/^static DBC *get_cursor (DB *dbp, uint32_t token)$/
+get_direction	src/ft_stream.c	/^static Dataset **get_direction (TCPC *c, ft_stream/
+get_direction_str	src/ft_stream.c	/^static char *get_direction_str (FTStream *stream)$/
+get_fd_limit	src/ft_conn.c	/^static int get_fd_limit (void)$/
+get_file_records	src/ft_search_db.c	/^static int get_file_records (FTNode *node, DB *hos/
+get_ft_transfer	src/ft_transfer.c	/^static FTTransfer *get_ft_transfer (Chunk *c)$/
+get_gift_transfer	src/ft_http_server.c	/^static Transfer *get_gift_transfer (Chunk **chunk,/
+get_handler	src/ft_protocol.c	/^static HandlerFn get_handler (uint16_t cmd)$/
+get_max_active	src/ft_conn.c	/^static int get_max_active (void)$/
+get_new_parent	src/ft_share.c	/^static void get_new_parent ()$/
+get_nodes	src/ft_conn.c	/^static BOOL get_nodes (FTNode *node, void *udata)$/
+get_openft_transfer	src/ft_http_server.c	/^static FTTransfer *get_openft_transfer (Transfer */
+get_parent_info	src/proto/ft_query.c	/^static ft_nodeinfo_t *get_parent_info (FTNode *nod/
+get_read_file	src/ft_http_client.c	/^static void get_read_file (int fd, input_id id, FT/
+get_request_range	src/ft_http_server.c	/^static BOOL get_request_range (FTHttpRequest *req,/
+get_search_request_type	src/proto/ft_query.c	/^ft_search_flags_t get_search_request_type (ft_sear/
+get_search_type	src/proto/ft_query.c	/^static ft_search_flags_t get_search_type (sparams_/
+get_server_reply	src/ft_http_client.c	/^static void get_server_reply (int fd, input_id id,/
+get_share_auth_gift	src/ft_xfer.c	/^static Share *get_share_auth_gift (FTTransfer *xfe/
+get_share_auth_openft	src/ft_xfer.c	/^static Share *get_share_auth_openft (FTTransfer *x/
+get_start_cursor	src/ft_search_db.c	/^static struct cursor_stream *get_start_cursor (Lis/
+get_tokens_len	src/ft_search_db.c	/^static int get_tokens_len (uint32_t *tokens)$/
+handle_class_change	src/ft_node.c	/^static void handle_class_change (FTNode *node,$/
+handle_class_gain	src/ft_node.c	/^static void handle_class_gain (FTNode *node, ft_cl/
+handle_class_loss	src/ft_node.c	/^static void handle_class_loss (FTNode *node, ft_cl/
+handle_command	src/ft_protocol.c	/^static BOOL handle_command (TCPC *c, FTPacket *pac/
+handle_forward_result	src/proto/ft_query.c	/^static void handle_forward_result (TCPC *c, FTPack/
+handle_forward_sentinel	src/proto/ft_query.c	/^static void handle_forward_sentinel (TCPC *c, FTPa/
+handle_packet	src/ft_session.c	/^static void handle_packet (TCPC *c, unsigned char /
+handle_search_result	src/proto/ft_query.c	/^static void handle_search_result (TCPC *c, FTPacke/
+handle_search_sentinel	src/proto/ft_query.c	/^static void handle_search_sentinel (TCPC *c, FTPac/
+handle_server_reply	src/ft_http_client.c	/^static void handle_server_reply (FTTransfer *xfer,/
+handle_state_change	src/ft_node.c	/^static void handle_state_change (FTNode *node, ft_/
+handle_stream	src/ft_protocol.c	/^static BOOL handle_stream (TCPC *c, FTPacket *pack/
+handle_stream_pkt	src/ft_protocol.c	/^static void handle_stream_pkt (FTStream *stream, F/
+handle_test_suite	src/ft_openft.c	/^static BOOL handle_test_suite (Protocol *p)$/
+handshake_timeout	src/ft_session.c	/^static int handshake_timeout (TCPC *c)$/
+head_get_and_write	src/ft_http_server.c	/^static Share *head_get_and_write (TCPC *c, FTHttpR/
+hex_char_to_bin	src/md5.c	/^static unsigned char hex_char_to_bin (char x)$/
+hex_to_bin	src/md5.c	/^static int hex_to_bin (char *hex, unsigned char *b/
+http_bind	src/ft_openft.c	/^static TCPC *http_bind (in_port_t port)$/
+http_check_sentinel	src/ft_http.c	/^BOOL http_check_sentinel (char *data, size_t len)$/
+http_code_string	src/ft_http.c	/^char *http_code_string (int code)$/
+http_connection_close	src/ft_xfer.c	/^void http_connection_close (TCPC *c, int force_clo/
+http_connection_open	src/ft_xfer.c	/^TCPC *http_connection_open (in_addr_t ip, in_port_/
+http_parse_keylist	src/ft_http.c	/^static unsigned int http_parse_keylist (Dataset **/
+http_url_decode	src/ft_http.c	/^char *http_url_decode (const char *encoded)$/
+http_url_encode	src/ft_http.c	/^char *http_url_encode (const char *unencoded)$/
+import_cache	src/ft_node_cache.c	/^static int import_cache (FILE *f, char *path)$/
+import_meta	src/ft_search_db.c	/^static void import_meta (Share *share, char *meta,/
+incoming_complete	src/ft_session.c	/^static void incoming_complete (int fd, input_id id/
+init_handlers	src/ft_protocol.c	/^static void init_handlers (void)$/
+init_openft_obj	src/ft_openft.c	/^static BOOL init_openft_obj (Protocol *p, struct o/
+init_source	src/ft_transfer.c	/^static BOOL init_source (struct ft_source *src)$/
+insert_stream	src/ft_stream.c	/^static int insert_stream (TCPC *c, ft_stream_dir_t/
+is_child	src/proto/ft_sharing.c	/^static BOOL is_child (TCPC *c)$/
+is_stale_db	src/ft_search_db.c	/^static BOOL is_stale_db (DBT *data)$/
+is_valid_alias	src/ft_node.c	/^static BOOL is_valid_alias (const char *alias, siz/
+iter_state	src/ft_netorg.c	/^static int iter_state (ft_class_t klass, ft_state_/
+keep_alive	src/ft_conn.c	/^static int keep_alive (void)$/
+key_as_md5	src/ft_search_exec.c	/^static int key_as_md5 (ds_data_t *key, ds_data_t */
+load_queries	src/ft_search_db.c	/^static int load_queries (const char *filename)$/
+load_test_data	src/ft_search_db.c	/^static int load_test_data (const char *dbfile)$/
+local_flush	src/ft_share.c	/^static int local_flush (FTNode *node, void *udata)/
+localize_request	src/ft_xfer.c	/^static char *localize_request (FTTransfer *xfer, i/
+locate_future_parent	src/ft_share.c	/^static int locate_future_parent (FTNode *node, FTN/
+locate_to	src/ft_packet.c	/^static int locate_to (FTNode *node, in_addr_t *ip)/
+log_class_change	src/ft_node.c	/^static void log_class_change (FTNode *node, ft_cla/
+log_format_time	src/ft_xfer.c	/^static char *log_format_time (time_t log_time)$/
+look_for	src/ft_search_db.c	/^static BOOL look_for (struct cursor_stream *s, DBT/
+lookup_connection	src/ft_xfer.c	/^static TCPC *lookup_connection (in_addr_t ip, in_p/
+lookup_ret	src/ft_search_db.c	/^static int lookup_ret (DBT *dbt, void **args)$/
+lookup_stream	src/ft_stream.c	/^static FTStream *lookup_stream (TCPC *c, ft_stream/
+make_conn	src/ft_conn.c	/^static BOOL make_conn (FTNode *node, void *udata)$/
+make_conn_for_new_parents	src/ft_conn.c	/^static BOOL make_conn_for_new_parents (FTNode *nod/
+make_conn_get_nodes	src/ft_conn.c	/^static BOOL make_conn_get_nodes (FTNode *node, voi/
+make_conn_purpose	src/ft_conn.c	/^static BOOL make_conn_purpose (FTNode *node, ft_pu/
+match_et	src/ft_search_db.c	/^static int match_et (List **results, List **et, in/
+match_qt	src/ft_search_db.c	/^static int match_qt (List **results, List **qt, in/
+math_dist	src/ft_conn.c	/^static int math_dist (long value, int nargs, ...)$/
+md5_bin	src/md5.c	/^unsigned char *md5_bin (char *md5_ascii)$/
+md5_digest	src/md5.c	/^unsigned char *md5_digest (const char *file, off_t/
+md5_dup	src/md5.c	/^unsigned char *md5_dup (unsigned char *md5)$/
+md5_fmt	src/md5.c	/^char *md5_fmt (unsigned char *md5)$/
+md5_hash_file	src/md5.c	/^static unsigned char *md5_hash_file (const char *f/
+md5_hash_file_mmap	src/md5.c	/^static unsigned char *md5_hash_file_mmap(char *fil/
+method_get	src/ft_http_server.c	/^static BOOL method_get (TCPC *c, FTHttpRequest *re/
+method_head	src/ft_http_server.c	/^static BOOL method_head (TCPC *c, FTHttpRequest *r/
+method_push	src/ft_http_server.c	/^static BOOL method_push (TCPC *c, FTHttpRequest *r/
+method_unsupported	src/ft_http_server.c	/^static BOOL method_unsupported (TCPC *c, FTHttpReq/
+netorg_valid	src/ft_netorg.c	/^static BOOL netorg_valid (FTNode *node)$/
+new_parents	src/ft_conn.c	/^static BOOL new_parents (FTNode *node, void *udata/
+new_source	src/ft_transfer.c	/^static struct ft_source *new_source (void)$/
+node_set_indirect	src/ft_node.c	/^static void node_set_indirect (FTNode *node)$/
+nodelist_add	src/proto/ft_handshake.c	/^static int nodelist_add (FTNode *node, Array **arg/
+nodelist_default	src/proto/ft_handshake.c	/^static int nodelist_default (Array **args)$/
+nodelist_request	src/proto/ft_handshake.c	/^static int nodelist_request (TCPC *c, FTPacket **l/
+nuke_source	src/proto/ft_push.c	/^static BOOL nuke_source (FTNode *parent, in_addr_t/
+open	src/md5.c	/^# define open(p1, p2) _open(p1, p2)$/
+open_db	src/ft_search_db.c	/^static int open_db (DB *dbp, char *path, char *dat/
+open_db_sharedata	src/ft_search_db.c	/^static DB *open_db_sharedata (void)$/
+open_db_shareidx	src/ft_search_db.c	/^static DB *open_db_shareidx (FTSearchDB *sdb)$/
+open_share	src/ft_http_server.c	/^static FILE *open_share (Share *share)$/
+openft_bind	src/ft_openft.c	/^static TCPC *openft_bind (in_port_t port)$/
+openft_browse	src/ft_search.c	/^int openft_browse (Protocol *p, IFEvent *event, ch/
+openft_chunk_resume	src/ft_transfer.c	/^BOOL openft_chunk_resume (Protocol *p, Transfer *t/
+openft_chunk_suspend	src/ft_transfer.c	/^BOOL openft_chunk_suspend (Protocol *p, Transfer */
+openft_destroy	src/ft_openft.c	/^static void openft_destroy (Protocol *p)$/
+openft_download_start	src/ft_transfer.c	/^BOOL openft_download_start (Protocol *p, Transfer /
+openft_download_stop	src/ft_transfer.c	/^void openft_download_stop (Protocol *p, Transfer */
+openft_locate	src/ft_search.c	/^int openft_locate (Protocol *p, IFEvent *event, ch/
+openft_md5	src/ft_openft.c	/^static unsigned char *openft_md5 (const char *path/
+openft_search	src/ft_search.c	/^int openft_search (Protocol *p, IFEvent *event, ch/
+openft_search_cancel	src/ft_search.c	/^void openft_search_cancel (Protocol *p, IFEvent *e/
+openft_share_add	src/ft_share.c	/^BOOL openft_share_add (Protocol *p, Share *share, /
+openft_share_free	src/ft_share.c	/^void openft_share_free (Protocol *p, Share *share,/
+openft_share_hide	src/ft_share.c	/^void openft_share_hide (Protocol *p)$/
+openft_share_new	src/ft_share.c	/^void *openft_share_new (Protocol *p, Share *share)/
+openft_share_remove	src/ft_share.c	/^BOOL openft_share_remove (Protocol *p, Share *shar/
+openft_share_show	src/ft_share.c	/^void openft_share_show (Protocol *p)$/
+openft_share_sync	src/ft_share.c	/^void openft_share_sync (Protocol *p, int start)$/
+openft_source_add	src/ft_transfer.c	/^BOOL openft_source_add (Protocol *p, Transfer *t, /
+openft_source_cmp	src/ft_transfer.c	/^int openft_source_cmp (Protocol *p, Source *a, Sou/
+openft_source_remove	src/ft_transfer.c	/^void openft_source_remove (Protocol *p, Transfer */
+openft_start	src/ft_openft.c	/^static BOOL openft_start (Protocol *p)$/
+openft_stats	src/ft_stats.c	/^int openft_stats (Protocol *p,$/
+openft_upload_avail	src/ft_transfer.c	/^void openft_upload_avail (Protocol *p, unsigned lo/
+openft_upload_stop	src/ft_transfer.c	/^void openft_upload_stop (Protocol *p, Transfer *t,/
+openft_user_cmp	src/ft_transfer.c	/^int openft_user_cmp (Protocol *p, const char *a, c/
+outgoing_complete	src/ft_session.c	/^static void outgoing_complete (int fd, input_id id/
+output_flush	src/ft_stream.c	/^static void output_flush (FTStream *stream)$/
+packet_append	src/ft_packet.c	/^static BOOL packet_append (FTPacket *packet, void /
+packet_resize	src/ft_packet.c	/^static int packet_resize (FTPacket *packet, size_t/
+parse_request	src/ft_xfer.c	/^static int parse_request (char *source,$/
+parse_source	src/ft_transfer.c	/^static BOOL parse_source (struct ft_source *src, c/
+pending_packets	src/proto/ft_handshake.c	/^static void pending_packets (in_addr_t ip, in_port/
+prep_upload	src/ft_http_server.c	/^static FTTransfer *prep_upload (TCPC *c, FTHttpReq/
+push_access	src/ft_transfer.c	/^FTTransfer *push_access (in_addr_t host, const cha/
+push_add	src/ft_transfer.c	/^static void push_add (struct ft_source *src, FTTra/
+push_complete_connect	src/ft_http_client.c	/^static void push_complete_connect (int fd, input_i/
+push_find_xfer	src/ft_transfer.c	/^static BOOL push_find_xfer (ds_data_t *key, ds_dat/
+push_forward_error	src/proto/ft_push.c	/^static void push_forward_error (FTNode *node, in_a/
+push_forward_success	src/proto/ft_push.c	/^static void push_forward_success (FTNode *node, in/
+push_remove	src/ft_transfer.c	/^static void push_remove (FTTransfer *xfer)$/
+push_send_request	src/ft_transfer.c	/^static BOOL push_send_request (struct ft_source *s/
+put_uint32_array	src/ft_packet.c	/^void put_uint32_array (FTPacket *packet, uint32_t /
+read	src/md5.c	/^# define read(p1, p2, p3) _read(p1, p2, p3)$/
+read_cache	src/ft_node_cache.c	/^static int read_cache ()$/
+rem_conn_list	src/ft_netorg.c	/^static void rem_conn_list (ft_state_t state, FTNod/
+remove_db	src/ft_search_db.c	/^static int remove_db (DB_ENV *dbenv, char *path, c/
+remove_download	src/ft_transfer.c	/^static void remove_download (FTTransfer *xfer)$/
+remove_dups	src/ft_search_exec.c	/^static int remove_dups (uint32_t *tokens, int num)/
+remove_stream	src/ft_stream.c	/^static int remove_stream (FTStream *stream)$/
+result_add_meta	src/proto/ft_query.c	/^static void result_add_meta (ds_data_t *key, ds_da/
+result_reply	src/ft_search.c	/^static BOOL result_reply (Share *share, FTSearch */
+rewrite_cache	src/ft_node_cache.c	/^static int rewrite_cache (char *path)$/
+run_insert	src/ft_search_db.c	/^static double run_insert (void)$/
+run_remove	src/ft_search_db.c	/^static double run_remove (void)$/
+run_search	src/ft_search_db.c	/^static double run_search (void)$/
+search_begin	src/ft_search_obj.c	/^static int search_begin (FTSearch *srch)$/
+search_by_event	src/ft_search_obj.c	/^static int search_by_event (ds_data_t *key, ds_dat/
+search_children	src/ft_search.c	/^static void search_children (FTSearch *search)$/
+search_db_free	src/ft_search_db.c	/^static void search_db_free (FTSearchDB *sdb)$/
+search_db_new	src/ft_search_db.c	/^static FTSearchDB *search_db_new (FTNode *node)$/
+search_free	src/ft_search_obj.c	/^static void search_free (FTSearch *srch)$/
+search_local	src/ft_search_exec.c	/^static void search_local (SearchData *sdata)$/
+search_parents	src/ft_search.c	/^static int search_parents (FTSearch *search)$/
+search_remote	src/ft_search_exec.c	/^static void search_remote (SearchData *sdata)$/
+search_reply	src/ft_search.c	/^static BOOL search_reply (FTSearch *srch, struct s/
+search_reply_logic	src/ft_search.c	/^static BOOL search_reply_logic (FTSearch *srch, st/
+search_reply_term	src/ft_search.c	/^static BOOL search_reply_term (FTSearch *srch, str/
+search_result	src/proto/ft_query.c	/^static BOOL search_result (Share *file, sreply_t */
+search_result_logic	src/proto/ft_query.c	/^static BOOL search_result_logic (Share *file, srep/
+search_timeout	src/ft_search_obj.c	/^static int search_timeout (FTSearch *srch)$/
+send_browse	src/proto/ft_query.c	/^static int send_browse (ds_data_t *key, ds_data_t /
+send_file	src/ft_http_server.c	/^static void send_file (int fd, input_id id, FTTran/
+send_heartbeat	src/ft_conn.c	/^static int send_heartbeat (FTNode *node, Dataset */
+send_packet	src/ft_session.c	/^static int send_packet (FTPacket *packet, TCPC *c)/
+send_push	src/ft_xfer.c	/^static int send_push (char *request,$/
+send_search	src/ft_search.c	/^static int send_search (FTNode *node, FTSearch *se/
+serialize_fld	src/ft_search_db.c	/^static u_int16_t serialize_fld (struct sharedata_d/
+serialize_record	src/ft_search_db.c	/^static int serialize_record (DBT *data, Hash *hash/
+session_auth_packet	src/ft_session.c	/^static BOOL session_auth_packet (TCPC *c, FTPacket/
+session_destroy_data	src/ft_session.c	/^static void session_destroy_data (FTSession *s)$/
+session_flush_queue	src/ft_session.c	/^static void session_flush_queue (TCPC *c, int psen/
+session_handle	src/ft_session.c	/^static void session_handle (int fd, input_id id, T/
+session_reset_data	src/ft_session.c	/^static void session_reset_data (FTSession *s)$/
+session_stop	src/ft_session.c	/^static void session_stop (TCPC *c)$/
+set_ft_transfer	src/ft_transfer.c	/^static void set_ft_transfer (Chunk *c, FTTransfer /
+set_keep	src/ft_conn.c	/^static int set_keep (FTNode *node, void *udata)$/
+set_params	src/ft_search_obj.c	/^static void set_params (ft_search_parms_t *dst, ft/
+setup_functbl	src/ft_openft.c	/^static void setup_functbl (Protocol *p)$/
+share_add	src/ft_share.c	/^static BOOL share_add (FTNode *node, Share *share)/
+share_remove	src/ft_share.c	/^static BOOL share_remove (FTNode *node, Share *sha/
+share_sync	src/ft_share.c	/^static BOOL share_sync (FTNode *node, int *begin)$/
+share_sync_begin	src/ft_share.c	/^static BOOL share_sync_begin (FTNode *node)$/
+share_sync_end	src/ft_share.c	/^static BOOL share_sync_end (FTNode *node)$/
+sharedata_meta	src/ft_search_db.c	/^static void sharedata_meta (ds_data_t *key, ds_dat/
+sreply_finish	src/proto/ft_query.c	/^static void sreply_finish (sreply_t *reply)$/
+sreply_init	src/proto/ft_query.c	/^static void sreply_init (sreply_t *reply, TCPC *c,/
+sreply_result	src/proto/ft_query.c	/^static BOOL sreply_result (sreply_t *reply, ft_nod/
+sreply_send	src/proto/ft_query.c	/^static int sreply_send (sreply_t *reply, FTPacket /
+stage_1	src/ft_session.c	/^static void stage_1 (TCPC *c)$/
+stage_2	src/ft_session.c	/^static void stage_2 (TCPC *c)$/
+stage_3	src/ft_session.c	/^static void stage_3 (TCPC *c)$/
+stage_4	src/ft_session.c	/^static void stage_4 (TCPC *c)$/
+start_connection	src/ft_conn.c	/^static int start_connection (FTNode *node, int *we/
+stats_collect	src/ft_stats.c	/^static void stats_collect (ds_data_t *key, ds_data/
+stats_collect_by_user	src/ft_stats.c	/^static void stats_collect_by_user (ds_data_t *key,/
+stream_deflate	src/ft_stream.c	/^static void stream_deflate (FTStream *stream, unsi/
+stream_free	src/ft_stream.c	/^static void stream_free (FTStream *stream)$/
+stream_id	src/ft_stream.c	/^static uint32_t stream_id (TCPC *c)$/
+stream_init	src/ft_stream.c	/^static int stream_init (FTStream *stream, ft_strea/
+stream_new	src/ft_stream.c	/^static FTStream *stream_new (TCPC *c, ft_stream_di/
+stream_write	src/ft_stream.c	/^static void stream_write (FTStream *stream, unsign/
+submit_addshare	src/ft_share.c	/^static BOOL submit_addshare (TCPC *c, FTStream *st/
+submit_avail	src/ft_transfer.c	/^static BOOL submit_avail (FTNode *node, unsigned l/
+submit_digest_child	src/ft_node.c	/^static BOOL submit_digest_child (FTNode *child, FT/
+submit_digest_index	src/proto/ft_sharing.c	/^static BOOL submit_digest_index (FTNode *node, FTN/
+submit_remshare	src/ft_share.c	/^static BOOL submit_remshare (TCPC *c, FTStream *st/
+submit_to_index	src/ft_node.c	/^static int submit_to_index (FTNode *node, ft_nodei/
+submit_uploads	src/ft_xfer.c	/^static BOOL submit_uploads (FTNode *node, unsigned/
+submit_write	src/ft_share.c	/^static void submit_write (ds_data_t *key, ds_data_/
+test_benchmarks	src/ft_search_db.c	/^static void test_benchmarks (void)$/
+test_suite_search_db	src/ft_search_db.c	/^BOOL test_suite_search_db (Protocol *p)$/
+throttle_resume	src/ft_xfer.c	/^static int throttle_resume (Chunk *chunk, int s_op/
+throttle_sopt	src/ft_xfer.c	/^static int throttle_sopt (Transfer *transfer)$/
+throttle_suspend	src/ft_xfer.c	/^static int throttle_suspend (Chunk *chunk, int s_o/
+tidy_node	src/ft_session.c	/^static void tidy_node (FTNode *node)$/
+tidy_node_search	src/ft_session.c	/^static void tidy_node_search (FTNode *node)$/
+tidy_push	src/ft_http_client.c	/^static void tidy_push (TCPC *http)$/
+token_add_result	src/ft_search_db.c	/^static void token_add_result (List **results, DBT /
+token_add_str	src/ft_search_exec.c	/^static void token_add_str (uint32_t **tokens, int /
+token_cleanup	src/ft_search_db.c	/^static void token_cleanup (List *matches, List *cu/
+token_gather_cursors	src/ft_search_db.c	/^static List *token_gather_cursors (DB *dbp, uint32/
+token_lookup_match	src/ft_search_db.c	/^static List *token_lookup_match (List *qt, List *e/
+token_lookup_ret	src/ft_search_db.c	/^static int token_lookup_ret (Array **a, List *curs/
+token_remove_punct	src/ft_search_exec.c	/^static void token_remove_punct (char *token)$/
+tokenize_str	src/ft_search_exec.c	/^static uint32_t tokenize_str (char *str)$/
+tokens_resize	src/ft_search_exec.c	/^static int tokens_resize (uint32_t **tokens, int */
+trace_wrapper	src/test/db_bench.c	/^static int trace_wrapper (Protocol *p, char *file,/
+unserialize_record	src/ft_search_db.c	/^static Share *unserialize_record (FTSearchDB *sdb,/
+update_nodes_len	src/ft_netorg.c	/^static void update_nodes_len (FTNode *node,$/
+version_outdated	src/proto/ft_handshake.c	/^static void version_outdated (TCPC *c)$/
+warn_wrapper	src/test/db_bench.c	/^static int warn_wrapper (Protocol *p, char *fmt, ./
+write_node	src/ft_http_server.c	/^static BOOL write_node (FTNode *node, FILE *f)$/
+write_node_cache	src/ft_node_cache.c	/^static int write_node_cache (FTNode *node, FILE *f/
+write_node_index	src/ft_node_cache.c	/^static BOOL write_node_index (FTNode *node, FILE */
+write_node_search	src/ft_node_cache.c	/^static BOOL write_node_search (FTNode *node, FILE /
+write_node_user	src/ft_node_cache.c	/^static BOOL write_node_user (FTNode *node, FILE *f/
+zlib_deflate	src/ft_stream.c	/^static void zlib_deflate (FTStream *stream, unsign/
+zlib_recv	src/ft_stream.c	/^static int zlib_recv (z_stream *s, unsigned char */

@@ -1,0 +1,644 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-05-16 19:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/get.c:165
+#, c-format
+msgid "Download of %s completed."
+msgstr ""
+
+#: src/get.c:166
+#, c-format
+msgid "Download of %s remote cancelled."
+msgstr ""
+
+#: src/get.c:255
+#, c-format
+msgid "Source search complete for %s"
+msgstr ""
+
+#: src/get.c:289
+#, c-format
+msgid "Got new source from %s"
+msgstr ""
+
+#: src/get.c:320
+msgid "Already searching sources for this file"
+msgstr ""
+
+#: src/get.c:339
+#, c-format
+msgid "Started new sources search for %s"
+msgstr ""
+
+#: src/get.c:381
+#, c-format
+msgid "Already downloading %s."
+msgstr ""
+
+#. shit! daemon was disconnected
+#: src/gift.c:130
+msgid "Connection to daemon suddenly closed!"
+msgstr ""
+
+#: src/gift.c:213
+#, c-format
+msgid "Can't connect to giFT daemon at %s:%d"
+msgstr ""
+
+#: src/gift.c:224
+#, c-format
+msgid "Connected to daemon at %s:%d"
+msgstr ""
+
+#: src/main.c:99
+#, c-format
+msgid "%s v%s - This is free software. Press F1 for more information."
+msgstr ""
+
+#: src/main.c:165
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr ""
+
+#: src/main.c:203
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr ""
+
+#: src/main.c:204
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr ""
+
+#: src/main.c:205
+#, c-format
+msgid ""
+"Options:\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%d]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+
+#: src/main.c:213
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr ""
+
+#: src/poll.c:111
+msgid "Timer overflow! Expect some strange behavior..."
+msgstr ""
+
+#: src/search.c:117
+msgid "Artist"
+msgstr ""
+
+#: src/search.c:118
+msgid "Title"
+msgstr ""
+
+#: src/search.c:119
+msgid "Album"
+msgstr ""
+
+#: src/search.c:120
+msgid "Year"
+msgstr ""
+
+#: src/search.c:121
+msgid "Bitrate"
+msgstr ""
+
+#: src/search.c:122
+msgid "Location"
+msgstr ""
+
+#: src/search.c:123
+msgid "Genre"
+msgstr ""
+
+#: src/search.c:124
+msgid "Comment"
+msgstr ""
+
+#: src/search.c:125
+msgid "Keywords"
+msgstr ""
+
+#: src/search.c:126
+msgid "Connection"
+msgstr ""
+
+#: src/search.c:127
+msgid "Time"
+msgstr ""
+
+#: src/search.c:128
+msgid "Dimension"
+msgstr ""
+
+#: src/search.c:129
+msgid "Colors"
+msgstr ""
+
+#: src/search.c:130 src/ui_main.c:546
+msgid "User"
+msgstr ""
+
+#: src/search.c:342
+#, c-format
+msgid "Limit of %d unique hits reached."
+msgstr ""
+
+#: src/search.c:429
+msgid "alphabetical"
+msgstr ""
+
+#. if (hit_compare == compare_filesize)
+#: src/search.c:432
+msgid "size-based"
+msgstr ""
+
+#: src/screen.c:136
+msgid "black"
+msgstr ""
+
+#: src/screen.c:137
+msgid "red"
+msgstr ""
+
+#: src/screen.c:138
+msgid "green"
+msgstr ""
+
+#: src/screen.c:139
+msgid "yellow"
+msgstr ""
+
+#: src/screen.c:140
+msgid "blue"
+msgstr ""
+
+#: src/screen.c:141
+msgid "magenta"
+msgstr ""
+
+#: src/screen.c:142
+msgid "cyan"
+msgstr ""
+
+#: src/screen.c:143
+msgid "white"
+msgstr ""
+
+#: src/screen.c:145
+msgid "default"
+msgstr ""
+
+#: src/screen.c:205
+msgid "# Automagically generated file. Formatting will not be preserved.\n"
+msgstr ""
+
+#: src/screen.c:206
+msgid "# Available colors:"
+msgstr ""
+
+#. NOTE: do not translate 'default' here.
+#: src/screen.c:213
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals."
+msgstr ""
+
+#: src/screen.c:224
+msgid ""
+"\n"
+"# End of config file.\n"
+msgstr ""
+
+#: src/transfer.c:46
+msgid "Paused"
+msgstr ""
+
+#: src/transfer.c:51
+msgid "Completed"
+msgstr ""
+
+#: src/transfer.c:53
+msgid "Overrun"
+msgstr ""
+
+#: src/transfer.c:55
+msgid "Cancelled"
+msgstr ""
+
+#: src/transfer.c:58
+msgid "No status"
+msgstr ""
+
+#: src/transfer.c:60
+msgid "Stalled"
+msgstr ""
+
+#: src/transfer.c:91
+msgid "B/s"
+msgstr ""
+
+#: src/transfer.c:98
+msgid " Searching"
+msgstr ""
+
+#. Rules for the help text, so that line split works:
+#. - Don't use tab
+#. - Always highlight one word at a time only, or use non-breaking spaces
+#. - TRANSLATORS: The authors' names are spellt Göran Weinholt and
+#. Christian Häggström, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:45
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"You may use the \\1up\\0 and \\1down\\0 keys to scroll lists.\n"
+"Key list:\n"
+"\\1tab\\0      move to the next input field\n"
+"\\1enter\\0    download the highlighted file\n"
+"\\1F1\\0       this help screen\n"
+"\\1F2\\0       the main screen (change sorting with \\1left\\0/\\1right\\0)\n"
+"\\1F3\\0       the transfer screen (move splitter with \\1j\\0/\\1k\\0)\n"
+"\\1F4\\0       the settings screen\n"
+"\\1F10\\0      exit the program, downloads will run in background\n"
+"\n"
+"\\1Alt-n\\0 can be used instead of the \\1F\\0-keys.\n"
+"\n"
+"Colors can also be customized by editing ~/.giFT/ui/giFTcurs.conf\n"
+"\n"
+"Copyright (C) 2001, 2002  Goran Weinholt.\n"
+"Co-developed by Christian Haggstrom.\n"
+"Our homepage is at http://giFTcurs.sourceforge.net/.\n"
+"\n"
+msgstr ""
+
+#: src/ui_help.c:142
+msgid "Help"
+msgstr ""
+
+#: src/ui_main.c:107
+msgid "everything"
+msgstr ""
+
+#: src/ui_main.c:108
+msgid "audio"
+msgstr ""
+
+#: src/ui_main.c:109
+msgid "video"
+msgstr ""
+
+#: src/ui_main.c:110
+msgid "images"
+msgstr ""
+
+#: src/ui_main.c:111
+msgid "text documents"
+msgstr ""
+
+#: src/ui_main.c:112
+msgid "software"
+msgstr ""
+
+#: src/ui_main.c:114
+msgid "user"
+msgstr ""
+
+#: src/ui_main.c:115
+msgid "hash"
+msgstr ""
+
+#: src/ui_main.c:146
+#, c-format
+msgid "Search complete. We got %i unique hit."
+msgid_plural "Search complete. We got %i unique hits."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui_main.c:221
+msgid "Couldn't start search! Check the log for errors."
+msgstr ""
+
+#: src/ui_main.c:223
+msgid "Search in progress..."
+msgstr ""
+
+#: src/ui_main.c:234
+msgid "No previous search pattern"
+msgstr ""
+
+#: src/ui_main.c:238
+msgid "No hits to search on"
+msgstr ""
+
+#: src/ui_main.c:256
+#, c-format
+msgid "Pattern not found: %s"
+msgstr ""
+
+#: src/ui_main.c:342
+msgid "Stopped search."
+msgstr ""
+
+#: src/ui_main.c:345
+msgid "I don't think I was searching."
+msgstr ""
+
+#: src/ui_main.c:353
+msgid "Downloading..."
+msgstr ""
+
+#: src/ui_main.c:358
+#, c-format
+msgid "Sorting changed to %s order."
+msgstr ""
+
+#: src/ui_main.c:408
+msgid "Search"
+msgstr ""
+
+#: src/ui_main.c:409
+msgid "Query"
+msgstr ""
+
+#: src/ui_main.c:410
+msgid "Realm"
+msgstr ""
+
+#: src/ui_main.c:412 src/ui_main.c:534
+msgid "Size"
+msgstr ""
+
+#: src/ui_main.c:413
+msgid "Speed"
+msgstr ""
+
+#: src/ui_main.c:418
+msgid "Extra Information"
+msgstr ""
+
+#. Resultbox
+#: src/ui_main.c:425
+msgid "Search Results"
+msgstr ""
+
+#: src/ui_main.c:439
+msgid "Statistics"
+msgstr ""
+
+#: src/ui_main.c:441
+msgid "Users online"
+msgstr ""
+
+#: src/ui_main.c:442
+msgid "Total shared"
+msgstr ""
+
+#: src/ui_main.c:443
+msgid "Local shares"
+msgstr ""
+
+#: src/ui_main.c:444
+msgid "giFT plugins"
+msgstr ""
+
+#: src/ui_main.c:487
+msgid "Start search"
+msgstr ""
+
+#: src/ui_main.c:491
+msgid "Stop search"
+msgstr ""
+
+#: src/ui_main.c:535
+#, c-format
+msgid "%lu byte"
+msgid_plural "%lu bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui_main.c:537
+msgid "Net"
+msgstr ""
+
+#: src/ui_main.c:555
+msgid "Path"
+msgstr ""
+
+#: src/ui_main.c:584 src/ui_main.c:588
+#, c-format
+msgid "\\s%sB\\S/\\s%s"
+msgstr ""
+
+#: src/ui_transfer.c:263
+msgid "Downloads"
+msgstr ""
+
+#: src/ui_transfer.c:264
+msgid "Uploads"
+msgstr ""
+
+#: src/ui_transfer.c:273
+msgid ""
+"\\1S\\0 - find more sources  \\1X\\0 - kill transfer  \\1C\\0 - clear "
+"finished"
+msgstr ""
+
+#: src/ui_transfer.c:346
+#, c-format
+msgid "\\5Disk: %s free"
+msgstr ""
+
+#: src/ui_transfer.c:353 src/ui_transfer.c:436
+#, c-format
+msgid "Total: %s/%s at %sB/s"
+msgstr ""
+
+#: src/ui_transfer.c:376 src/ui_transfer.c:377
+msgid " Sources: "
+msgstr ""
+
+#: src/ui_transfer.c:383 src/ui_transfer.c:384
+msgid " Queued: "
+msgstr ""
+
+#: src/ui_transfer.c:426
+#, c-format
+msgid " User '%s' on %s, press U to browse "
+msgstr ""
+
+#: src/ui_settings.c:83
+msgid "standard"
+msgstr ""
+
+#: src/ui_settings.c:83
+msgid "header"
+msgstr ""
+
+#: src/ui_settings.c:83
+msgid "search box"
+msgstr ""
+
+#: src/ui_settings.c:83
+msgid "result box"
+msgstr ""
+
+#: src/ui_settings.c:83
+msgid "stat box"
+msgstr ""
+
+#: src/ui_settings.c:84
+msgid "stat data"
+msgstr ""
+
+#: src/ui_settings.c:84
+msgid "stat bad data"
+msgstr ""
+
+#: src/ui_settings.c:84
+msgid "info box"
+msgstr ""
+
+#: src/ui_settings.c:84
+msgid "download box"
+msgstr ""
+
+#: src/ui_settings.c:85
+msgid "upload box"
+msgstr ""
+
+#: src/ui_settings.c:85
+msgid "help box"
+msgstr ""
+
+#: src/ui_settings.c:85
+msgid "good hit"
+msgstr ""
+
+#: src/ui_settings.c:85
+msgid "bad hit"
+msgstr ""
+
+#: src/ui_settings.c:85
+msgid "progress bar"
+msgstr ""
+
+#: src/ui_settings.c:86
+msgid "total progress"
+msgstr ""
+
+#: src/ui_settings.c:119 src/ui_settings.c:169
+msgid "Daemon was told to reread shares."
+msgstr ""
+
+#: src/ui_settings.c:155
+msgid "Color theme saved."
+msgstr ""
+
+#: src/ui_settings.c:163
+msgid "Default color theme loaded."
+msgstr ""
+
+#: src/ui_settings.c:175
+msgid "Already connected."
+msgstr ""
+
+#: src/ui_settings.c:181
+msgid "Your shares are temporarily hidden."
+msgstr ""
+
+#: src/ui_settings.c:187
+msgid "Your shares are now available."
+msgstr ""
+
+#: src/ui_settings.c:193
+msgid "More search options visible."
+msgstr ""
+
+#: src/ui_settings.c:195
+msgid "Less search options visible."
+msgstr ""
+
+#: src/ui_settings.c:202
+msgid "Completed transfers are removed."
+msgstr ""
+
+#: src/ui_settings.c:204
+msgid "Completed transfers remain on screen."
+msgstr ""
+
+#. Color theme
+#: src/ui_settings.c:222
+msgid "Color Theme"
+msgstr ""
+
+#. Draw the boxen
+#: src/ui_settings.c:227
+msgid "Item"
+msgstr ""
+
+#: src/ui_settings.c:229
+msgid "Foreground"
+msgstr ""
+
+#: src/ui_settings.c:231
+msgid "Background"
+msgstr ""
+
+#. save button
+#: src/ui_settings.c:242
+msgid "Save theme"
+msgstr ""
+
+#. reset button
+#: src/ui_settings.c:247
+msgid "Load defaults"
+msgstr ""
+
+#: src/ui_settings.c:251
+msgid "Tools and Actions"
+msgstr ""
+
+#. The "Tools and Actions" box
+#: src/ui_settings.c:256
+msgid "Reread shared directories"
+msgstr ""
+
+#: src/ui_settings.c:260
+msgid "Reconnect to daemon"
+msgstr ""
+
+#: src/ui_settings.c:264
+msgid "Hide shares"
+msgstr ""
+
+#: src/ui_settings.c:268
+msgid "Show shares"
+msgstr ""
+
+#: src/ui_settings.c:272
+msgid "Toggle search constraints"
+msgstr ""
+
+#: src/ui_settings.c:276
+msgid "Toggle autocleaning"
+msgstr ""

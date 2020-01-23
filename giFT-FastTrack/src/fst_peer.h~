@@ -1,0 +1,2 @@
+void fst_peer_remove_session (Dataset *gpeers, FSTNode *node, Dataset *peers);
+void fst_peer_insert_session (Dataset *gpeers, FSTNode *node, Dataset **peers, FSTNode *peer);

@@ -1,0 +1,57 @@
+# $Id: Makefile.msvc,v 1.16 2002/05/08 04:16:11 rossta Exp $
+
+!include ../Make.msvc
+
+!if defined(static) || defined(STATIC)
+TARGET     = $(OPENFT_STATIC)
+!else
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+OPENFT_DEF = "../win32/openft_api.def"
+TARGET     = $(OPENFT_DLL)
+!endif
+
+OBJECTS = \
+	daemon$(O) \
+	html$(O) \
+	http_client$(O) \
+	http_server$(O) \
+	netorg$(O) \
+	node$(O) \
+	openft$(O) \
+	packet$(O) \
+	protocol$(O) \
+	search$(O) \
+	share$(O) \
+	share_db$(O) \
+	share_comp$(O) \
+	utils$(O)\
+	xfer$(O)	
+
+all : $(TARGET)
+
+install : $(TARGET)
+!if !defined(static) && !defined(STATIC)
+	@copy /y $(TARGET) ..\win32-dist\OpenFT.dll
+!endif
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+
+
+!if defined(static) || defined(STATIC)
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+!else
+$(TARGET) : $(OBJECTS) $(OPENFT_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(OPENFT_DEF) $(LIBS) \
+	       $(OBJECTS)
+!endif
+
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

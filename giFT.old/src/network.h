@@ -1,0 +1,60 @@
+/*
+ * network.h
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#ifndef __NETWORK_H__
+#define __NETWORK_H__
+
+/**************************************************************************/
+
+#include <unistd.h>
+#include <fcntl.h>
+
+/* socket includes */
+#ifdef WIN32
+#include <winsock.h>
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#endif
+
+/**************************************************************************/
+
+#ifndef SHUT_RDWR
+#define SHUT_RDWR 2
+#endif
+
+#define RW_BUFFER 2048
+
+void net_close   (int fd);
+int  net_connect (char *ip, unsigned short port);
+int  net_accept  (int sock);
+int  net_bind    (unsigned short port);
+
+int net_set_blocking (int fd, int blocking);
+
+int net_sock_error (int sock);
+
+int   net_send    (int fd, char *data);
+char *net_ip_str  (unsigned long ip);
+char *net_peer_ip (int fd);
+
+unsigned long net_local_ip ();
+
+/**************************************************************************/
+
+#endif /* __NETWORK_H__ */

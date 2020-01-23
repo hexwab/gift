@@ -1,0 +1,498 @@
+#!/usr/bin/perl -w
+use Gtk '-init';
+
+use giFT::Daemon;
+
+my $appname="TregFlip";
+my $appver='0.0.1';
+
+my $windows=1;
+my @realms=('Auto','Text','User','Hash');
+my $current_realm='Auto';
+
+my %fields=(
+	    name=>{
+		name=>'Filename',
+		width=>350,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{file}},
+	    },
+	    lname=>{
+		name=>'Filename',
+		width=>350,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{SOURCE}{url}=~m[://.*?(/.*)];$1},
+	    },
+	    size=>{
+		name=>'Size',
+		width=>90,
+		sort=>sub {$_[1]<=>$_[2]},
+		contents=>sub {shift->{size}},
+	    },
+	    hash=>{
+		name=>'Hash',
+		width=>200,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{hash}},
+	    },
+	    user=>{
+		name=>'User',
+		width=>150,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{user}},
+	    },
+	    suser=>{
+		name=>'User',
+		width=>150,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{SOURCE}{user}},
+	    },
+	    speed=>{
+		name=>'Speed',
+		width=>50,
+		sort=>sub {$_[1] <=> $_[2]},
+		contents=>sub {my $s=shift->{throughput};defined $s or $s=0; format_size($s)},
+	    },
+	    status=>{
+		name=>'Status',
+		width=>65,
+		sort=>sub {$_[1] cmp $_[2]},
+		contents=>sub {shift->{state}},
+	    },
+	    transfer=>{
+		name=>'Transfer',
+		width=>150,
+		sort=>sub {($_[1].$_[2])=~/\((.*?)%\).*\((.*?)%\)/;$1 <=> $2},
+		contents=>sub { my $n=shift->{SOURCE}; return '' if !defined $n;my $t=($n->{total}); my $d=($n->{transmit}); format_size($d).'/'.format_size($t)." (".sprintf("%2.1f%%)",100*($t?$d/$t:1))},
+	    },
+	    );
+
+my $giftname;
+my $giftver;
+
+my $upwidth=0;
+my %uploads;
+
+my %client_id=(ATTACH=>\&attach_handler,STATS=>\&stats_handler, ADDUPLOAD=>\&upload_add, CHGUPLOAD=>\&upload_change, DELUPLOAD=>\&upload_del);
+my %server_id;
+
+my $users=0;
+
+my $upwin=upload_window();
+my $mainwin=main_window();
+my $daemon=new giFT::Daemon(undef,undef,0,0);
+
+for (
+     [ATTACH=>\&attach_handler],
+     [STATS=>\&stats_handler],
+     [ADDUPLOAD=>\&upload_add],
+     [CHGUPLOAD=>\&upload_change],
+     [DELUPLOAD=>\&upload_del],
+     ) {
+    $daemon->set_handler(@$_);
+}
+
+update_connection();
+
+$daemon->put({attach=>{client=>$appname,version=>$appver}});
+my $input_id=Gtk::Gdk->input_add($daemon->get_socket->fileno, ['read'], sub{$daemon->poll});
+
+Gtk->timeout_add(3000,sub{$daemon->put({stats=>undef})});
+    
+Gtk->main;
+
+sub main_window {
+    my %w;
+    $w{'window'}=my $window=new Gtk::Window;
+    $window->signal_connect("destroy", \&closewin);
+    $window->set_title($appname);
+    $window->set_policy(0,0,0);
+
+    $w{'querybox'}=my $querybox=new Gtk::Entry;
+    $querybox->signal_connect('activate',\&do_search);
+    
+    my $menu=new Gtk::Menu;
+    for (0..$#realms) {
+	my $item=new Gtk::MenuItem $realms[$_];
+	my $a=$_;
+	$item->signal_connect('activate',sub {$current_realm=$realms[$a]});
+	$menu->add($item);
+    }
+    my $realmmenu=new Gtk::OptionMenu;
+    $realmmenu->set_menu($menu);
+    
+    my $button = new Gtk::Button("Search");
+    $button->signal_connect("clicked", \&do_search);
+    my $hbox=new Gtk::HBox(0,0);
+    $hbox->add($_) for ($realmmenu,$button);
+    
+    $w{'verlabel'}=my $verlabel=new Gtk::Label;
+    $verlabel->set_padding(4,0);
+
+
+    my $vbox2=new Gtk::VBox(0,0);
+    my $vbox3=new Gtk::VBox(0,0);
+    my $vbox4=new Gtk::VBox(0,0);
+    my $vbox5=new Gtk::VBox(0,0);
+
+    my $hbox2=new Gtk::HBox(0,0);
+
+    for ('Users','Files','Bytes') {
+	my $temp;
+	$temp=new Gtk::Label $_;
+	$vbox2->add($temp);
+	$temp->set_alignment(1,.5);
+	$temp->set_padding(4,0);
+	$w{+lc}=$temp=new Gtk::Entry;
+	$temp->set_editable(0);
+	$temp->set_usize($temp->get_style->font->string_width('1234567'),0);
+	$vbox3->add($temp);
+    }
+
+
+	my $temp;
+	$temp=new Gtk::Button "Up";
+	$vbox4->add($temp);
+#	$temp->set_alignment(1,.5);
+    $temp->signal_connect("clicked", \&open_upload_window);
+
+    my $temp=$w{upwidth}=new Gtk::Entry;
+	$temp->set_editable(0);
+	$temp->set_usize($temp->get_style->font->string_width('12345'),0);
+	$vbox5->add($temp);
+
+#    $vbox5->add($upbox);
+
+    $hbox2->add($_) for ($vbox2,$vbox3,$vbox4,$vbox5);
+
+    my $vbox = new Gtk::VBox(0,0);
+    $window->add($vbox);
+    $vbox->add($_) for ($querybox,$hbox,$verlabel,$hbox2);
+
+    $querybox->grab_focus;
+    
+    $window->show_all;
+
+    \%w;
+}
+
+sub attach_handler {
+    my $m=shift->{ATTACH};
+    $giftname=$m->{server};
+    $giftver=$m->{version};
+    update_connection();
+}
+
+sub stats_pumper {
+
+}
+
+sub update_connection {
+    $mainwin->{verlabel}->set_text(
+				   (defined $giftname)?
+				   "$appname $appver => $giftname $giftver":
+				   "$appname $appver - not connected"
+				   );
+    1;
+}
+
+sub stats_handler {
+    my $m=shift->{STATS};
+    my ($files,$size,$users);
+    $mainwin->{files}->set_text($m->{OpenFT}{files});
+    $mainwin->{bytes}->set_text(format_size($m->{OpenFT}{size}*(1<<30)));
+    $mainwin->{users}->set_text($users=$m->{OpenFT}{users});
+    1;
+}
+
+sub do_search {
+    my $query=$mainwin->{querybox}->get_text;
+    my $realm=$current_realm;
+    if ($realm eq 'Auto') {
+	for ($query) {
+	    $realm='Hash', last if (/^[0-9a-f]{16}$/ && /[0-9]/);
+	    $realm='User', last if (/([0-9]{1,3}\.){3}/);
+	    $realm='Text';
+	}
+    }
+    my $id=$daemon->get_id;
+    print "id=$id\n";
+
+    start_search($query,$realm,$id);
+}
+
+sub start_search {
+    my ($query,$realm,$num)=@_;
+    my $win=new Gtk::Window;
+    $win->signal_connect("destroy", \&closewin);
+    $windows++;
+
+    $win->set_title("$query (in progress) [$realm] - $appname");
+
+    my @fields=@{{
+	Text=>['name','size','user','hash'],
+	Hash=>['name','size','user'],
+	User=>['name','size','hash'],
+	}->{$realm}};
+
+    my @widths=map {$fields{$_}{width}} @fields;
+    
+    $win->set_default_size(
+			   do {my $width;$width+=$_ for @widths; $width},
+			   300);
+
+    my $list=Gtk::CTree->new_with_titles(0,map {$fields{$_}{name}} @fields);
+    {
+	my $i;
+	$list->set_column_width($i++,$_) for (@widths);
+    }
+    $list->set_auto_sort(1);
+    $list->set_selection_mode('extended'); # or 'multiple'
+
+    $list->signal_connect('click-column',sub {
+	my ($list,$col)=@_;
+	if ($list->sort_column!=$col) {
+	    $list->set_sort_type('ascending');
+	} else {
+	    $list->set_sort_type(($list->sort_type eq 'ascending')?'descending':'ascending');
+	}
+
+	$list->set_compare_func($fields{$fields[$col]}{sort});
+	
+	$list->set_sort_column($col);
+	$list->sort;
+#	if ($col) {
+#	    $list->expand_recursive;
+#	} else {
+#	    $list->collapse_recursive;
+#	}
+
+#	print "col=$col\n";
+    });
+
+    my $temp=new Gtk::ScrolledWindow;
+    $temp->set_policy('never','always');
+    $temp->add($list);
+    $win->add($temp);
+    $win->show_all;
+
+    my $results=0;
+    my %results=();
+    my %node=();
+
+    my $last_thawed=time;
+    my $frozen_results=0;
+    my $frozen=0;
+
+    $daemon->set_handler_with_id('item',$num,
+	sub {
+#	   print time."\n";
+	    my $update=0;
+#	   while (my $m=$d->get) {
+	    $m=shift->{ITEM};
+	    my $file=$m->{file};
+	    if ($file) {
+#		$list->freeze if !$update;
+		$update=1;
+		my $hash=$m->{hash};
+		my $node;
+		my $parent=undef;
+		
+		if (exists $results{$hash}) {
+		    my $user=$m->{user};
+		    return 1 if (grep {$_->{user} eq $user} (@{$results{$hash}}));
+		    $parent=$node{$hash}[0] unless $realm eq 'Hash';
+		}
+
+		$results++ if !$parent;
+
+		my $titles=[map {&{$fields{$_}{contents}}($m)} @fields];
+
+		$node=$list->insert($parent,undef,$titles,10,undef,undef,undef,undef,1,1);
+		$list->collapse($parent) if $parent;
+		push @{$node{$hash}},$node;
+		push @{$results{$hash}},$m;
+	    } else {
+		$win->set_title("$query ($results result".(($results==1)?'':'s').") [$realm] - $appname");		
+		return 0;
+	    }
+
+	    if ($update) {
+		$win->set_title("$query ($results so far) [$realm] - $appname");
+#		$list->thaw;
+	    }
+	    1;
+	});
+
+    my $method={
+	Text=>'search',
+	Hash=>'locate',
+	User=>($query?'browse':'shares'),
+    }->{$realm};
+
+    $daemon->put({$method=>{query=>$query,''=>$num}});
+}
+
+sub upload_add {
+    my ($m)=values %{(shift)};
+    my $id=$m->{''};
+    $uploads{$id}=$m;
+    my $list=$upwin->{list};
+    my $row=$list->append(map {&{$fields{$_}{contents}}($m)} @{$upwin->{fields}});
+    $list->set_row_data($row,\$uploads{$id});
+
+    update_width();
+    1;
+}
+
+sub upload_change {
+    my ($m)=values %{(shift)};
+    my $id=$m->{''};
+    warn "Attempting to change nonexistent upload $id" if (!exists $uploads{$id});
+    my @old;
+    my $list=$upwin->{list};
+    my $row=$list->find_row_from_data(\$uploads{$id});
+    $uploads{$id}=$m;
+    upload_update($m,$row,$list);
+    update_width();
+    1;
+}
+
+sub upload_update {
+    my ($m,$row,$list)=@_;
+    my $col=0;
+    for (@{$upwin->{fields}}) {
+	$list->set_text($row,$col++,$fields{$_}{contents}($m));
+    }
+}
+
+sub upload_del {
+    my ($m)=values %{(shift)};
+    my $id=$m->{''};
+    if (exists $uploads{$id}) {
+	my $list=$upwin->{list};
+	my $row=$list->find_row_from_data(\$uploads{$id});
+	if (0) {
+	    if (defined $row) {
+		$upwin->{list}->remove($row);
+	    } else {
+		warn "Unable to locate list entry for upload $id";
+	    }
+	    delete $uploads{$id};
+	} else {
+	    my $done=($uploads{$id}{SOURCE}{transmit}==$uploads{$id}{SOURCE}{total});
+	    $uploads{$id}{state}=$done?'Complete':'Cancelled';
+	    $uploads{$id}{throughput}=0;
+	    $uploads{$id}{_done}=1;
+	    upload_update($uploads{$id},$row,$list);
+	}
+    } else {
+	warn "Attempting to delete nonexistent upload $id";
+    }
+    update_width();
+    1;
+}
+
+sub upload_window {
+    my %w;
+    $w{'window'}=my $win=new Gtk::Window;
+
+    $w{'open'}=0;
+
+    $win->signal_connect("delete-event", \&fakeclosewin, \%w);
+
+    my @fields=('lname','size','suser','speed','status','transfer','hash');
+
+    $w{'fields'}=\@fields;
+
+    my @widths=map {$fields{$_}{width}} @fields;
+    
+    $win->set_default_size(
+			   do {my $width;$width+=$_ for @widths; $width},
+			   300);
+
+    $w{'list'}=my $list=Gtk::CList->new_with_titles(map {$fields{$_}{name}} @fields);
+    {
+	my $i;
+	$list->set_column_width($i++,$_) for (@widths);
+    }
+    $list->set_auto_sort(1);
+    $list->set_selection_mode('extended'); # or 'multiple'
+
+    $list->signal_connect('click-column',sub {
+	my ($list,$col)=@_;
+	if ($list->sort_column!=$col) {
+	    $list->set_sort_type('ascending');
+	} else {
+	    $list->set_sort_type(($list->sort_type eq 'ascending')?'descending':'ascending');
+	}
+
+	$list->set_compare_func($fields{$fields[$col]}{sort});
+	
+	$list->set_sort_column($col);
+	$list->freeze if !$frozen;
+	$list->sort;
+	$list->thaw if !$frozen;
+    });
+
+    my $temp=new Gtk::ScrolledWindow;
+    $temp->set_policy('never','always');
+    $temp->add($list);
+    $temp->show_all;
+    $win->add($temp);
+    
+    \%w;
+}
+
+sub open_upload_window {
+    $windows++ if !$upwin->{open};
+
+    $upwin->{window}->show_all;
+    $upwin->{open}=1;
+}
+
+
+sub update_width {
+    my ($upwidth,$n)=(0,0);
+    {
+	no warnings;
+	for (keys %uploads) {
+	    next if $uploads{$_}{_done};
+	    $n++;
+	    $upwidth+=$uploads{$_}{throughput};
+#	    my ($i=0,$j=0);
+#	    map {$i+=$_, $j++} @{$uploads{$_}{_old_avg}};
+#	    $uploads{$_}{_avg_speed}=($j?$i/$j:0);
+	}
+    }
+    my $s=format_size($upwidth);
+    $mainwin->{upwidth}->set_text($s);
+    my $win=$upwin->{window};
+    $win->set_title("Up: $n file".($n==1?'':'s')." @ ${s}B/s - $appname");# if $win;
+}
+
+sub format_size {
+    my $size=shift;
+    my $units=0;
+    while ($size>9999) {
+	$size/=1024;
+	$units++;
+    }
+    $units=('','k','M','G','T')[$units];
+    my $f=substr(sprintf("%.3f",$size),0,5);
+    $f=~s/\.0*$//;
+    $f.$units;
+}
+
+sub fakeclosewin {
+    shift->hide();
+    shift->{open}=0;
+    closewin();
+    1;
+}
+
+sub closewin {
+    return if --$windows;
+    Gtk->main_quit;
+}
+

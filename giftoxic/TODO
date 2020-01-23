@@ -1,0 +1,13 @@
+TODO
+
+* sync with latest giFT interface protocol (always in this list)
+* support meta data
+* add multiple search tabs
+* add _optional_ GConf system
+* implement giFT configuration wizard
+-> make giFToxic call it if there's no working giFT configuration
+   available
+* fix daemon autostart: new setting "start daemon if not present at startup"
+* over-haul preferences dialog (merge with config. wizard?)
+* update the website!! :)
+

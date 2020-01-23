@@ -1,0 +1,36 @@
+<%perl>
+###############################################################################
+##
+## $Id: download.mhtml,v 1.3 2004/08/28 02:53:55 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'Download'
+</%attr>
+
+<h2>Downloading giFT and friends</h2>
+
+<p>
+	This page needs work.  In the meantime, you can download
+	<span class="comp">giftd</span>, <span class="comp">gift-openft</span>,
+	and <span class="comp">gift-gnutella</span> from the 
+	<a href="http://sourceforge.net/project/showfiles.php?group_id=34618">project's release list</a>,
+	as is graciously provided by 
+	<a href="http://sourceforge.net/projects/gift">sourceforge.net</a>.
+	For third-party software, refer to the 
+	<a href="/software/">software section</a>.
+</p>

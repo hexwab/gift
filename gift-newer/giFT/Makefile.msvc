@@ -1,0 +1,57 @@
+# $Id: Makefile.msvc,v 1.7 2002/04/28 15:19:32 rossta Exp $
+# Microsoft Visual C++ 6.0 makefile
+# see README.msvc for usage
+
+MAKEOPTS=-nologo -C
+
+all:
+	cd lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	@cd ..
+
+install: win32-dist
+	cd lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\data
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	@cd ..
+
+clean:
+	cd lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	@cd ..
+
+clean-dist:
+	@del /f win32-dist
+
+win32-dist:
+	@mkdir win32-dist
+	@mkdir win32-dist\data
+	@mkdir win32-dist\data\OpenFT
+
+all-fe:	all
+	cd ui
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	@cd ..
+
+install-fe: install
+	cd ui
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	@cd ..
+
+clean-fe:	clean
+	cd ui
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	@cd ..

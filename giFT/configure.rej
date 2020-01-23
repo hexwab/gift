@@ -1,0 +1,23 @@
+***************
+*** 20198,20207 ****
+  
+     fi
+  
+-    plugindir=${prefix}/lib/giFT
+  
+  
+-    datadir=${prefix}/share/giFT
+  
+  
+  
+--- 20198,20207 ----
+  
+     fi
+  
++    plugindir=${libdir}/giFT
+  
+  
++    datadir=${datadir}/giFT
+  
+  
+  

@@ -1,0 +1,19 @@
+graph G {
+    node [label=user, fontname="Helvetica"];
+    a -- b;
+    a -- d;
+    a -- f;
+    b -- c;
+    b -- e;
+    c -- f;
+    c -- h;
+    d -- f;
+    d -- h;
+    e -- f;
+    e -- c;
+    f -- i;
+    i -- c;
+    e -- i;
+    i -- b;
+    g -- c;
+}

@@ -1,0 +1,13 @@
+[main]
+
+# TCP port to listen on.  Be sure to forward this if you're behind a
+# firewall or NAT.  Zero means don't open any inbound ports.
+port = 5904
+
+# Your username on the network.  Ares seems to make some effort to
+# uniqify these, so you may not get exactly what you request.  Leaving
+# this blank will get you an an "anon_xxxxxxxx" username.
+#username = 
+
+# Number of supernodes to connect to.  Be sensible, please.
+sessions = 10

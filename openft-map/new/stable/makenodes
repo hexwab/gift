@@ -1,0 +1,8 @@
+#!/usr/bin/perl -ln
+my %a;
+$a{$1}=$2 while (/(\S+):\s*(\S+)/g);
+
+$a{class}|=2; # evil hack: OpenFT needs fixing
+my $time=$a{spidered};
+next unless $time;
+print join " ",$time,1,@a{qw[host port http_port class ver]};

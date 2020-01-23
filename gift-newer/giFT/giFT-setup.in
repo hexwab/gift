@@ -1,0 +1,578 @@
+#!/usr/bin/perl
+###############################################################################
+#
+#  Valid arguments are:
+#       type, default, info
+#
+#  Valid options for the type argument are:
+#       hidden, array, int, string
+#
+#  'default' argument is for defining a default value for a key
+#
+#  'info' argument is the text displayed when user is prompted for input
+#
+###############################################################################
+
+my $PRESET_FIREWALL = 1; # USER w/ port 0
+my $PRESET_SEARCH   = 2;
+my $PRESET_INDEX    = 3;
+my $PRESET_USER     = 4;
+
+my $pdir = "@plugindir@";
+my $PATH = "$ENV{HOME}/.giFT";
+my $FIRSTRUN = 1;
+my $PRESET = 0;
+my $RECONFIGURE = 0;
+my $INTERACTIVE = 1;
+my $TESTING = 0;
+
+if ($ARGV[0] eq "test")
+{
+	print STDOUT "Turned on TESTING mode\n\n";
+	$TESTING = 1;
+}
+
+###############################################################################
+# determine random ports
+
+my $randport, $randhttp;
+
+my @invalid_ports = ( 1214, 1213 );
+
+do { $randport = int (rand 1800) + 1200; } while (invalid_port ($randport));
+push @invalid_ports, $randport;
+	
+do { $randhttp = int (rand 1800) + 1200; } while (invalid_port ($randhttp));
+
+sub invalid_port 
+{
+	my $port = shift;
+	
+	foreach my $cmp (@invalid_ports) { return 1 if ($cmp == $port); }
+	
+	0;
+}
+
+###############################################################################
+# option table
+
+my %options =
+(
+# OpenFT/OpenFT.conf (Main OpenFT Configuration)
+"OpenFT/OpenFT.conf" =>
+{
+	# [main]
+	"main" =>
+	{
+		"http_port" =>
+		{
+			"default" => "$randhttp",
+			"type" => "int",
+			"info" => "Port you wish for all file transfers (including the nodepage) to be accessed by"
+		},
+		"port" =>
+		{
+			"default" => "$randport",
+			"type" => "int",
+			"info" => "Main listening port for OpenFT.  Use 0 if you are unable to accept direct connections from other peers"
+		},
+		"class" =>
+		{
+			"default" => "1",
+			"type" => "int",
+			"info" => "Node classification.  If unsure, please select User.\n\t[1] User\n\t[3] Search\n\t[5] Index\n\t[7] Search & Index"
+		}
+	},
+	# [search]
+	"search" =>
+	{
+		"children" =>
+		{
+			"nopreset" => "1",
+			"default" => "500",
+			"type" => "hidden",
+			"info" => "How many child nodes will your machine be able to support?"
+		}
+	}
+},
+
+# ui/ui.conf (giFT-fe Configuration)
+"ui/ui.conf" =>
+{
+	# [daemon]
+	"daemon" =>
+	{
+		"host" =>
+		{
+			"default" => "127.0.0.1",
+			"type"    => "string",
+			"info"    => "Host that is listening for interface connections"
+		},
+		"port" =>
+		{
+			"default" => "1213",
+			"type"    => "int",
+			"info"    => "Interface port.  Currently ignored by the daemon"
+		}
+	}
+},
+
+# gift.conf (Main giFT Configuration)
+"gift.conf" =>
+{
+	# [main]
+	"main" =>
+	{
+		"setup" =>
+		{
+			"default" => "1",
+			"type" => "hidden"
+		},
+		"plugins" =>
+		{
+			"default" => "$pdir/libOpenFT.so",
+			"type" => "string",
+			"info" => "Colon separated list of protocol plugins to load"
+		},
+		"hosts_allow" =>
+		{
+			"default" => "LOCAL",
+			"type" => "string",
+			"info" => "Space separated list of IPs that can connect to the main daemon interface\nport. 127.0.0.0/32 would allow 127.0.0.0-127.0.0.255\n192.168.0.0/16 would allow 192.168.0.0-192.168.255.255.\nLOCAL allows all locally reserved classes"
+		}
+	},
+	"sharing" =>
+	{
+		"max_peruser_uploads" =>
+		{
+			"default" => "1",
+			"type" => "int",
+			"info" => "Max uploads allowed per user"
+		},
+		"max_uploads" =>
+		{
+			"default" => "-1",
+			"type" => "int",
+			"info" => "Max uploads that can be going at one time\n\nUse -1 for unlimited, 0 for none, or any\nother positive number for that amount"
+		},
+		"hide_dot_files" =>
+		{
+			"default" => "1",
+			"type" => "bool",
+			"info" => "Should sharing of hidden files be disabled?"
+		},
+		"root" =>
+		{
+			"nopreset" => "1",
+			"default" => "",
+			"type" => "path",
+			"info" => "List of fully qualified directories to share\n\nExample: /apollo/music:/data/.porn"
+		}
+	},
+	"download" =>
+	{
+		"incoming" =>
+		{
+			"default" => "$PATH/incoming",
+			"type" => "path",
+			"info" => "Fully qualified directory where giFT should put\ntemporary download files."
+		},
+		"completed" =>
+		{
+			"default" => "$PATH/completed",
+			"type" => "path",
+			"info" => "Fully qualified directory where giFT should put\ncompleted download files."
+		}
+	}
+}
+);
+
+###############################################################################
+# presets
+
+%presets = (
+
+# [1] Behind firewall
+"$PRESET_FIREWALL" =>
+{
+	"OpenFT/OpenFT.conf" =>
+	{
+		"main" =>
+		{
+			"class" => "1",
+			"port" => "0",
+			"http_port" => "$randhttp"
+		}
+	}
+},
+
+# [2] Fast Connection & Fast Processor
+"$PRESET_SEARCH" =>
+{
+	"OpenFT/OpenFT.conf" =>
+	{
+		"main" =>
+		{
+			"class" => "3",
+			"port" => "$randport",
+			"http_port" => "$randhttp"
+		},
+		"search" =>
+		{
+			"children" => "500"
+		}
+	}
+},
+
+# [3] Fast Connection & Ample RAM
+"$PRESET_INDEX" =>
+{
+	"OpenFT/OpenFT.conf" =>
+	{
+		"main" =>
+		{
+			"class" => "7",
+			"port" => "$randport",
+			"http_port" => "$randhttp"
+		}
+	}
+},
+
+# [4] Slow connection
+"$PRESET_USER" =>
+{
+	"OpenFT/OpenFT.conf" =>
+	{
+		"main" =>
+		{
+			"class" => "1",
+			"port" => "$randport",
+			"http_port" => "$randhttp"
+		}
+	}
+}
+);
+
+###############################################################################
+# Force interactive mode
+
+%forces = (
+
+# [1] Behind firewall
+"$PRESET_FIREWALL" =>
+{
+	"gift.conf" =>
+	{
+		"sharing" =>
+		{
+			"max_uploads" => "1",
+			"max_peruser_uploads" => "1",
+			"root" => "1"
+		},
+		"download" =>
+		{
+			"completed" => "1"
+		}
+	}
+},
+
+# [2] Fast Connection & Fast Processor
+"$PRESET_SEARCH" =>
+{
+	"OpenFT/OpenFT.conf" =>
+	{
+		"search" =>
+		{
+			"children" => "1"
+		}
+	},
+	"gift.conf" =>
+	{
+		"sharing" =>
+		{
+			"max_uploads" => "1",
+			"max_peruser_uploads" => "1",
+			"root" => "1"
+		},
+		"download" =>
+		{
+			"completed" => "1"
+		}
+	}
+},
+
+# [3] Fast Connection & Ample RAM
+"$PRESET_INDEX" =>
+{
+	"gift.conf" =>
+	{
+		"sharing" =>
+		{
+			"max_uploads" => "1",
+			"max_peruser_uploads" => "1",
+			"root" => "1"
+		},
+		"download" =>
+		{
+			"completed" => "1"
+		}
+	}
+},
+
+# [4] Slow connection
+"$PRESET_USER" =>
+{
+	"gift.conf" =>
+	{
+		"sharing" =>
+		{
+			"max_uploads" => "1",
+			"max_peruser_uploads" => "1",
+			"root" => "1"
+		},
+		"download" =>
+		{
+			"completed" => "1"
+		}
+	}
+}
+
+);
+
+###############################################################################
+
+while ($PRESET !~ /^[12345]$/)
+{
+print STDOUT << 'EOF';
+Base configuration:
+
+    [1] This host is behind a firewall, proxy, or NAT configuration and is 
+        unable to receive incoming connections on the external IP.  If you
+        suspect you may be on a local area network (LAN) that you did not 
+        configure yourself, we recommend that you choose this option.  Please
+        note that if this is true, you will not be able to function as a 
+     	search or index node on the OpenFT network.
+    
+    [2] I am willing to donate my computer as a dedicated search node.  This
+        will require heightened RAM and CPU usage, but without them the 
+        network will be unable to function.  A better than average Internet
+        connection is recommended as well.
+    
+    [3] I am willing to donate my computer as a dedicated index node.  This
+        node requires the most uptime and the lowest latency possible.  Please
+        be sure that if you select this option you will keep your node up
+        to date as much as possible.
+    
+    [4] None of the above apply.  I would like to function as a regular 
+        non-firewalled user node.
+    
+    [5] Custom setup.  You may also hand edit the configuration files in
+        ~/.giFT/        
+
+EOF
+	
+	print STDOUT "[4] > ";
+
+	$PRESET = <STDIN>;
+	chomp($PRESET);
+	if ($PRESET eq "") { $PRESET = 4; }
+}
+
+if ($PRESET != 5) { $RECONFIGURE = 1; $INTERACTIVE = 0; }
+
+foreach my $config (keys %options) 
+{
+	if (&check($config)) 
+	{
+		if (!$RECONFIGURE)
+		{
+			print STDOUT "giFT has already been configured, would you like to:\n\n\t[1] Create new configuration\n\t[2] Edit with current options as default\n\n[1] > ";
+			$RECONFIGURE = <STDIN>;
+		}
+		if ($RECONFIGURE == 1)       { &configure($config); }
+		elsif ($RECONFIGURE == 2)    { &configure($config,1); }
+		elsif ($RECONFIGURE eq "\n") { &configure($config); }
+		else                         { redo; }
+	}
+	else 
+	{
+		&configure($config);
+	}
+}
+
+sub configure 
+{
+	my $arg = $_[0];
+	my $reconfigure = $_[1];
+	my %saveopts = ();
+	my $section = "main";
+
+	checkdir("$PATH/$arg");
+
+	if ($reconfigure)
+	{
+		my $savsection = "main";
+		open(CONFIGURE,"<$PATH/$arg") or die "Couldn't open $PATH/$arg: $!\n";
+		while(<CONFIGURE>)
+		{
+			if (/^\[(.+)\]$/i) { $savsection = $1; }
+			next if (/^\s*?#/);
+
+			if (/^(.+?) = (.+)$/)
+			{
+				$saveopts{$savsection}{$1} = $2;
+			}
+		}
+		close CONFIGURE;
+                if ($saveopts{main}{setup} && $arg eq "gift.conf") { $FIRSTRUN = 0; }
+	}
+
+	if ($TESTING)
+	{
+		checkdir("$PATH/testconf/$arg");
+		open(CONFIGURE,">$PATH/testconf/$arg") or die "Couldn't open $PATH/testconf/$arg: $!\n";
+	}
+	else
+	{
+		checkdir("$PATH/$arg");
+		open(CONFIGURE,">$PATH/$arg") or die "Couldn't open $PATH/$arg: $!\n";
+	}
+
+
+	print CONFIGURE "# $arg\n";
+
+	foreach my $section (keys (%{$options{$arg}}))
+	{
+		print CONFIGURE "\n[$section]\n";
+
+		foreach my $option (keys (%{$options{$arg}{$section}}))
+		{
+			my $chosen;
+
+			if ($INTERACTIVE && defined($presets{$PRESET}{$arg}{$section}{$option}))
+			{
+				print CONFIGURE "$option = $presets{$PRESET}{$arg}{$section}{$option}\n";
+				next;
+			}
+
+			if ($options{$arg}{$section}{$option}{type} eq "hidden")
+			{
+				print CONFIGURE "$option = $options{$arg}{$section}{$option}{default}\n";
+				next;
+			}
+
+			if ($INTERACTIVE || $forces{$PRESET}{$arg}{$section}{$option})
+			{
+				if (defined($saveopts{$section}{$option}))	{ print STDOUT "\n[$option]\n\n$options{$arg}{$section}{$option}{info}\n\n[$saveopts{$section}{$option}] > "; }
+				else                              		{ print STDOUT "\n[$option]\n\n$options{$arg}{$section}{$option}{info}\n\n[$options{$arg}{$section}{$option}{default}] > "; }
+			}
+
+			if ($INTERACTIVE || $forces{$PRESET}{$arg}{$section}{$option})
+			{
+				$chosen = <STDIN>;
+				chop($chosen);
+			}
+			else
+			{
+				$chosen = "";
+			}
+
+			if ($chosen eq "") 
+			{
+				if (defined($presets{$PRESET}{$arg}{$section}{$option}))	{ print CONFIGURE "$option = $presets{$PRESET}{$arg}{$section}{$option}\n"; }
+				elsif (defined($saveopts{$section}{$option}))			{ print CONFIGURE "$option = $saveopts{$section}{$option}\n"; }
+				else								{ print CONFIGURE "$option = $options{$arg}{$section}{$option}{default}\n"; }
+			}
+			else
+			{
+				if ($options{$arg}{$section}{$option}{type} eq "path")
+				{
+					$chosen =~ s/^~\//$ENV{HOME}\//g;
+					$chosen =~ s/:~\//:$ENV{HOME}\//g;
+
+					$chosen =~ s/^~(.*?)\//\/home\/$1\//g;
+					$chosen =~ s/:~(.*?)\//:\/home\/$1\//g;
+
+					print CONFIGURE "$option = $chosen\n";
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "int" && $chosen =~ /^\d+$/) 
+				{
+					print CONFIGURE "$option = $chosen\n";
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "string") 
+				{
+					print CONFIGURE "$option = $chosen\n";
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "array") 
+				{
+					my @array = split(/\,/,$chosen);
+					foreach my $thing (@array) 
+					{
+						print CONFIGURE "$option = $thing\n";
+					}
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "bool")
+				{
+					if ($chosen =~ /^y(es)?$/i || $chosen == 1)
+					{
+						print CONFIGURE "$option = 1\n";
+					}
+					elsif ($chosen =~ /^n(o)?$/i || $chosen == 0)
+					{
+						print CONFIGURE "$option = 0\n";
+					}
+					else
+					{
+						redo;
+					}
+				}
+				else 
+				{
+					print STDOUT "\nAnswer requires type $options{$arg}{$section}{$option}{type}";
+					redo;
+				}
+			}
+		}
+	}
+	
+	close CONFIGURE or die "Couldn't write configuration to disk: $!\n";
+}
+
+sub check 
+{
+	return 0 unless (open (CHECK, "<$PATH/$_[0]"));
+
+	close CHECK;
+	1;
+}
+
+sub checkdir 
+{
+	$_[0] =~ /(.+)\/.+/;
+
+	$" = "/";
+	my @dir = split(/\//,$1);
+
+	my @tree = ();
+
+	foreach my $dir (@dir) 
+	{
+		push(@tree,$dir);
+		next unless @tree > 1;
+
+		if (opendir(CHECK,"@tree"))
+		{
+			closedir(CHECK);
+		}
+		else 
+		{
+			if (!opendir(CHECK,"@tree"))	{ mkdir("@tree", 0755) or die "Couldn't mkdir @tree: $!\n"; }
+			else				{ closedir(CHECK); }
+		}
+	}
+
+	return 1;
+}
+
+
+print STDOUT "\nYou may now execute giFT by typing 'giFT'\n\n";

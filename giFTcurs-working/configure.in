@@ -1,0 +1,63 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(configure.in)
+AM_CONFIG_HEADER(config.h)
+dnl AM_INIT_AUTOMAKE(giFTcurs, 0.5.2)
+AM_INIT_AUTOMAKE(giFTcurs, `date +%y%m%d`-cvs)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+
+dnl Check for curses
+AC_CHECK_CURSES
+if test "$has_curses" = false ; then
+	AC_ERROR(You don't seem to have the curses headers installed)
+fi
+
+ALL_LINGUAS="ca da de es fr nl pl pt_BR sv"
+AM_GNU_GETTEXT
+
+dnl Checks for libraries.
+AC_CHECK_LIB(socket, socket)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(getopt.h sys/vfs.h sys/mount.h sys/statvfs.h regex.h termios.h sys/ioctl.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_NO_CPP_PRECOMP
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(socket select strerror,,
+	AC_ERROR(socket, select and strerror must be available in order to build.))
+AC_CHECK_FUNCS(strndup strnlen statfs basename getopt_long)
+AC_CHECK_FUNCS(poll,,[AC_CHECK_LIB(poll, poll)])
+AC_CHECK_FUNCS(getaddrinfo,,[AC_CHECK_LIB(nsl, gethostbyname)])
+AC_CHECK_FUNCS(snprintf,,[AC_CHECK_LIB(db, snprintf)])   dnl A fine hack for Tru64 (OSF1)
+AC_CHECK_FUNCS(asprintf,,[AC_FUNC_VPRINTF] [CF_VA_COPY])  dnl Check for va_copy if asprintf is missing
+
+dnl Parse --enable-feature options
+AC_ARG_ENABLE(mouse,
+[  --disable-mouse         Disable mouse support],, enable_mouse=yes)
+if test x$enable_mouse != xyes; then
+	AC_DEFINE(DISABLE_MOUSE)
+fi
+
+AC_ARG_ENABLE(libgpm,
+[  --disable-libgpm        Disable usage of libgpm],, enable_libgpm=yes)
+if test x$enable_libgpm = xyes; then
+	AC_CHECK_LIB(gpm, Gpm_Open)
+fi
+
+AC_ARG_ENABLE(internal-mouse,
+[  --disable-internal-mouse Disable internal mouse parsing],, enable_internal_mouse=yes)
+if test x$enable_internal_mouse != xyes; then
+	AC_DEFINE(DISABLE_INTERNAL_MOUSE)
+fi
+
+AC_OUTPUT([
+	Makefile \
+	src/Makefile \
+	intl/Makefile \
+	po/Makefile.in
+])

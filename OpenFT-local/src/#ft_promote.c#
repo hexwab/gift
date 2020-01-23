@@ -1,0 +1,4 @@
+BOOL ft_do_promote (void)
+{
+	
+}

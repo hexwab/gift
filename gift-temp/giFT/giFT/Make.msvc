@@ -1,0 +1,216 @@
+# $Id: Make.msvc,v 1.20 2003/05/04 20:53:49 rossta Exp $
+
+VERSION = 0.10
+
+O = .obj
+
+# release / debug
+!if defined(release) || defined(RELEASE)
+
+D=
+_D=
+DEXT=
+CFLAGS  = $(CFLAGS)  -Ox -G6
+
+DEFS    = $(DEFS)    -DNDEBUG -U_DEBUG
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+!else # !defined(release) && !defined(RELEASE)
+
+# must be lower case:
+D=d
+_D=_d
+DEXT=$(DEXT)
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+!endif # defined(release) || defined(RELEASE)
+
+# static / dynamic linking
+!if defined(dynamic) || defined(DYNAMIC)
+
+!error DLL build not support (yet).
+CFLAGS   = $(CFLAGS) -MD$(D) -DUSE_LTDL
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_LTDL
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+# libdb stuff
+!if defined(db) || defined(DB) || defined(libdb) || defined(LIBDB) || defined (use_libdb) || defined(USE_LIBDB)
+
+!if "$(LIBDB_ROOT)" == ""
+
+LIBDB_ROOT=d:\usr\src\db-4.1.25
+
+!endif # "$(LIBDB_ROOT)" == ""
+
+!if !exists($(LIBDB_ROOT))
+
+!error Directory $(LIBDB_ROOT) not found!
+
+!endif # !exists($(LIBDB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(LIBDB_ROOT)\BUILD_WIN32 -I$(LIBDB_ROOT)\INCLUDE -I$(LIBDB_ROOT)\INCLUDE_AUTO
+DEFS     = $(DEFS)     -DUSE_LIBDB -DHAVE_DB_H
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+!if defined(release) || defined(RELEASE)
+
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\RELEASE"
+
+!else # !defined(release) && !defined(RELEASE)
+
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\DEBUG"
+
+!endif # defined(release) || defined(RELEASE)
+
+LIBS     = $(LIBS)      libdb41$(D).lib
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+!if defined(release) || defined(RELEASE)
+
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\RELEASE_STATIC"
+
+!else # !defined(release) && !defined(RELEASE)
+
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\DEBUG_STATIC"
+
+!endif # defined(release) || defined(RELEASE)
+
+LIBS     = $(LIBS)      libdb41s$(D).lib
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+!endif # defined(db) || defined(DB) || defined(libdb) || defined(LIBDB) || defined (use_libdb) || defined(USE_LIBDB)
+
+# id3lib stuff
+!if defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB) || defined (use_id3lib) || defined(USE_ID3LIB)
+
+!if "$(ID3LIB_ROOT)" == ""
+
+ID3LIB_ROOT=d:\usr\src\id3lib-3.8.3
+
+!endif # "$(ID3LIB_ROOT)" == ""
+
+!if !exists($(ID3LIB_ROOT))
+
+!error Directory $(ID3LIB_ROOT) not found!
+
+!endif # !exists($(ID3LIB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_ID3LIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\libprj"
+LIBS     = $(LIBS)     id3lib$(D).lib
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=3
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=1
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\zlib\include
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\zlib"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!else # !(defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB) || defined (use_id3lib) || defined(USE_ID3LIB))
+
+# zlib stuff
+!if defined(zlib) || defined(ZLIB) || defined (use_zlib) || defined(USE_ZLIB)
+
+!if "$(ZLIB_ROOT)" == ""
+
+ZLIB_ROOT=d:\usr\src\zlib
+
+!endif # "$(ZLIB_ROOT)" == ""
+
+!if !exists($(ZLIB_ROOT))
+
+!error Directory $(ZLIB_ROOT) not found!
+
+!endif # !exists($(ZLIB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!endif # defined(zlib) || defined(ZLIB) || defined (use_zlib) || defined(USE_ZLIB)
+
+!endif # defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB) || defined (use_id3lib) || defined(USE_ID3LIB)
+
+
+# libvorbis stuff
+!if defined(vorbis) || defined(VORBIS) || defined(libvorbis) || defined(LIBVORBIS) || defined (use_libvorbis) || defined(USE_LIBVORBIS)
+
+!if "$(LIBVORBIS_ROOT)" == ""
+
+LIBVORBIS_ROOT=d:\usr\src\oggvorbis-win32sdk-1.0
+
+!endif # "$(LIBVORBIS_ROOT)" == ""
+
+!if !exists($(LIBVORBIS_ROOT))
+
+!error Directory $(LIBVORBIS_ROOT) not found!
+
+!endif # !exists($(LIBVORBIS_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(LIBVORBIS_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_LIBVORBIS
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\lib"
+LIBS     = $(LIBS)     vorbis$(_D).lib vorbisfile$(_D).lib
+
+!endif # defined(vorbis) || defined(VORBIS) || defined(libvorbis) || defined(LIBVORBIS) || defined (use_libvorbis) || defined(USE_LIBVORBIS)
+
+GIFT_LIB = giFT$(DEXT).lib
+GIFT_DLL = giFT$(DEXT).dll
+GIFT_EXE = giFT$(DEXT).exe
+LIBGIFT_LIB = libgiFT$(DEXT).lib
+LIBGIFT_DLL = libgiFT$(DEXT).dll
+LIBGIFT_STATIC = libgiFTstatic$(DEXT).lib
+LIBPLUGIN_LIB = libplugin$(DEXT).lib
+LIBPLUGIN_DLL = libplugin$(DEXT).dll
+LIBPLUGIN_STATIC = libpluginstatic$(DEXT).lib
+OPENFT_LIB	= OpenFT$(DEXT).lib
+OPENFT_DLL	= OpenFT$(DEXT).dll
+OPENFT_STATIC	= OpenFTstatic$(DEXT).lib
+GNUTELLA_LIB	= Gnutella$(DEXT).lib
+GNUTELLA_DLL	= Gnutella$(DEXT).dll
+GNUTELLA_STATIC	= Gnutellastatic$(DEXT).lib
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT -DPLUGIN_OPENFT -DPLUGIN_GNUTELLA
+INCLUDES = -I../win32 -I../src -I../lib -I../OpenFT -I../Gnutella -I../plugin $(INCLUDES)
+LDFLAGS  = $(LDFLAGS) -nologo -libpath:"../src" -libpath:"../lib" \
+	   -libpath:"../win32" -version:$(VERSION)
+LIBS     = $(LIBS) binmode.obj oldnames.lib win32.lib advapi32.lib user32.lib ws2_32.lib
+
+# advapi32.lib: RegOpenKey
+# user32.lib:   MessageBox
+
+!if defined(console) || defined(CONSOLE)
+
+DEFS     = $(DEFS) -D_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:console
+
+!else # !(defined(console) || defined(CONSOLE))
+
+DEFS     = $(DEFS) -D_WINDOWS
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+
+!endif # defined(console) || defined(CONSOLE)
+
+CC = cl
+LD = link
+LT = lib

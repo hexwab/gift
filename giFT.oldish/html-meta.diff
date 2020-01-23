@@ -1,0 +1,99 @@
+Index: OpenFT/html.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/html.c,v
+retrieving revision 1.67
+diff -u -r1.67 html.c
+--- OpenFT/html.c	7 Sep 2002 00:07:43 -0000	1.67
++++ OpenFT/html.c	12 Sep 2002 17:30:19 -0000
+@@ -25,6 +25,7 @@
+ #include "xfer.h"
+ #include "html.h"
+ #include "file.h"
++#include "meta.h"
+ 
+ #include "parse.h"
+ 
+@@ -313,15 +314,32 @@
+ static int build_shares (FileShare *file, FILE *f)
+ {
+ 	char *encoded;
++	char *bitrate, *duration;
+ 
+ 	if (!file || !SHARE_DATA(file))
+ 		return TRUE;
+ 
+ 	encoded = url_encode (SHARE_DATA(file)->hpath);
+ 
+-	fprintf (f, "<tr><td>%lu</td><td><a href='%s'>%s</a></td></tr>\n",
++	bitrate = meta_lookup (file, "Bitrate");
++	duration = meta_lookup (file, "Duration");
++
++	fprintf (f, "<tr><td>%lu</td><td><a href='%s'>%s</a></td>",
+ 	         file->size, encoded, SHARE_DATA(file)->hpath);
+ 
++	if (bitrate)
++		fprintf (f, "<td>%lu</td>", strtoul (bitrate, NULL, 0)/1000);
++	else
++		fprintf (f, "<td></td>");
++
++	if (duration) {
++		unsigned long dur = strtoul (duration, NULL, 0);
++		fprintf (f, "<td>%lu:%02lu</td>", dur/60, dur%60);
++	} else
++		fprintf (f, "<td></td>");
++
++	fprintf (f, "</tr>\n");
++
+ 	free (encoded);
+ 
+ 	return TRUE;
+@@ -427,6 +445,8 @@
+ 	         "<tr>\n"
+ 	         " <td><b> Filesize </b></td>\n"
+ 	         " <td><b> Filename </b></td>\n"
++	         " <td><b> Bitrate </b></td>\n"
++	         " <td><b> Duration </b></td>\n"
+ 	         "</tr>\n");
+ 
+ 	/* insert shares list here */
+Index: src/meta.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/meta.c,v
+retrieving revision 1.4
+diff -u -r1.4 meta.c
+--- src/meta.c	11 Sep 2002 00:38:16 -0000	1.4
++++ src/meta.c	12 Sep 2002 17:30:19 -0000
+@@ -54,6 +54,18 @@
+ 	SHARE_DATA(file)->meta = NULL;
+ }
+ 
++char *meta_lookup (FileShare *file, char *key)
++{
++	Dataset **ds;
++
++	if (!file || !key)
++		return;
++
++	ds = &SHARE_DATA(file)->meta;
++
++	return dataset_lookup (*ds, key, STRLEN_0 (key));
++}
++
+ void meta_foreach (FileShare *file, DatasetForeach func, void *udata)
+ {
+ 	dataset_foreach (SHARE_DATA(file)->meta, func, udata);
+Index: src/meta.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/meta.h,v
+retrieving revision 1.2
+diff -u -r1.2 meta.h
+--- src/meta.h	10 Sep 2002 05:21:10 -0000	1.2
++++ src/meta.h	12 Sep 2002 17:30:20 -0000
+@@ -23,6 +23,7 @@
+ void meta_clear   (FileShare *file);
+ void meta_foreach (FileShare *file, DatasetForeach func, void *udata);
+ int  meta_run     (FileShare *file);
++char *meta_lookup (FileShare *file, char *key);
+ 
+ /*****************************************************************************/
+ 

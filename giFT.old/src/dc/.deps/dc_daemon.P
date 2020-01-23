@@ -1,0 +1,47 @@
+dc_daemon.o: dc_daemon.c /usr/include/stdio.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h \
+ /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h \
+ /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stdarg.h \
+ /usr/include/bits/types.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/bits/stdio_lim.h \
+ /usr/include/string.h dc_daemon.h dc_connection.h ../protocol.h \
+ ../connection.h dc_event.h ../download.h /usr/include/stdlib.h \
+ /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/sigset.h \
+ /usr/include/sys/sysmacros.h /usr/include/alloca.h ../hash.h \
+ ../list.h ../gift.h /usr/include/assert.h ../opt.h ../parse.h
+dc_daemon.c :
+/usr/include/stdio.h :
+/usr/include/features.h :
+/usr/include/sys/cdefs.h :
+/usr/include/gnu/stubs.h :
+/usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h :
+/usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stdarg.h :
+/usr/include/bits/types.h :
+/usr/include/libio.h :
+/usr/include/_G_config.h :
+/usr/include/bits/stdio_lim.h :
+/usr/include/string.h :
+dc_daemon.h :
+dc_connection.h :
+../protocol.h :
+../connection.h :
+dc_event.h :
+../download.h :
+/usr/include/stdlib.h :
+/usr/include/sys/types.h :
+/usr/include/time.h :
+/usr/include/endian.h :
+/usr/include/bits/endian.h :
+/usr/include/sys/select.h :
+/usr/include/bits/select.h :
+/usr/include/bits/sigset.h :
+/usr/include/sys/sysmacros.h :
+/usr/include/alloca.h :
+../hash.h :
+../list.h :
+../gift.h :
+/usr/include/assert.h :
+../opt.h :
+../parse.h :

@@ -1,0 +1,27 @@
+D/data////
+D/docs////
+D/gift////
+D/lib////
+D/test////
+D/tools////
+/.cvsignore/1.1/Sun Nov 28 21:10:02 2004//
+/AUTHORS/1.1/Sun Nov 28 21:10:02 2004//
+/INSTALL/1.1/Sun Nov 28 21:10:02 2004//
+/NEWS/1.1/Sun Nov 28 21:10:02 2004//
+/autogen.sh/1.1/Sun Nov 28 21:11:01 2004//
+D/m4////
+/README/1.2/Sun Dec 19 03:31:58 2004//
+/acinclude.m4/1.2/Mon Dec 27 19:16:04 2004//
+D/win32////
+D/crawler////
+D/filesrv////
+/COPYING/1.3/Sat Jan 21 10:09:32 2006//
+/GPL/1.1/Sun Dec 18 11:52:05 2005//
+/Makefile.am/1.3/Sat Jan 21 10:09:33 2006//
+/Makefile.msvc/1.7/Sat Jan 21 10:09:33 2006//
+/README.win32/1.2/Sat Jan 21 10:09:33 2006//
+/TODO/1.27/Sat Jan 21 10:09:33 2006//
+/configure.ac/1.10/Sat Jan 21 10:09:33 2006//
+D/aresdll////
+/ChangeLog/1.9/Sun Feb 19 15:20:50 2006//
+/Make.msvc/1.20/Mon Mar  6 14:46:09 2006//

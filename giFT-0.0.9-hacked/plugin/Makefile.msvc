@@ -1,0 +1,58 @@
+# $Id: Makefile.msvc,v 1.6 2003/06/01 01:44:44 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../src -I..
+
+OBJECTS = \
+	protocol$(O) \
+	share$(O) \
+	share_hash$(O)
+	
+TARGETLIBSTATIC = $(LIBGIFTPROTO_STATIC)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+TARGETDLL = $(LIBGIFTPROTO_DLL)
+TARGETLIB = $(LIBGIFTPROTO_LIB)
+
+LIBGIFTPROTOAPI_DEF ="../win32/libgiFTproto_api.def"
+
+all: $(TARGETDLL) $(TARGETLIBSTATIC)
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+all: $(TARGETLIBSTATIC)
+install:
+
+!endif
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGETDLL): $(OBJECTS) $(LIBGIFTPROTOAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(LIBPLUGINAPI_DEF) $(LIBS) $(OBJECTS)
+
+!endif
+
+$(TARGETLIBSTATIC): $(OBJECTS)
+	$(LT) -nologo -out:$(TARGETLIBSTATIC) $(OBJECTS)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(TARGETLIBSTATIC)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

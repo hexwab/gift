@@ -1,0 +1,303 @@
+../../CVS/Entries:/giFT-setup.in/1.35/Tue Feb 25 15:34:47 2003//
+../../OpenFT/ft_event.h: * @brief Assosicate a giFT-space interface event with a remotely executed
+../../OpenFT/ft_event.h: * Bridge the cap between giFT-space and OpenFT-space event execution.  This
+../../OpenFT/ft_event.h: *    giFT-space id.  Any value is valid here, as it is not the true id.
+../../OpenFT/ft_html.c:#define PRIVATE_NODEPAGE config_get_int (OPENFT->conf, "nodepage/private=0")
+../../OpenFT/ft_html.c:#define PRIVATE_ALLOW    config_get_str (OPENFT->conf, "local/hosts_allow=LOCAL")
+../../OpenFT/ft_html.c:	FT->DBGFN (FT, "%s", net_ip_str (ip));
+../../OpenFT/ft_http_client.c:		FT->DBGSOCK (FT, c, "invalid request '%s'", request);
+../../OpenFT/ft_http_client.c:		FT->DBGSOCK (FT, c, "invalid http header");
+../../OpenFT/ft_http_client.c:		FT->DBGFN (FT, "received code %i", xfer->code);
+../../OpenFT/ft_http_server.c:    config_get_int (OPENFT->conf, "local/lan_mode=0")
+../../OpenFT/ft_http_server.c:    config_get_str (OPENFT->conf, "local/hosts_allow=LOCAL")
+../../OpenFT/ft_http_server.c:		FT->warn (FT, "adding duplicate sources");
+../../OpenFT/ft_http_server.c:		FT->DBGFN (FT, "error parsing Range: header");
+../../OpenFT/ft_http_server.c:		FT->DBGSOCK (FT, c, "invalid http header");
+../../OpenFT/ft_http_server.c:		FT->DBGSOCK (FT, c, "invalid request '%s'", request);
+../../OpenFT/ft_http_server.c:		FT->DBGSOCK (FT, c, "unable to locate temporary buffer for %s",
+../../OpenFT/ft_http_server.c:		FT->DBGSOCK (FT, c, "race condition detected (%i/%i), aborting",
+../../OpenFT/ft_http_server.c:			FT->DBGSOCK (FT, c, "cannot satisfy %s: invalid share",
+../../OpenFT/ft_http_server.c:		FT->DBGFN (FT, "unable to register upload with the daemon");
+../../OpenFT/ft_http_server.c:		FT->err (FT, "unable to read from %s: %s", xfer->open_path,
+../../OpenFT/ft_netorg.c:	FT->DBGFN (FT, "%s: %hu", ft_node_fmt (node), node->klass);
+../../OpenFT/ft_node.c:		FT->warn (FT, "unable to queue %s: %s", ft_packet_fmt (packet),
+../../OpenFT/ft_node.c:	FT->dbg (FT, "%s (%s) -> %s: %s",
+../../OpenFT/ft_node.c:	FT->dbg (FT, "%-24s %s %s", hostfmt, ft_node_classstr (klass),
+../../OpenFT/ft_node.h: * @brief OpenFT-specific node classification.
+../../OpenFT/ft_openft.c:#define NODE_ALIAS config_get_str (OPENFT->conf, "main/alias")
+../../OpenFT/ft_openft.c:		FT->err (FT, "dropping NODE_SEARCH status due to lacking libdb support");
+../../OpenFT/ft_openft.c:	if (!(OPENFT->conf = gift_config_new ("OpenFT")))
+../../OpenFT/ft_openft.c:		FT->err (FT, "unable to load OpenFT configuration");
+../../OpenFT/ft_openft.c:	ft_port   = config_get_int (OPENFT->conf, "main/port=1215");
+../../OpenFT/ft_openft.c:	http_port = config_get_int (OPENFT->conf, "main/http_port=1216");
+../../OpenFT/ft_openft.c:	klass     = config_get_int (OPENFT->conf, "main/class=1");
+../../OpenFT/ft_openft.c:	if ((OPENFT->ft = ft_start ((FTNodeClass)klass, ft_port)))
+../../OpenFT/ft_openft.c:		OPENFT->http = http_start (http_port);
+../../OpenFT/ft_openft.c:	if (!OPENFT->ft || !OPENFT->http)
+../../OpenFT/ft_openft.c:		FT->err (FT, "unable to successfully bind listening ports, aborting "
+../../OpenFT/ft_openft.c:	OPENFT->main_timer =
+../../OpenFT/ft_openft.c:	OPENFT->shutdown = TRUE;
+../../OpenFT/ft_openft.c:	timer_remove (OPENFT->main_timer);
+../../OpenFT/ft_openft.c:	config_free (OPENFT->conf);
+../../OpenFT/ft_openft.c:	tcp_close (OPENFT->http);
+../../OpenFT/ft_openft.c:	tcp_close (OPENFT->ft);
+../../OpenFT/ft_openft.h:#define OPENFT       ((OpenFT *)FT->udata)
+../../OpenFT/ft_openft.h:#define FT_SELF      (FT_NODE(OPENFT->ft))
+../../OpenFT/ft_openft.h:#define HTTP_SELF    (OPENFT->http)
+../../OpenFT/ft_packet.c:		FT->warn (FT, "invalid ip version: %hu", ip_ver);
+../../OpenFT/ft_packet.h: * Appends raw OpenFT-encoded packet data.  This should be used very
+../../OpenFT/ft_protocol.c:	FT->err (FT, "[%s] found no handler for cmd=0x%04x len=0x%04x",
+../../OpenFT/ft_protocol.c:	FT->message (FT, generate_msg (ver_upgrade));
+../../OpenFT/ft_protocol.c:	FT->DBGSOCK (FT, c, "sent %i nodes", nodes);
+../../OpenFT/ft_protocol.c:	FT->DBGSOCK (FT, c, "rcvd %i new nodes", n);
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "request refused");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "[%hu:%i]: '%s' (%s/%s)...%i/%i result(s)",
+../../OpenFT/ft_protocol.c:	FT->DBGSOCK (FT, FT_CONN(node), "forwarded %s...",
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "clamped nmax=%hu, ttl=%hu",
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "refusing search request, already seen this!");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "%s[%i:%i]: forward broadcast for %s...",
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "%s: %i peers used",
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "unable to create result");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "cant find %s, route lost!",
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "bogus search result, no guid");
+../../OpenFT/ft_protocol.c:		FT->DBGFN (FT, "unable to register %s", net_ip_str (parent_addr));
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "node may have just tried to lie to us");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "search result not locally matched, ignoring");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "incomplete request");
+../../OpenFT/ft_protocol.c:		FT->DBGSOCK (FT, c, "incompleted request");
+../../OpenFT/ft_search.c:	FT->search_result (FT, event, user, node, s->str,
+../../OpenFT/ft_search.c:	FT->DBGSOCK (FT, FT_CONN(node), "%s", ft_guid_fmt (search->guid));
+../../OpenFT/ft_search.c:	FT->DBGFN (FT, "%s: searched %i nodes (ttl=%i)",
+../../OpenFT/ft_search.c:		FT->DBGFN (FT, "browse failed...sigh");
+../../OpenFT/ft_search.c:	FT->DBGFN (FT, "browsing %s", user);
+../../OpenFT/ft_search_exec.c:		FT->DBGFN (FT, "this shouldnt happen");
+../../OpenFT/ft_search_exec.c:		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
+../../OpenFT/ft_search_exec.c:		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+../../OpenFT/ft_search_exec.c:		FT->DBGFN (FT, "%i(%i): %.06fs elapsed", (int)type, (int)sdata.matches,
+../../OpenFT/ft_session.c:	FT->DBGSOCK (FT, c, "%s", ft_packet_fmt (packet));
+../../OpenFT/ft_session.c:		FT->DBGSOCK (FT, c, "%i(0x%08x): failed %s", FT_SESSION(c)->stage,
+../../OpenFT/ft_session.c:		FT->DBGSOCK (FT, c, "%i: flushing %s", psend, ft_packet_fmt (packet));
+../../OpenFT/ft_session.c:		FT->DBGSOCK (FT, c, "delivering buffered packet(s)...");
+../../OpenFT/ft_session.c:	if (!OPENFT->shutdown)
+../../OpenFT/ft_session.c:	FT->DBGSOCK (FT, c, "handshaking took too long");
+../../OpenFT/ft_session.c:	FT->DBGSOCK (FT, c, "stage = %i", (int)FT_SESSION(c)->stage);
+../../OpenFT/ft_session.c:	FT->DBGSOCK (FT, c, "queueing %s", ft_packet_fmt (packet));
+../../OpenFT/ft_session.c:	FT->DBGFN (FT, "attempting connection to %s", ft_node_fmt (node));
+../../OpenFT/ft_session.c:		FT->err (FT, "unable to connect to %s: %s", ft_node_fmt (node),
+../../OpenFT/ft_session.c:		FT->err (FT, "accept: %s", GIFT_NETERROR());
+../../OpenFT/ft_share.c:		FT->DBGFN (FT, "exposing direct path: %s", path);
+../../OpenFT/ft_share.c:		FT->DBGSOCK (FT, c, "unable to submit %p", file);
+../../OpenFT/ft_share.c:	FT->DBGSOCK (FT, c, "submitting shares...");
+../../OpenFT/ft_share.c:		FT->DBGSOCK (FT, c, "unable to fetch a new stream, proceeding without");
+../../OpenFT/ft_share.c:	FT->DBGFN (FT, "%s share sync...", (start ? "beginning" : "finishing"));
+../../OpenFT/ft_share_file.h: * Create arbitrary OpenFT-specific data to be associated w/ a FileShare
+../../OpenFT/ft_share_file.h: * Free arbitrary OpenFT-specific data allocated from ::ft_share_new_data.
+../../OpenFT/ft_shost.c:		FT->DBGFN (FT, "attempted to remove %s (dirty)", net_ip_str (ip));
+../../OpenFT/ft_shost.c:		FT->DBGFN (FT, "%s: unable to remove shost db entries",
+../../OpenFT/ft_stream.c:			FT->DBGSOCK (FT, c, "unable to negotiate zlib compression");
+../../OpenFT/ft_stream.c:	FT->DBGFN (FT, "%s: %lu(%s): initialized",
+../../OpenFT/ft_stream.c:		FT->DBGFN (FT, "%s: %lu(%s): %u/%u: in=%u, out=%u",
+../../OpenFT/ft_stream.c:			FT->err (FT, "zlib: %i", err);
+../../OpenFT/ft_stream.c:		FT->DBGFN (FT, "some asshole sent an invalid stream");
+../../OpenFT/ft_utils.c:		FT->DBGFN (FT, "%s:%hu: %s", net_ip_str (c->host), port,
+../../OpenFT/ft_utils.c:		FT->DBGFN (FT, "%s:%hu: connection already verified",
+../../OpenFT/ft_xfer.c:		FT->err (FT, "failed to open %s", gift_conf_path ("access.log"));
+../../OpenFT/ft_xfer.c:			FT->DBGFN (FT, "fuck");
+../../OpenFT/ft_xfer.c:	FT->source_status (FT, chunk->source, status, text);
+../../OpenFT/ft_xfer.c:		FT->DBGFN (FT, "using previous connection to %s:%hu",
+../../OpenFT/ft_xfer.c:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/ft_xfer.c:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/ft_xfer.c:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/ft_xfer.c:		FT->source_status (FT, chunk->source,
+../../OpenFT/ft_xfer.c:		FT->DBGFN (FT, "UI made an invalid request for '%s'", request);;
+../../OpenFT/ft_xfer.c:		FT->DBGFN (FT, "no connection found to suspend");
+../../OpenFT/ft_xfer.c:		FT->DBGFN (FT, "no connection found to resume");
+../../OpenFT/.#ft_openft.c.1.12:#define NODE_ALIAS config_get_str (OPENFT->conf, "main/alias")
+../../OpenFT/.#ft_openft.c.1.12:	if (!OPENFT->ft)
+../../OpenFT/.#ft_openft.c.1.12:	node_conn_set (OPENFT->ft, 0, -1, port, NULL);
+../../OpenFT/.#ft_openft.c.1.12:	if (!(OPENFT->conf = gift_config_new ("OpenFT")))
+../../OpenFT/.#ft_openft.c.1.12:	ft_port   = config_get_int (OPENFT->conf, "main/port=1215");
+../../OpenFT/.#ft_openft.c.1.12:	http_port = config_get_int (OPENFT->conf, "main/http_port=1216");
+../../OpenFT/.#ft_openft.c.1.12:	klass     = config_get_int (OPENFT->conf, "main/class=1");
+../../OpenFT/.#ft_openft.c.1.12:	OPENFT->ft = ft_start (klass, ft_port);
+../../OpenFT/.#ft_openft.c.1.12:	OPENFT->http = http_start (http_port);
+../../OpenFT/.#ft_openft.c.1.12:	if (!OPENFT->ft || !OPENFT->http)
+../../OpenFT/.#ft_openft.c.1.12:	OPENFT->main_timer =
+../../OpenFT/.#ft_openft.c.1.12:	OPENFT->shutdown = TRUE;
+../../OpenFT/.#ft_openft.c.1.12:	config_free (OPENFT->conf);
+../../OpenFT/.#ft_openft.c.1.12:	timer_remove (OPENFT->main_timer);
+../../OpenFT/.#ft_openft.c.1.12:	net_close (OPENFT->http->fd);
+../../OpenFT/.#ft_openft.c.1.12:	node_free (OPENFT->http);
+../../OpenFT/.#ft_openft.c.1.12:	net_close (OPENFT->ft->fd);
+../../OpenFT/.#ft_openft.c.1.12:	node_free (OPENFT->ft);
+../../OpenFT/.#ft_openft.c.1.13:#define NODE_ALIAS config_get_str (OPENFT->conf, "main/alias")
+../../OpenFT/.#ft_openft.c.1.13:	if (!OPENFT->ft)
+../../OpenFT/.#ft_openft.c.1.13:	node_conn_set (OPENFT->ft, 0, -1, port, NULL);
+../../OpenFT/.#ft_openft.c.1.13:	if (!(OPENFT->conf = gift_config_new ("OpenFT")))
+../../OpenFT/.#ft_openft.c.1.13:	ft_port   = config_get_int (OPENFT->conf, "main/port=1215");
+../../OpenFT/.#ft_openft.c.1.13:	http_port = config_get_int (OPENFT->conf, "main/http_port=1216");
+../../OpenFT/.#ft_openft.c.1.13:	klass     = config_get_int (OPENFT->conf, "main/class=1");
+../../OpenFT/.#ft_openft.c.1.13:	OPENFT->ft = ft_start (klass, ft_port);
+../../OpenFT/.#ft_openft.c.1.13:	OPENFT->http = http_start (http_port);
+../../OpenFT/.#ft_openft.c.1.13:	if (!OPENFT->ft || !OPENFT->http)
+../../OpenFT/.#ft_openft.c.1.13:	OPENFT->main_timer =
+../../OpenFT/.#ft_openft.c.1.13:	OPENFT->shutdown = TRUE;
+../../OpenFT/.#ft_openft.c.1.13:	config_free (OPENFT->conf);
+../../OpenFT/.#ft_openft.c.1.13:	timer_remove (OPENFT->main_timer);
+../../OpenFT/.#ft_openft.c.1.13:	net_close (OPENFT->http->fd);
+../../OpenFT/.#ft_openft.c.1.13:	node_free (OPENFT->http);
+../../OpenFT/.#ft_openft.c.1.13:	net_close (OPENFT->ft->fd);
+../../OpenFT/.#ft_openft.c.1.13:	node_free (OPENFT->ft);
+../../OpenFT/.#ft_search_exec.c.1.20:	max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+../../OpenFT/.#ft_xfer.c.1.16:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/ft_conf.c:#define FT_CONF OPENFT->conf
+../../OpenFT/ft_conn.c:	FT->DBGFN (FT, "kept %i connections alive", n);
+../../OpenFT/ft_conn.c:	FT->DBGFN (FT, "%s: costs %i", ft_node_fmt (node), cost);
+../../OpenFT/ft_conn.c:	FT->DBGFN (FT, "began %i connections (remaining weight: %i)", n, weight);
+../../OpenFT/ft_conn.c:	FT->DBGFN (FT, "%s(%i): authorized connection",
+../../OpenFT/ft_node_cache.c:			FT->warn (FT, "ignoring incomplete line in %s (%i)", path, nodes);
+../../OpenFT/ft_node_cache.c:	FT->DBGFN (FT, "opening nodes cache from %s...", path);
+../../OpenFT/ft_node_cache.c:		FT->DBGFN (FT, "falling back to %s...", path);
+../../OpenFT/ft_node_cache.c:		FT->warn (FT, "unable to locate a nodes file...this is very bad, "
+../../OpenFT/ft_node_cache.c:		FT->DBGFN (FT, "successfully read %i nodes", nodes);
+../../OpenFT/ft_node_cache.c:        FT->err (FT, "No nodes loaded.  If you believe this is in error, try "
+../../OpenFT/ft_node_cache.c:		FT->err (FT, "can't create %s: %s", pathtmp, GIFT_STRERROR());
+../../OpenFT/ft_node_cache.c:		FT->warn (FT, "*** creating new nodes file: %s", path);
+../../OpenFT/.#ft_openft.c.1.14:#define NODE_ALIAS config_get_str (OPENFT->conf, "main/alias")
+../../OpenFT/.#ft_openft.c.1.14:	if (!OPENFT->ft)
+../../OpenFT/.#ft_openft.c.1.14:	node_conn_set (OPENFT->ft, 0, -1, port, NULL);
+../../OpenFT/.#ft_openft.c.1.14:	if (!(OPENFT->conf = gift_config_new ("OpenFT")))
+../../OpenFT/.#ft_openft.c.1.14:	ft_port   = config_get_int (OPENFT->conf, "main/port=1215");
+../../OpenFT/.#ft_openft.c.1.14:	http_port = config_get_int (OPENFT->conf, "main/http_port=1216");
+../../OpenFT/.#ft_openft.c.1.14:	klass     = config_get_int (OPENFT->conf, "main/class=1");
+../../OpenFT/.#ft_openft.c.1.14:	if ((OPENFT->ft = ft_start (klass, ft_port)))
+../../OpenFT/.#ft_openft.c.1.14:		OPENFT->http = http_start (http_port);
+../../OpenFT/.#ft_openft.c.1.14:	if (!OPENFT->ft || !OPENFT->http)
+../../OpenFT/.#ft_openft.c.1.14:	OPENFT->main_timer =
+../../OpenFT/.#ft_openft.c.1.14:	OPENFT->shutdown = TRUE;
+../../OpenFT/.#ft_openft.c.1.14:	config_free (OPENFT->conf);
+../../OpenFT/.#ft_openft.c.1.14:	timer_remove (OPENFT->main_timer);
+../../OpenFT/.#ft_openft.c.1.14:	net_close (OPENFT->http->fd);
+../../OpenFT/.#ft_openft.c.1.14:	node_free (OPENFT->http);
+../../OpenFT/.#ft_openft.c.1.14:	net_close (OPENFT->ft->fd);
+../../OpenFT/.#ft_openft.c.1.14:	node_free (OPENFT->ft);
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s: %s failed: %s", \
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s(%s:%s) failed: %s", method, path, db, db_strerror(ret))
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s failed: %s", method, db_strerror(ret))
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "opened(%i) %p %s:%s", ret, dbp, path,
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "attempting to remove %s:%s", path, database);
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "DB_ENV->dbremove (%s:%s) failed: %s",
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "closing %p %s:%s(%i,%i)", dbp, path, database,
+../../OpenFT/ft_search_db.c:		FT->err (FT, "unable to mkdir %s: %s",
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "search db params: path=%s, cache=%lu",
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: unable to open primary local database",
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: unable to open secondary local database",
+../../OpenFT/ft_search_db.c:	FT->TRACE (FT);
+../../OpenFT/ft_search_db.c://		FT->DBGFN(FT,"record %s: %s", md5_string(rec->md5,""),net_ip_str(rec->ip_addr));
+../../OpenFT/ft_search_db.c://				FT->DBGFN(FT,"%s: removed %s for token %lu", net_ip_str(shost->host), md5_string(rec->md5, ""), token);
+../../OpenFT/ft_search_db.c://			FT->DBGFN(FT,"skipping host %s for token %lu", net_ip_str(rec->ip_addr),token);
+../../OpenFT/ft_search_db.c://	FT->DBGFN (FT, "%s: %s", net_ip_str (shost->host), md5_string(md5, ""));
+../../OpenFT/ft_search_db.c://			FT->DBGFN(FT,"%s: deleting token %lu",net_ip_str(shost->host),*tokens);
+../../OpenFT/ft_search_db.c://			FT->DBGFN(FT,"%s: skipping token %lu", net_ip_str(shost->host),*tokens);
+../../OpenFT/ft_search_db.c:			FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: unable to open primary local database",
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: unable to open secondary local database",
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "unable to lookup shost for %s", net_ip_str (ip));
+../../OpenFT/ft_search_db.c:		FT->DBGFN (FT, "%s: unable to lookup md5", net_ip_str (shost->host));
+../../OpenFT/ft_search_db.c:		FT->DBGFN(FT, "secondary db contains %d tokens, %d files", stats->bt_nkeys, stats->bt_ndata);
+../../OpenFT/ft_search_db.c:		FT->err(FT, "failed to get sec db stats");
+../../OpenFT/ft_search_db.c:	FT->DBGFN (FT, "%s: scheduled", net_ip_str (shost->host));
+../../OpenFT/ft_search_db.c:	FT->err (FT, "this should not happen...");
+../../OpenFT/.#ft_xfer.c.1.20:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/.#ft_search_exec.c.1.27:	max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+../../OpenFT/.#ft_xfer.c.1.21:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/md5.c:		FT->err (FT, "Can't stat %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "Can't open %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "Can't open %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "Can't stat %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "Can't read %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "CreateFile: %s", GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "GetFileSize: %s", GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "mmap failed on %s: %s", file, GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "CreateFileMapping: %s", GIFT_STRERROR ());
+../../OpenFT/md5.c:		FT->err (FT, "MapViewOfFile: %s", GIFT_STRERROR ());
+../../OpenFT/md5.c:	FT->warn (FT, "mmap failed for %s, falling back to manual read...");
+../../OpenFT/.#ft_xfer.c.1.23:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/.#ft_xfer.c.1.24:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/.#ft_search_exec.c.1.28:		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
+../../OpenFT/.#ft_search_exec.c.1.28:		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+../../OpenFT/.#ft_xfer.c.1.25:	FT->source_status (FT, chunk->source, status, text);
+../../OpenFT/.#ft_xfer.c.1.25:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/.#ft_xfer.c.1.25:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/.#ft_xfer.c.1.25:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/.#ft_xfer.c.1.25:		FT->source_status (FT, chunk->source,
+../../OpenFT/.#ft_search_exec.c.1.29:		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
+../../OpenFT/.#ft_search_exec.c.1.29:		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+../../OpenFT/.#ft_xfer.c.1.27:	FT->source_status (FT, chunk->source, status, text);
+../../OpenFT/.#ft_xfer.c.1.27:	/* handle the various OpenFT-specific request forms */
+../../OpenFT/.#ft_xfer.c.1.27:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/.#ft_xfer.c.1.27:	FT->chunk_write (FT, chunk->transfer, chunk, chunk->source,
+../../OpenFT/.#ft_xfer.c.1.27:		FT->source_status (FT, chunk->source,
+../../OpenFT/ft_db_test.c:		FT->err(FT, "failed to open db '%s'",db_name);
+../../OpenFT/ft_db_test.c:			FT->dbg(FT, "test db contains %d hosts", hosts=stats->bt_ndata);
+../../OpenFT/ft_db_test.c:			FT->err(FT, "failed to get test db stats");
+../../OpenFT/ft_db_test.c:			FT->err(FT,"cursor init failed");
+../../OpenFT/ft_db_test.c://			FT->dbg(FT, "adding host %s", hname);
+../../OpenFT/ft_db_test.c:				FT->err(FT, "failed to open db for host %s", hname);
+../../OpenFT/ft_db_test.c:				FT->err(FT, "failed to create shost for %s",hname);
+../../OpenFT/ft_db_test.c:				FT->err(FT, "failed to get stats for %s", hname);
+../../OpenFT/ft_db_test.c://			FT->dbg(FT, "%s sharing %d files", hname, hfiles);
+../../OpenFT/ft_db_test.c:					FT->err(FT,"cursor init failed");
+../../OpenFT/ft_db_test.c://					FT->dbg(FT, "filename=%s",file->sdata.path);
+../../OpenFT/ft_db_test.c:					FT->err (FT, "DBcursor->c_get: %d", fret);
+../../OpenFT/ft_db_test.c:		FT->dbg(FT, "loaded %d total files (average %d)", files, files/hosts);
+../../OpenFT/ft_db_test.c:			FT->err (FT, "DBcursor->c_get: %d", ret);
+../../OpenFT/ft_db_test.c://		FT->dbg(FT, "inserting %d shares from %s",flen,net_ip_str(shost->host));
+../../OpenFT/ft_db_test.c:					FT->err(FT,"error inserting file %s (%s)", file->sdata.path, net_ip_str(shost->host));
+../../OpenFT/ft_db_test.c:				FT->err(FT, "error reading file array");
+../../OpenFT/ft_db_test.c://			FT->dbg (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
+../../OpenFT/ft_db_test.c:			FT->err(FT,"error removing host %s", net_ip_str(shost->host));
+../../OpenFT/ft_db_test.c://		FT->dbg (FT, "delete %s(%lu): %.06fs elapsed", net_ip_str (shost->host),
+../../OpenFT/ft_db_test.c:	FT->dbg (FT, "insert(%lu): %.06fs elapsed (avg %.02f files/s)", files, itime, files/itime);
+../../OpenFT/ft_db_test.c:	FT->dbg (FT, "remove(%lu): %.06fs elapsed (avg %.02f files/s)", files, rtime, files/rtime);
+../../OpenFT/ft_db_test.c:        FT->trace           = trace_wrapper;
+../../OpenFT/ft_db_test.c:        FT->dbg             = dbg_wrapper;
+../../OpenFT/ft_db_test.c:        FT->err           = err_wrapper;
+../../OpenFT/ft_db_test.c:        FT->warn             = warn_wrapper;
+../../OpenFT/ft_db_test.c:        FT->udata             = NULL;
+../../OpenFT/ft_db_test.c:        FT->name             = "db_bench";
+../../OpenFT/ft_db_test.c:	FT->dbg(FT,"maxhosts=%d",maxhosts);
+../../OpenFT/ft_db_test.c~:        FT->trace           = trace_wrapper;
+../../OpenFT/ft_db_test.c~:        FT->dbg             = dbg_wrapper;
+../../OpenFT/ft_db_test.c~:        FT->err           = err_wrapper;
+../../OpenFT/ft_db_test.c~:        FT->warn             = warn_wrapper;
+../../OpenFT/ft_db_test.c~:        FT->conf             = NULL;
+../../OpenFT/newstats:*** GIFT-ERROR: db_bench: DBcursor->c_get: 0
+Binary file ../../OpenFT/benchtemp/__db.002 matches
+Binary file ../../OpenFT/benchtemp/children.data matches
+../../OpenFT/oldwstats:*** GIFT-ERROR: db_bench: DBcursor->c_get: 0
+../../OpenFT/test/db_bench.c:		FT->err(FT, "failed to open db '%s'",db_name);
+../../OpenFT/test/db_bench.c:			FT->dbg(FT, "test db contains %d hosts", hosts=stats->bt_ndata);
+../../OpenFT/test/db_bench.c:			FT->err(FT, "failed to get test db stats");
+../../OpenFT/test/db_bench.c:			FT->err(FT,"cursor init failed");
+../../OpenFT/test/db_bench.c://			FT->dbg(FT, "adding host %s", hname);
+../../OpenFT/test/db_bench.c:				FT->err(FT, "failed to open db for host %s", hname);
+../../OpenFT/test/db_bench.c:				FT->err(FT, "failed to create shost for %s",hname);
+../../OpenFT/test/db_bench.c:				FT->err(FT, "failed to get stats for %s", hname);
+../../OpenFT/test/db_bench.c://			FT->dbg(FT, "%s sharing %d files", hname, hfiles);
+../../OpenFT/test/db_bench.c:					FT->err(FT,"cursor init failed");
+../../OpenFT/test/db_bench.c://					FT->dbg(FT, "filename=%s",file->sdata.path);
+../../OpenFT/test/db_bench.c:					FT->err (FT, "DBcursor->c_get: %d", fret);
+../../OpenFT/test/db_bench.c:		FT->dbg(FT, "loaded %d total files (average %d)", files, files/hosts);
+../../OpenFT/test/db_bench.c:			FT->err (FT, "DBcursor->c_get: %d", ret);
+../../OpenFT/test/db_bench.c:		FT->err(FT, "error reading search queries");
+../../OpenFT/test/db_bench.c:			FT->err(FT,"error adding search query");
+../../OpenFT/test/db_bench.c:	FT->dbg(FT, "loaded %d search queries", count(&queries));
+../../OpenFT/test/db_bench.c://		FT->dbg(FT, "inserting %d shares from %s",flen,net_ip_str(shost->host));
+../../OpenFT/test/db_bench.c:					FT->err(FT,"error inserting file %s (%s)", file->sdata.path, net_ip_str(shost->host));
+../../OpenFT/test/db_bench.c:				FT->err(FT, "error reading file array");
+../../OpenFT/test/db_bench.c://			FT->dbg (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
+../..

@@ -1,0 +1,17 @@
+53162	Btree magic number.
+9	Btree version number.
+Flags:	duplicates, little-endian
+2	Minimum keys per-page.
+512	Underlying database page size.
+4	Number of levels in the tree.
+56876	Number of unique keys in the tree.
+1061747	Number of data items in the tree.
+5765	Number of tree internal pages.
+1677520	Number of bytes free in tree internal pages (43% ff).
+7169	Number of tree leaf pages.
+1337398	Number of bytes free in tree leaf pages (64% ff).
+44460	Number of tree duplicate pages.
+3875274	Number of bytes free in tree duplicate pages (83% ff).
+0	Number of tree overflow pages.
+0	Number of bytes free in tree overflow pages (0% ff).
+0	Number of pages on the free list.

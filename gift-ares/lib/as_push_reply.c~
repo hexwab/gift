@@ -1,0 +1,91 @@
+#include "as_ares.h"
+
+struct push_reply {
+	TCPC *c;
+	char *id_str;
+	ASShare *share;
+};
+
+static void push_reply_connected (int fd, input_id input, struct push_reply *r)
+{
+	char *req, *hexhash;
+	TCPC *c = r->c;
+	input_remove (input);
+
+        if (net_sock_error (fd))
+	{
+		AS_DBG_2 ("push reply connect to %s:%d failed", net_ip_str (c->host), c->port);
+
+		return;
+	}
+	
+	hexhash = as_hex_encode (r->share->hash->data, AS_HASH_SIZE);
+
+	req = stringf ("PUSH SHA1:%s%s\n\n", hexhash, r->id_str);
+
+	free (hexhash);
+	free (r->id_str);
+	free (r);
+ 
+	if (!tcp_send (c, req, strlen (req)))
+	{
+		AS_DBG_2 ("push reply send to %s:%d failed", net_ip_str (c->host), c->port);
+
+		tcp_close (c);
+		return;
+	}
+
+	AS_DBG_1 ("sent push reply to %s", net_peer_ip (c->fd));
+
+	as_http_server_pushed (AS->server, c);
+}
+
+void as_push_reply (ASPacket *packet)
+{
+	in_addr_t ip;
+	in_port_t port;
+	ASHash *hash;
+	struct push_reply *r;
+
+	if (as_packet_remaining (packet) < 35)
+	{
+		AS_HEAVY_DBG_1 ("truncated push request (%d bytes)", as_packet_remaining (packet));
+		return;
+	}
+
+	if (!(r = malloc (sizeof (*r))))
+		return;
+
+	ip = as_packet_get_ip (packet);
+	port = as_packet_get_be16 (packet);
+	hash = as_packet_get_hash (packet);
+
+	AS_DBG_2 ("got push request to %s:%d", net_ip_str (ip), port);
+	
+	r->share = as_shareman_lookup (AS->shareman, hash);
+
+	as_hash_free (hash);
+
+	if (!r->share)
+	{
+		AS_DBG_3 ("unknown share %s for push request to %s:%d", as_hash_str (hash), net_ip_str (ip), port);
+
+		free (r);
+		return;
+	}
+
+	r->id_str = as_packet_get_str (packet, 8);
+
+	if (!(r->c = tcp_open (ip, port, FALSE)))
+	{
+		AS_DBG_2 ("push reply send to %s:%d failed", net_ip_str (ip), port);
+
+		free (r->id_str);
+		free (r);
+		return;
+	}
+
+	input_add (r->c->fd, r, INPUT_WRITE,
+		   (InputCallback)push_reply_connected, 
+		   AS_PUSH_CONNECT_TIMEOUT);
+}

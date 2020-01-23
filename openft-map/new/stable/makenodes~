@@ -1,0 +1,1 @@
+perl -lne '@a=/\S+:\s*(.*?) /g;print join " ",time,12345,@a[0..4]'

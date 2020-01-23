@@ -1,0 +1,149 @@
+body { 
+    background: white
+}
+
+body, td {
+    font-family: Verdana;
+    font-size: 11pt;
+}
+
+h1 { 
+    font-size: 18pt;
+    text-align: center
+}
+
+h2 {
+    font-size: 14pt
+}
+
+caption { 
+    font-weight: bold 
+}
+
+div.fragment { 
+    background-color: #eeeeee; 
+    width: 100%; 
+    border: none
+}
+
+div.ah { 
+    color: #ffffff; 
+    background-color: #000000; 
+    font-weight: bold; 
+    margin: 3px; 
+    margin-top: 3px 
+}
+
+div.groupheader { 
+    font-weight: bold;
+    margin-left: 16px; 
+    margin-top: 12px; 
+    margin-bottom: 6px 
+}
+
+div.grouptext { 
+    font-size: smaller; 
+    font-style: italic; 
+    margin-left: 16px 
+}
+
+td.md, td.mdname1, td.mdname {
+    font-family: Courier New, Courier, mono;
+	font-size: 16px;
+    background-color: #f2f2ff;
+    /* font-weight: bold */
+}
+
+td.mdname1, td.mdname { 
+    color: #602020
+}
+
+td.mdname { 
+    width: 600px
+}
+
+td.indexkey { 
+   background-color: #eeeeff; 
+   font-weight: bold; 
+   padding: 2px 10px; 
+   margin: 2px 0px
+}
+
+td.indexvalue { 
+   background-color: #eeeeff; 
+   font-style: italic; 
+   padding: 2px 10px; 
+   margin: 2px 0px
+}
+
+a:link {
+    color: #009900
+}
+
+a:visited {
+    color: #006600
+}
+
+a.qindex {
+}
+
+a.qindexref {
+}
+
+a.el { 
+    font-weight: bold;
+    text-decoration: none
+}
+
+a.elref { 
+    font-weight: bold 
+}
+
+a.code { 
+    color: #4444ee;
+    font-weight: normal; 
+    text-decoration: none
+}
+
+a.coderef { 
+    font-weight: normal; 
+    color: #4444ee 
+}
+
+a:hover { 
+    color: #e0b300;
+/*  background-color: #f2f2ff; */
+    text-decoration: none
+}
+
+dl.el { 
+    margin-left: -1cm
+}
+
+font.keyword { 
+    color: #008000 
+}
+
+font.keywordtype { 
+    color: #604020 
+}
+
+font.keywordflow { 
+    color: #e08000 
+}
+
+font.comment { 
+    color: #800000
+}
+
+font.preprocessor { 
+    color: #806020 
+}
+
+font.stringliteral {
+    color: #002080 
+}
+
+font.charliteral { 
+    color: #008080 
+}

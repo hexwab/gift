@@ -1,0 +1,393 @@
+This is a patch against the gift-0.11.8 tarball to make it build with
+proper Ogg Vorbis support.  (Specifically, some platforms require that
+you pass -logg explicitly, rather than just -lvorbis*.)
+
+This also removes a few vestigial IMAGEMAGICK lines (but only when I had
+to put OGG lines in their place; I didn't do a thorough check).
+
+The two missing *.m4 files are in the patch because they're missing from
+the distributed tarball.  They're already in CVS (which is where I got
+them...).
+
+This patch does *not* affect "configure" and other generated files, so
+one must run ./autogen.sh after applying this.  That, in turn, means
+that one must have autoconf and automake (and probably libtool) installed.
+They must also be sufficiently new.
+
+diff gift-0.11.8/config.h.in gift-0.11.8.new/config.h.in
+--- gift-0.11.8/config.h.in	Thu Nov 11 19:14:15 2004
++++ gift-0.11.8.new/config.h.in	Thu Nov 18 09:30:16 2004
+@@ -159,6 +159,8 @@
+ 
+ #undef USE_LIBMAGIC
+ 
++#undef USE_LIBOGG
++
+ #undef USE_LIBVORBIS
+ 
+ #undef USE_LTDL
+diff gift-0.11.8/configure.ac gift-0.11.8.new/configure.ac
+--- gift-0.11.8/configure.ac	Wed Nov 10 20:31:15 2004
++++ gift-0.11.8.new/configure.ac	Thu Nov 18 08:56:53 2004
+@@ -78,6 +78,7 @@
+ AH_VERBATIM([BUILD_DATE],      [#undef BUILD_DATE])
+ AH_VERBATIM([USE_LTDL],        [#undef USE_LTDL])
+ AH_VERBATIM([USE_PERL],        [#undef USE_PERL])
++AH_VERBATIM([USE_LIBOGG],      [#undef USE_LIBOGG])
+ AH_VERBATIM([USE_LIBVORBIS],   [#undef USE_LIBVORBIS])
+ AH_VERBATIM([USE_LIBMAGIC],    [#undef USE_LIBMAGIC])
+ 
+@@ -306,6 +307,8 @@
+ AM_CONDITIONAL(PERL,        test x$enable_perl     = xyes)
+ AC_ARG_ENABLE(ltdl,        [  --disable-ltdl          do not use libltdl],[enable_ltdl=$enableval],[enable_ltdl=yes])
+ AM_CONDITIONAL(LTDL,        test x$enable_ltdl     = xyes)
++AC_ARG_ENABLE(libogg,      [  --disable-libogg        do not use libogg],[use_libogg=$enableval],[use_libogg=yes])
++AM_CONDITIONAL(LIBOGG,      test x$use_libogg      = xyes)
+ AC_ARG_ENABLE(libvorbis,   [  --disable-libvorbis     do not use libvorbis],[use_libvorbis=$enableval],[use_libvorbis=yes])
+ AM_CONDITIONAL(LIBVORBIS,   test x$use_libvorbis   = xyes)
+ AC_ARG_ENABLE(libmagic,    [  --enable-libmagic       use libmagic],[use_libmagic=$enableval],[use_libmagic=no])
+@@ -400,6 +403,18 @@
+         AC_DEFINE(USE_PERL)
+         AC_CHECK_FUNCS(Perl_eval_pv)],enable_perl=no,$PERL_LIBS)
+     fi
++fi
++
++dnl ###########################################################################
++dnl Check for libogg...
++dnl ###########################################################################
++
++if test "x$use_libogg = xyes"
++then
++  GIFT_CHECK_OGG([AC_DEFINE(USE_LIBOGG)],
++                 [use_libogg=no])
++else
++  use_libogg=no
+ fi
+ 
+ dnl ###########################################################################
+diff gift-0.11.8/m4/Makefile.am gift-0.11.8.new/m4/Makefile.am
+--- gift-0.11.8/m4/Makefile.am	Sat Aug 16 07:11:13 2003
++++ gift-0.11.8.new/m4/Makefile.am	Thu Nov 18 09:11:23 2004
+@@ -3,5 +3,7 @@
+ 
+ EXTRA_DIST = \
+ 	giftconfig.m4 \
++	gift-ltdl.m4 \
+ 	oggvorbis.m4 \
++	va_copy.m4 \
+ 	winsock.m4
+diff gift-0.11.8/m4/gift-ltdl.m4 gift-0.11.8.new/m4/gift-ltdl.m4
+--- gift-0.11.8/m4/gift-ltdl.m4	Wed Dec 31 19:00:00 1969
++++ gift-0.11.8.new/m4/gift-ltdl.m4	Thu Nov 18 09:09:03 2004
+@@ -0,0 +1,70 @@
++###############################################################################
++# $Id: gift-ltdl.m4,v 1.1 2004/04/17 06:16:28 hipnod Exp $
++###############################################################################
++
++AC_DEFUN([GIFT_CHECK_LTDL],
++[
++    AC_ARG_WITH(ltdl,dnl
++    [
++  --with-ltdl=PFX             Prefix where libltdl is installed
++    ],
++    OPT_LTDL=$withval)
++
++    gift_ltdl_save_cflags=$CFLAGS
++    gift_ltdl_save_cppflags=$CPPFLAGS
++    gift_ltdl_save_libs=$LIBS
++
++    if test x"$OPT_LTDL" != x; then
++        DL_CFLAGS="-I$OPT_LTDL/include"
++        DL_LDFLAGS="-L$OPT_LTDL/lib"
++
++        CFLAGS="$CFLAGS $DL_CFLAGS"
++        CPPFLAGS="$CPPFLAGS $DL_CFLAGS"
++        LIBS="$LIBS $DL_LIBS $DL_LDFLAGS"
++    fi
++
++    dnl check for lt_dlopen and lt_dlsym in libltdl
++    AC_CHECK_LIB(ltdl, lt_dlopen,
++        [AC_CHECK_LIB(ltdl, lt_dlsym, found_libltdl=yes, found_libltdl=no )] ,)
++
++    if test x$found_libltdl != xyes; then
++      AC_MSG_ERROR([
++*** Couldn't find ltdl library.  If it is installed in a non-standard
++*** location, please supply --with-ltdl=DIR on the configure command line,
++*** where `DIR' is the prefix where ltdl is installed (such as /usr,
++*** /usr/local, or /usr/pkg).  If that doesn't work, check config.log.
++])
++    fi
++
++    dnl check for ltdl header files
++    AC_CHECK_HEADERS(ltdl.h,
++            [ found_ltdlh=yes ],
++            [ found_ltdlh=no ])
++
++    if test x$found_ltdlh != xyes; then
++        AC_MSG_ERROR([
++*** Couldn't find ltdl.h header file.  The most likely problem is that
++*** ltdl.h is not installed.  You may need to install a libltdl-dev or
++*** -devel package in order to get ltdl.h.
++
++*** If the file is installed, make sure your compiler can find it is, and
++*** that it's installed with the same toplevel prefix as the libltdl
++*** library.  You may need to supply a --with-ltdl argument to configure
++*** if ltdl.h is in a non-standard location.  Otherwise, check config.log.
++])
++    fi
++
++    DL_LIBS=-lltdl
++    AC_SUBST(DL_LIBS)
++    AC_SUBST(DL_LDFLAGS)
++    AC_SUBST(DL_CFLAGS)
++
++    AC_DEFINE(USE_LTDL)
++    AC_SUBST(USE_LTDL)
++
++    if test x"$OPT_LTDL" != x; then
++        CFLAGS=$gift_ltdl_save_cflags
++        CPPFLAGS=$gift_ltdl_save_cppflags
++        LIBS=$gift_ltdl_save_libs
++    fi
++])
+diff gift-0.11.8/m4/oggvorbis.m4 gift-0.11.8.new/m4/oggvorbis.m4
+--- gift-0.11.8/m4/oggvorbis.m4	Mon Jul 28 01:09:33 2003
++++ gift-0.11.8.new/m4/oggvorbis.m4	Thu Nov 18 09:10:43 2004
+@@ -1,11 +1,115 @@
+ dnl
+ dnl $Id: oggvorbis.m4,v 1.4 2003/07/28 05:09:33 jasta Exp $
+ dnl
++
++# Configure paths for libogg
++# Jack Moffitt <jack@icecast.org> 10-21-2000
++# Shamelessly stolen from Owen Taylor and Manish Singh
++
++dnl GIFT_CHECK_OGG([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
++dnl Test for libogg, and define OGG_CFLAGS and OGG_LIBS
++dnl
++AC_DEFUN(GIFT_CHECK_OGG,
++[dnl 
++dnl Get the cflags and libraries
++dnl
++AC_ARG_WITH(ogg,[  --with-ogg=PFX   Prefix where libogg is installed (optional)], ogg_prefix="$withval", ogg_prefix="")
++AC_ARG_WITH(ogg-libraries,[  --with-ogg-libraries=DIR   Directory where libogg library is installed (optional)], ogg_libraries="$withval", ogg_libraries="")
++AC_ARG_WITH(ogg-includes,[  --with-ogg-includes=DIR   Directory where libogg header files are installed (optional)], ogg_includes="$withval", ogg_includes="")
++AC_ARG_ENABLE(oggtest, [  --disable-oggtest       Do not try to compile and run a test Ogg program],, enable_oggtest=yes)
++
++  if test "x$ogg_libraries" != "x" ; then
++    OGG_LIBS="-L$ogg_libraries"
++  elif test "x$ogg_prefix" != "x" ; then
++    OGG_LIBS="-L$ogg_prefix/lib"
++  elif test "x$prefix" != "xNONE" ; then
++    OGG_LIBS="-L$prefix/lib"
++  fi
++
++  OGG_LIBS="$OGG_LIBS -logg"
++
++  if test "x$ogg_includes" != "x" ; then
++    OGG_CFLAGS="-I$ogg_includes"
++  elif test "x$ogg_prefix" != "x" ; then
++    OGG_CFLAGS="-I$ogg_prefix/include"
++  elif test "x$prefix" != "xNONE"; then
++    OGG_CFLAGS="-I$prefix/include"
++  fi
++
++  AC_MSG_CHECKING(for Ogg)
++  no_ogg=""
++
++
++  if test "x$enable_oggtest" = "xyes" ; then
++    ac_save_CFLAGS="$CFLAGS"
++    ac_save_LIBS="$LIBS"
++    CFLAGS="$CFLAGS $OGG_CFLAGS"
++    LIBS="$LIBS $OGG_LIBS"
++dnl
++dnl Now check if the installed Ogg is sufficiently new.
++dnl
++      rm -f conf.oggtest
++      AC_TRY_RUN([
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <ogg/ogg.h>
++
++int main ()
++{
++  system("touch conf.oggtest");
++  return 0;
++}
++
++],, no_ogg=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
++       CFLAGS="$ac_save_CFLAGS"
++       LIBS="$ac_save_LIBS"
++  fi
++
++  if test "x$no_ogg" = "x" ; then
++     AC_MSG_RESULT(yes)
++     ifelse([$1], , :, [$1])     
++  else
++     AC_MSG_RESULT(no)
++     if test -f conf.oggtest ; then
++       :
++     else
++       echo "*** Could not run Ogg test program, checking why..."
++       CFLAGS="$CFLAGS $OGG_CFLAGS"
++       LIBS="$LIBS $OGG_LIBS"
++       AC_TRY_LINK([
++#include <stdio.h>
++#include <ogg/ogg.h>
++],     [ return 0; ],
++       [ echo "*** The test program compiled, but did not run. This usually means"
++       echo "*** that the run-time linker is not finding Ogg or finding the wrong"
++       echo "*** version of Ogg. If it is not finding Ogg, you'll need to set your"
++       echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
++       echo "*** to the installed location  Also, make sure you have run ldconfig if that"
++       echo "*** is required on your system"
++       echo "***"
++       echo "*** If you have an old version installed, it is best to remove it, although"
++       echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"],
++       [ echo "*** The test program failed to compile or link. See the file config.log for the"
++       echo "*** exact error that occured. This usually means Ogg was incorrectly installed"
++       echo "*** or that you have moved Ogg since it was installed." ])
++       CFLAGS="$ac_save_CFLAGS"
++       LIBS="$ac_save_LIBS"
++     fi
++     OGG_CFLAGS=""
++     OGG_LIBS=""
++     ifelse([$2], , :, [$2])
++  fi
++  AC_SUBST(OGG_CFLAGS)
++  AC_SUBST(OGG_LIBS)
++  rm -f conf.oggtest
++])
++
+ dnl Configure paths for libvorbis
+ dnl Jack Moffitt <jack@icecast.org> 10-21-2000
+ dnl Shamelessly stolen from Owen Taylor and Manish Singh
+ 
+-dnl XIPH_PATH_VORBIS([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
++dnl GIFT_CHECK_VORBIS([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+ dnl Test for libvorbis, and define VORBIS_CFLAGS and VORBIS_LIBS
+ dnl
+ AC_DEFUN(GIFT_CHECK_VORBIS,
+diff gift-0.11.8/m4/va_copy.m4 gift-0.11.8.new/m4/va_copy.m4
+--- gift-0.11.8/m4/va_copy.m4	Wed Dec 31 19:00:00 1969
++++ gift-0.11.8.new/m4/va_copy.m4	Thu Nov 18 09:09:03 2004
+@@ -0,0 +1,85 @@
++###############################################################################
++## $Id: va_copy.m4,v 1.2 2004/10/01 13:17:24 jasta Exp $
++###############################################################################
++
++dnl #
++dnl # LIBGIFT_VA_COPY
++dnl #
++dnl # Determine the most appropriate method for copying `va_list's.  Defines
++dnl # VA_COPY_FUNC or VA_COPY_BY_VAL where appropriate.
++dnl #
++dnl # Thanks to the GLib folks for providing this test.
++dnl #
++
++AC_DEFUN([LIBGIFT_VA_COPY],
++         [AC_CACHE_CHECK([for an implementation of va_copy()],libgift_cv_va_copy,
++                         [AC_LINK_IFELSE([#include <stdarg.h>
++                                          void f (int i, ...) {
++                                                va_list a1, a2;
++                                                va_start (a1, i);
++                                                va_copy (a2, a1);
++                                                if (va_arg (a2, int) != 42 ||
++                                                    va_arg (a1, int) != 42)
++                                                        exit (1);
++                                                va_end (a1);
++                                                va_end (a2);
++                                          }
++
++                                          int main () {
++                                                f (0, 42);
++                                                return 0;
++                                          }],
++                                          [libgift_cv_va_copy=yes],
++                                          [libgift_cv_va_copy=no])])
++
++          AC_CACHE_CHECK([for an implementation of __va_copy()],libgift_cv___va_copy,
++                         [AC_LINK_IFELSE([#include <stdarg.h>
++                                          void f (int i, ...) {
++                                                va_list a1, a2;
++                                                va_start (a1, i);
++                                                __va_copy (a2, a1);
++                                                if (va_arg (a2, int) != 42 ||
++                                                    va_arg (a1, int) != 42)
++                                                        exit (1);
++                                                va_end (a1);
++                                                va_end (a2);
++                                          }
++
++                                          int main () {
++                                                f (0, 42);
++                                                return 0;
++                                          }],
++                                          [libgift_cv___va_copy=yes],
++                                          [libgift_cv___va_copy=no])])
++
++          AC_CACHE_CHECK([whether va_lists can be copied by value],libgift_cv_va_copy_by_val,
++                         [AC_TRY_RUN([#include <stdarg.h>
++                                      void f (int i, ...) {
++                                            va_list a1, a2;
++                                            va_start (a1, i);
++                                            __va_copy (a2, a1);
++                                            if (va_arg (a2, int) != 42 ||
++                                                va_arg (a1, int) != 42)
++                                                    exit (1);
++                                            va_end (a1);
++                                            va_end (a2);
++                                      }
++
++                                      int main () {
++                                            f (0, 42);
++                                            return 0;
++                                      }],
++                                      [libgift_cv_va_copy_by_val=yes],
++                                      [libgift_cv_va_copy_by_val=no],
++                                      [libgift_cv_va_copy_by_val=yes])])
++
++          if test "x$libgift_cv_va_copy" = "xyes"; then
++                LIBGIFT_DEFINE_UNQUOTED(VA_COPY_FUNC,va_copy)
++          else if test "x$libgift_cv___va_copy" = "xyes"; then
++                LIBGIFT_DEFINE_UNQUOTED(VA_COPY_FUNC,__va_copy)
++          else if test "x$libgift_cv_copy_by_val" = "xyes"; then
++                LIBGIFT_DEFINE_UNQUOTED(VA_COPY_BY_VAL)
++          fi
++          fi
++          fi
++          ])
+diff gift-0.11.8/src/Makefile.am gift-0.11.8.new/src/Makefile.am
+--- gift-0.11.8/src/Makefile.am	Fri Dec 26 16:37:00 2003
++++ gift-0.11.8.new/src/Makefile.am	Thu Nov 18 09:20:48 2004
+@@ -7,7 +7,7 @@
+ 	$(GIFT_CFLAGS) \
+ 	$(PERL_CFLAGS) \
+ 	$(DL_CFLAGS) \
+-	$(IMAGEMAGICK_CFLAGS) \
++	$(OGG_CFLAGS) \
+ 	$(VORBIS_CFLAGS)
+ 
+ INCLUDES = \
+@@ -46,12 +46,12 @@
+ 	$(PERL_LIBS) \
+ 	$(VORBISFILE_LIBS) \
+ 	$(VORBIS_LIBS) \
+-	$(IMAGEMAGICK_LIBS)
++	$(OGG_LIBS)
+ 
+ giftd_LDFLAGS = \
+ 	$(GIFT_LDFLAGS) \
+ 	$(DL_LDFLAGS) \
+-	$(IMAGEMAGICK_LDFLAGS) \
++	$(OGG_LDFLAGS) \
+ 	-export-dynamic
+ 
+ EXTRA_DIST = \
+
+-- 
+Greg Wooledge                  |   "Truth belongs to everybody."
+greg@wooledge.org              |    - The Red Hot Chili Peppers
+http://wooledge.org/~greg/     |

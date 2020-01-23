@@ -1,0 +1,16 @@
+# -*- makefile -*-
+
+all:
+	cd OpenFT
+	$(MAKE) -C -f Makefile.msvc
+	cd ..
+install:
+	copy /y mime.types ..\win32-dist\data
+	cd OpenFT
+	$(MAKE) -C -f Makefile.msvc install
+	cd ..
+
+clean:
+	cd OpenFT
+	$(MAKE) -C -f Makefile.msvc clean
+	cd ..

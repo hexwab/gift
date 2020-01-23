@@ -1,0 +1,50 @@
+***************
+*** 218,231 ****
+  
+  int config_get_int (Config *conf, char *keypath)
+  {
+-        char *value;
+  
+-        value = config_get_str (conf, keypath);
+  
+-        if (!value)
+                 return 0;
+  
+-        return atoi (value);
+  }
+  
+  /*****************************************************************************/
+--- 218,250 ----
+  
+  int config_get_int (Config *conf, char *keypath)
+  {
++        char *strvalue, *endptr;
++        long value;
+  
++        strvalue = config_get_str (conf, keypath);
+  
++        if (!strvalue)
+                 return 0;
+  
++        value = strtol (strvalue, &endptr, 0);
++ 
++        switch (*endptr) {
++        case 'k':
++        case 'K':
++                value <<= 10;
++                break;
++        case 'm':
++        case 'M':
++                value <<= 20;
++                break;
++        case 'g':
++        case 'G':
++                value <<= 30;
++                break;
++                /* for stuff beyond this we'd need a long long */
++        }
++ 
++        return value;
+  }
+  
+  /*****************************************************************************/

@@ -1,0 +1,22 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.92
+diff -u -r1.92 ft_search_db.c
+--- ft_search_db.c	2 Nov 2003 12:09:06 -0000	1.92
++++ ft_search_db.c	10 Nov 2003 00:41:01 -0000
+@@ -605,9 +605,13 @@
+ 	file_unlink (stringf ("%s/__db.002", path));
+ 
+ 	/* unlink our databases */
+-	file_unlink (stringf ("%s/children.data", path));
++	file_unlink (stringf ("%s/share.data", path));
++	file_unlink (stringf ("%s/share.index", path));
+ 	file_unlink (stringf ("%s/md5.index", path));
+ 	file_unlink (stringf ("%s/tokens.index", path));
++
++	/* this one is an old name, in case the user's just upgraded */
++	file_unlink (stringf ("%s/children.data", path)); 
+ }
+ 
+ /*

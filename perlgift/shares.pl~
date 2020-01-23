@@ -1,0 +1,20 @@
+use giFT::Daemon;
+use giFT::Shares;
+use Data::Dumper;
+
+my $match=shift;
+
+my $daemon=new giFT::Daemon(undef,undef,1,undef);
+
+$daemon->attach;
+
+my $shares=new giFT::Shares($daemon);
+
+do {
+    $daemon->poll;
+} while (!$shares->share_status);
+
+#print ($shares->shares." shares\n");
+for (map {Dumper $_}($shares->shares)) {
+    /$match/i and print;
+}

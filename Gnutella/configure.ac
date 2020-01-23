@@ -1,0 +1,192 @@
+###############################################################################
+##
+## $Id: configure.ac,v 1.38 2006/08/06 17:26:39 hexwab Exp $
+##
+## Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+
+dnl ###########################################################################
+dnl Initialize autoconf...
+dnl ###########################################################################
+
+AC_PREREQ(2.53)
+
+AC_INIT(gift-gnutella, 0.0.11)
+AC_CONFIG_SRCDIR([src/gt_gnutella.h])
+
+AC_DEFINE(GT_MAJOR_VERSION, ["0"],    [Major])
+AC_DEFINE(GT_MINOR_VERSION, ["0"],    [Minor])
+AC_DEFINE(GT_MICRO_VERSION, ["11"],   [Micro])
+
+if test -e "$srcdir/CVS"; then
+   AC_DEFINE(GT_EXTRA_VERSION, ["-cvs"], [Extra])
+else
+   AC_DEFINE(GT_EXTRA_VERSION, [""], [Extra])
+fi
+
+dnl ###########################################################################
+dnl Initialize automake...
+dnl ###########################################################################
+
+AM_INIT_AUTOMAKE([dist-bzip2])
+AM_CONFIG_HEADER(config.h)
+
+AM_MAINTAINER_MODE
+
+dnl ###########################################################################
+dnl Initialize autoheader... 
+dnl ###########################################################################
+
+AH_VERBATIM([USE_ZLIB],     [#undef USE_ZLIB])
+AH_VERBATIM([USE_LIBXML2],  [#undef USE_LIBXML2])
+
+dnl ###########################################################################
+dnl Check for the necessary build tools and configure libtool
+dnl ###########################################################################
+
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_PROG_INSTALL
+
+AM_DISABLE_STATIC
+AC_PROG_LIBTOOL
+
+PLUGIN_LDFLAGS="-module -avoid-version"
+AC_SUBST(PLUGIN_LDFLAGS)
+
+# work around a bug where need_version is set to no by the above
+# -avoid-version call when this is not supported on OpenBSD (or am I
+# completely wrong about this?)
+OPENBSD_LIBTOOL_WORKAROUND
+
+dnl ###########################################################################
+dnl Test for libgift and libgiftproto...
+dnl ###########################################################################
+
+GIFT_PLUGIN_PKGCONFIG(GNUTELLA, 0.11.4, 0.12.0)
+AC_SUBST(GNUTELLA_CFLAGS)
+AC_SUBST(GNUTELLA_LIBS)
+
+# Get rid of -g[0-9] -Wall -O[0-9] and add them unconditionally if
+# compiling in maintainer mode
+if test x"$USE_MAINTAINER_MODE" = xyes; then
+   CFLAGS=`echo "$CFLAGS" | sed 's/-Wall\>//; s/-O[[0-9]]//; s/-g\([[0-9]]\)*//'`
+   CFLAGS="$CFLAGS -Wall -g3 -O0"
+fi
+
+dnl ###########################################################################
+dnl Check for platform functions
+dnl ###########################################################################
+
+AC_CHECK_FUNCS(getpid getppid)
+
+dnl ###########################################################################
+dnl Check for gethostbyname/h_errno/hstrerror
+dnl ###########################################################################
+
+dnl This is not really the best that can be done but it's enough atm
+AC_CHECK_FUNCS(hstrerror)
+
+dnl ###########################################################################
+dnl Test for zlib...
+dnl ###########################################################################
+
+dnl Default to compiler & linker defaults for files & libraries.
+OPT_ZLIB=
+AC_ARG_WITH(zlib,dnl
+[  --with-zlib[=DIR]         where to look for ZLIB [compiler/linker default paths]
+                        DIR points to the ZLIB installation prefix [/usr/local]],
+OPT_ZLIB=$withval,
+)
+
+if test x"$OPT_ZLIB" = xno; then 
+   AC_MSG_ERROR([zlib support is required])
+fi
+
+GIFT_PLUGIN_CHECK_ZLIB
+
+dnl ###########################################################################
+dnl Test for libxml...
+dnl ###########################################################################
+
+OPT_LIBXML=no
+AC_ARG_WITH(libxml,dnl
+[  --with-libxml[=DIR]         where to look for libxml [compiler/linker default paths]
+                        DIR points to the libxml installation prefix [/usr/local]],
+OPT_LIBXML=$withval,
+)
+
+AC_MSG_CHECKING([whether libxml should be used])
+use_libxml=no
+
+if test x"$OPT_LIBXML" != xno; then
+   AC_MSG_RESULT([yes]) 
+   GIFT_GNUTELLA_CHECK_LIBXML
+   use_libxml=yes
+else
+   AC_MSG_RESULT([no])
+fi
+
+dnl ###########################################################################
+dnl Finish generation of the build environment
+dnl ###########################################################################
+
+AC_CONFIG_FILES([
+Makefile
+m4/Makefile
+src/Makefile
+src/encoding/Makefile
+src/io/Makefile
+src/message/Makefile
+src/transfer/Makefile
+data/Makefile
+gnutella.spec
+])
+
+AC_OUTPUT
+
+dnl ###########################################################################
+dnl Print summary to the user...
+dnl ###########################################################################
+
+echo
+echo "$PACKAGE_NAME $VERSION"
+echo
+echo "-------------------- core ---"
+echo
+echo "libgift.................: $libgift_version"
+echo "libgiftproto............: $libgift_version"
+echo
+echo "-------------- extensions ---"
+echo
+echo "use zlib................: yes (required)"
+echo "use libxml..............: $use_libxml"
+echo
+echo "-----------------------------"
+echo
+
+dnl ###########################################################################
+dnl Sanity check the prefix where we're installing
+dnl ###########################################################################
+
+GIFT_PLUGIN_CHECK_PREFIX
+
+dnl ###########################################################################
+dnl Warn about needing GNU make
+dnl ###########################################################################
+
+echo
+echo "Type 'make' ('gmake' on some systems) to compile gift-gnutella."
+echo

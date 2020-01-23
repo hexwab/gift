@@ -1,0 +1,307 @@
+sharing.c   :456  share_update_index
+sharing.c   :413  share_build_index
+sharing.c   :467  share_update_index: descending /mnt/hdb7/divx...
+sharing.c   :317  add_share: mtime=134596368 cached=0x3ba95de9
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/2_American Beauty (DivX).avi
+sharing.c   :317  add_share: mtime=134595256 cached=0x3bcded77
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/2_Groundhog Day (DVD-DivX).avi
+sharing.c   :317  add_share: mtime=134617360 cached=0x3bf71375
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/2_The Truman Show .avi
+sharing.c   :317  add_share: mtime=134617568 cached=0x3bb7934c
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/2_What Lies Beneath.avi
+sharing.c   :317  add_share: mtime=134596640 cached=0x3c4a91d0
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/Starship Troopers.avi
+sharing.c   :317  add_share: mtime=134596544 cached=0x3c546c15
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/Bridget Jones' Diary [DivX].avi
+sharing.c   :317  add_share: mtime=134618208 cached=0x3b8ddf92
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/Chicken Run [DivX].avi.gnut
+sharing.c   :317  add_share: mtime=134618400 cached=0x3c64b8b8
+sharing.c   :320  add_share: skipping md5 /mnt/hdb7/divx/The Sixth Sense.avi
+sharing.c   :467  share_update_index: descending /mnt/mp3/classical...
+sharing.c   :317  add_share: mtime=134617960 cached=0x39a00804
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 01 - Mars, the Bringer of War.mp3
+sharing.c   :317  add_share: mtime=134618584 cached=0x399fe928
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 03 - Mercury, the Winged Messenger.mp3
+sharing.c   :317  add_share: mtime=134619224 cached=0x399ffa1a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 04 - Jupiter, the Bringer of Jollity.mp3
+sharing.c   :317  add_share: mtime=134619512 cached=0x39a7a85a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 06 - Uranus, the Magician.mp3
+sharing.c   :317  add_share: mtime=134619784 cached=0x39a7df22
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 07 - Neptune, the Mystic.mp3
+sharing.c   :317  add_share: mtime=134620056 cached=0x39e4dd2a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 02 - Venus, the Bringer of Peace.mp3
+sharing.c   :317  add_share: mtime=134620336 cached=0x3a3fbd50
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/holst/Chicago Symphony Orchestra - Holst - The Planets - 05 - Saturn, the Bringer of Old Age.mp3
+sharing.c   :317  add_share: mtime=134620616 cached=0x39e08cf6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Beethoven (Karajan63) 160k - Symphony 7 - 1- Poco sostenuto - Vivace.mp3
+sharing.c   :317  add_share: mtime=134620872 cached=0x39ce3786
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Beethoven - Violin Concerto - Mvt 2 - Heifetz.mp3
+sharing.c   :317  add_share: mtime=134621088 cached=0x39ce2804
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Beethoven - Violin Concerto - Mvt 3 - Heifetz.mp3
+sharing.c   :317  add_share: mtime=134619016 cached=0x39ce66c4
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Beethoven, Symphony No. 7 - 1, Walter, Columbia SO.mp3
+sharing.c   :317  add_share: mtime=134621336 cached=0x39dceaa0
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Ludwig van Beethoven - 01 - Symphony No.5, Op. 67 C minor- Allegro con brio.mp3
+sharing.c   :317  add_share: mtime=134621896 cached=0x39dcff7c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Ludwig van Beethoven - 02 - Symphony No.5, Op. 67 C minor- Andante con motto.mp3
+sharing.c   :317  add_share: mtime=134622176 cached=0x39df7ea8
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Ludwig_van_Beethoven-03-Symphony_No.5,_Op._67_C_minor-Scherzo-Allegro.mp3
+sharing.c   :317  add_share: mtime=134622448 cached=0x39ce6424
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Beethoven - Violin Concerto - Mvt 1 - Heifetz.MP3
+sharing.c   :317  add_share: mtime=134621608 cached=0x3ad6273f
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/beethoven/Van Cliburn - Beethoven, Piano Concerto #5 in E-Flat Major 'Emperor'.mp3
+sharing.c   :317  add_share: mtime=134622976 cached=0x39e776f0
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 1 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134623224 cached=0x39e77d10
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 1 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134623488 cached=0x39e7853a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 1 - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134623752 cached=0x39e79314
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 2 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134624016 cached=0x39e79626
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 2 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134624280 cached=0x39e86434
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 2 - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134624544 cached=0x39e9f7a6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 2 - 4th mvmt.MP3
+sharing.c   :317  add_share: mtime=134624808 cached=0x39e9e74e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 3 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134625072 cached=0x39ea44e6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 3 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134596320 cached=0x39ea4e1a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 3 - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134625704 cached=0x39e86a9c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 4 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134625968 cached=0x39ea4f8a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 4 - 4th mvmt.MP3
+sharing.c   :317  add_share: mtime=134626232 cached=0x3a52763e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 4 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134626496 cached=0x3a527aae
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 4 - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134626760 cached=0x3a54f86c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 5 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134627024 cached=0x3a54d39e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/concertos/Prokofiev (Vladimir Krainev) - Piano Concerto No 5 - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134627288 cached=0x39e628ae
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/Prokofiev - Four Pieces, Op 4 - 4 - Suggestion Diabolique.mp3
+sharing.c   :317  add_share: mtime=134627528 cached=0x3a6608fa
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/Prokofiev - Toccata in D Minor.mp3
+sharing.c   :317  add_share: mtime=134622664 cached=0x39c4df5e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 1.mp3
+sharing.c   :317  add_share: mtime=134627736 cached=0x39c4be7a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 2 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134628232 cached=0x39c4b48c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 2 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134628472 cached=0x39c4c866
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 2 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134628712 cached=0x39c4d058
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 2 Mvt. 4.mp3
+sharing.c   :317  add_share: mtime=134628952 cached=0x39c488a2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 6 Mvt. 4.mp3
+sharing.c   :317  add_share: mtime=134629192 cached=0x39c47a58
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 7 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134629432 cached=0x39c4277a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 4 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134629672 cached=0x39c3c49e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 5 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134629912 cached=0x39c3c11c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 5 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134630152 cached=0x39c3ee32
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 5 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134630392 cached=0x39c4822c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 6 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134630632 cached=0x39c3fb6e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 6 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134630872 cached=0x39c41784
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 6 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134631112 cached=0x39ce3484
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 8 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134631352 cached=0x39c498b6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 7 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134631592 cached=0x39c490e2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 7 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134631832 cached=0x39c4a6a2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 9 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134632072 cached=0x39c48b2a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 9 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134632312 cached=0x39c4b070
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 9 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134632552 cached=0x39c49d2c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 9 Mvt. 4.mp3
+sharing.c   :317  add_share: mtime=134632792 cached=0x3a0715b2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 3.mp3
+sharing.c   :317  add_share: mtime=134633024 cached=0x3a394f06
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 4 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134633264 cached=0x3a395078
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 4 Mvt. 2.mp3
+sharing.c   :317  add_share: mtime=134633504 cached=0x3a394b16
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 8 Mvt. 1.mp3
+sharing.c   :317  add_share: mtime=134633744 cached=0x3a393b4a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/prok/sonatas/Prokofiev - Piano Sonata No. 8 Mvt. 3.mp3
+sharing.c   :317  add_share: mtime=134627976 cached=0x39b83ac4
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/sib/[Sibelius] - Violin Concerto 1-1 Allegro Moderato (Heifetz).mp3
+sharing.c   :317  add_share: mtime=134634264 cached=0x39b840f2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/sib/[Sibelius] - Violin Concerto 1-2 Adagio di Molto (Heifetz).mp3
+sharing.c   :317  add_share: mtime=134634504 cached=0x39b84788
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/sib/[Sibelius] - Violin Concerto 1-3 Allegro ma non tanto (Hei~1.mp3
+sharing.c   :325  add_share: calculating md5 /mnt/mp3/classical/strav/Igor Stravinsky - Violin Concerto in D (2. Aria I).mp3
+sharing.c   :317  add_share: mtime=134635008 cached=0x39be7eda
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky - Violin Concerto in D (1. Toccata).mp3
+sharing.c   :317  add_share: mtime=134635248 cached=0x39c2c316
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky - Violin Concerto in D (2. Aria I).mp3
+sharing.c   :325  add_share: calculating md5 /mnt/mp3/classical/strav/Stravinsky- Violin Concerto in D (2. Aria I).mp3
+sharing.c   :317  add_share: mtime=134635528 cached=0x39be8f88
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky- Violin Concerto in D (3. Aria II).mp3
+sharing.c   :317  add_share: mtime=134635768 cached=0x39c2ce84
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky- Violin Concerto in D (4. Capriccio).mp3
+sharing.c   :325  add_share: calculating md5 /mnt/mp3/classical/strav/Stravinsky; Igor - Petrushka (Ballet, 1911) - 1st Tableau- Der Jahrmarkt.mp3
+sharing.c   :317  add_share: mtime=134636016 cached=0x39c32a0e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky; Igor - Petrushka (Ballet, 1911) - 4th Tableau- Der Jahrmarkt am Abend.mp3
+sharing.c   :325  add_share: calculating md5 /mnt/mp3/classical/strav/Stravinsky  - Petrushka  - 1st Tableau- Der Jahrmarkt.mp3
+sharing.c   :317  add_share: mtime=134636632 cached=0x39ba77d6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky  - Petrushka  - 2nd Tableau- Bei Petruschka.mp3
+sharing.c   :317  add_share: mtime=134636848 cached=0x39ba7d9a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/Stravinsky  - Petrushka  - 3rd Tableu- Bei den Mohren.mp3
+sharing.c   :317  add_share: mtime=134637096 cached=0x3bfdc9fb
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/strav/stravinsky - the firebird suite.mp3
+sharing.c   :317  add_share: mtime=134637312 cached=0x39e0b6c8
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Capriccio Italien Op 45.mp3
+sharing.c   :317  add_share: mtime=134636304 cached=0x39e0cfcc
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky_Symphony_#4_I._Andante_sostenuto.mp3
+sharing.c   :317  add_share: mtime=134637536 cached=0x39e101a8
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky_Symphony_#4_II._Andantino_in_modo_di_canzone.mp3
+sharing.c   :317  add_share: mtime=134638072 cached=0x39e0d60a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky_Symphony_#4_III._Scherzo_ostinato_-_Allegro.mp3
+sharing.c   :317  add_share: mtime=134638312 cached=0x39e0e9b8
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky_Symphony_#4_IV._Finale_Allegro_con_fuoco.mp3
+sharing.c   :317  add_share: mtime=134637792 cached=0x3b1050be
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky - Symphony No. 6 B minor op. 74 -Pathetique- 1. A.mp3
+sharing.c   :317  add_share: mtime=134638824 cached=0x3b106710
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky - Symphony No. 6 B minor op. 74 -Pathetique- 2. A.mp3
+sharing.c   :317  add_share: mtime=134639080 cached=0x3b105d0c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky - Symphony No. 6 B minor op. 74 -Pathetique- 3. A.mp3
+sharing.c   :317  add_share: mtime=134639336 cached=0x3b115eda
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/tchaik/Tchaikovsky - Symphony No. 6 B minor op. 74 -Pathetique- 4. F.mp3
+sharing.c   :317  add_share: mtime=134639592 cached=0x3a6e104e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rk/Rimsky Korsakov - Scheherezade (4th movement).mp3
+sharing.c   :317  add_share: mtime=134638560 cached=0x3a6e0282
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rk/Rimsky-Korsakov - Sir Charles Mackerras & London Symp.-Scheherezade& 1& The Sea And Sinbad's Ship.MP3
+sharing.c   :317  add_share: mtime=134639816 cached=0x3a6e04c4
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rk/Rimsky-Korsakov - Sir Charles Mackerras & London Symp.-Scheherezade& 2& The Tale Of The Kalender Prince.MP3
+sharing.c   :317  add_share: mtime=134640168 cached=0x3a6e0a88
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rk/Rimsky-Korsakov - Sir Charles Mackerras & London Symp.-Scheherezade& 3& The Young Prince And The Young Princess.MP3
+sharing.c   :317  add_share: mtime=134640600 cached=0x3a1d8eea
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/mendelssohn/Mendelssohn - Hebrides Overture (Fingal's Cave).mp3
+sharing.c   :317  add_share: mtime=134640456 cached=0x3a9ae69e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/mendelssohn/Mendelssohn - Symphony 4 in A Major, Op. 90, 'Italian' - 01 (Szell, Cleveland).mp3
+sharing.c   :317  add_share: mtime=134641280 cached=0x3a9af153
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/mendelssohn/Mendelssohn - Symphony 4 in A Major, Op. 90, 'Italian' - 02 (Szell, Cleveland).mp3
+sharing.c   :317  add_share: mtime=134641560 cached=0x3a9c11a7
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/mendelssohn/Mendelssohn - Symphony 4 in A Major, Op. 90, 'Italian' - 03 (Szell, Cleveland).mp3
+sharing.c   :317  add_share: mtime=134641840 cached=0x3a9c2e40
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/mendelssohn/Mendelssohn - Symphony 4 in A Major, Op. 90, 'Italian' - 04 (Szell, Cleveland).mp3
+sharing.c   :317  add_share: mtime=134641088 cached=0x3b7de2af
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rach/rachmaninov - Symphonic Dances, 1.mp3
+sharing.c   :317  add_share: mtime=134642304 cached=0x3b7dd65a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rach/rachmaninov - Symphonic Dances, 2.mp3
+sharing.c   :317  add_share: mtime=134642536 cached=0x3b7df39c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/rach/rachmaninov - Symphonic Dances, 3.mp3
+sharing.c   :317  add_share: mtime=134640968 cached=0x39ea175e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/gershwin/Gershwin (Andre Previn) - Piano Concerto in F Major - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134643064 cached=0x39ea3a2a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/gershwin/Gershwin (Andre Previn) - Piano Concerto in F Major - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134643328 cached=0x39ea22d2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/gershwin/Gershwin (Andre Previn) - Piano Concerto in F Major - 3rd mvmt.MP3
+sharing.c   :317  add_share: mtime=134643592 cached=0x3a042986
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/bach/The Masterpiece Collection - Italian Concerto - Allegro vivace.mp3
+sharing.c   :317  add_share: mtime=134643848 cached=0x3a043868
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/bach/The Masterpiece Collection - Italian Concerto - Andante.mp3
+sharing.c   :317  add_share: mtime=134644096 cached=0x3a04301c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/bach/The Masterpiece Collection - Italian Concerto - Moderato.mp3
+sharing.c   :317  add_share: mtime=134644352 cached=0x39d649ca
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/(Chopin) Funeral March.mp3
+sharing.c   :317  add_share: mtime=134642768 cached=0x39da4338
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Adagio for Strings-Samuel Barber - Bernstein - Bernstein's America Copeland, Gershwin, Barber & Bernstein.mp3
+sharing.c   :317  add_share: mtime=134644928 cached=0x39da56d2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Boston Pops - Polovetsian Dances from Prince Igor by Borodin - Arthur Fiedler .mp3
+sharing.c   :317  add_share: mtime=134644536 cached=0x39fb567c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Britten - The Young Persons Guide To The Orchestra.mp3
+sharing.c   :317  add_share: mtime=134645920 cached=0x39b869f2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Chopin - Scherzo 1.mp3
+sharing.c   :317  add_share: mtime=134625336 cached=0x39c01158
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Jorge Bolet - Live at Carnegie Hall - Wagner-Liszt -Tannhauser- Overture.mp3
+sharing.c   :317  add_share: mtime=134646416 cached=0x39c92cb6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Liszt - Transcendental Etude - Paganini - No 2 - Octave.mp3
+sharing.c   :317  add_share: mtime=134646104 cached=0x39d089bc
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Vladimir Horowitz - Horowitz Encores - 02 - Saint Saens - Liszt - Horowitz- Danse macabre.mp3
+sharing.c   :317  add_share: mtime=134646968 cached=0x39d11960
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Vladimir Horowitz - Rachmaninov - Etude Tableau in D, Op 39 No. 9.mp3
+sharing.c   :317  add_share: mtime=134646648 cached=0x39c4f7fe
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Mussorgsky - 17 - Mussorgsky - A Night on Bald Mountain - Pictures at an Exhibition, A Night on Bald Mountain and other Russian showpiece.mp3
+sharing.c   :317  add_share: mtime=134647368 cached=0x39e88ff0
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Medtner (Nikolai Demidenko) - Piano Concerto No 2 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134647824 cached=0x39e8a49a
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Medtner - Fairy Tale (Op 51 No 3) in A (V. Horowitz).mp3
+sharing.c   :317  add_share: mtime=134648072 cached=0x39eb4fd6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Litolff (Peter Donohoe) - Concerto Symphonique No 4 - 1st mvmt.MP3
+sharing.c   :317  add_share: mtime=134648328 cached=0x39eb4972
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Litolff (Peter Donohoe) - Concerto Symphonique No 4 - 2nd mvmt.MP3
+sharing.c   :317  add_share: mtime=134647216 cached=0x39e09cb2
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Vladimir Horowitz - Bach-Busoni, Chopin, Liszt, Etc. (Horowitz) - 12- Chopin - Polonaise No.6 In A Flat Major, Op53 - Maestoso.MP3
+sharing.c   :317  add_share: mtime=134648704 cached=0x397adb8c
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/George Gershwin - Rhapsody in Blue.mp3
+sharing.c   :317  add_share: mtime=134648584 cached=0x3a2940d6
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Schumann - Piano Concerto in A minor Op54 - Intermezzo andantino grazioso.mp3
+sharing.c   :317  add_share: mtime=134649440 cached=0x3a32c232
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Schumann- Piano Concerto in A minor, Op. 54 Allegro affettuoso.mp3
+sharing.c   :317  add_share: mtime=134649680 cached=0x3a4a981e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/The HMV Collection-Chaminade   Automne.mp3
+sharing.c   :317  add_share: mtime=134649880 cached=0x3a3b8870
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/09_Prelude op.32, no.13 in D flat major.mp3
+sharing.c   :317  add_share: mtime=134649128 cached=0x3a4fd6f0
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Bernstein_New York Philharmonic_West Side Story- Symphonic Dances.mp3
+sharing.c   :317  add_share: mtime=134650408 cached=0x3a3bcd7e
+sharing.c   :320  add_share: skipping md5 /mnt/mp3/classical/misc/Chopin Waltz Arrau Op. posth. (1830) in E minor.mp3
+sharing.c   :474  share_update_index: total shares: 132 (6594.10MB)
+** gift-debug:    Loading protocols... 
+openft.c    :348  OpenFT_init
+openft.c    :251  ft_start: class = 1, port = 1215
+node.c      :415  node_class_change: 0.0.0.0:0 (FINAL) -> NODE_USER
+openft.c    :230  http_start: http_port = 1216
+** gift-debug:    initialization complete
+node.c      :415  node_class_change: 213.107.81.147:2394 (FINAL) -> NODE_SEARCH
+node.c      :415  node_class_change: 66.188.103.1:2007 (FINAL) -> NODE_USER
+node.c      :415  node_class_change: 66.1.28.32:2219 (LIMBO) -> NODE_USER
+node.c      :415  node_class_change: 137.226.116.21:1962 (FINAL) -> NODE_INDEX
+node.c      :415  node_class_change: 131.211.223.1:2149 (FINAL) -> NODE_SEARCH
+node.c      :415  node_class_change: 24.57.39.226:2311 (LIMBO) -> NODE_SEARCH
+node.c      :415  node_class_change: 24.118.104.100:2680 (LIMBO) -> NODE_INDEX
+node.c      :415  node_class_change: 149.169.109.182:2872 (FINAL) -> NODE_USER
+node.c      :415  node_class_change: 134.155.89.223:2433 (FINAL) -> NODE_USER
+node.c      :415  node_class_change: 206.228.117.2:2001 (LIMBO) -> NODE_USER
+node.c      :415  node_class_change: 213.23.43.105:2599 (FINAL) -> NODE_USER
+node.c      :415  node_class_change: 217.230.18.22:2807 (LIMBO) -> NODE_USER
+node.c      :415  node_class_change: 213.84.127.121:2580 (FINAL) -> NODE_SEARCH
+node.c      :415  node_class_change: 80.11.241.218:1936 (LIMBO) -> NODE_INDEX
+node.c      :415  node_class_change: 212.194.24.37:2478 (FINAL) -> NODE_SEARCH
+node.c      :415  node_class_change: 24.118.104.100:2680 (FINAL) -> NODE_INDEX
+node.c      :415  node_class_change: 131.211.223.1:2149 (FINAL) -> NODE_PARENT
+node.c      :415  node_class_change: 24.57.39.226:2311 (FINAL) -> NODE_PARENT
+node.c      :415  node_class_change: 212.194.24.37:2478 (FINAL) -> NODE_PARENT
+node.c      :415  node_class_change: 213.84.127.121:2580 (FINAL) -> NODE_PARENT
+node.c      :415  node_class_change: 137.226.116.21:1962 (FINAL) -> NODE_INDEX
+node.c      :415  node_class_change: 213.107.81.147:2394 (FINAL) -> NODE_PARENT
+main.c      :200  gift_shutdown
+openft.c    :198  ft_daemon_destroy
+node.c      :511  node_state_set: 80.11.241.218:1936 (INDEX) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 212.194.24.37:2478 (PARENT) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 24.118.104.100:2680 (INDEX) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 213.107.81.147:2394 (PARENT) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 137.226.116.21:1962 (INDEX) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 131.211.223.1:2149 (PARENT) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 24.57.39.226:2311 (PARENT) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 213.84.127.121:2580 (PARENT) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 66.189.185.148:1215 (SEARCH) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 200.83.108.215:2170 (SEARCH) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 24.129.84.255:1215 (SEARCH) -> NODE_DISCONNECTED
+node.c      :511  node_state_set: 217.204.163.85:1215 (SEARCH) -> NODE_DISCONNECTED

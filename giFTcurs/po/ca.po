@@ -1,0 +1,841 @@
+# giFTcurs - curses interface to giFT
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# the_egg <the_egg@geocities.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3.3\n"
+"POT-Creation-Date: 2003-05-01 01:17+0200\n"
+"PO-Revision-Date: 2002-03-25 15:00-300\n"
+"Last-Translator: the_egg <the_egg@geocities.com>\n"
+"Language-Team: the_egg <the_egg@geocities.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+#: src/get.c:49
+msgid "A source search for this file is already in progress."
+msgstr "Una cerca per a aquest arxiu ja ha estat iniciada."
+
+#: src/get.c:88
+#, fuzzy
+msgid "Already downloading from this source"
+msgstr "'%s' ja s'està descarregat."
+
+#: src/get.c:92
+msgid "Downloading from a single source"
+msgstr ""
+
+#: src/get.c:99
+#, c-format
+msgid "Revived '%s'."
+msgstr "Ressucitat '%s'."
+
+#: src/get.c:106
+#, fuzzy, c-format
+msgid "I have no sources for '%s'."
+msgstr "Iniciada cerca de noves fonts per a '%s'"
+
+#: src/get.c:120
+#, c-format
+msgid "Already downloading '%s'."
+msgstr "'%s' ja s'està descarregat."
+
+#: src/get.c:123
+msgid "Downloading..."
+msgstr "Descarregant..."
+
+#: src/get.c:156
+#, c-format
+msgid "Source search complete for '%s'."
+msgstr "Cerca de fonts completada per a '%s'"
+
+#: src/get.c:195
+#, c-format
+msgid "Started a source search for '%s'."
+msgstr "Iniciada cerca de noves fonts per a '%s'"
+
+#: src/gift.c:97
+msgid "The connection with the daemon was unexpectedly closed!"
+msgstr "La connexió amb el daemon ha estat interrompuda inesperadament!"
+
+#: src/gift.c:111
+#, c-format
+msgid "Can't connect to the daemon at %s:%s"
+msgstr "No és possible connectar amb el daemon a %s:%s"
+
+#: src/main.c:110
+#, c-format
+msgid "%s v%s - This is Free Software. Press F1 or M-1 for more info."
+msgstr ""
+"%s v%s - Aquest programa és lliure. Per a més informació, premi F1 o M-1."
+
+#: src/main.c:163
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr "%s versió %s, compilat %s %s\n"
+
+#: src/main.c:198
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr "%s - interface curses per a giFT\n"
+
+#: src/main.c:199
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr "Ús: %s [OPCIÓ]...\n"
+
+#: src/main.c:200
+#, c-format
+msgid ""
+"Options:\n"
+"  -a, --stickchars        use 7-bit chars for line drawing\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%s]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+"Opciones:\n"
+"  -a, --stickchars        utilizar caràcters de 7 bits per a dibuixar les "
+"línies\n"
+"  -h, --help              mostrar aquesta ajuda i sortir\n"
+"  -V, --version           mostrar informació sobre la versió i sortir\n"
+"  -v, --verbose           inundar stderr amb informació de depuració\n"
+"  -s, --server=host:port  indicar la adreça del servidor [%s:%s]\n"
+"  -p, --profile=nome      seleccionar el perfil d'usuari a utilitzar [%s]\n"
+
+#: src/main.c:209
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr "  -d, --nomouse           no utilitzar la rata\n"
+
+#: src/misc.c:160
+#, fuzzy, c-format
+msgid "The daemon reported the following sync status: %s"
+msgstr "El dimoni informa que la sincronització està al %s."
+
+#: src/misc.c:165
+msgid "Daemon reported that sharing now is enabled."
+msgstr "El dimoni informa que està compartint els arxius."
+
+#: src/misc.c:172
+msgid "Daemon reported that sharing now is disabled."
+msgstr "El dimoni informa que no està compartint els arxius."
+
+#: src/misc.c:195
+#, c-format
+msgid "Attached to %s v%s."
+msgstr "Connectat a %s v%s."
+
+#: src/misc.c:215
+msgid "never mind"
+msgstr "oblida-ho"
+
+#: src/misc.c:217
+#, fuzzy, c-format
+msgid ""
+"A message from the daemon:\n"
+"\n"
+"%s"
+msgstr ""
+"Un missatge de %s:\n"
+"\n"
+"%s"
+
+#: src/misc.c:219
+#, fuzzy
+msgid ""
+"There is an important message from the daemon! It will be shown at exit."
+msgstr "Tens un missatge important de %s! Es mostrarà en sortir."
+
+#: src/screen.c:71
+msgid "standard"
+msgstr "estàndar"
+
+#: src/screen.c:72
+msgid "header"
+msgstr "capcelera"
+
+#: src/screen.c:73
+msgid "search box"
+msgstr "caixa de cerca"
+
+#: src/screen.c:74
+msgid "result box"
+msgstr "caixa de resultats"
+
+#: src/screen.c:75
+msgid "statistics box"
+msgstr "caixa d'estadístiques"
+
+#: src/screen.c:76
+msgid "statistics data"
+msgstr "dades estadístiques"
+
+#: src/screen.c:77
+msgid "bad statistics"
+msgstr "estadístiques erròneas"
+
+#: src/screen.c:78
+msgid "info box"
+msgstr "caixa d'informació"
+
+#: src/screen.c:79
+msgid "download box"
+msgstr "caixa de descàrregas"
+
+#: src/screen.c:80
+msgid "upload box"
+msgstr "caixa d'uploads"
+
+#: src/screen.c:81
+msgid "help box"
+msgstr "caixa d'ajuda"
+
+#: src/screen.c:82
+msgid "good hits"
+msgstr "resultats correctes"
+
+#: src/screen.c:83
+msgid "bad hits"
+msgstr "resultats erronis"
+
+#: src/screen.c:84
+msgid "progress bar"
+msgstr "barra de progrés"
+
+#: src/screen.c:85
+msgid "total progress"
+msgstr "progrés total"
+
+#: src/screen.c:86
+msgid "scroll indicator"
+msgstr "indicador de desplaçament vertical"
+
+#: src/screen.c:87
+msgid "selection"
+msgstr "selecció"
+
+#: src/screen.c:88
+msgid "button bar"
+msgstr "barra de botons"
+
+#: src/screen.c:89
+msgid "button bar selection"
+msgstr "selecció a la barra de botons"
+
+#: src/screen.c:94
+msgid "black"
+msgstr "negre"
+
+#: src/screen.c:95
+msgid "red"
+msgstr "vermell"
+
+#: src/screen.c:96
+msgid "green"
+msgstr "verd"
+
+#: src/screen.c:97
+msgid "yellow"
+msgstr "groc"
+
+#: src/screen.c:98
+msgid "blue"
+msgstr "blau"
+
+#: src/screen.c:99
+msgid "magenta"
+msgstr "magenta"
+
+#: src/screen.c:100
+msgid "cyan"
+msgstr "cian"
+
+#: src/screen.c:101
+msgid "white"
+msgstr "blanc"
+
+#: src/screen.c:103
+msgid "default"
+msgstr "por defecte"
+
+#: src/search.c:311
+#, c-format
+msgid "Search complete. We got %i unique hit for %s."
+msgid_plural "Search complete. We got %i unique hits for %s."
+msgstr[0] "Cerca completada. S'ha obtingut %i resultat únic."
+msgstr[1] "Cerca completada. S'han obtingut %i resultats únics."
+
+#: src/search.c:360
+#, c-format
+msgid "The limit of %d unique hits was reached."
+msgstr "S'ha assolit el límit de %d resultats únics."
+
+#: src/settings.c:117
+#, c-format
+msgid "Could not rename %s to %s"
+msgstr "No ha estat possible reanomenar '%s' a '%s'"
+
+#: src/settings.c:146
+#, c-format
+msgid "# %s configuration file created by v%s.\n"
+msgstr "# %s archivo de configuración creado por v%s.\n"
+
+#: src/settings.c:147
+msgid "# Available colors:"
+msgstr "# Colors disponibles:"
+
+#: src/settings.c:153
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals.\n"
+msgstr ""
+"\n"
+"# 'default' significa 'sense colores', o 'transparent' en alguns terminals.\n"
+
+#: src/settings.c:154
+msgid "# See giFTcurs.conf(5) for more information.\n"
+msgstr "# Consultar giFTcurs.conf(5) per a més informació.\n"
+
+#: src/transfer.c:43
+msgid "Waiting"
+msgstr "En espera"
+
+#: src/transfer.c:44
+msgid "Paused"
+msgstr "En pausa"
+
+#: src/transfer.c:45
+msgid "Queued (Remotely)"
+msgstr "En cua (Remotament)"
+
+#: src/transfer.c:46
+msgid "Queued"
+msgstr "En cua"
+
+#: src/transfer.c:47
+msgid "Active"
+msgstr "Actiu"
+
+#: src/transfer.c:48
+msgid "Complete"
+msgstr "Copletat"
+
+#: src/transfer.c:49
+msgid "Cancelled (Remotely)"
+msgstr "Cancel.lat (Remotament)"
+
+#: src/transfer.c:50
+msgid "Timed out"
+msgstr "Temps superat"
+
+#: src/transfer.c:51
+msgid "Awaiting connection"
+msgstr ""
+
+#: src/transfer.c:52
+msgid "Connecting"
+msgstr ""
+
+#: src/transfer.c:53
+msgid "Receiving"
+msgstr ""
+
+#: src/transfer.c:54
+#, fuzzy
+msgid "Verifying"
+msgstr "tot"
+
+#: src/transfer.c:56
+#, fuzzy
+msgid "Sending"
+msgstr "Configuració"
+
+#: src/transfer.c:57
+msgid "Received HTTP PUSH"
+msgstr ""
+
+#: src/transfer.c:58
+msgid "Received HTTP headers"
+msgstr ""
+
+#: src/transfer.c:59
+msgid "Sent HTTP request"
+msgstr ""
+
+#: src/transfer.c:60
+msgid "Malformed HTTP header"
+msgstr ""
+
+#: src/transfer.c:61
+msgid "Remote host had an aneurism"
+msgstr ""
+
+#: src/transfer.c:62
+msgid "Connection closed"
+msgstr ""
+
+#: src/transfer.c:63
+msgid "Connection refused"
+msgstr ""
+
+#: src/transfer.c:64
+msgid "File not found"
+msgstr ""
+
+#: src/transfer.c:65
+msgid "Local read error"
+msgstr ""
+
+#: src/transfer.c:66
+msgid "Incorrect chunk size"
+msgstr ""
+
+#: src/transfer.c:67
+msgid "No route to host"
+msgstr ""
+
+#: src/transfer.c:155
+#, fuzzy
+msgid "Inactive"
+msgstr "Actiu"
+
+#: src/transfer.c:185 src/ui_transfer.c:609
+msgid "Unknown status"
+msgstr "Estat desconegut"
+
+#: src/transfer.c:540
+#, c-format
+msgid "Download of %s completed."
+msgstr "Descàrrega de '%s' completada."
+
+#: src/transfer.c:541
+#, c-format
+msgid "Download of %s cancelled."
+msgstr "Descàrrega de '%s' cancel.lada."
+
+#: src/transfer.c:549
+msgid "Cancelled"
+msgstr "Cancel.lat"
+
+#: src/ui.c:108 src/ui.c:134
+msgid "And now a few words from our sponsor:"
+msgstr "I ara, unes paraules del nostre patrocinador:"
+
+#: src/ui.c:111 src/ui.c:130
+#, c-format
+msgid "Message %i of %i."
+msgstr "Missatge %i de %i."
+
+#: src/ui.c:141
+msgid "Press any key to continue..."
+msgstr "Premi qualsevol tecla per continuar..."
+
+#: src/ui.c:245 src/ui_help.c:154
+msgid "Help"
+msgstr "Ajuda"
+
+#: src/ui.c:246
+msgid "Searches"
+msgstr "Cerques"
+
+#: src/ui.c:247
+msgid "Transfers"
+msgstr "Transferències"
+
+#: src/ui.c:248
+msgid "Settings"
+msgstr "Configuració"
+
+#: src/ui.c:249
+msgid "Exit"
+msgstr "Sortir"
+
+#: src/ui_help.c:43
+#, fuzzy
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"Key list:\n"
+"Bupa/Bdowna        select item in list\n"
+"BPgUpa/BPgDowna    scroll list one screen at a time\n"
+"Btaba            move to the next input field\n"
+"BF1a             this help screen\n"
+"BF2a             the main screen\n"
+"    Bentera      download the highlighted file\n"
+"    Blefta/Brighta change sorting method\n"
+"    Bea          expand/collapse search results\n"
+"    Bja/Bka        scroll information box\n"
+"    Bpa          change network in statistics box\n"
+"    Bua          browse selected user\n"
+"    Bia          ignore selected user\n"
+"BF3a             the transfer screen\n"
+"    Bentera/Bea    expand/collapse transfer\n"
+"    Blefta/Brighta change sorting method\n"
+"    Bja/Bka        move window splitter\n"
+"BF4a             the settings screen\n"
+"BF10a/Bqa          exit the program\n"
+"\n"
+"See giFTcurs(1) and giFTcurs.conf(5) for more information.\n"
+"\n"
+msgstr ""
+"Benvingut a giFTcurs!\n"
+"\n"
+"Llista de comandes:\n"
+"Bfletxa amunta/Bfletxa avalla   sel.lecciona un element a la llista\n"
+"BPgUpa/BPgDna    desplaça la llista una pàgina cada vegada\n"
+"Btaba      salta al següent camp d'entrada de dades\n"
+"BF1a       aquesta pantalla d'ajuda\n"
+"BF2a       la pantalla principal\n"
+"    Bentera    descàrrega de l'arxiu sel.lecionat\n"
+"    Bfletxa esquerraa/Bfletxa dretaa canvia el mètode per a ordenar els "
+"resultats\n"
+"    Bea        expandeix/col.lapsa els resultats de la cerca\n"
+"    Bja/Bka   desplaça el quadre d'informació\n"
+"BF3a       la pantalla de transferències\n"
+"  Bentera/Bea     expandeix/colapsa la transferència\n"
+"  Bja/Bka         mou la divisió de la finestra\n"
+"BF4a       la pantalla de configuració\n"
+"BF10a      sortir del programa\n"
+"\n"
+"Per a més informació, consultar giFTcurs(1) i giFTcurs.conf(5).\n"
+"\n"
+
+#. TRANSLATORS: The authors' names are spellt Göran Weinholt and
+#. Christian Häggström, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:72
+#, fuzzy
+msgid ""
+"Copyright (C) 2001, 2002, 2003 Goran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright (C) 2003 Christian Haggstrom <chm@c00.info>.\n"
+"Our homepage is at http://giFTcurs.sourceforge.net/.\n"
+"\n"
+msgstr ""
+"Copyright (C) 2001, 2002  Goran Weinholt.\n"
+"Co-desenvolupat per Christian Haggstrom.\n"
+"La nostra pàgina web està a http://giFTcurs.sourceforge.net/.\n"
+"\n"
+
+#: src/ui_main.c:126
+msgid "everything"
+msgstr "tot"
+
+#: src/ui_main.c:126
+msgid "audio"
+msgstr "audio"
+
+#: src/ui_main.c:126
+msgid "video"
+msgstr "vídeo"
+
+#: src/ui_main.c:127
+msgid "images"
+msgstr "imatges"
+
+#: src/ui_main.c:127
+msgid "text documents"
+msgstr "documents de text"
+
+#: src/ui_main.c:127
+msgid "software"
+msgstr "programes"
+
+#: src/ui_main.c:128
+msgid "user"
+msgstr "usuari"
+
+#: src/ui_main.c:128
+msgid "hash"
+msgstr "hash"
+
+#: src/ui_main.c:128
+#, fuzzy
+msgid "list my shares"
+msgstr "Sincronitzar compartits"
+
+#: src/ui_main.c:245 src/ui_main.c:291
+msgid "Couldn't start search!"
+msgstr "No es pugué iniciar la cerca!"
+
+#: src/ui_main.c:249
+msgid "Retrieving file list..."
+msgstr "Obtenint llista d'arxius..."
+
+#: src/ui_main.c:295
+msgid "Searching..."
+msgstr "Cercant..."
+
+#: src/ui_main.c:311
+msgid "No previous search pattern."
+msgstr "No existeix patró de cerca previ."
+
+#: src/ui_main.c:315
+msgid "No hits to search on."
+msgstr "No hi ha resultats en els que cercar."
+
+#: src/ui_main.c:338
+#, c-format
+msgid "Pattern not found: '%s'."
+msgstr "Patró no trobat: '%s'."
+
+#: src/ui_main.c:443
+msgid "Search stopped."
+msgstr "Cerca parada."
+
+#: src/ui_main.c:446
+msgid "Search cleared."
+msgstr "Cerca desbrossada."
+
+#: src/ui_main.c:449
+msgid "A magical search appears, but it is cancelled too soon."
+msgstr "Apareix una cerca màgica, pero és cancel.lada massa ràpid."
+
+#: src/ui_main.c:477 src/ui_transfer.c:327
+#, c-format
+msgid "Sorting order changed to %s."
+msgstr "Métode per a ordenar canviat a %s."
+
+#: src/ui_main.c:518
+#, c-format
+msgid "Ignoring results from '%s'"
+msgstr ""
+
+#: src/ui_main.c:567
+msgid "Search"
+msgstr "Cercar"
+
+#: src/ui_main.c:571
+msgid "Extra Information"
+msgstr "Informació Adicional"
+
+#: src/ui_main.c:576
+msgid "Search Results"
+msgstr "Resultat de la Cerca"
+
+#: src/ui_main.c:587
+msgid "Statistics"
+msgstr "Estadístiques"
+
+#: src/ui_main.c:589
+msgid "Users online"
+msgstr "    Usuaris"
+
+#: src/ui_main.c:590
+msgid "Total shared"
+msgstr " Total comp"
+
+#: src/ui_main.c:591
+msgid "Local shares"
+msgstr " Local comp"
+
+#: src/ui_main.c:592
+msgid " Shared/user"
+msgstr "Comp/usuari"
+
+#: src/ui_main.c:624 src/ui_main.c:630
+msgid "Query"
+msgstr "Consulta"
+
+#: src/ui_main.c:627 src/ui_main.c:633
+msgid "Realm"
+msgstr "Regne"
+
+#: src/ui_main.c:640
+msgid "Start search"
+msgstr "Iniciar cerca"
+
+#: src/ui_main.c:645
+msgid "Stop search"
+msgstr "Parar cerca"
+
+#: src/ui_main.c:645
+msgid "Clear search"
+msgstr "Desbrossar cerca"
+
+#: src/ui_main.c:666
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+#: src/ui_main.c:696
+msgid "Nothing selected."
+msgstr "Res sel.leccionat."
+
+#: src/ui_main.c:735 src/ui_main.c:740
+#, c-format
+msgid "f%sBE/f%s"
+msgstr "f%sBE/f%s"
+
+#: src/ui_main.c:743
+msgid "Hidden"
+msgstr "Ocult"
+
+#: src/ui_main.c:747
+#, c-format
+msgid "f%sB"
+msgstr "f%sB"
+
+#: src/ui_settings.c:150
+msgid "Color theme saved."
+msgstr "Combinació de colors dessada."
+
+#: src/ui_settings.c:159
+msgid "Default color theme loaded."
+msgstr "Combinació de colors per defecte carregada."
+
+#: src/ui_settings.c:192
+msgid "Color Theme"
+msgstr "Combinació de Colors"
+
+#: src/ui_settings.c:197
+msgid "Item"
+msgstr "Ítem"
+
+#: src/ui_settings.c:199
+msgid "Foreground"
+msgstr "Primer Pla"
+
+#: src/ui_settings.c:201
+msgid "Background"
+msgstr "Fons"
+
+#: src/ui_settings.c:210
+msgid "Save theme"
+msgstr "Dessar Combinació"
+
+#: src/ui_settings.c:213
+msgid "Load defaults"
+msgstr "Carregar valors per defecte"
+
+#: src/ui_settings.c:218
+msgid "Sharing"
+msgstr "Compartint"
+
+#: src/ui_settings.c:222
+msgid "Sync shares"
+msgstr "Sincronitzar compartits"
+
+#: src/ui_settings.c:228
+msgid "Unknown sharing status"
+msgstr "Estat dels compartits desconegut"
+
+#: src/ui_settings.c:228
+msgid "Hide shares"
+msgstr "Ocultar compartits"
+
+#: src/ui_settings.c:228
+msgid "Show shares"
+msgstr "Mostrar compartits"
+
+#: src/ui_transfer.c:99
+msgid ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+msgstr ""
+
+#: src/ui_transfer.c:106
+msgid ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+msgstr ""
+
+#: src/ui_transfer.c:114
+msgid ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:ki}B{endif}{space}Total: {transferred:ki}/{filesize:ki} at "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+
+#: src/ui_transfer.c:121
+msgid ""
+"{progress filesize transferred}{space}Total: {transferred:ki}/{filesize:ki} "
+"at {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+
+#: src/ui_transfer.c:346
+msgid "find more sources"
+msgstr "trobar més fonts"
+
+#: src/ui_transfer.c:347
+msgid "kill transfer"
+msgstr "el.liminar la transferència"
+
+#: src/ui_transfer.c:348
+msgid "clear finished"
+msgstr "desbrossar finalitzats"
+
+#: src/ui_transfer.c:349
+msgid "(un)pause"
+msgstr "(des)activar pausa"
+
+#: src/ui_transfer.c:365
+msgid "Downloads"
+msgstr "Descàrregues"
+
+#: src/ui_transfer.c:366
+msgid "Uploads"
+msgstr "Uploads"
+
+#~ msgid "alphabetical"
+#~ msgstr "alfabètica"
+
+#~ msgid "alphabetical by path"
+#~ msgstr "alfabètica per camí d'accés"
+
+#~ msgid "size-based"
+#~ msgstr "per tamany"
+
+#~ msgid "availability- and size-based"
+#~ msgstr "per disponibilitat i tamany"
+
+#~ msgid "number of sources- and size-based"
+#~ msgstr "nombre de fonts i tamany"
+
+#~ msgid "Queued (%d)"
+#~ msgstr "En cua (%d)"
+
+#, fuzzy
+#~ msgid "Queued (position %d)"
+#~ msgstr "En cua (%d)"
+
+#~ msgid "Total: %s/%s at %sB/s"
+#~ msgstr "Total: %s/%s a %sB/s"
+
+#~ msgid "Disk: %s free"
+#~ msgstr "Disc: %s lliure(s)"
+
+#~ msgid "Overrun"
+#~ msgstr "Sobrepassat"
+
+#~ msgid "B/s"
+#~ msgstr "B/s"
+
+#~ msgid "bps"
+#~ msgstr "bps"
+
+#~ msgid "High-traffic mode activated."
+#~ msgstr "Mode de tràfic intens activat."
+
+#~ msgid "High-traffic mode deactivated."
+#~ msgstr "Mode de tràfic intens desactivat."
+
+#~ msgid " Searching"
+#~ msgstr " Cercant"
+
+#~ msgid "Size"
+#~ msgstr "Tamany"
+
+#~ msgid "Net"
+#~ msgstr "Xarxa"
+
+#~ msgid "User"
+#~ msgstr "Usuari"
+
+#~ msgid "Path"
+#~ msgstr "Camí"

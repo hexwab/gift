@@ -1,0 +1,63 @@
+giFTcurs - a curses frontend to giFT
+====================================
+
+Installation
+------------
+
+ To compile giFTcurs you need to have the development package for ncurses
+installed. When you've untarred the sources, cd into the giFTcurs
+directory and type:
+    ./configure
+    make
+    su
+    make install
+
+ If things went well you should be able to run giFTcurs and connect to
+the giFT daemon. If you don't have giFT, look at http://giFT.sf.net/.
+
+ Currenly giFTcurs only works with the CVS version of giFT. This is because
+the daemon protocol changes frequently. If things don't work then maybe
+you need to get a newer version of giFTcurs, http://giFTcurs.sf.net/.
+
+ For more information, see giFTcurs(1) and giFTcurs.conf(5).
+
+Bug Reporting
+-------------
+
+ First read http://www.chiark.greenend.org.uk/~sgtatham/bugs.html, if you
+haven't already. You can get debug output from giFTcurs if you redirect
+stderr, i.e.:
+    $ giFTcurs -v 2>debug.out
+
+ Also make sure the bug still exists in the CVS version of giFTcurs. Run
+this command to get the CVS source:
+    cvs -z3 -d \
+    :pserver:anonymous@cvs.giftcurs.sourceforge.net:/cvsroot/giftcurs \
+    co giFTcurs
+Then whenever you want to update the source, just run "cvs -z3 up -Pd"
+in the giFTcurs directory. To compile giFTcurs from CVS you must have the
+GNU autotools (automake, autoconf), the ncurses headers and gettext. A
+fairly recent (think 0.10.40) version of gettext is required, since we use
+ngettext. With some distributions you'll need the package gettext-devel
+as well. To compile type this:
+    ./autogen.sh
+    make
+    su
+    make install
+
+ When you have your bug report finished submit it to the right tracker at
+http://sourceforge.net/projects/giftcurs/.
+
+ Or just ignore this and complain in #giFT on irc.openprojects.net. This
+is actually what most people do for some reason. I guess this README
+looks like a file that must not be read to them.
+
+
+Portability
+-----------
+
+ giFTcurs has been known to work (at one time or another) with the following
+systems:
+	Debian GNU/Linux 3.0, NetBSD 1.5.2, Debian GNU/Hurd, OpenBSD 3.0, AIX,
+	SunOS/Solaris, Mac OS X, Tru64 (OSF1 V4.0), FreeBSD 4.4 and cygwin.
+Patches/suggestions which fix portability issues are highly appreciated.

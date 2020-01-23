@@ -1,0 +1,27 @@
+Index: ft_node.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_node.c,v
+retrieving revision 1.54
+diff -u -r1.54 ft_node.c
+--- ft_node.c	23 Dec 2003 05:44:25 -0000	1.54
++++ ft_node.c	4 Jan 2004 04:31:02 -0000
+@@ -57,7 +57,7 @@
+ 	/* this will destroy all the necessary associations for us */
+ 	if (node->session)
+ 	{
+-		if (node->session->search_db)
++		if (node->session->search_db && !openft->shutdown)
+ 			FT->warn (FT, "removing node with an active search database!");
+ 
+ 		ft_session_stop (FT_CONN(node));
+@@ -557,6 +557,10 @@
+ 
+ 	/* nothing happened */
+ 	if (!loss && !gain)
++		return;
++
++	/* shutting down */
++	if (openft->shutdown)
+ 		return;
+ 
+ 	/* the API tells us we need to register class changes, although the

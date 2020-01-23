@@ -1,0 +1,62 @@
+$Id: ChangeLog,v 1.19 2006/11/19 17:31:02 hexwab Exp $
+
+libgift 0.11.9:
+
+   * Added maximum size of 100 MB for log file. The actual size should be set
+     by giFT using log_init but I don't want to break the libgift interface.
+
+   * list_copy is now O(n) instead of O(n^2)...
+
+libgift 0.11.8.1:
+
+   * Fixed a serious bug in TCP buffering introduced in 0.11.8.
+
+libgift 0.11.8:
+
+   * The SI suffixes k, M and G multiply configuration values by 2^10,
+     2^20 and 2^30 respectively.
+
+libgift 0.11.7:
+
+   * Fixed VA_COPY bug in strobj which led to crashes on AMD64 (possibly other
+     platforms?)
+
+   * Fixed fd leak in platform_child() implementation.
+
+   * Fixed a bug where we possibly send SIGTERM to random processes
+     in platform_cleanup().
+
+libgift 0.11.6:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.5:
+
+   * Minor updates to the following interfaces:
+
+      conf.c
+      dataset.c
+      strobj.c
+      stopwatch.c
+
+   * Fixed a bug where it may be possible for a timer callback to remove a
+     newly registered timer with a FALSE return value.
+
+   * Major win32 portability improvements.
+
+libgift 0.11.4:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.3:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.2:
+
+   * Minor conf.c changes for the giftd.conf move.  Perhaps this logic should
+     be in giftd instead of libgift?
+
+libgift 0.11.1:
+
+   * Synchronized the version to match giftd.

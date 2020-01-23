@@ -1,0 +1,15 @@
+[transfer]
+uniq = 3EFA0004B159007C7275.franz liszt - piano works - stephen liszt - tarantella.mp3
+filename = franz liszt - piano works - stephen liszt - tarantella.mp3
+hash = SHA1:GsfDYm7DpebCqCAnioDFlT+Dg1k=
+path = ./incoming/3EFA0004B159007C7275.franz liszt - piano works - stephen liszt - tarantella.mp3
+transmit = 7994368
+total = 8155765
+max_seek = 7994368
+paused = 0
+chunks = 7994368-8155765 
+
+[source0]
+user = phatange@Ares
+url = Ares:?host=68.11.97.233&port=9368&shost=66.207.11.107&sport=30295&username=phatange@Ares
+

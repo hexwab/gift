@@ -1,0 +1,44 @@
+/* identify a file and return some metadata */
+
+#include "id.h"
+#include "id_vorbis.h"
+#include "meta.h"
+
+#define NUM_ID_FUNCS 1
+
+static IdFunc id_func[]=
+{
+	id_vorbis
+};
+
+List *id_file (char *path)
+{
+	FILE *fh;
+	List *md_list=NULL;
+	int i;
+	if ((fh=fopen (path, "rb")))
+	{	
+		for(i=0;i<NUM_ID_FUNCS;i++)
+		{
+			fseek(fh, 0, SEEK_SET);
+			if ((id_func[i]) (fh,&md_list))
+			{
+#if 0
+				TRACE(("%s",path));
+
+				TRACE(("title lookup: %s", tag_to_string(tag_lookup(md_list,TAG_TITLE,NULL))));
+				TRACE(("MIME lookup: %s", tag_to_string(tag_lookup(md_list,TAG_,NULL))));
+//				meta_dump(md_list);
+#endif
+				break;
+			}
+
+			/* remove any partial data we may have got before giving up */
+			if (md_list)
+				meta_free (md_list);
+			md_list=NULL;
+		}
+		fclose (fh);
+	}
+	return md_list;
+}

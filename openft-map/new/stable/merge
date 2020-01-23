@@ -1,0 +1,1 @@
+perl -lne '($n,$l)=split" ",$_,2;$h{$l}+=$n;END{print "$h{$_}\t$_" for sort {$h{$b}<=>$h{$a}} keys %h}'

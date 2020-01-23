@@ -1,0 +1,58 @@
+Index: OpenFT/ft_search_exec.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_search_exec.c,v
+retrieving revision 1.20
+diff -u -r1.20 ft_search_exec.c
+--- OpenFT/ft_search_exec.c	28 Nov 2002 10:36:41 -0000	1.20
++++ OpenFT/ft_search_exec.c	29 Nov 2002 03:59:20 -0000
+@@ -237,36 +237,30 @@
+ 	return 0;
+ }
+ 
+-static ft_uint32 *remove_dups (ft_uint32 *tokens, int num)
++static int remove_dups (ft_uint32 *tokens, int num)
+ {
+-	ft_uint32 *ntokens;
+ 	ft_uint32  lt = 0;
+ 	int        nt;
+ 	int        t;
+ 
+ 	if (num <= 0)
+-		return tokens;
++		return num;
+ 
+ 	/* sort first */
+ 	qsort (tokens, num, sizeof (ft_uint32), cmp_token);
+ 
+-	/* allocate new token list */
+-	if (!(ntokens = malloc (sizeof (ft_uint32) * (num + 1))))
+-		return tokens;
+-
+ 	for (t = 0, nt = 0; t < num && nt < num; t++)
+ 	{
+ 		if (lt && tokens[t] == lt)
+ 			continue;
+ 
+ 		lt = tokens[t];
+-		ntokens[nt++] = tokens[t];
++		tokens[nt++] = tokens[t];
+ 	}
+ 
+-	ntokens[nt++] = 0;
++	tokens[nt] = 0;
+ 
+-	free (tokens);
+-	return ntokens;
++	return nt;
+ }
+ 
+ static int tokens_resize (ft_uint32 **tokens, int *alloc, int newsize)
+@@ -321,7 +315,7 @@
+ 	free (s0);
+ 
+ 	(*tokens)[*tok] = 0;
+-	*tokens = remove_dups (*tokens, *tok);
++	*tok = remove_dups (*tokens, *tok);
+ }
+ 
+ ft_uint32 *ft_search_tokenize (char *string)

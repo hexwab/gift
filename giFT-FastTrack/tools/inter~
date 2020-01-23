@@ -1,0 +1,165 @@
+#!/usr/bin/perl -w
+#use Term::ReadLine::Gnu;
+use subs qw[printbin];
+use IO::Socket::INET;
+#my $host="212.179.35.119:1214";
+#my $host="24.247.74.238:3505";
+my $host=shift;
+#my $host="127.0.0.1:1234";
+
+my $xinu=0x51;
+#printbin message (22, "qwe");
+#exit;
+
+my $sock=IO::Socket::INET->new(PeerAddr=>$host) or die "$!";
+
+$|++;
+
+my $enc=0;
+#my $rand=0xa0330d0a;
+my $rand=0xfa00b62b;
+my $outseed=0x80;
+
+print $sock pack"NNN",$rand,$outseed,$enc;
+
+my $buf;
+
+my $len;
+$len=sysread($sock, $buf, 8);
+die "failed to read incoming seed/type: $!" unless defined $len;
+die "zero: $!" if !$len;
+($inseed,$enc)=unpack"NN",$buf or die;
+
+$w=sprintf"%x",$inseed;
+chomp($x=`./xor $w`);
+$enc^=hex$x;
+$outseed^=$inseed;
+
+printf "Received incoming enc_type: %x\n", $enc;
+
+open (INCIPHER, sprintf("cat /dev/zero|./filter %x %x 2>/dev/null|", $enc, $inseed)) or die "failed to init incoming stream cipher";
+open (OUTCIPHER, sprintf("cat /dev/zero|./filter %x %x 2>/dev/null|", $enc, $outseed)) or die "failed to init incoming stream cipher";
+
+
+my ($innet,$outnet);
+while ($len=sysread($sock, $buf, 1)) {
+    encrypt(\*INCIPHER, $buf);
+    last if $buf eq "\0";
+    $innet.=$buf;
+}
+
+print "Got network name:\n";
+printbin $innet;
+
+print "Ours (null for same):";
+chomp($outnet=<>);
+$outnet||=$innet;
+$outnet.="\0";
+printbin $outnet;
+print $sock encrypt(\*OUTCIPHER, my $tempnet=$outnet);
+
+my $child;
+if (defined ($child=fork())) {
+    if ($child) {
+	print "Listening\n";
+	my $left=''; # in the middle of a message?
+	my ($type,$len);
+	while (sysread ($sock, $buf, 65536)) {
+	    encrypt(\*INCIPHER, $buf);
+#	    printf "Received %d bytes:\n", length $buf;
+#	    printbin($buf);
+	    for ($buf) {
+
+		if ($len) {
+		    if (/\G(.{$len})/sgc) {
+			printbin $left.$1;
+			$left='';
+			$len=0;
+			redo;
+		    } else {
+			/\G(.*)/sgc or die;
+			$left.=$1;
+			$len-=length $1;
+			last;
+		    }
+		}
+
+		print "Received ping\n", redo if /\GP/gc;
+		print "Received pong\n", redo if /\GR/gc;
+		if (/\GK(....)/gc) {
+		    my $header=$1;
+		    ($type,$len)=unpack_xinu(unpack"C*",$header);
+		    printf "Received message type %d, len %d\n", $type, $len;
+		    redo;
+		}
+		if (pos!=length) {
+		    print "Unknown message header:\n";
+		    printbin substr($_,pos);
+		    die;
+		}
+	    }
+	}
+    } else {
+	while (<>) {
+	    my $packet;
+	  LOOP:
+	    {
+		$packet.='P', redo LOOP if (/Gpi?n?g?/igc);
+		$packet.='R', redo LOOP if (/Gp?on?g?/igc);
+		if (/\Gm([0-9a-f]+)\s*/igc) {
+		    my $type=hex $1;
+		    my $msg='';
+		  MSG:
+		    {
+			$msg.=pack($1, eval $2), redo MSG if /\G([A-Za-z])(.*?)\s*/gc;
+			$msg.=chr hex $1, redo MSG if /\Gx([0-9a-f][0-9a-f]\s*)/gc;
+			$msg.=eval"$1"."\0", redo MSG if /\Gz(".*?")\s*/gc;
+			$msg.=eval"$1", redo MSG if /\G(".*?")\s*/gc;
+		    }
+			$packet=message($type, $msg);
+		}
+		warn "?" if $_;
+	    }
+	    if ($packet) {
+		printf "Sending %d-byte packet:\n", length $packet;
+		printbin $packet;
+		encrypt(\*OUTCIPHER, $packet);
+		print $sock $packet;
+	    }
+	}
+    }
+}
+
+sub printbin {
+    open(F,"|hd") or die;print F @_;
+    close F;
+}
+
+sub unpack_xinu {
+    my @map=@{[[0,1,3,2],[1,3,0,2],[1,2,3,0]]->[$xinu %3]};
+    my ($type,$len)=unpack'vv', pack'C*',@_[@map];
+    $xinu^=$type+$len;
+    $xinu^=0xffffffff;
+    return ($type,$len);
+}
+
+sub pack_xinu {
+    my @map=@{[[0,1,3,2],[1,3,0,2],[1,2,3,0]]->[$xinu %3]};
+    my @a;
+    @a[@map]=unpack'C*',pack'vv',@_;
+    print "xinu: a=@a\n";
+    $xinu^=$_[0]+$_[1];
+    $xinu^=0xffffffff;
+    return @a;
+}
+
+sub message {
+    my ($type, $buf)=@_;
+    return 'K'.pack('C*',pack_xinu($type,length $buf)).$buf;
+}
+
+sub encrypt {
+    my $stream;
+    sysread($_[0], $stream, length $_[1]) or die;
+    $_[1]^="$stream";
+}

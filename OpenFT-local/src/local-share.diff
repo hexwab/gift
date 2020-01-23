@@ -1,0 +1,388 @@
+? bloom
+? ft_bloom
+? ft_tokenize
+? gmon.out
+? localchild.diff
+? random_nodes.diff
+? routing.diff
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	11 Oct 2004 18:39:06 -0000
+@@ -63,6 +63,10 @@
+ #define FT_CFG_NODE_CLASS_ALLOW   ft_cfg_get_int("main/class_allow=3");
+ #define FT_CFG_NODE_ALIAS         ft_cfg_get_str("main/alias")
+ 
++#define FT_CFG_VER_MINPARENT      ft_cfg_get_str("version/min_parent=131331")
++#define FT_CFG_VER_MINPEER        ft_cfg_get_str("version/min_peer=131331")
++#define FT_CFG_VER_MINCHILD       ft_cfg_get_str("version/min_child=131329")
++
+ #define FT_CFG_NODES_CACHE_MAX    (500)
+ 
+ #define FT_CFG_SEARCH_VFY         (0)
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.68
+diff -u -r1.68 ft_http_server.c
+--- ft_http_server.c	11 May 2004 21:25:18 -0000	1.68
++++ ft_http_server.c	11 Oct 2004 18:39:06 -0000
+@@ -788,8 +788,9 @@
+ 	assert (f != NULL);
+ 
+ 	/* overflowing shouldnt be possible, but just in case.... */
++#if 0
+ 	assert (c->start + c->transmit < c->stop);
+-
++#endif
+ 	/*
+ 	 * Ask giFT for the size we should send.  If this returns 0, the upload
+ 	 * was suspended.
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.137
+diff -u -r1.137 ft_search_db.c
+--- ft_search_db.c	2 Oct 2004 01:34:04 -0000	1.137
++++ ft_search_db.c	11 Oct 2004 18:39:07 -0000
+@@ -294,8 +294,9 @@
+ 	sdb->remove_curs = NULL;
+ 	sdb->shares = 0;
+ 	sdb->size = 0;
++#ifdef BLOOM
+ 	sdb->filter = sdb->old_filter = NULL;
+-
++#endif
+ 	if (node)
+ 		node->session->search_db = sdb;
+ 	
+@@ -319,10 +320,10 @@
+ 	 */
+ 	if (sdb->node && sdb->node->session)
+ 		assert (sdb->node->session->search_db != sdb);
+-
++#ifdef BLOOM
+ 	assert (sdb->filter == NULL);
+ 	assert (sdb->old_filter == NULL);
+-
++#endif
+ 	free (sdb->share_idx_name);
+ 	free (sdb);
+ }
+@@ -1229,8 +1230,10 @@
+ 
+ 	ft_tokenize_free (t);
+ 
++#ifdef BLOOM
+ 	if (success)
+ 		ft_bloom_add (sdb->filter, hash->data);
++#endif
+ 
+ 	return success;
+ }
+@@ -1406,7 +1409,11 @@
+ 	if (!db_md5idx() || !db_tokenidx())
+ 		return FALSE;
+ 
++#if 0
+ 	if (!(share = db_get_share (sdb, id, NULL)))
++#else
++	if (!(share = db_get_share (sdb, id, 1)))
++#endif
+ 		db_abort (sdb);
+ 
+ 	md5 = share_get_hash (share, "MD5")->data;
+@@ -1450,20 +1457,25 @@
+ 	/* tokenize so that we know exactly what we're supposed to be removing
+ 	 * from the secondary database */
+ 	if (!(t = ft_tokenize_share (share, 0)))
++		db_abort (sdb);
++
++	/* attempt to remove each token individually from the secondary
++	 * token index */
++	if (!db_remove_tokenidx (sdb, t, id))
++	{
++		FT->DBGFN (FT, "%s: remove_tokenidx failed for '%s'", 
++			   ft_node_fmt (sdb->node), md5_fmt (md5));
+ 		failure = TRUE;
++	}
++#if 1
+ 	else
+ 	{
+-		/* attempt to remove each token individually from the secondary
+-		 * token index */
+-		if (!db_remove_tokenidx (sdb, t, id))
+-		{
+-			FT->DBGFN (FT, "%s: remove_tokenidx failed for '%s'", 
+-				   ft_node_fmt (sdb->node), md5_fmt (md5));
+-			failure = TRUE;
+-		}
+-
+-		ft_tokenize_free (t);
++		FT->DBGFN (FT, "%s: removing %08x:%08x '%s', ntok=%d", ft_node_fmt (sdb->node),
++			   sdb, id, md5_fmt (md5), t->len);
++		GIFT_TRACEMEM (t->tokens, t->len * sizeof(*t->tokens));
+ 	}
++#endif
++	ft_tokenize_free (t);
+ 
+ 	/* we only needed this for the token list and size, sigh */
+ 	if (ft_share_unref (share) > 0)
+@@ -1685,6 +1697,7 @@
+ 	 */
+ 	sdb->node = NULL;
+ 
++#ifdef BLOOM
+ 	if (sdb->old_filter)
+ 		ft_bloom_unmerge (sdb->old_filter, md5_filter.filter);
+ 	else
+@@ -1695,6 +1708,7 @@
+ 	ft_bloom_free (sdb->old_filter);
+ 
+ 	sdb->filter = sdb->old_filter = NULL;
++#endif
+ 
+ 	/*
+ 	 * Initialize the cursor and other data objects necessary to perform
+@@ -1950,6 +1964,7 @@
+ {
+ 	static struct md5idx_data *datarec;
+ 	unsigned char *md5;
++	Hash     *hash;
+ 	DB       *dbp;
+ 	DBC      *dbcp;
+ 	DBT       key;
+@@ -1957,10 +1972,11 @@
+ 	u_int32_t flags;
+ 	uint32_t  id = 0;
+ 
+-	md5 = share_get_hash (share, "MD5")->data;
++	if (!(hash = share_get_hash (share, "MD5")))
++		return 0;
+ 
+-	if (!md5)
+-		abort();
++	if (!(md5 = hash->data))
++		return 0;
+ 
+ 	if (!(dbp = db_md5idx()))
+ 		return 0;
+@@ -2036,6 +2052,14 @@
+ 		share = *(Share **)data.data;
+ 		ft_share_ref (share);
+ 
++#if 1
++		if (order == 1)
++		{
++			GIFT_TRACEMEM (data.data, data.size);
++			order = NULL;
++		}
++#endif
++
+ 		/* FIXME */
+ 		if (order)
+ 			*order = NULL;
+@@ -2045,6 +2069,14 @@
+ 		assert (data.size <= sizeof (*datarec));
+ 		datarec = data.data;
+ 
++#if 1
++		if (order == 1)
++		{
++			GIFT_TRACEMEM (data.data, data.size);
++			order = NULL;
++		}
++#endif
++
+ 		/*
+ 		 * Create a new file structure for this record...this is actually quite a
+ 		 * bit less efficient than we want to be, but ft_search_tokenizef needs
+@@ -2726,8 +2758,9 @@
+ 	}
+ 
+ 	local_child = search_db_new (NULL);
++#ifdef BLOOM
+ 	local_child->filter = md5_filter.filter;
+-
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return db_initialized;
+@@ -2848,9 +2881,8 @@
+ 
+ #ifdef USE_LIBDB
+ 	id = db_lookup_local_share (share);
+-	assert (id != 0);
+ 
+-	if ((ret = db_remove (local_child, id, NULL)))
++	if (id && (ret = db_remove (local_child, id, NULL)))
+ 	{
+ #ifndef SEARCH_DB_BENCHMARK
+ 		FT->DBGFN (FT, "local: removed %s", share->path);
+@@ -2858,6 +2890,7 @@
+ 	}
+ 	else
+ 	{
++		assert (id == 0);
+ 		FT->DBGFN (FT, "local: %s removal failed", share->path);
+ 	}
+ #endif /* USE_LIBDB */
+@@ -2934,6 +2967,7 @@
+ 	if (!(db_shareidx (sdb, TRUE)))
+ 		return FALSE;
+ 
++#ifdef BLOOM
+ 	if (!sdb->filter)
+ 		sdb->filter = ft_bloom_new (MD5_FILTER_BITS, MD5_FILTER_HASHES,
+ 					    16 << 3, FALSE);
+@@ -2942,6 +2976,7 @@
+ 	
+ 	if (!sdb->old_filter)
+ 		sdb->old_filter = ft_bloom_clone (sdb->filter);
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return TRUE;
+@@ -2972,6 +3007,7 @@
+ 	if (!db_close (sdb, rm))
+ 		return FALSE;
+ 
++#ifdef BLOOM
+ 	assert (sdb->filter);
+ 	assert (sdb->old_filter);
+ 
+@@ -2980,6 +3016,7 @@
+ 	ft_bloom_free (sdb->old_filter);
+ 
+ 	sdb->old_filter = NULL;
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return TRUE;
+@@ -3013,8 +3050,8 @@
+ #ifdef USE_LIBDB
+ 	results = db_search_md5 (a, md5, max_results);
+ 
++#ifdef BLOOM
+ 	/* a little paranoia never hurt anybody */ 
+-#if 1
+ 	{
+ 		static int total=0, hits=0, misses=0,
+ 			misfiltered=0, unsynced=0;
+@@ -3109,7 +3146,7 @@
+ static int files = 0;
+ 
+ static int minnodes = 100;
+-static int maxnodes = 500;
++static int maxnodes = 100;
+ 
+ static int minqueries =  5000;
+ static int maxqueries = 10000;
+@@ -3176,7 +3213,7 @@
+ 
+ 		array_push (files, record);
+ 
+-#if 0
++#if 1
+ 		/* make some duplicates for good measure */
+ 		if (rand() < RAND_MAX/100)
+ 		{
+@@ -3405,8 +3442,14 @@
+ 		for (j = 0; j < flen; j++)
+ 		{
+ 			Share *share = array_index (&hl->files, j);
++			Hash *hash=share_get_hash (share, "MD5");
+ 			assert (share != NULL);
+ 
++#if 0
++			assert (hash);
++			memset (hash->data, 0, 16);
++#endif
++
+ 			if (!(ft_search_db_insert (hl->node, share)))
+ 			{
+ 				FT->err (FT, "%s(%s): error inserting file",
+@@ -3519,8 +3562,9 @@
+ 	{
+ 		FTNode *node = nodelist[i].node;
+ 
+-#if 0
+-		sw = stopwatch_new (TRUE);
++#if 1
++		StopWatch *sw = stopwatch_new (TRUE);
++		int shares = FT_SEARCH_DB(node)->shares;
+ 		assert (sw != NULL);
+ #endif
+ 
+@@ -3532,7 +3576,7 @@
+ 
+ 			ft_search_db_open (node);
+ 
+-			for(j=0;j<flen/2;j++) {
++			for(j=0;j<flen /*/2*/;j++) {
+ 				Share *file=array_splice (&f, j, 0, NULL);
+ 				Hash *hash=share_get_hash (file, "MD5");
+ 				if (hash) {
+@@ -3551,6 +3595,14 @@
+ 			
+ 			ft_search_db_close (node, FALSE);
+ 
++#if 0
++			check_tokens (FT_SEARCH_DB(node));
++#endif
++
++#if 0
++			run_search ();
++#endif
++
+ 			{
+ 				DB_BTREE_STAT *stats;
+ 				DB *db=FT_SEARCH_DB(node)->share_idx;
+@@ -3567,7 +3619,7 @@
+ 			}
+ 		}
+ 
+-		if (1)
++		if (0)
+ 		{
+ 			if (!(ft_search_db_remove_host (node)))
+ 			{
+@@ -3576,7 +3628,7 @@
+ 			}
+ 		}
+ 
+-#if 0
++#if 1
+ 		FT->dbg (FT, "delete %s(%lu): %.06fs elapsed", ft_node_fmt (node),
+ 				 shares, stopwatch_free_elapsed (sw));
+ #endif
+@@ -3605,7 +3657,7 @@
+ 	         nqueries, stime, (float)nqueries / stime);
+ 
+ 	/* remove */
+-	rtime = run_remove (FALSE);
++	rtime = run_remove (TRUE);
+ 	FT->dbg (FT, "remove(%lu): %.06fs elapsed (avg %.02f files/s)",
+ 	         files, rtime, (float)files / rtime);
+ 
+Index: ft_search_db.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_search_db.h
+--- ft_search_db.h	3 Sep 2004 16:11:14 -0000	1.27
++++ ft_search_db.h	11 Oct 2004 18:39:07 -0000
+@@ -110,8 +110,10 @@
+ 	                                    *   each individual share when a
+ 	                                    *   host removal operation is
+ 	                                    *   requested */
++#ifdef BLOOOM
+ 	BloomFilter  *filter;
+ 	BloomFilter  *old_filter;
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	unsigned long shares;              /**< total files currently shared */

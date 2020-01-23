@@ -1,0 +1,12 @@
+# KDE Config File  
+[Desktop Entry]
+Type=Application
+Exec=kadeau -caption "%c" %i %m  
+Icon=kadeau.png
+MiniIcon=kadeau.png
+DocPath=kadeau/index.html
+Comment=
+Comment[de]=
+Terminal=0
+Name=Kadeau
+Name[de]=Kadeau

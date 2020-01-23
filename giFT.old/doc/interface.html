@@ -1,0 +1,150 @@
+<html><head><title>giFT: Interface Protocol Documentation</title></head><body>
+
+<h1 align="center"><u><font color="#000080">Interface Protocol</font></u></h1>
+<h2 align="center"><font color="#990000"><tt>GNU Internet File Transfer</tt></font></h2>
+<hr width="50%">
+<p><br>
+<font face="Courier New, Courier, mono" color="#333333">
+ Project Name: giFT<br>
+ Submission Date: February 7, 2002<br>
+ Last Update: February 7, 2002<br>
+ Maintainer: jasta<br><br>
+</font></p>
+<ul>
+ <li><b>Theory</b><br><br>
+The giFT interface protocol was adopted so that the back-end was never a
+required understanding for the user interface developer.  This unique feature
+(jabber who?) allows any giFT UI developer to create a UI that can be used
+unaltered if the user decides to load extra or even a completely different
+protocol plugin.  The giFT project hopes that, in time, this interface
+protocol will become a pseudo standard and will allow truly robust interfaces
+to be built without any requirement on the network protocol it was intended
+for.
+ </li>
+ 
+ <br><br>
+ 
+ <li><b>Attached Connections</b><br><br>
+the giFT interface protocol implements a scheme that allows manipulation on a
+single socket via event identifiers or to use a unique socket connection to
+the daemon for each event request.  The recommendation is that a full-fledged
+user interface will want to use the single socket interface and will thus
+require the attach command.<br><br>
+
+All attached connections will have a similar event identifier structure which 
+resembles:<br><br>
+
+  <ul>
+   <li>Send an initial event request:<br><br>
+<tt><i>&lt;EVENT_NAME [arg1=value [arg2=value [argn=value]]]/&gt;</i></tt><br><br>
+   </li>
+
+   <li>Receive the event identifer:<br><br>
+<tt><i>&lt;event id="n"/&gt;</i></tt><br><br>
+   </li>
+
+   <li>Event termination is received as (when the event is completed):<br>
+   <b>NOTE</b>: any event may be cancelled by sending this command<br><br>
+<tt><i>&lt;EVENT_NAME id="n"/&gt;</i></tt><br>
+   </li>
+  </ul>
+ </li>
+ 
+ <br><br>
+ 
+ <li><b>Commands</b><br><br>
+ All commands are sent in the form <tt><i>&lt;command [option1=value
+[...]]/&gt;</i></tt>
+ </li>
+ 
+ <br><br>
+ 
+ <li><b><i>attach</i></b><br><br>
+ Establishes an attached connection (see above)<br><br>
+  <ul>
+   <li><b><i>profile</i></b> <font size=-2>(optional)</font><br>
+   Specifies which user profile to load preferences from.  Currently unused.</li><br>
+   <li><b><i>client</i></b> <font size=-2>(optional)</font><br>
+   Authenticate your client by name.</li><br>
+   <li><b><i>version</i></b> <font size=-2>(optional, requires client)</font><br>
+   Register your clients version.</li><br>
+  </ul>
+ </li>
+ 
+ <br><br>
+ 
+ <li><b><i>search</i></b><br><br>
+ Request a search<br><br>
+  <ul>
+   <li><b><i>protocol</i></b> <font size=-2>(optional)</font><br>
+   Specify the protocol to use for searching.  If none are present, all protocols are searched.</li><br>
+   <li><b><i>query</i></b><br>
+   Search string</li><br>
+   <li><b><i>exclude</i></b> <font size=-2>(optional)</font><br>
+   Exclusion list</li><br>
+   <li><b><i>type</i></b> <font size=-2>(optional)</font><br>
+   Modifies search behavior for query (valid options are "user" or "md5")</li><br>
+   <li><b><i>realm</i></b> <font size=-2>(optional)</font><br>
+   Search realm, audio, video, mime types</li><br>   
+   <li><b><i>csize</i></b> <font size=-2>(optional)</font><br>
+   Size constraint, example: 1000000-5000000</li><br>
+   <li><b><i>ckbps</i></b> <font size=-2>(optional)</font><br>
+   kilobits per second constraint</li><br>
+  </ul>
+ </li>
+
+ <br><br>
+ 
+ <li><b><i>transfer</i></b> <font size=-1>(start download)</font size=-1><br><br>
+ Request a file download<br><br>
+  <ul>
+   <li><b><i>action</i></b> = "download"<br></li><br>
+   <li><b><i>size</i></b><br>
+   Filesize in bytes</li><br>
+<!--
+   <li><b><i>hash</i></b><br>
+   MD5 hash of the file</li><br>
+  -->
+   <li><b><i>save</i></b><br>
+   Filename to save as, do not include directory path</li><br>
+  </ul>
+ </li>
+
+ <br><br>
+ 
+ <li><b><i>transfer</i></b> <font size=-1>(add/remove sources)</font size=-1><br><br>
+ Add sources to an initiated file transfer (this is a required step)<br><br>
+  <ul>
+   <li><b><i>id</i></b><br>
+   Event identifer returned from the above transfer request</li><br>
+   <li><b><i>user</i></b><br>
+   Username (display name) returned from the search request</li><br>
+   <li><b><i>hash</i></b><br>
+   Hash returned from the search request</li><br>   
+   <li><b><i>addsource</i></b><br>
+   Protocol-specific source string returned from a search</li>
+   <br><i>- OR -</i><br><br>
+   <li><b><i>delsource</i></b><br>
+   Protocol-specific source string returned from a search</li><br>
+  </ul>
+ </li>
+
+ <br><br>
+ 
+ <li><b><i>transfer</i></b> <font size=-1>(upload detected)</font size=-1><br><br>
+ Upon receiving an upload request, the daemon will send a transfer command to all attached sockets so that the UI may monitor the progress<br><br>
+  <ul>
+   <li><b><i>id</i></b><br>
+   Event identifer pre-determined by the daemon</li><br>
+   <li><b><i>action</i></b> = "upload"<br></li><br>
+   <li><b><i>user</i></b><br>
+   Display string from the protocol, use this to show who is being uploaded to</li><br>
+   <li><b><i>size</i></b><br>
+   Total length of the requested segment</li><br>
+   <li><b><i>href</i></b><br>
+   Protocol-specific source string.  May be parsed to receive filename and protocol</li><br>
+  </ul>
+ </li>
+</ul>
+
+</body></html>

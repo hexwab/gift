@@ -1,0 +1,46 @@
+; $Id: gift_api.def,v 1.19 2002/06/29 04:00:31 rossta Exp $
+ 
+EXPORTS
+chunk_free              ; transfer.h
+chunk_new               ; transfer.h
+chunk_write             ; transfer.h
+gift_exit               ; main.c
+gift_main               ; main.c
+hook_event		; hook.h
+hook_var_free		; hook.h
+hook_var_new		; hook.h
+hook_var_value		; hook.h
+md5_checksum            ; md5.h
+mime_open               ; mime.h
+mime_type               ; mime.h
+share_auth_upload       ; sharing.h
+share_clear_index       ; sharing.h
+share_complete		; sharing.h
+share_disable           ; sharing.h
+share_enable            ; sharing.h
+share_find_file         ; sharing.h
+share_foreach           ; sharing.h
+share_free              ; sharing.h
+share_index             ; sharing.h
+share_index_sorted      ; sharing.h
+share_insert_data       ; sharing.h
+share_lookup_data       ; sharing.h
+share_new               ; sharing.h
+share_read_index        ; sharing.h
+share_remove_data       ; sharing.h
+share_status            ; sharing.h
+share_write_index       ; sharing.h
+source_free             ; transfer.h
+source_new              ; transfer.h
+source_status           ; transfer.h
+transfer_free           ; transfer.h
+transfer_new            ; transfer.h
+transfer_stop           ; transfer.h
+transfers_throttle      ; transfer.h
+transfers_throttle_tick ; transfer.h
+upload_display          ; upload.h
+upload_length           ; upload.h
+upload_new              ; upload.h
+upload_report_attached  ; upload.h
+upload_stop             ; upload.h
+upload_write            ; upload.h

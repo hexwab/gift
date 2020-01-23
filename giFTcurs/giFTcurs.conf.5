@@ -1,0 +1,272 @@
+.\" $Id: giFTcurs.conf.5,v 1.25 2003/05/21 09:18:08 chnix Exp $
+.TH GIFTCURS.CONF 5 "27 June 2002"
+.SH NAME
+giFTcurs.conf \- giFTcurs configuration file
+.SH DESCRIPTION
+The giFTcurs.conf file contains configuration data for \fIgiFTcurs\fP.
+Comments begin with #, whitespace is trimmed and empty lines are ignored.
+Each line should contain a section, a keyword and a value. giFTcurs
+will try to preserve most of the formatting when it saves changes. The
+available options are listed below.
+.PP
+.TP
+.I color item value
+This sets the color item \fIitem\fP to the colors in \fIvalue\fP. All
+possible items can be found and changed in the settings screen
+in giFTcurs.
+.TP
+.I set max-hits value
+This sets the maximum number of hits. A zero value means that there is
+no limit. The default is not to limit the number of hits.
+.TP
+.I set upload-height value
+This sets the height of the upload box. This value is automatically saved
+if it's changed in giFTcurs.
+.TP
+.I set scrolloff value
+This sets the scroll offset for lists. The default is \fB0\fP.
+.TP
+.I set invert-selection value
+If this value is non-zero then the old behaviour of inverting selections
+instead of using a specific color will be used.
+.TP
+.I set filter-hits value
+Setting this to non-zero will make giFTcurs ignore all search hits where
+the availability is set to zero.
+.TP
+.I set buttonbar value
+If this value is zero, the button bar will be hidden.
+.TP
+.I set autoclear value
+If this value is non-zero, finished transfers will be cleared from the
+screen automatically.
+.TP
+.I set confirm-cancel value
+If this value is non-zero, giFTcurs will require you to hold down shift
+when cancelling downloads. When set greater than 1, it indicates the
+minimum number of downloaded bytes that will require shift.
+For example, a value of 5242880 will prevent accidental cancellations
+of downloads > 5MB.
+.TP
+.I sort hits
+Specify the sorting methods to be used for displaying hits. ; separates
+the methods and , separates fields within methods. A minus sign sorts in
+reversed order. All fields specified in section \fBATTRIBUTES\fP are supported.
+.TP
+.I sort transfers
+.TP
+.I sort uploads
+.TP
+.I sort downloads
+Specify sorting for transfers. Use the latter to use a different sorting
+for the two types of transfers.
+.TP
+.I format hit format-string
+Sets the default presentation format of search hits. See section
+\fBFORMATS STRINGS\fP for description of formats.
+.TP
+.I format audio format-string
+.TP
+.I format video format-string
+.TP
+.I format image format-string
+.TP
+.I format text format-string
+.TP
+.I format application format-string
+If defined, these formats is selected instead of \fBformat hit\fP
+when hits have the corresponding mime-type. A hit with mime-type
+audio/x-vorbis will for example use the \fBaudio\fP format.
+.TP
+.I format browse format-string
+Define the format to be used when searching for the files of a user.
+.TP
+.I format subhit format-string
+This format is shown on each user, when you expand a hit.
+.TP
+.I format transfer format-string
+Describes the format used for transfers.
+.TP
+.I format source format-string
+Each item in the expanded transfer is formatted according to this.
+.TP
+.I format $\fImacroname\fP format-string
+Defines a macro which can be referred to in any format string, and is
+expanded there. Recursive macros are not allowed.
+.TP
+.I ignore filename regex-string
+Specifies that filenames containing the specified string should not
+be displayed among search results. Case is ignored, and the string
+can contain regular expression wildcards, see regex(7).
+This setting can be repeated for every filename you want filtered.
+.TP
+.I ignore user string
+Hits from this user will be ignored. The exact username is
+required, no wildcards are recognised. You can also press shift-i 
+in giFTcurs add that user to the ignore list.
+This setting can be repeated for every user you want filtered.
+
+.SH FORMAT STRINGS
+A format string is a regular string with commands inserted. A command
+is defined between { and }. If you want these characters literally,
+you must escape them with backslash as \\{ or \\}. Also, you can prevent
+extra spaces to be stripped by preceding them with \\. If a format is
+malformed, it is silently ignored. However, giFTcurs --verbose will
+(hopefully) show you an explanation of the error.
+.PP
+Here follows a list of commands understood. Examples of names are used,
+but they can be replaced by other names as well.
+The notation [abc] means you can put either an a, b or c in this place.
+.TP
+.I {%hit-good}
+The color theme \fIhit-good\fP should be used after this point. You
+can reset color with {%standard}
+.TP
+.I {%hit-good:B}
+See above but bold colors should be used.
+.TP
+.I {space}
+For centering values. When the formatting is nearly
+complete, the remaining space is evenly divided among all the
+{space}s.
+.TP
+.I {progress filesize transferred}
+.TP
+.I {progress filesize start transferred}
+.TP
+.I {endprogress}
+for transfers, these indicate where the progress bar should begin and end.
+The first argument refers to how large the amount is. The middle argument,
+is specified, tells where the bar should start. The last argument tells
+where the bar should stop. Numeric arguments can be used. You can not
+specify colors inside {progress} {endprogress}.
+.TP
+.I {fixed:35} {endfixed}
+Formats encapsulated within these tags will be forced to have the specified
+width. These tags can not be nested.
+.TP
+.I {author}
+This command is substituted by the contents of the value
+referenced by this keyword on the actual item. Keywords available
+depends on which type of item we are formatting, see section \fBKEYWORDS\fP.
+If the line becomes too long, items without flags are truncated. To prevent
+that, specify an empty format tag, like {\fIauthor\fP:}
+.TP
+.I {bitrate:[bkMGT]}
+The keyword is converted to an integer and is printed out
+with a 1000-power prefix appended. Always four chars wide,
+four spaces are written if the actual keyword is not available.
+.TP
+.I {filesize:[bkMGT]i}
+The keyword is converted to an integer and is printed out
+with a 1024-power prefix appended. Always 4 chars wide.
+.TP
+.I {duration:t}
+The keyword is taken as seconds and is printed out on the
+form 04h06s, always 6 chars wide.
+.TP
+.I {net:3}
+.TP
+.I {filename:60%}
+The keyword is printed out, truncated or padded to the specified
+number of characters. A percent-sign after the number specifies
+a width relative to the whole format width.
+.TP
+.I {availability:3}
+.TP
+.I {availability:-3}
+The integer keyword is printed out, padded up to the specified
+number of chars. Negative means left adjust. Same as printf
+format %3u and %-3u.
+.TP
+.I {if keyword}
+.TP
+.I {elif keyword}
+.TP
+.I {else} {endif}
+.TP
+.I {endif}
+Allows conditional rendering, a keyword is said to fail if
+is unavailable, the empty string or the number 0.
+Comparisons support one single operation: less than, <.
+This, however can be used to specify an interval, for example
+{if 4<sources<6} will succeed if sources equals 5.
+If statements can not be nested, but nesting can be simulated
+using macros.
+.TP
+.I {$stats}
+This "calls" the macro named \fI$stats\fP which must be defined.
+You define macros just as other formats, but they must begin with
+a dollar sign.
+
+.SH ATTRIBUTES
+There is four types of items, each with a different set of
+recognized keywords.
+.TP
+.I Hits
+hash, filename, path, (strings), filesize, expanded, sources, availability,
+downloading (integers). All meta data can also be accessed.
+.TP
+.I Subhits
+user, url, net, filename, suffix (strings). availability (integer).
+.TP
+.I Transfers
+filename, expanded, status (strings). filesize, bandwidth, ratio,
+transferred, searching, active, eta, download, upload, disk_free,
+expanded, sources (integers).
+.TP
+.I Sources
+user, url, net, status, expanded, filename (strings). start, transferred,
+total, filesize, active, paused, queued, download, upload, eta (integers).
+
+.SH EXAMPLE
+This shows a commented example file \fB~/.giFT/ui/giFTcurs.conf\fP.
+.nf
+
+# giFTcurs configuration file.
+# Available colors: black red green yellow blue magenta cyan white default
+# 'default' means no color, i.e. transparent on some terminals.
+color standard cyan default
+color header magenta black
+color search-box red black
+color result-box green black
+color stat-box blue black
+color stat-data white black
+color stat-bad red black
+color info-box magenta black
+color download-box green black
+color upload-box cyan black
+color help-box blue black
+color hit-good green black
+color hit-bad red black
+color progress blue green
+color tot-progress blue green
+color diamond green black
+set upload-height 17       # height of upload box
+set scrolloff 3            # same as :set scrolloff=3 in vim
+set confirm-cancel 5242880 # require shift when deleting > 5MB d/l
+
+# first define some useful macros
+format $availability {if 2<availability}{%hit-good:B}{elif availability<1}{%hit-bad:B}{else}{%header:B}{endif}
+format $hit_pfx {if downloading}!{else}{expanded:1}{endif}{$availability}{availability:2}{%standard}/{if downloading<1}{%header:B}{endif}{filesize:bi}{%standard}
+
+# define the default hit format
+format hit {$hit_pfx} {filename} {space}{if bitrate}{bitrate:k}bps {duration:t}{endif}"
+# define the individual source hit format
+format subhit \\ - {if 128<availability}Inf{else}{availability:3}{endif} \\ \\ {user:22}{%header:B}@{%standard}{net:}: {filename}{space}
+
+# special formats for common search types
+format browse {if downloading<1}{%header:B}{endif}{filesize:bi}{%standard} {path:}/{filename}{space}{if bitrate} {bitrate:k}bps {duration:t}{endif}
+format image {$hit_pfx} {width:4}x{height:-4} {filename}{space}
+format transfer {expanded:} {filename:-43} | [{progress filesize transferred}{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}B/s{else}{status}{endif}{space}{endprogress}]
+format source \\ \\ - {user:23}@{net:-17} | [{progress filesize start transferred}{space}{status}{space}{endprogress}]
+
+# Let the user have many ways to sort. left/right key cycles through this list
+sort hits availability,filesize;filename;path,filename;filesize;sources,filesize
+sort transfers filesize
+.fi
+.SH AUTHORS
+G\[:o]ran Weinholt <weinholt@dtek.chalmers.se>,
+Christian H\[:a]ggstr\[:o]m <chm@c00.info>.
+.SH SEE ALSO
+.BR giFTcurs (1).

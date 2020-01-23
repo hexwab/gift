@@ -1,0 +1,1108 @@
+# giFTcurs - curses interface to giFT
+# Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+# Andreas Kleist Svendsen <andreas@fabel.dk>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: giFTcurs 0.3.3\n"
+"Report-Msgid-Bugs-To: giftcurs-devel@nongnu.org\n"
+"POT-Creation-Date: 2004-01-11 21:17+0100\n"
+"PO-Revision-Date: 2003-12-13 18:30+0100\n"
+"Last-Translator: Andreas Kleist Svendsen <andreas@fabel.dk>\n"
+"Language-Team: dansk@klid.dk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+#: src/get.c:48
+msgid "A source search for this file is already in progress."
+msgstr "En kildesøgning efter denne fil er allerede i gang."
+
+#: src/get.c:86
+msgid "Already downloading from this source"
+msgstr "Henter allerede fra denne kilde."
+
+#: src/get.c:90
+msgid "Downloading from a single source"
+msgstr "Henter fra en enkelt kilde"
+
+#: src/get.c:97
+#, c-format
+msgid "Revived '%s'."
+msgstr "Genoplivede '%s'."
+
+#: src/get.c:104
+#, c-format
+msgid "I have no sources for '%s'."
+msgstr "Ingen kilder til '%s'."
+
+#: src/get.c:119
+#, c-format
+msgid "Already downloading '%s'."
+msgstr "Henter allerede '%s'."
+
+#: src/get.c:122
+msgid "Downloading..."
+msgstr "Henter..."
+
+#: src/get.c:153
+#, c-format
+msgid "Source search complete for '%s'."
+msgstr "Kildesøgning efter '%s' færdig."
+
+#: src/get.c:188
+#, c-format
+msgid "Started a source search for '%s'."
+msgstr "Startede kildesøgning efter '%s'."
+
+#: src/gift.c:66
+msgid "I'm all out of id's, Jim. Maybe you could cancel a search?"
+msgstr "Jeg er løbet tør for id'er Jens. Kan du annullere en søgning?"
+
+#: src/gift.c:81
+#, c-format
+msgid "The daemon used the reserved ID %u, upgrade the daemon."
+msgstr "Dæmonen brugte det reserverede ID %u, opgradér den."
+
+#: src/gift.c:100
+msgid "The connection with the daemon was unexpectedly closed!"
+msgstr "Forbindelsen til dæmonen blev pludseligt afbrudt!"
+
+#: src/gift.c:133
+#, c-format
+msgid "Can't connect to the daemon at %s:%s, is giFT running?"
+msgstr "Kan ikke forbinde til giFT-dæmonen på %s:%s, kører giFT?"
+
+#: src/main.c:153
+#, c-format
+msgid "%s v%s - This is Free Software. Press F1 or M-1 for more info."
+msgstr "%s v%s - Dette er fri software. Tryk på F1 eller M-1 for mere info."
+
+#: src/main.c:214
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr "%s version %s, oversat %s %s\n"
+
+#: src/main.c:251
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr "%s - curses-brugerflade til giFT\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr "Brug: %s [FLAG]...\n"
+
+#: src/main.c:253
+#, c-format
+msgid ""
+"Options:\n"
+"  -a, --stickchars        use 7-bit chars for line drawing\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%s]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+"Flag:\n"
+"  -a, --stickchars        brug 7-bit tegn til linier\n"
+"  -h, --help              vis denne hjælp og afslut\n"
+"  -V, --version           vis versionsinformation og afslut\n"
+"  -v, --verbose           fyld stderr med aflusningsinfo\n"
+"  -s, --server=vært:port  sæt serveradresse til [%s:%s]\n"
+"  -p, --profile=navn      vælg profilen der skal benyttes [%s]\n"
+
+#: src/main.c:262
+#, c-format
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr "  -d, --nomouse           brug ikke musen\n"
+
+#: src/misc.c:205
+#, c-format
+msgid "The daemon has synced %i file."
+msgid_plural "The daemon has synced %i files."
+msgstr[0] "Dæmonen har synkroniseret %i fil."
+msgstr[1] "Dæmonen har synkroniseret %i filer."
+
+#: src/misc.c:208
+msgid "The daemon is done syncing shares."
+msgstr "Dæmonen har synkroniseret delte filer."
+
+#: src/misc.c:210
+#, c-format
+msgid "The daemon reported the following sync status: %s"
+msgstr "Dæmonen rapporterede følgende synkroniseringsstatus: %s"
+
+#: src/misc.c:215
+msgid "Daemon reported that sharing now is enabled."
+msgstr "Dæmonen rapporterede at deling nu er aktiveret."
+
+#: src/misc.c:222
+msgid "Daemon reported that sharing now is disabled."
+msgstr "Dæmonen rapporterede at deling nu er deaktiveret."
+
+#: src/misc.c:245
+#, c-format
+msgid "Attached to %s v%s."
+msgstr "Tilkoblet %s v%s."
+
+#: src/misc.c:263
+msgid "never mind"
+msgstr "glem det"
+
+#: src/misc.c:265
+msgid "There is an important message from the daemon! Check the console."
+msgstr "Vigtig meddelelse fra dæmonen! Check konsollen."
+
+#: src/misc.c:268
+msgid "And now a few words from our sponsor:"
+msgstr "Og nu et par ord fra vores sponsor:"
+
+#: src/screen.c:69
+msgid "standard"
+msgstr "standard"
+
+#: src/screen.c:70
+msgid "header"
+msgstr "overskrift"
+
+#: src/screen.c:71
+msgid "search box"
+msgstr "søgeboks"
+
+#: src/screen.c:72
+msgid "result box"
+msgstr "resultatboks"
+
+#: src/screen.c:73
+msgid "statistics box"
+msgstr "statistikboks"
+
+#: src/screen.c:74
+msgid "statistics data"
+msgstr "statistikdata"
+
+#: src/screen.c:75
+msgid "bad statistics"
+msgstr "dårlig statistik"
+
+#: src/screen.c:76
+msgid "info box"
+msgstr "infoboks"
+
+#: src/screen.c:77
+msgid "download box"
+msgstr "indgående-boks"
+
+#: src/screen.c:78
+msgid "upload box"
+msgstr "udgående-boks"
+
+#: src/screen.c:79
+msgid "help box"
+msgstr "hjælpeboks"
+
+#: src/screen.c:80
+msgid "console box"
+msgstr "konsolboks"
+
+#: src/screen.c:81
+msgid "good hits"
+msgstr "gode træf"
+
+#: src/screen.c:82
+msgid "bad hits"
+msgstr "dårlige træf"
+
+#: src/screen.c:83
+msgid "progress bar"
+msgstr "statusmeter"
+
+#: src/screen.c:84
+msgid "total progress"
+msgstr "statuslinje"
+
+#: src/screen.c:85
+msgid "scroll indicator"
+msgstr "rulle indikator"
+
+#: src/screen.c:86
+msgid "selection"
+msgstr "valg"
+
+#: src/screen.c:87
+msgid "button bar"
+msgstr ""
+
+#: src/screen.c:88
+msgid "button bar selection"
+msgstr ""
+
+#: src/screen.c:89
+#, fuzzy
+msgid "button bar alert"
+msgstr "valg"
+
+#: src/screen.c:94
+msgid "black"
+msgstr "sort"
+
+#: src/screen.c:95
+msgid "red"
+msgstr "rød"
+
+#: src/screen.c:96
+msgid "green"
+msgstr "grøn"
+
+#: src/screen.c:97
+msgid "yellow"
+msgstr "gul"
+
+#: src/screen.c:98
+msgid "blue"
+msgstr "blå"
+
+#: src/screen.c:99
+msgid "magenta"
+msgstr "magenta"
+
+#: src/screen.c:100
+msgid "cyan"
+msgstr "cyan"
+
+#: src/screen.c:101
+msgid "white"
+msgstr "hvid"
+
+#: src/screen.c:103
+msgid "default"
+msgstr "standard-værdi"
+
+#: src/search.c:329
+#, c-format
+msgid "Search complete. We got %i unique hit for %s."
+msgid_plural "Search complete. We got %i unique hits for %s."
+msgstr[0] "Søgning færdig. Vi fik %i unikt træf til %s."
+msgstr[1] "Søgning færdig. Vi fik %i unikke træf til %s."
+
+#: src/search.c:376
+#, c-format
+msgid "The limit of %d unique hits was reached."
+msgstr "Grænsen på %d unikke træf nået."
+
+#: src/settings.c:119
+#, fuzzy, c-format
+msgid "Could not rename %s to %s: %s"
+msgstr "Kunne ikke omdøbe &s til %s: %s"
+
+#: src/settings.c:145
+#, c-format
+msgid "# %s configuration file created by v%s.\n"
+msgstr "# %s konfigurationsfil lavet af v%s.\n"
+
+#: src/settings.c:148
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals.\n"
+msgstr ""
+"\n"
+"# 'default' betyder ingen farve, dvs. gennemsigtig på nogle terminaler.\n"
+
+#: src/settings.c:149
+msgid "# See giFTcurs.conf(5) for more information.\n"
+msgstr ""
+
+#: src/transfer.c:39
+msgid "Waiting"
+msgstr "Venter"
+
+#: src/transfer.c:40
+msgid "Paused"
+msgstr "Venter"
+
+#: src/transfer.c:41
+msgid "Queued (Remotely)"
+msgstr "I kø (hos modpart)"
+
+#: src/transfer.c:42
+msgid "Queued"
+msgstr "I kø"
+
+#: src/transfer.c:43
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/transfer.c:44
+msgid "Complete"
+msgstr "Færdig"
+
+#: src/transfer.c:45
+msgid "Cancelled (Remotely)"
+msgstr "Afbrudt (Af modpart)"
+
+#: src/transfer.c:46
+msgid "Timed out"
+msgstr "Udløbet"
+
+#: src/transfer.c:47
+msgid "Awaiting connection"
+msgstr ""
+
+#: src/transfer.c:48
+msgid "Connecting"
+msgstr "Forbinder"
+
+#: src/transfer.c:49
+msgid "Receiving"
+msgstr "Modtager"
+
+#: src/transfer.c:50
+#, fuzzy
+msgid "Verifying"
+msgstr "Efterprøver"
+
+#: src/transfer.c:52
+msgid "Sending"
+msgstr "Sender"
+
+#: src/transfer.c:53
+msgid "Received HTTP PUSH"
+msgstr "Modtog HTTP PUSH"
+
+#: src/transfer.c:54
+msgid "Received HTTP headers"
+msgstr "Modtog HTTP headere"
+
+#: src/transfer.c:55
+msgid "Sent HTTP request"
+msgstr "Sendte HTTP forespørgsel"
+
+#: src/transfer.c:56
+msgid "Malformed HTTP header"
+msgstr "Forkert HTTP header"
+
+#: src/transfer.c:57
+msgid "Remote host had an aneurism"
+msgstr "Fjern vært havde en aneurisme"
+
+#: src/transfer.c:58
+msgid "Connection closed"
+msgstr "Forbindelse lukket"
+
+#: src/transfer.c:59
+msgid "Connection refused"
+msgstr "Forbindelse nægtet"
+
+#: src/transfer.c:60
+msgid "File not found"
+msgstr "Fil ikke fundet"
+
+#: src/transfer.c:61
+msgid "Local read error"
+msgstr "Lokal læsefejl"
+
+#: src/transfer.c:62
+msgid "Incorrect chunk size"
+msgstr "Forkert størrelse"
+
+#: src/transfer.c:63
+msgid "No route to host"
+msgstr "Ingen rute til vært"
+
+#: src/transfer.c:71
+msgid "duration"
+msgstr "varighed"
+
+#: src/transfer.c:72
+msgid "title"
+msgstr "titel"
+
+#: src/transfer.c:73
+msgid "track"
+msgstr "spor"
+
+#: src/transfer.c:74
+msgid "comment"
+msgstr "kommentar"
+
+#: src/transfer.c:75
+msgid "frequency"
+msgstr "frekvens"
+
+#: src/transfer.c:76
+msgid "year"
+msgstr "år"
+
+#: src/transfer.c:77
+msgid "album"
+msgstr "album"
+
+#: src/transfer.c:78
+msgid "artist"
+msgstr "kunstner"
+
+#: src/transfer.c:79
+msgid "bitrate"
+msgstr "bitrate"
+
+#: src/transfer.c:80
+msgid "resolution"
+msgstr "opløsning"
+
+#: src/transfer.c:81
+msgid "language"
+msgstr "sprog"
+
+#: src/transfer.c:82
+msgid "category"
+msgstr "kategori"
+
+#: src/transfer.c:83
+msgid "keywords"
+msgstr "nøgleord"
+
+#: src/transfer.c:187
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: src/transfer.c:225 src/ui_transfer.c:620
+msgid "Unknown status"
+msgstr "Ukendt status"
+
+#: src/transfer.c:606
+#, c-format
+msgid "Download of %s completed."
+msgstr "Hentning af %s færdig."
+
+#: src/transfer.c:608
+#, c-format
+msgid "Download of %s cancelled."
+msgstr "Hentning af %s annulleret."
+
+#: src/transfer.c:617
+msgid "Cancelled"
+msgstr "Annulleret"
+
+#: src/ui.c:225
+msgid "Exit"
+msgstr "Afslut"
+
+#: src/ui_console.c:102 src/ui_console.c:211
+msgid "Console"
+msgstr "Konsol"
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned on."
+msgstr "Informativ tilstand slået til."
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned off."
+msgstr "Informativ tilstand slået fra."
+
+#: src/ui_console.c:134
+msgid "Wrapping lines."
+msgstr "Tekstombrydning slået til."
+
+#: src/ui_console.c:134
+msgid "Line wrapping turned off."
+msgstr "Tekstombrydning slået fra."
+
+#: src/ui_help.c:44
+#, c-format
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"Key list:\n"
+"{%header:B}up{%prev}/{%header:B}down{%prev}        select item or scroll in "
+"a list\n"
+"{%header:B}PgUp{%prev}/{%header:B}PgDown{%prev}    scroll lists one screen "
+"at a time\n"
+"{%header:B}tab{%prev}            move to the next input field\n"
+"{%header:B}F1{%prev}             this help screen\n"
+"{%header:B}F2{%prev}             the main screen\n"
+"    {%header:B}enter{%prev}      download the highlighted file\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}e{%prev}          expand/collapse search results\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        scroll information box\n"
+"    {%header:B}p{%prev}          change network in statistics box\n"
+"    {%header:B}u{%prev}          browse selected user\n"
+"    {%header:B}i{%prev}          ignore selected user, this session\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    ignore selected user, all "
+"sessions\n"
+"{%header:B}F3{%prev}             the transfer screen\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}    expand/collapse transfer\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        move window splitter\n"
+"{%header:B}F4{%prev}             the console screen\n"
+"    {%header:B}v{%prev}          toggle verbose mode\n"
+"    {%header:B}w{%prev}          toggle line wrap\n"
+"{%header:B}F5{%prev}             the settings screen\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}          exit the program\n"
+"\n"
+"See giFTcurs(1) and giFTcurs.conf(5) for more information."
+msgstr ""
+"Velkommen til giFTcurs!\n"
+"\n"
+"Kommandoliste:\n"
+"{%header:B}op{%prev}/{%header:B}ned{%prev}        vælg punkt eller rul i en  "
+"liste\n"
+"{%header:B}PgUp{%prev}/{%header:B}PgDown{%prev}    rul lister et "
+"skærmbillede ad gangen\n"
+"{%header:B}tab{%prev}            flyt til næste indtastningsfelt\n"
+"{%header:B}F1{%prev}             denne hjælpefunktion\n"
+"{%header:B}F2{%prev}             hovedskærmbilledet\n"
+"    {%header:B}enter{%prev}      hent den markerede fil\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} ændr sorteringsmetode\n"
+"    {%header:B}e{%prev}          fold resultater ind/ud\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        rul i infoboksen\n"
+"    {%header:B}p{%prev}          ændr netværk i statistikboksen\n"
+"    {%header:B}u{%prev}          gennemse valgte bruger\n"
+"    {%header:B}i{%prev}          ignorer valgte bruger denne session\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    ignorer valgte bruger for "
+"altid\n"
+"{%header:B}F3{%prev}             overførsler\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}    fold overførsel ind/ud\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} ændr sorteringsmetode\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        flyt vindueadskiller\n"
+"{%header:B}F4{%prev}             konsollen\n"
+"    {%header:B}v{%prev}          ændr til/fra informativ tilstand\n"
+"    {%header:B}w{%prev}          slå tekstombrydning til/fra\n"
+"{%header:B}F5{%prev}             opsætning\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}          afslut programmet\n"
+"\n"
+"Se giFTcurs(1) og giFTcurs.conf(5) for mere information."
+
+#. TRANSLATORS: The authors' names are G"oran Weinholt and
+#. Christian H"aggstr"om, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:76
+msgid ""
+"Copyright (C) 2001, 2002, 2003 Goran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright (C) 2003 Christian Haggstrom <chm@c00.info>.\n"
+"Our homepage is at http://www.nongnu.org/giftcurs/."
+msgstr ""
+"Copyright © 2001, 2002, 2003 Göran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright © 2003 Christian Häggström <chm@c00.info>.\n"
+"Vores hjemmeside er på http://www.nongnu.org/giftcurs/."
+
+#: src/ui_help.c:137 src/ui_help.c:190
+msgid "Help"
+msgstr "Hjælp"
+
+#: src/ui_main.c:116
+msgid "everything"
+msgstr "alt"
+
+#: src/ui_main.c:116
+msgid "audio"
+msgstr "lyd"
+
+#: src/ui_main.c:116
+msgid "video"
+msgstr "film"
+
+#: src/ui_main.c:117
+msgid "images"
+msgstr "billeder"
+
+#: src/ui_main.c:117
+msgid "text documents"
+msgstr "tekstdokumenter"
+
+#: src/ui_main.c:117
+msgid "software"
+msgstr "software"
+
+#: src/ui_main.c:118
+msgid "user"
+msgstr "bruger"
+
+#: src/ui_main.c:118
+msgid "hash"
+msgstr "kontrolsum"
+
+#: src/ui_main.c:118
+#, fuzzy
+msgid "list my shares"
+msgstr "vis delte filer"
+
+#: src/ui_main.c:251 src/ui_main.c:295
+msgid "Couldn't start search!"
+msgstr "Kunne ikke starte søgning"
+
+#: src/ui_main.c:253
+msgid "Retrieving file list..."
+msgstr "Henter filliste..."
+
+#: src/ui_main.c:297
+msgid "Searching..."
+msgstr " Søger..."
+
+#: src/ui_main.c:315
+msgid "No previous search pattern."
+msgstr "Intet tidligere søgemønster."
+
+#: src/ui_main.c:319
+msgid "No hits to search on."
+msgstr "Ingen træf at søge på."
+
+#: src/ui_main.c:342
+#, c-format
+msgid "Pattern not found: '%s'."
+msgstr "Mønster ikke fundet: '%s'."
+
+#: src/ui_main.c:449
+msgid "Search stopped."
+msgstr "Søgning stoppet."
+
+#: src/ui_main.c:452
+msgid "Search cleared."
+msgstr "Søgning slettet."
+
+#: src/ui_main.c:455
+msgid "A magical search appears, but it is cancelled too soon."
+msgstr "En magisk søgning opstår, men den er afbrudt for tidligt."
+
+#: src/ui_main.c:485
+#, c-format
+msgid "Sorting order changed to %s."
+msgstr "Sorteringsrækkefølge ændret til %s."
+
+#: src/ui_main.c:526
+#, c-format
+msgid "Always ignoring results from '%s'."
+msgstr "Ignorerer altid resultater fra '%s'."
+
+#: src/ui_main.c:528
+#, c-format
+msgid "Ignoring results from '%s' in this session only."
+msgstr "Ignorerer resultater fra '%s' denne session."
+
+#: src/ui_main.c:576
+msgid "Search"
+msgstr "Søg"
+
+#: src/ui_main.c:580
+msgid "Extra Information"
+msgstr "Ekstra Information"
+
+#: src/ui_main.c:585
+msgid "Search Results"
+msgstr "Søgeresultat"
+
+#: src/ui_main.c:598
+msgid "Statistics"
+msgstr "Statistik"
+
+#: src/ui_main.c:611 src/ui_main.c:617
+msgid "Query"
+msgstr "Søg"
+
+#: src/ui_main.c:614 src/ui_main.c:620
+msgid "Realm"
+msgstr "Type"
+
+#: src/ui_main.c:627
+msgid "Start search"
+msgstr "Start søgning"
+
+#: src/ui_main.c:632
+msgid "Stop search"
+msgstr "Stop søgning"
+
+#: src/ui_main.c:632
+msgid "Clear search"
+msgstr "Slet søgning"
+
+#: src/ui_main.c:654
+msgid "Size"
+msgstr "Størrelse"
+
+#: src/ui_main.c:655
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "byte"
+msgstr[1] "byte"
+
+#: src/ui_main.c:661
+msgid "User"
+msgstr "Bruger"
+
+#: src/ui_main.c:670
+msgid "Path"
+msgstr "Sti"
+
+#: src/ui_main.c:676
+msgid "Hash"
+msgstr "Hash"
+
+#: src/ui_main.c:683
+msgid "Mime"
+msgstr "Mime"
+
+#: src/ui_main.c:708
+msgid "Nothing selected."
+msgstr "Intet valgt."
+
+#: src/ui_main.c:733
+#, c-format
+msgid ""
+"{%header:B}Users online: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+msgstr ""
+"{%header:B}Brugere online: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+
+#: src/ui_main.c:734
+#, c-format
+msgid ""
+"{%header:B}Total shared: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+msgstr ""
+"{%header:B}Totalt delt: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+
+#: src/ui_main.c:735
+#, c-format
+msgid ""
+"{%header:B}Local shares: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:"
+"B}/{%stat-data}{own_files:b}{else}Hidden{endif}"
+msgstr ""
+"{%header:B}Lokalt delt: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:B}/"
+"{%stat-data}{own_files:b}{else}Skjult{endif}"
+
+#: src/ui_main.c:736
+#, c-format
+msgid ""
+"{%header:B} Shared/user: {%stat-data}{if users}{shared_per_user:bi}B{else} - "
+"{endif}"
+msgstr ""
+"{%header:B} Delt/bruger: {%stat-data}{if users}{shared_per_user:bi}B{else} - "
+"{endif}"
+
+#: src/ui_main.c:1072
+msgid "Searches"
+msgstr "Søgninger"
+
+#: src/ui_settings.c:149
+msgid "Color theme saved."
+msgstr "Farvetema gemt."
+
+#: src/ui_settings.c:158
+msgid "Default color theme loaded."
+msgstr "Standard farve tema hentes."
+
+#: src/ui_settings.c:190
+msgid "Color Theme"
+msgstr "Farvetema"
+
+#: src/ui_settings.c:195
+msgid "Item"
+msgstr "Element"
+
+#: src/ui_settings.c:197
+msgid "Foreground"
+msgstr "Forgrund"
+
+#: src/ui_settings.c:199
+msgid "Background"
+msgstr "Baggrund"
+
+#: src/ui_settings.c:208
+msgid "Save theme"
+msgstr "Gem tema"
+
+#: src/ui_settings.c:211
+msgid "Load defaults"
+msgstr "Hent standard-værdier"
+
+#: src/ui_settings.c:216
+msgid "Sharing"
+msgstr " Deler"
+
+#: src/ui_settings.c:220
+msgid "Sync shares"
+msgstr "Synkroniser delte filer"
+
+#: src/ui_settings.c:226
+msgid "Unknown sharing status"
+msgstr "Ukendt delingsstatus"
+
+#: src/ui_settings.c:226
+msgid "Hide shares"
+msgstr "Gem delte filer"
+
+#: src/ui_settings.c:226
+msgid "Show shares"
+msgstr "Vis delte filer"
+
+#: src/ui_settings.c:304
+msgid "Settings"
+msgstr "Opsætning"
+
+#: src/ui_transfer.c:101
+msgid ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+msgstr ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+
+#: src/ui_transfer.c:108
+msgid ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+msgstr ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+
+#: src/ui_transfer.c:115
+msgid ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:bi}B{endif}{space}Total: {transferred:bi}/{filesize:bi} at "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{if disk_free<2000000000}Fri diskplads: "
+"{disk_free:bi}B{endif}{space}Totalt: {transferred:bi}/{filesize:bi} ved "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:122
+msgid ""
+"{progress filesize transferred}{space}Total: {transferred:bi}/{filesize:bi} "
+"at {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{space}Totalt: {transferred:bi}/{filesize:bi} "
+"ved {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:315
+#, c-format
+msgid "Please confirm deletion of %sB downloaded data by pressing shift-t"
+msgstr "Bekræft sletning af %sB hentet data ved at trykke shift-t"
+
+#: src/ui_transfer.c:347
+#, c-format
+msgid "Source sorting order changed to %s."
+msgstr "Kildesorteringsrækkefølgen ændret til %s."
+
+#: src/ui_transfer.c:349
+#, c-format
+msgid "Transfer sorting order changed to %s."
+msgstr "Overførselssorteringsrækkefølgen er nu %s."
+
+#: src/ui_transfer.c:368
+msgid "find more sources"
+msgstr "find flere kilder"
+
+#: src/ui_transfer.c:369
+msgid "kill transfer"
+msgstr "dræb overførsel"
+
+#: src/ui_transfer.c:370
+msgid "clear finished"
+msgstr "fjern færdige"
+
+#: src/ui_transfer.c:371
+msgid "(un)pause"
+msgstr "start/pause"
+
+#: src/ui_transfer.c:387
+msgid "Downloads"
+msgstr "Indgående"
+
+#: src/ui_transfer.c:388
+msgid "Uploads"
+msgstr "Udgående"
+
+#: src/ui_transfer.c:648
+msgid "Transfers"
+msgstr "Overførsler"
+
+#~ msgid "Users online"
+#~ msgstr "Brugere online"
+
+#~ msgid "Total shared"
+#~ msgstr "Totalt delt"
+
+#~ msgid "Local shares"
+#~ msgstr "Lokalt delt"
+
+#~ msgid "f%sBE/f%s"
+#~ msgstr "f%sBE/f%s"
+
+#~ msgid "# Available colors:"
+#~ msgstr "# Mulige farver:"
+
+#~ msgid "alphabetical"
+#~ msgstr "alfabetisk"
+
+#~ msgid "alphabetical by path"
+#~ msgstr "alfabetisk efter sti"
+
+#~ msgid "size-based"
+#~ msgstr "efter størrelse"
+
+#~ msgid "availability- and size-based"
+#~ msgstr "efter tilgængelighed og størrelse"
+
+#~ msgid "number of sources- and size-based"
+#~ msgstr "efter antal kilder og størrelse"
+
+#~ msgid "Queued (%d)"
+#~ msgstr "I kø (%d)"
+
+#~ msgid "Queued (position %d)"
+#~ msgstr "I kø (position %d)"
+
+#~ msgid "Total: %s/%s at %sB/s"
+#~ msgstr "Totalt: %s/%s ved %sB/s"
+
+#~ msgid "Disk: %s free"
+#~ msgstr "Disk: %s fri"
+
+#~ msgid "Overrun"
+#~ msgstr "Overløb"
+
+#~ msgid "B/s"
+#~ msgstr "B/s"
+
+#~ msgid "Net"
+#~ msgstr "Net"
+
+#~ msgid " Searching"
+#~ msgstr " Søger"
+
+#~ msgid "Toggle sharing"
+#~ msgstr "Slå deling til/fra"
+
+#~ msgid "Your shares are now available."
+#~ msgstr "Dine delte filer er nu tilgængelige."
+
+#~ msgid "Got new source from %s"
+#~ msgstr "Fik ny kilde fra %s"
+
+#~ msgid "Completed"
+#~ msgstr "Færdig"
+
+#~ msgid "Couldn't start search! Check the log for errors."
+#~ msgstr "Kunne ikke starte søgning! Se fejl i logfilen."
+
+#~ msgid "Search in progress..."
+#~ msgstr "Søger..."
+
+#~ msgid "giFT plugins"
+#~ msgstr "giFT-moduler"
+
+#~ msgid "Your shares are temporarily hidden."
+#~ msgstr "Dine delte filer er midlertidigt gemt."
+
+#~ msgid "Completed transfers are automatically removed."
+#~ msgstr "Færdige overførsler fjernes automatisk."
+
+#~ msgid "Completed transfers remain on screen."
+#~ msgstr "Færdige overførsler bliver på skærmen."
+
+#~ msgid "Tools and Actions"
+#~ msgstr "Værktøjer"
+
+#~ msgid "Reread shared directories"
+#~ msgstr "Genindlæs delte foldere"
+
+#~ msgid "Speed"
+#~ msgstr "Hastighed"
+
+#~ msgid "Already connected."
+#~ msgstr "Allerede forbundet."
+
+#~ msgid "More search options visible."
+#~ msgstr "Flere søgemuligheder synlige"
+
+#~ msgid "Less search options visible."
+#~ msgstr "Færre søgemuligheder synlige"
+
+#~ msgid "Reconnect to daemon"
+#~ msgstr "Genforbind til dæmonen"
+
+#~ msgid "Toggle search constraints"
+#~ msgstr "Skift søgebegrænsninger"
+
+#~ msgid "BSa - find more sources  BXa - kill transfer  BCa - clear finished"
+#~ msgstr "BSa - find flere kilder  BXa - afbryd overførsel  BCa - ryd "
+
+#~ msgid "%s:line %d: %s. See regex(7)"
+#~ msgstr "%s:linie %d: %s. Se regex(7)"
+
+#~ msgid "Already searching sources for this file"
+#~ msgstr "Søger allerede efter kilder til denne fil"
+
+#~ msgid "Connected to daemon at %s:%d"
+#~ msgstr "Forbundet til dæmonen på %s:%d"
+
+#~ msgid "Stopped search."
+#~ msgstr "Stoppede søgningen."
+
+#~ msgid "I don't think I was searching."
+#~ msgstr "Jeg tror ikke jeg søgte."
+
+#~ msgid "stat box"
+#~ msgstr "statistikboks"
+
+#~ msgid "stat bad data"
+#~ msgstr "dårlig statistik"
+
+#~ msgid "diamond"
+#~ msgstr "diamant"
+
+#~ msgid "Timer overflow! Expect some strange behavior..."
+#~ msgstr "Timer overløb! Forvent mærkelig opførsel..."
+
+#~ msgid "Dead"
+#~ msgstr "Død"
+
+#~ msgid "Genre"
+#~ msgstr "Genre"
+
+#~ msgid "Dimension"
+#~ msgstr "Dimension"
+
+#~ msgid "Colors"
+#~ msgstr "Farver"
+
+#~ msgid " User '%s' on %s, press U to browse "
+#~ msgstr " Bruger '%s' på %s, U viser dennes filer "
+
+#~ msgid "Commit"
+#~ msgstr "Kommentar"
+
+#~ msgid "giFT options"
+#~ msgstr "giFT-moduler"
+
+#~ msgid "# Automagically generated file. Formatting will not be preserved.\n"
+#~ msgstr "# Automagisk genereret fil. Formateringen bliver ikke bevaret.\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "# End of config file.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "# Slut på konfigurationsfilen.\n"
+
+#~ msgid "Stalled"
+#~ msgstr "Standset"
+
+#~ msgid " Sources: "
+#~ msgstr " Kilder: "
+
+#~ msgid " Queued: "
+#~ msgstr " I kø: "
+
+#~ msgid " S"
+#~ msgstr " S"
+
+#~ msgid " Done"
+#~ msgstr " Klar"

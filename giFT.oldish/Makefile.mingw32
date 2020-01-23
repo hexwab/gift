@@ -1,0 +1,28 @@
+# -*- makefile -*-
+
+.PHONY: all install clean clean-dist
+
+all: config.h
+	$(MAKE) -C OpenFT -f Makefile.mingw32
+	$(MAKE) -C src -f Makefile.mingw32
+
+install: win32-dist
+	$(MAKE) -C OpenFT -f Makefile.mingw32 install
+	$(MAKE) -C src -f Makefile.mingw32 install
+	$(MAKE) -C data -f Makefile.mingw32 install
+
+clean:
+	del config.h
+	$(MAKE) -C OpenFT -f Makefile.mingw32 clean
+	$(MAKE) -C src -f Makefile.mingw32 clean
+
+clean-dist:
+	deltree /y win32-dist
+
+config.h: config.h.mingw32
+	copy /y config.h.mingw32 config.h
+
+win32-dist:
+	mkdir win32-dist
+	mkdir win32-dist\data
+	mkdir win32-dist\data\OpenFT

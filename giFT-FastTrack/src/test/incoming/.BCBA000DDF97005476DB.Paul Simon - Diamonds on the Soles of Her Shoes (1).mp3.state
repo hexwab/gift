@@ -1,0 +1,18 @@
+[transfer]
+uniq = BCBA000DDF97005476DB.Paul Simon - Diamonds on the Soles of Her Shoes (1).mp3
+filename = Paul Simon - Diamonds on the Soles of Her Shoes (1).mp3
+hash = FTH:=mk3OkPOW2+nZDf3JiMuAczOSGrk=
+transmit = 0
+total = 5535451
+max_seek = 0
+paused = 0
+chunks = 0-2767726 2767726-5535451 
+
+[source0]
+user = LacunaRJ@68.173.223.191
+url = FastTrack:?ip=68.173.223.191&port=2202&sip=67.68.60.22&sport=2788&pip=67.9.80.3&user=LacunaRJ
+
+[source1]
+user = rebel_maiden@69.11.0.236
+url = FastTrack:?ip=69.11.0.236&port=2301&sip=69.11.0.236&sport=2301&pip=67.70.139.20&user=rebel_maiden
+

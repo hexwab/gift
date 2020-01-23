@@ -1,0 +1,5 @@
+$Id: INSTALL.cygwin,v 1.1 2003/04/23 01:41:39 rossta Exp $
+
+To compile giFT using Cygwin, use:
+
+./autogen.sh --enable-static --disable-ltdl --enable-libdb

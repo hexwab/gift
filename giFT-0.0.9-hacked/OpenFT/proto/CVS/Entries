@@ -1,0 +1,13 @@
+/Makefile.am/1.1/Thu May  8 17:48:36 2003//THEAD
+/README/1.1/Thu May  8 17:48:36 2003//THEAD
+/ft_handshake.h/1.2/Fri May 30 21:09:12 2003//THEAD
+/ft_query.h/1.2/Fri May 30 21:09:13 2003//THEAD
+/ft_sharing.h/1.2/Fri May 30 21:09:13 2003//THEAD
+/ft_transfer.c/1.2/Fri May 30 21:09:13 2003//THEAD
+/ft_transfer.h/1.2/Fri May 30 21:09:13 2003//THEAD
+/ft_query.c/1.24/Mon Jun  2 23:28:35 2003//THEAD
+/.cvsignore/1.1/Wed Jun  4 14:41:01 2003//THEAD
+/Makefile.msvc/1.1/Wed Jun  4 14:41:01 2003//THEAD
+/ft_sharing.c/1.4/Tue Jun 10 16:17:42 2003//THEAD
+/ft_handshake.c/1.8/Sat Jun 14 15:39:18 2003//THEAD
+D

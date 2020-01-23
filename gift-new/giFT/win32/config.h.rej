@@ -1,0 +1,18 @@
+***************
+*** 37,45 ****
+  /* define on the command line as the MSVC project files don't yet support */
+  /* #define USE_DLOPEN 1 */
+  
+- /* define to use ZLIB compress library */
+- #define USE_ZLIB
+- 
+  /* These are used!  Don't remove! -Ross */
+  #define PATH_SEP_CHAR ';'
+  #define PATH_SEP_STR ";"
+--- 37,42 ----
+  /* define on the command line as the MSVC project files don't yet support */
+  /* #define USE_DLOPEN 1 */
+  
+  /* These are used!  Don't remove! -Ross */
+  #define PATH_SEP_CHAR ';'
+  #define PATH_SEP_STR ";"

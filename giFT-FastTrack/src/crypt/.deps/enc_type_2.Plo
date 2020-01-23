@@ -1,0 +1,3 @@
+enc_type_2.lo : \
+ enc_type_2.c
+enc_type_2.c :

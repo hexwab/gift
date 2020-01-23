@@ -1,0 +1,365 @@
+NOTE: this file is terribly out of date, it is an exlanation of an old, out
+of use protocol! If you want to learn more about the current giFT and
+OpenFT, like an installation guide, check out http://www.giftproject.org
+
+                  giFT
+
+		   The generic interface to FastTrack
+
+				   or
+
+			 "giFT isn't FastTrack"
+
+OVERVIEW
+
+    The FastTrack network (http://www.fasttrack.nu/) is a peer-to-peer
+    network for sharing files.  It provides search facilities, and has a
+    2 level hierarchical scheme for organizing peers.
+
+    Being a peer-to-peer network, there is no central server during
+    normal operation.  All communication is done between peers.
+    However, three companies which have written software clients to the
+    FastTrack network (Morpheus, KaZaA, Grokster) each do in fact have
+    their own central server, that deals with (1) registration/login,
+    (2) sending advertisements, and (3) informing your client where to
+    find peers on the FastTrack network.
+
+    This program, giFT, is the generic interface to FastTrack.  It is
+    intended to be interoperable with existing clients, and to speak a
+    compatible protocol to that of the FastTrack network in order to
+    communicate with peers.  This program's reason for existing is as a
+    compatible, interoperable, open source, Linux-based peer for the
+    network.
+
+    Unlike the existing clients, giFT uses a central server only
+    extremely rarely.  It does not require registrations or logins, and
+    is not trying to show users advertisements.  The issue of locating
+    network peers is discussed later on.  In particular, giFT does not
+    contact the Morpheus, KaZaA, or Grokster central servers at all.
+
+    giFT is Open Source (See COPYING).
+
+THE FASTTRRACK NETWORK
+
+    Peers on the FastTrack network are of two types: nodes, and
+    supernodes.  Initially, every peer joins the network as a node.
+    If it reports that it has enough bandwidth, low latency, etc., it
+    may get automatically promoted to a supernode.  Each non-supernode
+    on the network has "its" supernode that it talks to.  Nodes tell
+    their supernodes what files they are willing to share, and send
+    their search queries to them.  Supernodes communicate amongst
+    themselves, handling search queries (each supernode knows the
+    collected shared file lists for all of its nodes).  This
+    self-organizing two level hierarchy allows the network to scale much
+    better than, for example, Gnutella.
+
+THEORY OF OPERATION
+
+    giFT is intended to run as a daemon that keeps up-to-date
+    information about currently available supernodes on the network.
+    At this time, the giFT daemon does not offer its own directory of
+    files for sharing, nor can it act as a supernode itself.  In fact,
+    it does not even listen on port 1214 (the FastTrack default port
+    number).  In the future, these modes will likely be supported.
+
+    giFT listens on a localhost TCP socket, port 1213, for queries from
+    clients.  A client could be a gtk GUI, for example.  A simple
+    web-based client (a CGI script) is provided with this software,
+    under the same license terms.
+
+    When the client wishes to query the network, it sends a query
+    message to the giFT daemon listening on port 1213.  The giFT daemon
+    maintains long-lived connections to a number of supernodes, and
+    sends the query to one of them.  It then parses the results, and
+    forwards them back to the client.
+
+    To try out the giFT daemon and the CGI client, simply install the
+    CGI script in your cgi-bin directory on your web server.  On the
+    same machine, run the giFT daemon.  By visiting the CGI program
+    on your web site, a user (any user on the Internet who can access
+    that CGI script, in fact) can perform a search and get results.
+    You should be able to click on the username to see the list of
+    files the user is sharing, or click on the title to download the
+    file.  Note that most peers seem to have an upper limit on the
+    number of people allowed to download from it at once, so you may
+    get a "Document contains no data" error from your web browser.
+    Just try again later, or try a different user.
+
+    Since file transfers between FastTrack peers simply use the HTTP
+    protocol, the user can fetch the found file directly from his web
+    browser.  However, some of the more interesting features of the
+    other FastTrack clients, such as simultaneous partial downloading
+    from multiple peers who store the same file, cannot be done simply
+    with the web browser interface, and a more feature-complete GUI
+    ought to be built.
+
+    The protocol on port 1213 is extremely simple.  You send:
+
+    <search query="my search terms"/>
+
+    And you receive a number of <ITEM/> tags, each with several
+    parameters that indicate details about the returned matches.  The
+    meanings of some of the parameters are not yet understood.  Feel
+    free to contribute patches if you figure out what they're for.
+    Other attributes of the <search/> tag are also supported, to
+    implement complex queries, such as restricted-domain searching (just
+    images, etc.).  See the CGI script for information on the format of
+    complex queries.
+
+    The client can also ask giFT for supernode statistics.  Sending
+
+    <stats/>
+
+    to port 1213 will result in a number of <stat/> tags, one for each
+    supernode giFT is connected to.  This tag will list the last time
+    that supernode reported statistics, as well as its report on the
+    number of users, and the number of files and GBytes being shared on
+    the network, both in total, and in each of six categories of file
+    types (such as Audio, Video, Images, etc.).
+
+FINDING PEERS
+
+    As with any peer-to-peer network, one of the hard parts is finding
+    other peers.  In the FastTrack network, the goal is to acquire a
+    supernode.  However, any node will tell you who its supernode is, so
+    you really only need to find a single node.  Once you find a single
+    supernode, it will tell you about 200 other nodes it knows about,
+    and then, by maintaining connections to several of them, you can
+    stay connected to the network even when individual supernodes go
+    down.  Remember that the supernodes were automatically promoted from
+    ordinary nodes, which are running on random users' machines.  The
+    users in general will not even know that their machine has been
+    protmoted to supernode status.  giFT finds these nodes in a number
+    of ways:
+
+    - giFT reads a .giFTnodes file in its current directory, which
+      should list nodes it has recently been in contact with.  giFT also
+      updates this file every 5 minutes.  If you have run giFT before,
+      this file should be sufficient to find your initial nodes.
+    - If you do not have a .giFTnodes file, or if all of its entries
+      are stale, giFT will contact the gift.sourceforge.net website
+      to obtain a .giFTnodes file.  That file is maintained by a CGI
+      script that collects reports of active supernodes from giFT peers,
+      which by default upload their lists every 4 hours (but this is
+      configurable with a command-line option, or can be disabled
+      completely).
+    - When talking to one supernode, that supernode will periodically
+      tell all clients (including giFT) a list of other nodes it knows
+      about.  giFT will try contacting some of these nodes.
+    - If all else fails, and giFT has no information at all about the
+      location of any node, and for some reason you cannot contact the
+      gift.sourceforge.net website, you can compile giFT to allow as
+      a last resort, trying to connect to port 1214 on random IP
+      addresses in the 24.0.0.0/8 range.  Since a significant fraction
+      (about 1%) of these users are in fact running a FastTrack client,
+      this operation usually finds a node within a couple of seconds.
+      However, some people find this action unfriendly, which is why
+      it is disabled by default.
+
+COMMUNICATING WITH PEERS
+
+    File transfers on the FastTrack network are done with the ordinary
+    HTTP protocol, but the search functionality uses a custom protocol.
+    This protocol is not yet completely understood, but enough of it has
+    been observed that simple searches can be performed, and results
+    obtained.  This client-to-supernode protocol is scrambled with
+    something resembling a stream cipher.  Here's a quick review of how
+    stream ciphers work in general:
+
+    1. There is a "state generation" function which takes a (smallish)
+       random number (called a "key"), and expands it into a (largish)
+       internal state.  Both the sender and the receiver need to know
+       the same internal state, and so generally need to exchange a key
+       in some manner.
+    
+    2. For each byte you want to send, perform an operation (called
+       "clocking") which (a) modifies the internal state, and (b)
+       outputs a byte called the "keystream byte".  This keystream byte
+       is XOR'ed with the byte you wanted to send, and the result
+       (the "ciphertext") is transmitted to the receiver.
+    
+    3. The receiver, upon receiving a byte from the sender, updates his
+       internal state in the same way as the sender, and produces the
+       same keystream byte.  This is then XOR'ed with the ciphertext to
+       recover the original byte that was transmitted.
+
+    Note that anyone who can determine the internal state of the sender
+    or receiver (either by knowing the key and performing the "state
+    generation" function, or by some other means) can read the messages
+    between them, or establish communications himself.
+
+    In the FastTrack network, when a client connects to a supernode,
+    each side picks a 4-byte key, and transmits it to the other.
+    Each side then uses the state generation function to create two sets
+    of internal states: one (based on the key the client sent) for
+    sending information from the client to the supernode, and one (based
+    on the key the supernode sent) for sending information from the
+    supernode to the client.
+
+    In giFT, we do not actually know what the state generation function
+    is, so even though we do know the key, we can not determine the
+    internal state.  This would ordinarily preclude the ability to establish
+    meaningful communications with a supernode, but we get around this
+    problem in the following way:
+
+    - It turns out that it is possible to mathematically compute the
+      internal state of a sender by observing messages he sends.  By
+      watching the packets sent by a particular supernode, we determined
+      a number of correspondences between keys and internal states.
+      One of these is hardcoded into the program.
+    
+    - When we establish communications with a supernode, we transmit this
+      single fixed key, and always start in the same fixed internal
+      state.  From here on in, we can send messages to the supernode,
+      but cannot yet understand its responses, since it it using the
+      other internal state (based on the random key it sent us).
+    
+    - The supernode then starts sending us messages we don't understand.
+      However, we then use the above trick to simply mathematically
+      determine the supernode's internal state, based on these messages.
+      Once we have computed this state, we can then understand all
+      subsequent messages sent by the supernode.
+    
+    Note that this whole mess would be avoided if someone simply
+    made an open source version of the state generation function.
+    (Or if the search queries weren't scrambled in this way, which
+    isn't actually giving users of the peer-to-peer network any
+    protection.)
+
+PACKET STRUCTURE
+
+    The unscrambled messages sent between the client and the supernode
+    have a somewhat straightforward form.  There are three kinds of
+    messages we have observed:
+
+    - PING: This is a single byte with value 0x50.  A client will
+      receive this message from its supernode when it hasn't
+      communicated in several minutes.
+    
+    - PONG: This is a single byte with value 0x52.  When you receive
+      a PING message, you should immediately respond with a PONG message.
+      This lets the supernode know that you're still alive and
+      connected to the network.  If you don't respond, the supernode
+      will close your connection.
+    
+    - PACKET: This is everything else.  Packets have "types", which
+      indicate the information they are intended to convey, as well as
+      their data format.  For example, there are packet types for search
+      requests (0x06), search results (0x07), lists of known peers
+      (0x00), and so on.  A PACKET message is denoted by an initial
+      byte with value 0x4b.  Following the 0x4b byte is a 4 byte header.
+      This header indicates the type and length of the packet.
+      Following the 0x4b PACKET indicator and the 4 byte header is the
+      body of the packet, with a number of bytes as indicated in the
+      header.
+    
+    The structure of the 4 byte header is somewhat obscure.  As
+    mentioned, it encodes a one-byte message type (T), and a two-byte
+    message length (H<<8 | L).  The remaining byte is always zero (0).
+    (Possibly, the 0 byte is really the high byte of a 2 byte type
+    field, but there are not that many types observed.)  The obscure
+    part is that these four bytes (0, T, H, L) do not appear in a
+    consistent order between packets.
+
+    By observing many consecutive packets and their headers, we figured
+    out that there are three different header orders that occur:
+
+    - T 0 H L
+    - 0 H T L
+    - 0 L H T
+
+    The way you determine which order to use is somewhat weird.  For
+    each packet you've seen before this one (treat the client to
+    supernode and the supernode to client directions completely
+    separately), add together its length and type.  Take all those
+    values and XOR them together.  Also XOR into that value a particular
+    start constant (which we determined by experimentation to be 0x51
+    for packets in the client to supernode direction and 0x53 for
+    packets in the supernode to client direction), and also XOR in the
+    value -1 (0xffffffff) if you've seen an odd number of packets so
+    far.  Take this result, and find the remainder when you divide by 3.
+    If it's 0, use "T 0 H L".  If it's 1, use "0 H T L".  If it's 2, use
+    "0 L H T".
+
+    Once you have calculated this strange value (called the "xinu_state"
+    in the code), you can determine the type and length of incoming
+    packets (and then read the correct number of bytes from the network),
+    and construct the correct header for outgoing packets.
+
+    Here are the packet types we recognize:
+
+    0x00: The supernode sends a packet of this type to the client
+          periodically to inform it of a list of known peers.
+    0x02: This also contains a list of known peers, but is the first
+          message sent from the supernode to the client.  A packet of
+	  this type is also the first message sent from the client to
+	  the supernode, and contains the client's IP address and
+	  username.
+    0x06: This packet is a search query, sent from the client to the
+          supernode.
+    0x07: This packet contains search results, sent from the supernode
+          to the client.
+    0x08: This packet is sent from the supernode to the client to
+          indicate that there are no more search results for a
+	  particular query.
+    0x09: This packet is sent from the supernode to the client to
+          report on network statistics, such as the total number of
+	  users connected, and the number of files being shared.
+    0x1d: This packet indicates the client software of the sender.
+	  We send "giFT".
+
+    There are other packets we have observed, but do not know what they
+    mean.
+
+    Each packet type has a particular data format, which we won't detail
+    here, but you can read the code to determine.  One item of note is
+    that integers are usually encoded in a variable-length format, as
+    follows:
+
+    - The number is written in base 128 (0x80), and the bytes appear MSB
+      first (big-endian).  All of the bytes except for the last one (the
+      LSB) also have their high bit (0x80) set, to indicate that there
+      are more bytes coming.
+
+    - For example, values between 0 and 127 are encoded as a single
+      byte.  The value 200 = 0xC8 = 1*0x80 + 0x48 would be represented
+      as 0x81,0x48.  The value 2001 = 0x7D1 = 0xF * 0x80 + 0x51 would
+      be represented as 0x8F,0x51.  The value 123456 = 0x1E240 =
+      0x7 * 0x80^2 + 0x44 * 0x80 + 0x40 would be represented as
+      0x87,0xC4,0x40.
+
+SECURITY CONSIDERATIONS
+
+    At the moment, giFT can only perform searches, and so the security
+    implications are limited.  However, two points should be noted:
+
+    - If you run the CGI interface, anyone with access to that CGI
+      program can perform searches that appear to originate from your
+      machine.
+
+    - Anyone that can connect to localhost port 1213 on your machine
+      (which usually means they're already running a process on your
+      machine) can perform searches that appear to originate from your
+      machine.  There is a #define in the main.c file that controls
+      whether the giFT daemon listens for connections only on localhost
+      (the default), or from any machine on the Internet.  If you change
+      this setting, you will probably want to firewall port 1213
+      appropriately.
+
+    The security issues may become more important if and when giFT is
+    extended to support user-to-user messaging.
+
+AUTHORS
+
+    The authors of giFT do not wish to take credit at this time.  At
+    some later date, they may identify themselves by revealing a secret
+    file with the following md5sum: 74a91807a17bcf1b66318bb358c061a3
+    ["man md5sum" if you're not familiar with this program.]
+
+    If you happen to know who some or all of us are, please respect our
+    privacy.
+
+THANKS
+
+    Thanks to the kazaatux/giFT members at sourceforge.net for some
+    helpful hints.

@@ -1,0 +1,201 @@
+main.o: main.c /usr/include/errno.h /usr/include/features.h \
+ /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h \
+ /usr/include/bits/errno.h /usr/include/linux/errno.h \
+ /usr/include/asm/errno.h /usr/include/signal.h \
+ /usr/include/bits/sigset.h /usr/include/bits/types.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h \
+ /usr/include/bits/signum.h /usr/include/time.h \
+ /usr/include/bits/siginfo.h /usr/include/bits/wordsize.h \
+ /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h \
+ /usr/include/asm/sigcontext.h /usr/include/bits/sigstack.h \
+ /usr/include/bits/sigthread.h /usr/include/sys/stat.h \
+ /usr/include/bits/stat.h /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/confname.h \
+ /usr/include/getopt.h ../config.h ../lib/gift.h /usr/include/stdio.h \
+ /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/bits/wchar.h /usr/include/gconv.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/stdlib.h /usr/include/sys/types.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/time.h \
+ /usr/include/sys/sysmacros.h /usr/include/alloca.h \
+ /usr/include/string.h /usr/include/assert.h /usr/include/sys/time.h \
+ ../giftconfig.h ../lib/platform.h ../lib/parse.h ../lib/dataset.h \
+ ../lib/list.h ../lib/list_queue.h ../lib/list_lock.h ../lib/tree.h \
+ ../lib/connection.h ../lib/protocol.h ../lib/if_event.h \
+ ../lib/interface.h ../lib/conf.h ../lib/log.h /usr/include/syslog.h \
+ /usr/include/sys/syslog.h hook.h plugin.h perlc.h if_port.h \
+ ../lib/event.h share_file.h share_hash.h download.h transfer.h \
+ ../lib/stopwatch.h upload.h ../lib/network.h /usr/include/fcntl.h \
+ /usr/include/bits/fcntl.h /usr/include/sys/socket.h \
+ /usr/include/sys/uio.h /usr/include/bits/uio.h \
+ /usr/include/bits/socket.h /usr/include/limits.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/limits.h \
+ /usr/include/bits/posix1_lim.h /usr/include/bits/local_lim.h \
+ /usr/include/linux/limits.h /usr/include/bits/posix2_lim.h \
+ /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
+ /usr/include/asm/sockios.h /usr/include/netinet/in.h \
+ /usr/include/stdint.h /usr/include/bits/in.h \
+ /usr/include/bits/byteswap.h /usr/include/arpa/inet.h \
+ /usr/include/netdb.h /usr/include/rpc/netdb.h \
+ /usr/include/bits/netdb.h share_cache.h ../lib/file.h \
+ /usr/include/dirent.h /usr/include/bits/dirent.h /usr/include/zlib.h \
+ /usr/include/zconf.h /usr/include/id3.h /usr/include/id3/globals.h \
+ /usr/include/id3/sized_types.h /usr/include/magick/api.h \
+ /usr/include/inttypes.h /usr/include/magick/magick_config.h \
+ /usr/include/magick/semaphore.h /usr/include/magick/error.h \
+ /usr/include/magick/timer.h /usr/include/magick/image.h \
+ /usr/include/magick/list.h /usr/include/magick/render.h \
+ /usr/include/magick/draw.h /usr/include/magick/gem.h \
+ /usr/include/magick/quantize.h /usr/include/magick/compress.h \
+ /usr/include/magick/attribute.h /usr/include/magick/command.h \
+ /usr/include/magick/utility.h /usr/include/magick/blob.h \
+ /usr/include/magick/cache.h /usr/include/magick/cache_view.h \
+ /usr/include/magick/registry.h /usr/include/magick/magick.h \
+ /usr/include/magick/magic.h /usr/include/magick/delegate.h \
+ /usr/include/magick/module.h /usr/include/magick/monitor.h \
+ /usr/include/magick/resource.h /usr/include/magick/log.h \
+ /usr/include/magick/version.h /usr/include/magick/deprecate.h
+main.c :
+/usr/include/errno.h :
+/usr/include/features.h :
+/usr/include/sys/cdefs.h :
+/usr/include/gnu/stubs.h :
+/usr/include/bits/errno.h :
+/usr/include/linux/errno.h :
+/usr/include/asm/errno.h :
+/usr/include/signal.h :
+/usr/include/bits/sigset.h :
+/usr/include/bits/types.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h :
+/usr/include/bits/pthreadtypes.h :
+/usr/include/bits/sched.h :
+/usr/include/bits/signum.h :
+/usr/include/time.h :
+/usr/include/bits/siginfo.h :
+/usr/include/bits/wordsize.h :
+/usr/include/bits/sigaction.h :
+/usr/include/bits/sigcontext.h :
+/usr/include/asm/sigcontext.h :
+/usr/include/bits/sigstack.h :
+/usr/include/bits/sigthread.h :
+/usr/include/sys/stat.h :
+/usr/include/bits/stat.h :
+/usr/include/unistd.h :
+/usr/include/bits/posix_opt.h :
+/usr/include/bits/confname.h :
+/usr/include/getopt.h :
+../config.h :
+../lib/gift.h :
+/usr/include/stdio.h :
+/usr/include/libio.h :
+/usr/include/_G_config.h :
+/usr/include/wchar.h :
+/usr/include/bits/wchar.h :
+/usr/include/gconv.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h :
+/usr/include/bits/stdio_lim.h :
+/usr/include/bits/sys_errlist.h :
+/usr/include/stdlib.h :
+/usr/include/sys/types.h :
+/usr/include/endian.h :
+/usr/include/bits/endian.h :
+/usr/include/sys/select.h :
+/usr/include/bits/select.h :
+/usr/include/bits/time.h :
+/usr/include/sys/sysmacros.h :
+/usr/include/alloca.h :
+/usr/include/string.h :
+/usr/include/assert.h :
+/usr/include/sys/time.h :
+../giftconfig.h :
+../lib/platform.h :
+../lib/parse.h :
+../lib/dataset.h :
+../lib/list.h :
+../lib/list_queue.h :
+../lib/list_lock.h :
+../lib/tree.h :
+../lib/connection.h :
+../lib/protocol.h :
+../lib/if_event.h :
+../lib/interface.h :
+../lib/conf.h :
+../lib/log.h :
+/usr/include/syslog.h :
+/usr/include/sys/syslog.h :
+hook.h :
+plugin.h :
+perlc.h :
+if_port.h :
+../lib/event.h :
+share_file.h :
+share_hash.h :
+download.h :
+transfer.h :
+../lib/stopwatch.h :
+upload.h :
+../lib/network.h :
+/usr/include/fcntl.h :
+/usr/include/bits/fcntl.h :
+/usr/include/sys/socket.h :
+/usr/include/sys/uio.h :
+/usr/include/bits/uio.h :
+/usr/include/bits/socket.h :
+/usr/include/limits.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/limits.h :
+/usr/include/bits/posix1_lim.h :
+/usr/include/bits/local_lim.h :
+/usr/include/linux/limits.h :
+/usr/include/bits/posix2_lim.h :
+/usr/include/bits/sockaddr.h :
+/usr/include/asm/socket.h :
+/usr/include/asm/sockios.h :
+/usr/include/netinet/in.h :
+/usr/include/stdint.h :
+/usr/include/bits/in.h :
+/usr/include/bits/byteswap.h :
+/usr/include/arpa/inet.h :
+/usr/include/netdb.h :
+/usr/include/rpc/netdb.h :
+/usr/include/bits/netdb.h :
+share_cache.h :
+../lib/file.h :
+/usr/include/dirent.h :
+/usr/include/bits/dirent.h :
+/usr/include/zlib.h :
+/usr/include/zconf.h :
+/usr/include/id3.h :
+/usr/include/id3/globals.h :
+/usr/include/id3/sized_types.h :
+/usr/include/magick/api.h :
+/usr/include/inttypes.h :
+/usr/include/magick/magick_config.h :
+/usr/include/magick/semaphore.h :
+/usr/include/magick/error.h :
+/usr/include/magick/timer.h :
+/usr/include/magick/image.h :
+/usr/include/magick/list.h :
+/usr/include/magick/render.h :
+/usr/include/magick/draw.h :
+/usr/include/magick/gem.h :
+/usr/include/magick/quantize.h :
+/usr/include/magick/compress.h :
+/usr/include/magick/attribute.h :
+/usr/include/magick/command.h :
+/usr/include/magick/utility.h :
+/usr/include/magick/blob.h :
+/usr/include/magick/cache.h :
+/usr/include/magick/cache_view.h :
+/usr/include/magick/registry.h :
+/usr/include/magick/magick.h :
+/usr/include/magick/magic.h :
+/usr/include/magick/delegate.h :
+/usr/include/magick/module.h :
+/usr/include/magick/monitor.h :
+/usr/include/magick/resource.h :
+/usr/include/magick/log.h :
+/usr/include/magick/version.h :
+/usr/include/magick/deprecate.h :

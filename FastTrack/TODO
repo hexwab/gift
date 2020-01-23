@@ -1,0 +1,18 @@
+$Id: TODO,v 1.45 2005/02/28 13:27:33 mkern Exp $
+
+- make the README clearer
+- determine if we can make LIBTOOL=glibtool for mac os x users automatic
+- use download_throttle to make download throttling smoother
+- respond to push requests
+- make http parser accept "\n\n"
+- add meta tags to http reply
+- make use of country code in nodes file
+- do byte order conversion in fst_packet instead of all over the place
+- normalize meta data
+- add searching by meta data
+- make the max uploaded shares work not only for bulk uploads but also for single shares_add
+- do clients signal to the supernode when their b/w is maxed out?
+- does kazaa supernode tell us how many shares we can upload?
+- is the SWAP32 in fst_download.c correct?
+- failure to load default nodes file makes us crash?
+- it can happen that we are connected but the stats are zero

@@ -1,0 +1,16 @@
+A realistic TODO list for giFTcurs
+==================================
+
+Stuff that's planned:
+	* Ability to search on meta data.
+	* Ability to choose filename for downloads.
+	* Documentation. (info page, faq)
+	* A screen where you browse users.
+	* A screen where you see the log, maybe chat could be here as well.
+
+Stuff that we'll probably never get to, but would be sort of nice:
+	* World domination and so on.
+	* Client to client chat.
+	* Use readline(3) for the input fields.
+
+Never forget, we must fight the feature creep!

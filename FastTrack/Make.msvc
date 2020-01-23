@@ -1,0 +1,106 @@
+# $Id: Make.msvc,v 1.11 2005/01/03 17:13:41 mkern Exp $
+
+VERSION = 0.8.9
+O = .obj
+
+
+# dynamic by default
+!if !defined(static) && !defined(STATIC)
+DYNAMIC=1
+!endif
+
+
+##########################
+# release / debug
+##########################
+
+!if defined(release) || defined(RELEASE)
+
+D=
+DEXT=
+
+CFLAGS  = $(CFLAGS)  -Ox -G6
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+#DEFS    = $(DEFS)    -DNDEBUG -UDEBUG -U_DEBUG
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+
+!else # !defined(release) && !defined(RELEASE)
+
+D=d
+DEXT=d
+
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+!endif # defined(release) || defined(RELEASE)
+
+
+!if defined(HEAVY_DEBUG)
+
+DEFS    = $(DEFS) -DHEAVY_DEBUG
+
+!endif
+
+
+##########################
+# static / dynamic linking
+##########################
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+CFLAGS	= $(CFLAGS) -MD$(D) -DUSE_LTDL
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_LTDL
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+##########################
+# general
+##########################
+
+# temporary till we don't require giFT symbols anymore
+GIFT_LIB      		= giFT$(DEXT).lib
+GIFT_DLL      		= giFT$(DEXT).dll
+GIFT_EXE   			= giFT$(DEXT).exe
+
+
+LIBGIFT_LIB      	= libgiFT$(DEXT).lib
+LIBGIFT_DLL      	= libgiFT$(DEXT).dll
+LIBGIFT_STATIC   	= libgiFTstatic$(DEXT).lib
+LIBGIFTPROTO_LIB	= libgiFTproto$(DEXT).lib
+LIBGIFTPROTO_DLL	= libgiFTproto$(DEXT).dll
+LIBGIFTPROTO_STATIC	= libgiFTprotostatic$(DEXT).lib
+FASTTRACK_LIB         	= FastTrack$(DEXT).lib
+FASTTRACK_DLL         	= FastTrack$(DEXT).dll
+FASTTRACK_STATIC       	= FastTrackstatic$(DEXT).lib
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT -DVERSION=\"$(VERSION)\"
+
+# need this for building crypt lib for the plugin
+DEFS     = $(DEFS) -DGIFT_PLUGIN
+
+
+INCLUDES = -I$(BUILD_ROOT) -I$(BUILD_ROOT)\libgift\win32 $(INCLUDES)
+
+LDFLAGS  = $(LDFLAGS) -nologo -version:$(VERSION)
+LDFLAGS  = $(LDFLAGS) -libpath:"$(BUILD_ROOT)\libgift" -libpath:"$(BUILD_ROOT)\libgift\proto"
+
+LIBS     = $(LIBS) wsock32.lib
+
+DEFS     = $(DEFS) -D_WINDOWS -U_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+
+##########################
+# tools
+##########################
+
+
+CC = cl
+LD = link
+LT = lib

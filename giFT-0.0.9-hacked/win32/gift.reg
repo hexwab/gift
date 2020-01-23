@@ -1,0 +1,81 @@
+REGEDIT4
+
+; NOTE: giFT is pre-alpha development software. It may not run.
+; If it runs, it may leak memory, corrupt data, or crash. 
+; In fact, it may even crash your system. Who knows.
+; It is highly likely that giFT-fe is completely broken.  
+; Use giFTcurs instead. You have been warned!
+;
+; Change the setup option to one of the following:
+;
+;    [1] This host is behind a firewall, proxy, or NAT configuration and is
+;        unable to receive incoming connections on the external IP.  If you
+;        suspect you may be on a local area network (LAN) that you did not
+;        configure yourself, we recommend that you choose this option.  Please
+;        note that if this is true, you will not be able to function as a
+;        search or index node on the OpenFT network.
+;
+;    [2] I am willing to donate my computer as a dedicated search node.  This
+;        will require heightened RAM and CPU usage, but without them the
+;        network will be unable to function.  A better than average Internet
+;        connection is recommended as well.
+;
+;    [3] I am willing to donate my computer as a dedicated index node.  This
+;        node requires the most uptime and the lowest latency possible.  Please
+;        be sure that if you select this option you will keep your node up
+;        to date as much as possible.
+;
+;    [4] None of the above apply.  I would like to function as a regular
+;        non-firewalled user node.
+;
+; The plugins option is currently not used in this version.
+;
+; Change the root option to the root directory of files you wish to share.
+; Separate directories with a semicolon ';'.
+; Please use forward slashes instead of backslashes.
+; For example:
+; root = c:/dir1;c:/subdir/dir2;d:/dir3
+
+[HKEY_CURRENT_USER\Software\giFT]
+
+[HKEY_CURRENT_USER\Software\giFT\giFT]
+
+[HKEY_CURRENT_USER\Software\giFT\giFT\main]
+"setup"=dword:00000001
+"plugins"="OpenFT.dll"
+
+[HKEY_CURRENT_USER\Software\giFT\giFT\download]
+"incoming"="c:/Progra~1/giFT/.giFT/incoming"
+"completed"="c:/Progra~1/giFT/.giFT/completed"
+
+[HKEY_CURRENT_USER\Software\giFT\giFT\sharing]
+"max_peruser_uploads"=dword:00000001
+"hide_dot_files"=dword:00000001
+
+;use forward slashes, and separate paths with semicolon's
+"root"="c:/path/1;c:/path/2"
+
+[HKEY_CURRENT_USER\Software\giFT\OpenFT]
+
+[HKEY_CURRENT_USER\Software\giFT\OpenFT\daemon]
+"host"="127.0.0.1"
+
+;04bd hex == 1213 decimal
+"port"=dword:000004bd
+
+[HKEY_CURRENT_USER\Software\giFT\OpenFT\main]
+"class"=dword:00000001
+
+;2761 hex == 10081 decimal
+"port"=dword:00002761
+
+;2760 hex == 10080 decimal
+"http_port"=dword:00002760
+
+[HKEY_CURRENT_USER\Software\giFT\ui]
+
+[HKEY_CURRENT_USER\Software\giFT\ui\daemon]
+"host"="127.0.0.1"
+
+;04bd hex == 1213 decimal
+"port"=dword:000004bd

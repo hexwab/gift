@@ -1,0 +1,46 @@
+AM_CFLAGS = $(GIFT_CFLAGS)
+
+if DAEMON
+bin_PROGRAMS = giFT
+else
+bin_PROGRAMS =
+endif
+
+giFT_SOURCES = \
+	conf.h          conf.c \
+	connection.h    connection.c \
+	interface.h     interface.c \
+	if_event.h      if_event.c \
+	daemon.h        daemon.c \
+	watch.h         watch.c \
+	queue.h         queue.c \
+	transfer.h      transfer.c \
+	download.h      download.c \
+	upload.h        upload.c \
+	sharing.h       sharing.c \
+	md5.h           md5.c \
+	event.h         event.c \
+	file.h          file.c \
+	mime.h          mime.c \
+	hash.h          hash.c \
+	dataset.h       dataset.c \
+	list.h          list.c \
+	nb.h            nb.c \
+	network.h       network.c \
+	parse.h         parse.c \
+	protocol.h      protocol.c \
+	platform.h      platform.c \
+	meta.h		meta.c \
+	enum.h		enum.c \
+	id.h		id.c \
+	id_vorbis.h	id_vorbis.c \
+	gift.h          main.c \
+	zip.h		zip.c
+
+giFT_LDADD = $(GIFT_LIBS)
+giFT_LDFLAGS = $(GIFT_LDFLAGS) -export-dynamic
+
+#giFT_LDFLAGS = -Ldc
+#giFT_LDADD = -ldc
+
+EXTRA_DIST = giFT.cgi giFTquerycgi

@@ -1,0 +1,18 @@
+
+
+- Directly notify giFT of upload progress instead of using the periodic
+  progress callback. Just use ASUploadDataCb for this.
+
+- Multiple shares with same hash lead to obscure crashes because shares
+  manager silently frees previous share object and replaces it. Rethink
+  how shares are added. Ignore all duplicate hash shares sent by giFT.
+
+- Source searching
+
+- Search timeouts (in ares lib)
+
+- Config loading/saving (in ares lib)
+
+- base32 for gnutella compatibility
+
+- arlnk (Why do we need support for that in the plugin?)

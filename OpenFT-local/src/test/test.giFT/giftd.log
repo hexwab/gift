@@ -1,0 +1,210 @@
+[23:57:52] giftd 0.11.8 (Jan  3 2005 20:08:53) started
+[23:57:52] Plugin OpenFT (0.2.1.5) successfully loaded and initialized
+[23:57:52] OpenFT: ft_search_db.c:893(db_init): search params: libdb=4.2.52, path=benchtemp, cache=52428800, minpeers=0, maxpeers=0, nchildren=0, maxttl=0, maxresults=0
+[23:57:52] OpenFT: test.data: contains 408 nodes
+[23:57:54] OpenFT: loaded 36310 total files (average 363)
+[23:57:54] OpenFT: loaded 8868 search queries
+[23:58:08] OpenFT: insert(36310): 13.495258s elapsed (avg 2690.57 files/s)
+[00:05:54] OpenFT: search(8868): 465.894499s elapsed (avg 19.03 queries/s)
+[00:05:54] OpenFT: delete 12.206.130.242:0(3): 0.010641s elapsed
+[00:05:54] OpenFT: delete 12.209.4.58:0(16): 0.021008s elapsed
+[00:05:54] OpenFT: delete 12.210.208.209:0(8): 0.012275s elapsed
+[00:05:54] OpenFT: delete 12.211.169.181:0(2): 0.015338s elapsed
+[00:05:54] OpenFT: delete 12.211.25.175:0(1): 0.030109s elapsed
+[00:05:54] OpenFT: delete 12.211.39.208:0(4): 0.010927s elapsed
+[00:05:54] OpenFT: delete 12.222.216.155:0(11): 0.014760s elapsed
+[00:05:54] OpenFT: delete 12.228.135.106:0(3): 0.016044s elapsed
+[00:05:54] OpenFT: delete 12.231.228.198:0(49): 0.028443s elapsed
+[00:05:54] OpenFT: delete 12.233.81.236:0(483): 0.236159s elapsed
+[00:05:55] OpenFT: delete 12.237.63.214:0(921): 0.529857s elapsed
+[00:05:55] OpenFT: delete 12.240.220.42:0(185): 0.080877s elapsed
+[00:05:55] OpenFT: delete 12.241.13.226:0(173): 0.072837s elapsed
+[00:05:55] OpenFT: delete 12.249.213.194:0(291): 0.170256s elapsed
+[00:05:55] OpenFT: delete 12.252.89.20:0(567): 0.560977s elapsed
+[00:05:57] OpenFT: delete 128.135.157.191:0(1684): 1.072932s elapsed
+[00:05:58] OpenFT: delete 128.153.144.123:0(3593): 1.408494s elapsed
+[00:05:58] OpenFT: delete 128.187.65.200:0(103): 0.052077s elapsed
+[00:05:59] OpenFT: delete 128.208.32.36:0(1265): 0.567980s elapsed
+[00:05:59] OpenFT: delete 128.226.220.107:0(8): 0.028823s elapsed
+[00:05:59] OpenFT: delete 128.235.132.9:0(551): 0.313986s elapsed
+[00:05:59] OpenFT: delete 128.252.50.126:0(803): 0.335258s elapsed
+[00:05:59] OpenFT: delete 128.54.244.219:0(23): 0.019737s elapsed
+[00:05:59] OpenFT: delete 129.237.49.210:0(1): 0.023776s elapsed
+[00:06:00] OpenFT: delete 129.64.157.13:0(1254): 0.744625s elapsed
+[00:06:00] OpenFT: delete 130.149.138.232:0(1): 0.010672s elapsed
+[00:06:00] OpenFT: delete 130.161.129.122:0(69): 0.030843s elapsed
+[00:06:00] OpenFT: delete 130.215.17.128:0(13): 0.018094s elapsed
+[00:06:00] OpenFT: delete 130.232.136.112:0(5): 0.017007s elapsed
+[00:06:00] OpenFT: delete 130.235.161.39:0(43): 0.129001s elapsed
+[00:06:01] OpenFT: delete 131.118.209.10:0(982): 0.431054s elapsed
+[00:06:01] OpenFT: delete 131.118.58.5:0(567): 0.341186s elapsed
+[00:06:01] OpenFT: delete 131.118.60.9:0(53): 0.062617s elapsed
+[00:06:01] OpenFT: delete 131.211.232.225:0(493): 0.220991s elapsed
+[00:06:01] OpenFT: delete 131.246.164.47:0(11): 0.024152s elapsed
+[00:06:01] OpenFT: delete 134.155.89.223:0(125): 0.061400s elapsed
+[00:06:01] OpenFT: delete 134.184.4.9:0(38): 0.036887s elapsed
+[00:06:01] OpenFT: delete 134.58.253.225:0(2): 0.010492s elapsed
+[00:06:01] OpenFT: delete 136.165.47.43:0(2): 0.010611s elapsed
+[00:06:01] OpenFT: delete 137.186.254.75:0(8): 0.017267s elapsed
+[00:06:01] OpenFT: delete 137.222.217.43:0(1): 0.011353s elapsed
+[00:06:02] OpenFT: delete 138.232.65.35:0(18): 0.018371s elapsed
+[00:06:02] OpenFT: delete 138.89.145.180:0(103): 0.047144s elapsed
+[00:06:02] OpenFT: delete 139.13.127.130:0(1319): 0.647319s elapsed
+[00:06:02] OpenFT: delete 139.222.80.51:0(1): 0.041284s elapsed
+[00:06:03] OpenFT: delete 140.180.137.151:0(574): 0.544360s elapsed
+[00:06:03] OpenFT: delete 141.209.197.63:0(903): 0.467769s elapsed
+[00:06:03] OpenFT: delete 141.213.183.103:0(499): 0.225479s elapsed
+[00:06:04] OpenFT: delete 142.103.34.240:0(14): 0.015142s elapsed
+[00:06:04] OpenFT: delete 142.103.56.67:0(1): 0.019180s elapsed
+[00:06:04] OpenFT: delete 143.107.18.105:0(387): 0.273263s elapsed
+[00:06:04] OpenFT: delete 143.229.65.246:0(160): 0.080206s elapsed
+[00:06:04] OpenFT: delete 144.122.95.144:0(21): 0.076568s elapsed
+[00:06:04] OpenFT: delete 144.32.34.128:0(1): 0.030989s elapsed
+[00:06:04] OpenFT: delete 144.62.201.216:0(8): 0.012754s elapsed
+[00:06:04] OpenFT: delete 144.92.18.39:0(1): 0.015239s elapsed
+[00:06:04] OpenFT: delete 145.92.34.24:0(135): 0.057163s elapsed
+[00:06:04] OpenFT: delete 146.201.132.6:0(11): 0.013218s elapsed
+[00:06:04] OpenFT: delete 146.229.184.23:0(22): 0.021558s elapsed
+[00:06:04] OpenFT: delete 147.126.31.148:0(1): 0.021120s elapsed
+[00:06:06] OpenFT: delete 150.101.246.39:0(1207): 1.563274s elapsed
+[00:06:06] OpenFT: delete 150.152.152.227:0(6): 0.011938s elapsed
+[00:06:06] OpenFT: delete 150.162.198.210:0(349): 0.168980s elapsed
+[00:06:06] OpenFT: delete 151.27.28.70:0(1): 0.031761s elapsed
+[00:06:07] OpenFT: delete 153.90.112.128:0(1062): 1.184144s elapsed
+[00:06:07] OpenFT: delete 155.47.27.207:0(4): 0.015229s elapsed
+[00:06:07] OpenFT: delete 156.34.219.99:0(33): 0.019218s elapsed
+[00:06:07] OpenFT: delete 158.253.0.109:0(715): 0.323814s elapsed
+[00:06:08] OpenFT: delete 158.65.198.114:0(45): 0.044651s elapsed
+[00:06:08] OpenFT: delete 158.75.2.13:0(35): 0.020238s elapsed
+[00:06:08] OpenFT: delete 160.80.85.39:0(40): 0.021573s elapsed
+[00:06:08] OpenFT: delete 162.33.176.234:0(78): 0.045099s elapsed
+[00:06:08] OpenFT: delete 166.84.167.79:0(51): 0.022846s elapsed
+[00:06:08] OpenFT: delete 17.104.162.91:0(2): 0.023974s elapsed
+[00:06:08] OpenFT: delete 192.33.102.125:0(1): 0.010877s elapsed
+[00:06:08] OpenFT: delete 193.137.216.44:0(59): 0.048462s elapsed
+[00:06:08] OpenFT: delete 193.166.89.159:0(138): 0.079962s elapsed
+[00:06:08] OpenFT: delete 193.171.241.59:0(1867): 0.662065s elapsed
+[00:06:09] OpenFT: delete 193.196.41.250:0(471): 0.183242s elapsed
+[00:06:09] OpenFT: delete 193.2.1.245:0(119): 0.063187s elapsed
+[00:06:10] OpenFT: delete 193.98.167.254:0(2758): 1.520257s elapsed
+[00:06:10] OpenFT: delete 194.167.228.81:0(773): 0.263858s elapsed
+[00:06:11] OpenFT: delete 194.186.96.183:0(57): 0.021185s elapsed
+[00:06:11] OpenFT: delete 194.199.25.39:0(24): 0.024688s elapsed
+[00:06:12] OpenFT: delete 194.208.239.184:0(1611): 1.287378s elapsed
+[00:06:12] OpenFT: delete 194.208.62.17:0(20): 0.020352s elapsed
+[00:06:13] OpenFT: delete 194.236.106.60:0(1136): 0.659915s elapsed
+[00:06:13] OpenFT: delete 194.29.198.240:0(1069): 0.948409s elapsed
+[00:06:14] OpenFT: delete 195.137.41.195:0(442): 0.164910s elapsed
+[00:06:14] OpenFT: delete 195.137.43.83:0(289): 0.196009s elapsed
+[00:06:14] OpenFT: delete 195.150.102.184:0(2): 0.021852s elapsed
+[00:06:14] OpenFT: delete 195.186.179.32:0(334): 0.154179s elapsed
+[00:06:14] OpenFT: delete 195.22.175.11:0(8): 0.013213s elapsed
+[00:06:14] OpenFT: delete 195.242.73.248:0(1): 0.015104s elapsed
+[00:06:14] OpenFT: delete 195.38.100.43:0(90): 0.045319s elapsed
+[00:06:14] OpenFT: delete 195.56.97.147:0(5): 0.011825s elapsed
+[00:06:16] OpenFT: delete 195.70.103.165:0(3139): 1.450019s elapsed
+[00:06:16] OpenFT: delete 196.22.160.68:0(3): 0.023029s elapsed
+[00:06:16] OpenFT: delete 196.22.173.22:0(17): 0.029677s elapsed
+[00:06:16] OpenFT: delete 198.37.27.132:0(1): 0.021392s elapsed
+[00:06:16] OpenFT: remove(36310): 21.938270s elapsed (avg 1655.10 files/s)
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] *** GIFT-WARNING: OpenFT: removing node with an active search database!
+[00:06:16] OpenFT: ft_openft.c:124(handle_test_suite): test concluded with ret=1

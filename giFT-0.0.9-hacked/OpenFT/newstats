@@ -1,0 +1,59 @@
+db_bench: maxhosts=10
+db_bench: test db contains 408 hosts
+db_bench: loaded 1495 total files (average 149)
+*** GIFT-ERROR: db_bench: DBcursor->c_get: 0
+db_bench: ft_search_db.c:473(db_init): search db params: path=benchtemp, cache=83886080
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8062540 md5.index:
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8062310 tokens.index:
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x806c0e8 children.data:12.206.130.242
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x806cce0 children.data:12.209.4.58
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x806c570 children.data:12.210.208.209
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x806c7f8 children.data:12.211.169.181
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x80666b8 children.data:12.211.25.175
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8066ad0 children.data:12.211.39.208
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8066f10 children.data:12.222.216.155
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8061000 children.data:12.228.135.106
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8145850 children.data:12.231.228.198
+db_bench: ft_search_db.c:152(open_db): opened(0) 0x8146ce0 children.data:12.233.81.236
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.206.130.242: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1507 tokens, 5160 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.206.130.242(3): 0.001399s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1495 tokens, 5132 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.209.4.58: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1495 tokens, 5132 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.209.4.58(15): 0.002553s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1462 tokens, 5038 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.210.208.209: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1462 tokens, 5038 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.210.208.209(8): 0.003069s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1429 tokens, 4926 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.211.169.181: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1429 tokens, 4926 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.211.169.181(2): 0.013831s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1427 tokens, 4906 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.211.25.175: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1427 tokens, 4906 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.211.25.175(1): 0.001364s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1423 tokens, 4896 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.211.39.208: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1423 tokens, 4896 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.211.39.208(4): 0.001224s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1401 tokens, 4851 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.222.216.155: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1401 tokens, 4851 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.222.216.155(11): 0.001699s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1353 tokens, 4760 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.228.135.106: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1353 tokens, 4760 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.228.135.106(3): 0.001725s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1340 tokens, 4735 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.231.228.198: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1340 tokens, 4735 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.231.228.198(49): 0.006445s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1206 tokens, 4360 files
+db_bench: ft_search_db.c:2002(ft_search_db_remove_host): 12.233.81.236: scheduled
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 1206 tokens, 4360 files
+db_bench: ft_search_db.c:1179(db_nuke_host): 12.233.81.236(481): 0.047001s elapsed
+db_bench: ft_search_db.c:1977(sec_db_stats): secondary db contains 0 tokens, 0 files
+db_bench: insert(1495): 0.144931s elapsed (avg 10315.25 files/s)
+db_bench: remove(1495): 0.082959s elapsed (avg 18020.95 files/s)

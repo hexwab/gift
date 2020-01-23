@@ -1,0 +1,308 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2003-05-27 13:24-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/main.c:70
+msgid "Downloads"
+msgstr ""
+
+#: src/main.c:70
+msgid "Uploads"
+msgstr ""
+
+#: src/main.c:71 src/search_tab.c:90
+msgid "Filename"
+msgstr ""
+
+#: src/main.c:71 src/search_tab.c:90 src/search_tab.c:91
+msgid "User"
+msgstr ""
+
+#: src/main.c:71
+msgid "Status"
+msgstr ""
+
+#: src/main.c:71
+msgid "Progress"
+msgstr ""
+
+#: src/main.c:71 src/search_tab.c:90
+msgid "Size"
+msgstr ""
+
+#: src/main.c:71
+msgid "Speed"
+msgstr ""
+
+#: src/main.c:71
+msgid "ETA"
+msgstr ""
+
+#: src/main.c:203
+msgid "Automatically remove"
+msgstr ""
+
+#: src/main.c:203
+msgid "Cancelled transfers"
+msgstr ""
+
+#: src/main.c:203
+msgid "Completed transfers"
+msgstr ""
+
+#: src/main.c:215
+msgid "Autoclean options"
+msgstr ""
+
+#: src/main.c:243
+msgid "Shares"
+msgstr ""
+
+#: src/main.c:256
+msgid "Enable sharing"
+msgstr ""
+
+#: src/main.c:264
+msgid "Synchronize shares"
+msgstr ""
+
+#: src/main.c:337
+msgid "Home"
+msgstr ""
+
+#: src/main.c:343
+msgid "Search"
+msgstr ""
+
+#: src/main.c:349
+msgid "Transfers"
+msgstr ""
+
+#: src/main.c:355
+msgid "Preferences"
+msgstr ""
+
+#: src/main.c:392
+msgid "You need to specify a host and port to connect to!"
+msgstr ""
+
+#: src/main.c:412
+msgid "The giFT deamon could not be started!"
+msgstr ""
+
+#: src/main.c:418
+msgid "Couldn't connect to giFT daemon on remote system!"
+msgstr ""
+
+#: src/stats.c:55 src/stats.c:71
+#, c-format
+msgid "%s GB"
+msgstr ""
+
+#: src/stats.c:58 src/stats.c:74
+#, c-format
+msgid "%s MB"
+msgstr ""
+
+#: src/stats.c:135
+msgid "Users online:"
+msgstr ""
+
+#: src/stats.c:135
+msgid "Files available:"
+msgstr ""
+
+#: src/stats.c:135
+msgid "Volume available:"
+msgstr ""
+
+#: src/stats.c:135
+msgid "Connected to:"
+msgstr ""
+
+#: src/stats.c:136
+msgid "Local files shared:"
+msgstr ""
+
+#: src/stats.c:136
+msgid "Local volume shared:"
+msgstr ""
+
+#: src/stats.c:137
+msgid "Network"
+msgstr ""
+
+#: src/stats.c:137
+msgid "Local"
+msgstr ""
+
+#. show version information
+#: src/stats.c:160
+#, c-format
+msgid ""
+"Version %s\n"
+"\n"
+"(C) 2002, 2003 giFToxic team\n"
+msgstr ""
+
+#: src/stats.c:190
+msgid "Getting stats..."
+msgstr ""
+
+#: src/gui.c:31
+msgid "Remove item"
+msgstr ""
+
+#: src/gui.c:39
+msgid "Clear all"
+msgstr ""
+
+#: src/gui.c:55
+msgid "Browse user's files"
+msgstr ""
+
+#: src/gui.c:69
+msgid "Download"
+msgstr ""
+
+#: src/gui.c:84 src/gui.c:115
+msgid "Cancel"
+msgstr ""
+
+#: src/gui.c:106
+msgid "Get more sources"
+msgstr ""
+
+#: src/gui.c:109
+msgid "Pause"
+msgstr ""
+
+#: src/gui.c:112
+msgid "Resume"
+msgstr ""
+
+#. cancel pending searches
+#: src/search.c:48
+msgid "Search: stopped"
+msgstr ""
+
+#: src/search.c:164
+msgid "Search: in progress..."
+msgstr ""
+
+#: src/search_tab.c:90
+msgid "Sources"
+msgstr ""
+
+#: src/search_tab.c:90
+msgid "Avail."
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "All Files"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Audio"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Video"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Images"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Documents"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Software"
+msgstr ""
+
+#: src/search_tab.c:91
+msgid "Checksum"
+msgstr ""
+
+#: src/search_tab.c:102
+msgid "Query"
+msgstr ""
+
+#: src/search_tab.c:162
+msgid "Search Results"
+msgstr ""
+
+#: src/parse.c:100
+msgid "Search: got 1 result"
+msgstr ""
+
+#: src/parse.c:102
+#, c-format
+msgid "Search: got %lu results"
+msgstr ""
+
+#: src/parse.c:239
+msgid "Shares synced!"
+msgstr ""
+
+#: src/parse.c:241
+msgid "Syncing shares..."
+msgstr ""
+
+#: src/parse.c:284
+msgid "Not Connected"
+msgstr ""
+
+#: src/parse.c:323
+msgid "1 active download"
+msgstr ""
+
+#: src/parse.c:323
+#, c-format
+msgid "%i active downloads"
+msgstr ""
+
+#: src/parse.c:325
+msgid "1 active upload"
+msgstr ""
+
+#: src/parse.c:325
+#, c-format
+msgid "%i active uploads"
+msgstr ""
+
+#: src/parse.c:336
+#, c-format
+msgid "Connected to: %s"
+msgstr ""
+
+#: src/utils.c:365
+msgid " thousand"
+msgstr ""
+
+#: src/utils.c:365
+msgid " thousand "
+msgstr ""
+
+#: src/utils.c:366
+msgid " million"
+msgstr ""
+
+#: src/utils.c:366
+msgid " million "
+msgstr ""

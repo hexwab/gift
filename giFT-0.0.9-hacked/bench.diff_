@@ -1,0 +1,591 @@
+? aa
+? bench.diff_
+? ft_search_exec.diff
+? http_start.diff
+? OpenFT/OpenFT
+? OpenFT/benchtemp
+? OpenFT/db_bench
+? OpenFT/ft_db_test.c
+? OpenFT/ft_search_db.c.bp
+? OpenFT/newstats
+? OpenFT/oldwstats
+? OpenFT/test
+? lib/conf.diff
+? lib/example
+Index: OpenFT/ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_search_db.c,v
+retrieving revision 1.54
+diff -u -r1.54 ft_search_db.c
+--- OpenFT/ft_search_db.c	31 Mar 2003 12:25:24 -0000	1.54
++++ OpenFT/ft_search_db.c	18 Apr 2003 00:42:53 -0000
+@@ -42,7 +42,24 @@
+  * Sync all databases after changes have been made to ease debugging.  This
+  * greatly hurts performance and should not be enabled for every day usage.
+  */
+-/* #define SEARCH_DB_SYNC */
++//#define SEARCH_DB_SYNC
++
++#ifdef BENCHMARK
++
++#define NEW_REMOVE
++
++#define BLOCKING_REMOVE
++
++#undef FT_SEARCH_ENV_PATH
++#undef FT_SEARCH_ENV_CACHE
++#undef FT_SEARCH_ENV_PRIV 
++#undef FT_SEARCH_ENV_TXN
++
++#define FT_SEARCH_ENV_PATH "benchtemp"
++#define FT_SEARCH_ENV_CACHE 83886080
++#define FT_SEARCH_ENV_PRIV  0
++#define FT_SEARCH_ENV_TXN 0
++#endif
+ 
+ /*
+  * Apply a custom hash function for the child data so that a well distributed
+@@ -605,7 +622,7 @@
+ 	if (!file)
+ 		return NULL;
+ 
+-	import_meta (file, rec->data + rec->meta, rec->data_len - rec->meta);
++      	import_meta (file, rec->data + rec->meta, rec->data_len - rec->meta);
+ 	return file;
+ }
+ 
+@@ -808,6 +825,93 @@
+ 	return ret;
+ }
+ 
++#ifdef NEW_REMOVE
++static int db_nuke_sec_token (DBC *dbcp, FTSHost *shost, unsigned char *md5,
++                                uint32_t token)
++{
++	/* iterate the list of hashes for a given token and remove all
++	   of the records that match the given host */
++	DBT key;
++	DBT data;
++	TokensRec *rec;
++	int ret;
++
++	memset (&key, 0, sizeof (key));
++	memset (&data, 0, sizeof (data));
++
++	key.data = &token;
++	key.size = sizeof (token);
++
++	/* find the start of the list */ 
++	if ((ret = dbcp->c_get (dbcp, &key, &data, DB_SET)))
++	{
++		ERR_DB("DBcursor->c_get", ret);
++		return ret;
++	}
++
++	do {
++		rec = (TokensRec *)data.data;
++//		FT->DBGFN(FT,"record %s: %s", md5_string(rec->md5,""),net_ip_str(rec->ip_addr));
++
++		if (rec->ip_addr == shost->host) { /* should use memcmp? */
++			/* host matches, delete it */
++			if ((ret = dbcp->c_del (dbcp, 0)))
++			{
++				ERR_DB_SHOST("DBcursor->c_del", ret, shost);
++				break;
++			} else {
++//				FT->DBGFN(FT,"%s: removed %s for token %lu", net_ip_str(shost->host), md5_string(rec->md5, ""), token);
++			}
++		} else {
++//			FT->DBGFN(FT,"skipping host %s for token %lu", net_ip_str(rec->ip_addr),token);
++		}
++		
++	} while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT_DUP)));
++
++	if (ret && ret != DB_NOTFOUND)
++		ERR_DB_SHOST("DBcursor->c_get", ret, shost);
++
++	return ret;
++}
++
++static int db_nuke_sec (FTSHost *shost, uint32_t *tokens, unsigned char *md5, Dataset **done)
++{
++	DB  *dbp;
++	DBC *dbcp;
++	int  ret = TRUE;
++
++//	FT->DBGFN (FT, "%s: %s", net_ip_str (shost->host), md5_string(md5, ""));
++
++	if (!(dbp = db_sec()))
++		return FALSE;
++
++	/* construct a cursor so that we may use it for removing all tokens
++	 * at once */
++	if (dbp->cursor (dbp, NULL, &dbcp, 0))
++	{
++		ERR_DB_SHOST("DB->cursor", ret, shost);
++		return FALSE;
++	}
++
++	for (; tokens && *tokens; tokens++)
++	{
++		if (!dataset_lookup (*done, tokens, sizeof (tokens)))
++		{
++//			FT->DBGFN(FT,"%s: deleting token %lu",net_ip_str(shost->host),*tokens);
++			dataset_insert (done, tokens, sizeof (*tokens), "foo", 0); /* arbitrary non-null pointer */
++			if (!(ret = db_nuke_sec_token (dbcp, shost, md5, *tokens)))
++				break;
++		} else
++		{
++//			FT->DBGFN(FT,"%s: skipping token %lu", net_ip_str(shost->host),*tokens);
++		}
++	}
++
++	dbcp->c_close (dbcp);
++	return ret;
++}
++#endif
++
+ static int db_remove_pri_local (FTSHost *shost, unsigned char *md5)
+ {
+ 	DB *dbp;
+@@ -994,6 +1098,91 @@
+ 	return (ret == 0);
+ }
+ 
++#ifdef NEW_REMOVE
++static int db_nuke_host (FTSHost *shost)
++{
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	DBT       data_tokens;
++	int       ret;
++	u_int16_t tokens_len = 0;
++	Dataset  *done;
++
++	done = dataset_new (DATASET_HASH);
++
++	/* construct the cursor if necessary, if this fails we will simply abort
++	 * the removal on error (which is a TRUE result from this func) */
++	if (!init_removal (shost))
++		return TRUE;
++
++	dbcp = shost->pri_curs;
++	assert (dbcp != NULL);
++
++	memset (&key, 0, sizeof (key));
++
++      	/* initially we want to retrieve just the start position of the
++	 * mime data so that we can figure out the length of the token data */
++	make_dbt_partial (&data, offsetof (DataRec, path), sizeof (tokens_len));
++
++	/* an uninitialized (unset) DB_NEXT c_get will result in a DB_FIRST call,
++	 * so we don't really need to do any special call before we begin the
++	 * loop */
++	while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT)))
++	{
++		assert (data.size == sizeof (tokens_len));
++		assert (key.size == 16);
++
++		/* remove from the primary database immediately as we dont need to
++		 * "complete" the lookup in order to get the md5sum */
++		db_remove_pri (shost, key.data);
++		
++		/* setup the data member to get the complete token data from the
++		 * database */
++		memcpy (&tokens_len, data.data, sizeof (tokens_len));
++		make_dbt_partial (&data_tokens, offsetof (DataRec, data), tokens_len);
++		
++		/* retrieve the token list as a partial get */
++		if ((ret = dbcp->c_get (dbcp, &key, &data_tokens, DB_CURRENT)))
++		{
++			ERR_DB_SHOST("DBcursor->c_get", ret, shost);
++			break;
++		}
++		
++		/* remove the all tokens in the list from the master secondary db */
++		if (!db_nuke_sec (shost, (uint32_t *)(data_tokens.data), key.data, &done))
++		{
++			FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
++				   net_ip_str (shost->host));
++		}
++
++		/* delete the current position to minimize the possibility of a race
++		 * condition on this childs data (NOTE: this doesnt affect the cursor
++		 * position, so the DB_NEXT is still required at the next call) */
++		if ((ret = dbcp->c_del (dbcp, 0)))
++		{
++			ERR_DB_SHOST("DBcursor->c_del", ret, shost);
++			break;
++		}
++	}
++
++	if (ret != DB_NOTFOUND)
++	{
++		ERR_DB_SHOST("DB->c_get", ret, shost);
++	}
++	dataset_clear (done);
++
++	/* we're finished removing, yay! */
++	FT->DBGFN (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
++	           shost->shares, stopwatch_free_elapsed (shost->sw));
++
++	/* destroy all the berkeley db specific stuff */
++	destroy_removal (shost);
++
++	return (ret==0);
++}
++#endif
++
+ /*
+  * Remove a single share record from all databases, based on the cursor
+  * associated with the shost option.  Returning TRUE here means that the
+@@ -1091,7 +1280,7 @@
+ 
+ /*****************************************************************************/
+ 
+-#ifdef SHARE_DB_SYNC
++#ifdef SEARCH_DB_SYNC
+ static int db_sync (FTSHost *shost)
+ {
+ 	DB *pri_local;
+@@ -1109,7 +1298,7 @@
+ 
+ 	return TRUE;
+ }
+-#endif /* SHARE_DB_SYNC */
++#endif /* SEARCH_DB_SYNC */
+ 
+ /*****************************************************************************/
+ 
+@@ -1200,6 +1389,7 @@
+ 	FileShare *file;
+ 	FTSHost   *shost;
+ 
++#ifndef BENCHMARK
+ 	/*
+ 	 * Lookup the shost structure for the sole purpose of satisfying the
+ 	 * API as we only really need the ip address to begin with.  This is
+@@ -1228,6 +1418,7 @@
+ 	/* last but not least, at the completely constructed file */
+ 	if (!push (a, file))
+ 		return FALSE;
++#endif
+ 
+ 	return TRUE;
+ }
+@@ -1778,6 +1969,21 @@
+ 	return ret;
+ }
+ 
++static int sec_db_stats(void)
++{
++	DB_BTREE_STAT *stats;
++	DB *sec=db_sec();
++	if (!sec->stat(sec, &stats, 0))
++		FT->DBGFN(FT, "secondary db contains %d tokens, %d files", stats->bt_nkeys, stats->bt_ndata);
++	else
++	{
++		FT->err(FT, "failed to get sec db stats");
++		return 1;
++	}
++	return 0;
++}
++
++
+ int ft_search_db_remove_host (FTSHost *shost, void (*fptr)(FTSHost *))
+ {
+ 	int ret = TRUE;
+@@ -1795,8 +2001,18 @@
+ 
+ 	FT->DBGFN (FT, "%s: scheduled", net_ip_str (shost->host));
+ 
++//	sec_db_stats();
++#ifdef NEW_REMOVE
++	db_nuke_host (shost);
++#else
++#ifdef BLOCKING_REMOVE
++	while (db_remove_host_timer(shost));
++#else	
+ 	/* initiate the timer to handle resource scheduling for us */
+ 	timer_add (100 * MSEC, (TimerCallback)db_remove_host_timer, shost);
++#endif
++#endif
++//	sec_db_stats();
+ #else
+ 	FT->err (FT, "this should not happen...");
+ 	shost->removecb (shost);
+@@ -1891,3 +2107,4 @@
+ 
+ 	return results;
+ }
++
+Index: OpenFT/ft_search_exec.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_search_exec.c,v
+retrieving revision 1.31
+diff -u -r1.31 ft_search_exec.c
+--- OpenFT/ft_search_exec.c	31 Mar 2003 12:25:27 -0000	1.31
++++ OpenFT/ft_search_exec.c	18 Apr 2003 00:42:54 -0000
+@@ -97,11 +97,13 @@
+ 	uint32_t  *ptr;
+ 	int        ret = TRUE;
+ 
++#if 0
+ 	if (sdata->f_realm)
+ 	{
+ 		if (strncmp (file->mime, sdata->f_realm, strlen (sdata->f_realm)))
+ 			return FALSE;
+ 	}
++#endif
+ 
+ 	if (!(share = share_lookup_data (file, "OpenFT")))
+ 		return FALSE;
+@@ -572,7 +574,11 @@
+ 	if (!fill_sdata (&sdata, resultfn, udata, type, realm, query, exclude))
+ 		return -1;
+ 
+-	max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
++	if (type & FT_SEARCH_LOCAL)
++		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
++	else
++		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
++
+ 
+ #ifdef DEBUG
+ 	sw = stopwatch_new (TRUE);
+Index: OpenFT/ft_xfer.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_xfer.c,v
+retrieving revision 1.29
+diff -u -r1.29 ft_xfer.c
+--- OpenFT/ft_xfer.c	31 Mar 2003 12:25:34 -0000	1.29
++++ OpenFT/ft_xfer.c	18 Apr 2003 00:42:55 -0000
+@@ -225,6 +225,7 @@
+ 	FILE  *f;
+ 	char  *referer;
+ 	char  *user_agent;
++	char  *alias;
+ 
+ 	if (!xfer || !xfer->request)
+ 		return;
+@@ -234,6 +235,8 @@
+ 	/* lookup useful HTTP headers */
+ 	referer    = dataset_lookup (xfer->header, "Referer",    8);
+ 	user_agent = dataset_lookup (xfer->header, "User-Agent", 11);
++	alias      = dataset_lookupstr (xfer->header, "X-OpenftAlias");
++
+ 
+ 	if (!referer)
+ 		referer = "-";
+@@ -241,6 +244,9 @@
+ 	if (!user_agent)
+ 		user_agent = "-";
+ 
++	if (!alias)
++		alias = "-";
++
+ 	/* open the log file */
+ 	if (!(f = fopen (gift_conf_path ("access.log"), "a")))
+ 	{
+@@ -250,7 +256,7 @@
+ 
+ 	/* write this entry */
+ 	fprintf (f, "%s ", net_ip_str (xfer->ip));
+-	fprintf (f, "- - ");
++	fprintf (f, "%s - ", alias);
+ 	fprintf (f, "%s", log_format_time (time (NULL)));   /* trailing \s */
+ 	fprintf (f, "\"%s %s HTTP/1.1\" ", xfer->command, xfer->request);
+ 	fprintf (f, "%i %lu ", xfer->code,
+Index: lib/conf.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/conf.c,v
+retrieving revision 1.23
+diff -u -r1.23 conf.c
+--- lib/conf.c	13 Feb 2003 19:27:04 -0000	1.23
++++ lib/conf.c	18 Apr 2003 00:42:55 -0000
+@@ -209,14 +209,33 @@
+ 
+ int config_get_int (Config *conf, char *keypath)
+ {
+-	char *value;
++	char *strvalue, *endptr;
++	long value;
+ 
+-	value = config_get_str (conf, keypath);
++	strvalue = config_get_str (conf, keypath);
+ 
+-	if (!value)
++	if (!strvalue)
+ 		return 0;
+ 
+-	return atoi (value);
++	value = strtol (strvalue, &endptr, 0);
++
++	switch (*endptr) {
++	case 'k':
++	case 'K':
++		value <<= 10;
++		break;
++	case 'm':
++	case 'M':
++		value <<= 20;
++		break;
++	case 'g':
++	case 'G':
++		value <<= 30;
++		break;
++		/* for stuff beyond this we'd need a long long */
++	}
++
++	return value;
+ }
+ 
+ /*****************************************************************************/
+Index: src/Makefile.am
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/Makefile.am,v
+retrieving revision 1.62
+diff -u -r1.62 Makefile.am
+--- src/Makefile.am	12 Apr 2003 02:38:06 -0000	1.62
++++ src/Makefile.am	18 Apr 2003 00:42:55 -0000
+@@ -8,7 +8,17 @@
+ if LTDL
+ incadd=
+ else
+-incadd=-I$(top_srcdir)/OpenFT
++if OPENFT
++openftinc=-I$(top_srcdir)/OpenFT
++else
++openftinc=
++endif
++if GNUTELLA
++gnutellainc=-I$(top_srcdir)/Gnutella
++else
++guntellainc=
++endif
++incadd=$(openftinc) $(gnutellainc)
+ endif
+ 
+ INCLUDES = $(incadd) \
+Index: src/mime.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/mime.c,v
+retrieving revision 1.19
+diff -u -r1.19 mime.c
+--- src/mime.c	9 Mar 2003 20:45:02 -0000	1.19
++++ src/mime.c	18 Apr 2003 00:42:56 -0000
+@@ -113,8 +113,10 @@
+ 	char *ext, *extl;
+ 	char *type;
+ 
++#if 0
+ 	if (!mime_types)
+ 		load_types ();
++#endif
+ 
+ 	if ((ext = strrchr (file, '.')))
+ 		ext++;
+@@ -144,9 +146,10 @@
+ {
+ 	struct _mime_type *type;
+ 
++#if 0
+ 	if (!mime_types)
+ 		load_types ();
+-
++#endif
+ 	type = dataset_find (mime_types, DATASET_FOREACH (mime_lookup), mime);
+ 
+ 	if (!type)
+Index: src/plugin.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/plugin.c,v
+retrieving revision 1.21
+diff -u -r1.21 plugin.c
+--- src/plugin.c	30 Mar 2003 19:27:42 -0000	1.21
++++ src/plugin.c	18 Apr 2003 00:42:56 -0000
+@@ -33,6 +33,7 @@
+ 
+ #ifndef USE_LTDL
+ int OpenFT_init (Protocol *p);
++int Gnutella_init (Protocol *p);
+ #endif /* !USE_LTDL */
+ 
+ /*****************************************************************************/
+@@ -225,20 +226,19 @@
+ #else /* !USE_LTDL */
+ 	if (!strcmp (proto, "OpenFT"))
+ 		init = OpenFT_init;
++	else if (!strcmp (proto, "Gnutella"))
++		init = Gnutella_init;
+ #endif /* USE_LTDL */
+ 
+ 	if (!init)
+ 	{
+-		char *error;
+-
+ #ifdef USE_LTDL
+-		error = (char *)lt_dlerror ();
++		GIFT_FATAL (("couldn't load protocol %s in file %s: %s",
++		             proto, file, (char *)lt_dlerror ()));
+ #else
+-		error = "protocol not supported by this binary";
++		GIFT_FATAL (("couldn't load protocol %s: protocol not supported by this binary",
++			    proto));
+ #endif
+-
+-		GIFT_FATAL (("couldn't load protocol %s in file %s: %s",
+-		             proto, file, error));
+ 
+ 		return NULL;
+ 	}
+Index: src/upload.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/upload.c,v
+retrieving revision 1.76
+diff -u -r1.76 upload.c
+--- src/upload.c	6 Apr 2003 17:45:44 -0000	1.76
++++ src/upload.c	18 Apr 2003 00:42:56 -0000
+@@ -334,10 +334,11 @@
+ 	int      hint;
+ 
+ 	hv = hook_event ("upload_auth", TRUE,
+-					 HOOK_VAR_STR, user,
++			 HOOK_VAR_STR, user,
+ 	                 HOOK_VAR_STR, path,
+-					 HOOK_VAR_STR, mime,
+-					 HOOK_VAR_INT, (int) size,
++			 HOOK_VAR_STR, mime,
++			 HOOK_VAR_INT, (int) size,
++			 HOOK_VAR_INT, upload_length (NULL),
+ 	                 HOOK_VAR_NUL, NULL);
+ 
+ 	if (!hv)
+@@ -390,8 +391,17 @@
+ 		return auth_reason (reason, AUTH_INVALID);
+ 
+ 	/* if the hook didn't suggest an action, go through the usual suspects */
+-	if ((hv_hint = get_hook_hint (user, path, file->mime, file->size)) == -1)
++	hv_hint = get_hook_hint (user, path, file->mime, file->size);
++	switch (hv_hint)
+ 	{
++	case 1: /* always accept */
++		TRACE (("hook accepted %s",path));
++		break;
++	case -2: /* always reject - no queuing */
++		TRACE (("hook rejected %s",path));
++		return auth_reason (reason, AUTH_MAX);
++		break;
++	case -1: /* default */
+ 		/* this user has reached his limit ... force his client to queue the
+ 		 * extra files */
+ 		if (MAX_PERUSER_UPLOADS > 0 &&
+@@ -407,6 +417,7 @@
+ 			queue_hit (user);
+ 			return auth_reason (reason, AUTH_MAX);
+ 		}
++		break;
+ 	}
+ 
+ 	/* check if this entry is stale */

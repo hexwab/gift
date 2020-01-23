@@ -1,0 +1,14 @@
+[20:21:11] (hasher.c         88) DBG: HASHER: Logging subsystem started
+[20:21:11] (hasher.c         138) DBG: HASHER: Collecting files in '/mnt/doze/Program Files/Kazaa/My Shared Folder'.
+[20:21:11] (hasher.c         297) DBG: HASHER: Descending /mnt/doze/Program Files/Kazaa/My Shared Folder...
+[20:21:11] (hasher.c         141) DBG: HASHER: Collected 2 files.
+[20:21:11] (hasher.c         145) DBG: HASHER: Merging hashes from old shares...
+[20:21:11] (hasher.c         171) DBG: HASHER: Merged 0 hashes.
+[20:21:11] (hasher.c         174) DBG: HASHER: Hashing remaining files...
+[20:21:11] (hasher.c         185) DBG: HASHER: Hashing '/mnt/doze/Program Files/Kazaa/My Shared Folder/explore2fs.exe'
+[20:21:11] (hasher.c         185) DBG: HASHER: Hashing '/mnt/doze/Program Files/Kazaa/My Shared Folder/kmd260_en.exe'
+[20:21:12] (hasher.c         198) DBG: HASHER: Hashed 2 files.
+[20:21:12] (hasher.c         201) DBG: HASHER: Saving shares in share file...
+[20:21:12] (hasher.c         230) DBG: HASHER: Saved 2 shares.
+[20:21:12] (hasher.c         241) DBG: HASHER: Saving Ares links in 'links.akzaa' with source 213.228.241.143:16365
+[20:21:12] (hasher.c         271) DBG: HASHER: Saved 2 links.

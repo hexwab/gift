@@ -1,0 +1,1891 @@
+CCCC_Module@Array@@
+CCCC_Module@BOOL@@
+CCCC_Module@Chunk@@
+CCCC_Module@Config@@
+CCCC_Module@DB@@
+CCCC_Module@DBC@@
+CCCC_Module@DBCompareFn@@
+CCCC_Module@DBT@@
+CCCC_Module@DBTYPE@@
+CCCC_Module@DB_ENV@@
+CCCC_Module@Dataset@@
+CCCC_Module@DatasetForeachExFn@@
+CCCC_Module@FILE@@
+CCCC_Module@FTBrowse@@
+CCCC_Module@FTHttpReply@@
+CCCC_Module@FTHttpRequest@@
+CCCC_Module@FTNetorgForeach@@
+CCCC_Module@FTNode@@
+CCCC_Module@FTPacket@@
+CCCC_Module@FTSearch@@
+CCCC_Module@FTSearchDB@@
+CCCC_Module@FTSearchFwd@@
+CCCC_Module@FTSearchResultFn@@
+CCCC_Module@FTSession@@
+CCCC_Module@FTShare@@
+CCCC_Module@FTStream@@
+CCCC_Module@FTStreamRecv@@
+CCCC_Module@FTTransfer@@
+CCCC_Module@FileShare@@
+CCCC_Module@GIFT_PLUGIN_EXPORT@@
+CCCC_Module@HandlerFn@@
+CCCC_Module@Hash@@
+CCCC_Module@IFEvent@@
+CCCC_Module@List@@
+CCCC_Module@ListLock@@
+CCCC_Module@MD5Context@struct@
+CCCC_ModExt@MD5Context@struct@src/md5.c@64@definition@????0@LOC:6 COM:20 MVG:0@0@d@
+CCCC_Module@Protocol@@
+CCCC_Module@SearchData@@
+CCCC_Module@Share@@
+CCCC_Module@Source@@
+CCCC_Module@SourceStatus@@
+CCCC_Module@String@@
+CCCC_Module@TCPC@@
+CCCC_Module@Transfer@@
+CCCC_Module@TransferType@@
+CCCC_Module@_ft_source@struct@
+CCCC_ModExt@_ft_source@struct@src/ft_xfer.c@47@definition@?T??0@LOC:9 COM:2 MVG:0@0@d@
+CCCC_Module@@@
+CCCC_Module@cache_state@struct@
+CCCC_ModExt@cache_state@struct@src/ft_node_cache.c@34@definition@?T??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_Module@char@builtin@
+CCCC_ModExt@char@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@compare_md5@@
+CCCC_Module@compare_sdb@@
+CCCC_Module@conn_list@struct@
+CCCC_ModExt@conn_list@struct@src/ft_netorg.c@30@definition@????0@LOC:6 COM:25 MVG:0@0@d@
+CCCC_Module@cursor_stream@struct@
+CCCC_ModExt@cursor_stream@struct@src/ft_search_db.c@1988@definition@FT??0@LOC:5 COM:1 MVG:0@0@d@
+CCCC_Module@direct_md5_hash@@
+CCCC_Module@double@builtin@
+CCCC_ModExt@double@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@ds_data_t@@
+CCCC_Module@float@builtin@
+CCCC_ModExt@float@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@ft_browse_request@@
+CCCC_Module@ft_browse_response@@
+CCCC_Module@ft_child_prop@@
+CCCC_Module@ft_child_request@@
+CCCC_Module@ft_child_response@@
+CCCC_Module@ft_class_t@@
+CCCC_Module@ft_error_t@@
+CCCC_Module@ft_guid_t@@
+CCCC_Module@ft_node@struct@
+CCCC_ModExt@ft_node@struct@src/ft_session.h@34@declaration@????0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_ModExt@ft_node@struct@src/ft_share_file.h@32@declaration@????0@LOC:1 COM:20 MVG:0@0@D@
+CCCC_Module@ft_nodecap_request@@
+CCCC_Module@ft_nodecap_response@@
+CCCC_Module@ft_nodeinfo@struct@
+CCCC_ModExt@ft_nodeinfo@struct@src/ft_share_file.h@33@declaration@????0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Module@ft_nodeinfo_request@@
+CCCC_Module@ft_nodeinfo_response@@
+CCCC_Module@ft_nodeinfo_t@@
+CCCC_Module@ft_nodelist_request@@
+CCCC_Module@ft_nodelist_response@@
+CCCC_Module@ft_ping_request@@
+CCCC_Module@ft_ping_response@@
+CCCC_Module@ft_purpose_t@@
+CCCC_Module@ft_push_fwd_request@@
+CCCC_Module@ft_push_fwd_response@@
+CCCC_Module@ft_push_request@@
+CCCC_Module@ft_search_db@struct@
+CCCC_ModExt@ft_search_db@struct@src/ft_session.h@33@declaration@????0@LOC:1 COM:25 MVG:0@0@D@
+CCCC_Module@ft_search_flags_t@@
+CCCC_Module@ft_search_parms_t@@
+CCCC_Module@ft_search_request@@
+CCCC_Module@ft_search_response@@
+CCCC_Module@ft_session_request@@
+CCCC_Module@ft_session_response@@
+CCCC_Module@ft_share_add_error@@
+CCCC_Module@ft_share_add_request@@
+CCCC_Module@ft_share_remove_error@@
+CCCC_Module@ft_share_remove_request@@
+CCCC_Module@ft_share_sync_begin@@
+CCCC_Module@ft_share_sync_end@@
+CCCC_Module@ft_source@struct@
+CCCC_ModExt@ft_source@struct@src/ft_transfer.h@64@definition@????0@LOC:8 COM:12 MVG:0@0@d@
+CCCC_Module@ft_state_t@@
+CCCC_Module@ft_stats_digest_add@@
+CCCC_Module@ft_stats_digest_remove@@
+CCCC_Module@ft_stats_request@@
+CCCC_Module@ft_stats_response@@
+CCCC_Module@ft_stats_t@@
+CCCC_Module@ft_stream_dir_t@@
+CCCC_Module@ft_stream_flags_t@@
+CCCC_Module@ft_version_request@@
+CCCC_Module@ft_version_response@@
+CCCC_Module@ft_version_t@@
+CCCC_Module@handler_ent@struct@
+CCCC_ModExt@handler_ent@struct@src/ft_protocol.c@42@definition@?T??0@LOC:7 COM:2 MVG:0@0@d@
+CCCC_Module@hl@struct@
+CCCC_ModExt@hl@struct@src/ft_search_db.c@2713@definition@FT??0@LOC:5 COM:24 MVG:0@0@d@
+CCCC_ModExt@hl@struct@src/test/db_bench.c@305@definition@FT??0@LOC:4 COM:1 MVG:0@0@d@
+CCCC_ModExt@hl@struct@src/test/old/test/db_bench.c@296@definition@FT??0@LOC:4 COM:1 MVG:0@0@d@
+CCCC_Module@in_addr_t@@
+CCCC_Module@in_port_t@@
+CCCC_Module@input_id@@
+CCCC_Module@int@builtin@
+CCCC_ModExt@int@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@long@builtin@
+CCCC_ModExt@long@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@md5idx_data@struct@
+CCCC_ModExt@md5idx_data@struct@src/ft_search_db.c@136@definition@?T??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Module@md5idx_key@struct@
+CCCC_ModExt@md5idx_key@struct@src/ft_search_db.c@131@definition@?T??0@LOC:4 COM:1 MVG:0@0@d@
+CCCC_Module@off_t@@
+CCCC_Module@openft_data@struct@
+CCCC_ModExt@openft_data@struct@src/ft_openft.h@94@definition@????0@LOC:12 COM:56 MVG:0@0@d@
+CCCC_Module@sdata@struct@
+CCCC_ModExt@sdata@struct@src/ft_search_exec.c@65@declaration@F???0@LOC:1 COM:19 MVG:0@0@D@
+CCCC_Module@search_result@struct@
+CCCC_ModExt@search_result@struct@src/ft_search.c@32@definition@????0@LOC:7 COM:22 MVG:0@0@d@
+CCCC_Module@sharedata_data@struct@
+CCCC_ModExt@sharedata_data@struct@src/ft_search_db.c@163@definition@?T??0@LOC:10 COM:10 MVG:0@0@d@
+CCCC_Module@sharedata_key@struct@
+CCCC_ModExt@sharedata_key@struct@src/ft_search_db.c@157@definition@?T??0@LOC:5 COM:2 MVG:0@0@d@
+CCCC_Module@shareidx_data@struct@
+CCCC_ModExt@shareidx_data@struct@src/ft_search_db.c@188@definition@?T??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Module@shareidx_key@struct@
+CCCC_ModExt@shareidx_key@struct@src/ft_search_db.c@182@definition@?T??0@LOC:4 COM:1 MVG:0@0@d@
+CCCC_Module@short@@
+CCCC_Module@size_t@@
+CCCC_Module@sparams_t@@
+CCCC_Module@sreply_t@@
+CCCC_Module@time_t@@
+CCCC_Module@timer_id@@
+CCCC_Module@token_list@struct@
+CCCC_ModExt@token_list@struct@src/ft_search_exec.c@272@definition@FT??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_Module@tokenidx_data@struct@
+CCCC_ModExt@tokenidx_data@struct@src/ft_search_db.c@149@definition@?T??0@LOC:5 COM:1 MVG:0@0@d@
+CCCC_Module@tokenidx_key@struct@
+CCCC_ModExt@tokenidx_key@struct@src/ft_search_db.c@143@definition@?T??0@LOC:4 COM:3 MVG:0@0@d@
+CCCC_Module@u_int16_t@@
+CCCC_Module@u_int32_t@@
+CCCC_Module@uint16_t@@
+CCCC_Module@uint32_t@@
+CCCC_Module@uint8_t@@
+CCCC_Module@unsigned@@
+CCCC_Module@upload_auth_t@@
+CCCC_Module@void@builtin@
+CCCC_ModExt@void@builtin@<nofile>@0@builtin definition@d?????@@0@d@
+CCCC_Module@z_stream@@
+CCCC_Member@anonymous@DB_COMPAREFN@@(compare_md5)@
+CCCC_MemExt@anonymous@DB_COMPAREFN@@(compare_md5)@src/ft_search_db.c@609@definition@FT??0@LOC:13 COM:9 MVG:3@0@d@
+CCCC_Member@anonymous@DB_COMPAREFN@@(compare_sdb)@
+CCCC_MemExt@anonymous@DB_COMPAREFN@@(compare_sdb)@src/ft_search_db.c@586@definition@FT??0@LOC:10 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@DB_HASHFN@@(direct_md5_hash)@
+CCCC_MemExt@anonymous@DB_HASHFN@@(direct_md5_hash)@src/ft_search_db.c@410@definition@FT??0@LOC:12 COM:9 MVG:3@0@d@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_browse_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_browse_request)@src/proto/ft_query.c@1061@definition@FT??0@LOC:17 COM:5 MVG:4@0@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_browse_request)@src/proto/ft_query.h@24@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_browse_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_browse_response)@src/proto/ft_query.c@1090@definition@FT??0@LOC:20 COM:0 MVG:8@0@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_browse_response)@src/proto/ft_query.h@25@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_child_prop)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_prop)@src/proto/ft_sharing.c@206@definition@FT???@LOC:8 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_prop)@src/proto/ft_sharing.h@24@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_child_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_request)@src/proto/ft_sharing.c@85@definition@FT???@LOC:29 COM:11 MVG:8@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_request)@src/proto/ft_sharing.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_child_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_response)@src/proto/ft_sharing.c@137@definition@FT???@LOC:32 COM:26 MVG:5@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_child_response)@src/proto/ft_sharing.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodecap_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodecap_request)@src/proto/ft_handshake.c@520@definition@FT???@LOC:10 COM:4 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodecap_request)@src/proto/ft_handshake.h@28@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodecap_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodecap_response)@src/proto/ft_handshake.c@537@definition@FT???@LOC:15 COM:0 MVG:4@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodecap_response)@src/proto/ft_handshake.h@29@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodeinfo_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodeinfo_request)@src/proto/ft_handshake.c@137@definition@FT???@LOC:23 COM:7 MVG:3@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodeinfo_request)@src/proto/ft_handshake.h@24@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodeinfo_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodeinfo_response)@src/proto/ft_handshake.c@204@definition@FT???@LOC:52 COM:22 MVG:14@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodeinfo_response)@src/proto/ft_handshake.h@25@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodelist_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodelist_request)@src/proto/ft_handshake.c@387@definition@FT???@LOC:20 COM:12 MVG:3@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodelist_request)@src/proto/ft_handshake.h@26@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_nodelist_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodelist_response)@src/proto/ft_handshake.c@428@definition@FT???@LOC:47 COM:23 MVG:10@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_nodelist_response)@src/proto/ft_handshake.h@27@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_ping_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_ping_request)@src/proto/ft_handshake.c@559@definition@FT???@LOC:5 COM:1 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_ping_request)@src/proto/ft_handshake.h@30@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_ping_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_ping_response)@src/proto/ft_handshake.c@565@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_ping_response)@src/proto/ft_handshake.h@31@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_push_fwd_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_fwd_request)@src/proto/ft_push.c@57@definition@F????@LOC:37 COM:26 MVG:10@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_fwd_request)@src/proto/ft_push.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_push_fwd_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_fwd_response)@src/proto/ft_push.c@212@definition@FT???@LOC:13 COM:2 MVG:1@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_fwd_response)@src/proto/ft_push.h@24@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_push_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_request)@src/proto/ft_push.c@30@definition@F????@LOC:17 COM:20 MVG:4@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_push_request)@src/proto/ft_push.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_search_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_search_request)@src/proto/ft_query.c@757@definition@FT??0@LOC:37 COM:13 MVG:10@0@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_search_request)@src/proto/ft_query.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_search_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_search_response)@src/proto/ft_query.c@965@definition@FT??0@LOC:44 COM:5 MVG:11@0@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_search_response)@src/proto/ft_query.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_session_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_session_request)@src/proto/ft_handshake.c@576@definition@FT???@LOC:6 COM:5 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_session_request)@src/proto/ft_handshake.h@32@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_session_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_session_response)@src/proto/ft_handshake.c@584@definition@FT???@LOC:9 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_session_response)@src/proto/ft_handshake.h@33@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_add_error)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_add_error)@src/proto/ft_sharing.c@338@definition@FT???@LOC:16 COM:2 MVG:4@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_add_error)@src/proto/ft_sharing.h@28@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_add_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_add_request)@src/proto/ft_sharing.c@268@definition@FT???@LOC:47 COM:11 MVG:17@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_add_request)@src/proto/ft_sharing.h@27@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_remove_error)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_remove_error)@src/proto/ft_sharing.c@392@definition@FT???@LOC:3 COM:1 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_remove_error)@src/proto/ft_sharing.h@30@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_remove_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_remove_request)@src/proto/ft_sharing.c@363@definition@FT???@LOC:17 COM:9 MVG:7@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_remove_request)@src/proto/ft_sharing.h@29@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_sync_begin)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_sync_begin)@src/proto/ft_sharing.c@219@definition@FT???@LOC:5 COM:2 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_sync_begin)@src/proto/ft_sharing.h@25@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_share_sync_end)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_sync_end)@src/proto/ft_sharing.c@244@definition@FT???@LOC:12 COM:6 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_share_sync_end)@src/proto/ft_sharing.h@26@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_stats_digest_add)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_digest_add)@src/proto/ft_stats_digest.c@38@definition@FT???@LOC:17 COM:4 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_digest_add)@src/proto/ft_stats_digest.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_stats_digest_remove)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_digest_remove)@src/proto/ft_stats_digest.c@62@definition@FT???@LOC:8 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_digest_remove)@src/proto/ft_stats_digest.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_stats_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_request)@src/proto/ft_stats_digest.c@76@definition@FT???@LOC:15 COM:3 MVG:4@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_request)@src/proto/ft_stats_digest.h@24@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_stats_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_response)@src/proto/ft_stats_digest.c@98@definition@FT???@LOC:15 COM:4 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_stats_response)@src/proto/ft_stats_digest.h@25@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_version_request)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_version_request)@src/proto/ft_handshake.c@35@definition@FT???@LOC:5 COM:1 MVG:0@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_version_request)@src/proto/ft_handshake.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@FT_HANDLER@@(ft_version_response)@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_version_response)@src/proto/ft_handshake.c@89@definition@FT???@LOC:32 COM:9 MVG:4@?@d@
+CCCC_MemExt@anonymous@FT_HANDLER@@(ft_version_response)@src/proto/ft_handshake.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@MD5Final@@(...)@
+CCCC_MemExt@anonymous@MD5Final@@(...)@src/md5.c@74@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@MD5Final@@(...)@src/md5.c@189@definition@FT??0@LOC:27 COM:14 MVG:1@0@d@
+CCCC_Member@anonymous@MD5Init@@(MD5Context *)@
+CCCC_MemExt@anonymous@MD5Init@@(MD5Context *)@src/md5.c@71@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@MD5Init@@(MD5Context *)@src/md5.c@117@definition@FT??0@LOC:9 COM:6 MVG:0@0@d@
+CCCC_Member@anonymous@MD5Transform@@(...)@
+CCCC_MemExt@anonymous@MD5Transform@@(...)@src/md5.c@75@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@MD5Transform@@(...)@src/md5.c@252@definition@FT??0@LOC:76 COM:8 MVG:0@0@d@
+CCCC_Member@anonymous@MD5Update@@(MD5Context *,char const*,unsigned)@
+CCCC_MemExt@anonymous@MD5Update@@(MD5Context *,char const*,unsigned)@src/md5.c@72@declaration@FT??0@LOC:2 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@MD5Update@@(MD5Context *,char const*,unsigned)@src/md5.c@132@definition@FT??0@LOC:34 COM:12 MVG:5@0@d@
+CCCC_Member@anonymous@OpenFT_init@@(Protocol *)@
+CCCC_MemExt@anonymous@OpenFT_init@@(Protocol *)@src/ft_openft.c@381@definition@FT??0@LOC:15 COM:29 MVG:3@0@d@
+CCCC_Member@anonymous@accept_test_port@@(TCPC *,in_port_t,TCPC **)@
+CCCC_MemExt@anonymous@accept_test_port@@(TCPC *,in_port_t,TCPC **)@src/ft_utils.c@80@definition@FT???@LOC:17 COM:3 MVG:5@?@d@
+CCCC_Member@anonymous@accept_test_result@@(TCPC *,TCPC *,int)@
+CCCC_MemExt@anonymous@accept_test_result@@(TCPC *,TCPC *,int)@src/ft_utils.c@28@definition@FT???@LOC:22 COM:21 MVG:10@?@d@
+CCCC_Member@anonymous@accept_test_verify@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@accept_test_verify@@(int,input_id,TCPC *)@src/ft_utils.c@63@definition@FT???@LOC:12 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@access_log@@(FTTransfer *)@
+CCCC_MemExt@anonymous@access_log@@(FTTransfer *)@src/ft_xfer.c@224@definition@FT??0@LOC:35 COM:5 MVG:9@0@d@
+CCCC_Member@anonymous@access_nodes_share@@(FTHttpRequest *)@
+CCCC_MemExt@anonymous@access_nodes_share@@(FTHttpRequest *)@src/ft_http_server.c@189@definition@FT???@LOC:54 COM:13 MVG:16@?@d@
+CCCC_Member@anonymous@acquire_new_stuff@@(void)@
+CCCC_MemExt@anonymous@acquire_new_stuff@@(void)@src/ft_conn.c@475@definition@FT???@LOC:57 COM:25 MVG:17@?@d@
+CCCC_Member@anonymous@active_search@@(sparams_t *)@
+CCCC_MemExt@anonymous@active_search@@(sparams_t *)@src/proto/ft_query.c@147@definition@FT??0@LOC:25 COM:13 MVG:7@0@d@
+CCCC_Member@anonymous@add_class@@(String *,int *,char *)@
+CCCC_MemExt@anonymous@add_class@@(String *,int *,char *)@src/ft_node.c@301@definition@FT???@LOC:8 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@add_conn_list@@(ft_state_t,FTNode *)@
+CCCC_MemExt@anonymous@add_conn_list@@(ft_state_t,FTNode *)@src/ft_netorg.c@153@definition@FT??0@LOC:11 COM:5 MVG:4@0@d@
+CCCC_Member@anonymous@add_download@@(FTTransfer *)@
+CCCC_MemExt@anonymous@add_download@@(FTTransfer *)@src/ft_transfer.c@176@definition@FT??0@LOC:4 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@add_keylist@@(ds_data_t *,ds_data_t *,String *)@
+CCCC_MemExt@anonymous@add_keylist@@(ds_data_t *,ds_data_t *,String *)@src/ft_http.c@284@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@add_meta@@(ds_data_t *,ds_data_t *,FTPacket *)@
+CCCC_MemExt@anonymous@add_meta@@(ds_data_t *,ds_data_t *,FTPacket *)@src/ft_share.c@36@definition@FT???@LOC:5 COM:1 MVG:0@?@d@
+CCCC_Member@anonymous@add_numbers@@(token_list *,const char *)@
+CCCC_MemExt@anonymous@add_numbers@@(token_list *,const char *)@src/ft_search_exec.c@330@definition@FT??0@LOC:12 COM:2 MVG:1@0@d@
+CCCC_Member@anonymous@add_reply_503_hidden@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@
+CCCC_MemExt@anonymous@add_reply_503_hidden@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@src/ft_http_server.c@517@definition@FT???@LOC:5 COM:2 MVG:0@?@d@
+CCCC_Member@anonymous@add_reply_503_queued@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@
+CCCC_MemExt@anonymous@add_reply_503_queued@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@src/ft_http_server.c@489@definition@FT???@LOC:18 COM:5 MVG:2@?@d@
+CCCC_Member@anonymous@add_reply_success@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@
+CCCC_MemExt@anonymous@add_reply_success@@(FTHttpReply *,FTHttpRequest *,Share *,upload_auth_t *)@src/ft_http_server.c@427@definition@FT???@LOC:44 COM:6 MVG:4@?@d@
+CCCC_Member@anonymous@add_result@@(SearchData *,FileShare *)@
+CCCC_MemExt@anonymous@add_result@@(SearchData *,FileShare *)@src/ft_search_exec.c@571@definition@FT??0@LOC:19 COM:2 MVG:6@0@d@
+CCCC_Member@anonymous@add_search_result@@(Array **,FTSearchDB *,char *)@
+CCCC_MemExt@anonymous@add_search_result@@(Array **,FTSearchDB *,char *)@src/ft_search_db.c@1894@definition@FT??0@LOC:13 COM:20 MVG:3@0@d@
+CCCC_Member@anonymous@add_sorted@@(FTNode *,FTNode *)@
+CCCC_MemExt@anonymous@add_sorted@@(FTNode *,FTNode *)@src/ft_netorg.c@135@definition@FT??0@LOC:11 COM:3 MVG:7@0@d@
+CCCC_Member@anonymous@add_words@@(token_list *,const char *)@
+CCCC_MemExt@anonymous@add_words@@(token_list *,const char *)@src/ft_search_exec.c@348@definition@FT??0@LOC:12 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@alloc_udata@@(Protocol *)@
+CCCC_MemExt@anonymous@alloc_udata@@(Protocol *)@src/ft_openft.c@43@definition@FT??0@LOC:7 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@allow_dups@@(DB *,DBCompareFn)@
+CCCC_MemExt@anonymous@allow_dups@@(DB *,DBCompareFn)@src/ft_search_db.c@367@definition@FT??0@LOC:14 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@array_ho@@(char *,size_t,int)@
+CCCC_MemExt@anonymous@array_ho@@(char *,size_t,int)@src/ft_packet.c@496@definition@FT???@LOC:14 COM:3 MVG:5@?@d@
+CCCC_Member@anonymous@array_range@@(FTPacket *,size_t,char **,char **)@
+CCCC_MemExt@anonymous@array_range@@(FTPacket *,size_t,char **,char **)@src/ft_packet.c@480@definition@FT???@LOC:11 COM:1 MVG:6@?@d@
+CCCC_Member@anonymous@array_sentinel@@(char *,size_t)@
+CCCC_MemExt@anonymous@array_sentinel@@(char *,size_t)@src/ft_packet.c@545@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@auth_child@@(FTNode *)@
+CCCC_MemExt@anonymous@auth_child@@(FTNode *)@src/proto/ft_sharing.c@41@definition@FT???@LOC:23 COM:14 MVG:9@?@d@
+CCCC_Member@anonymous@auth_get_request@@(TCPC *,FTHttpRequest *,int *,upload_auth_t *)@
+CCCC_MemExt@anonymous@auth_get_request@@(TCPC *,FTHttpRequest *,int *,upload_auth_t *)@src/ft_http_server.c@335@definition@FT???@LOC:38 COM:13 MVG:9@?@d@
+CCCC_Member@anonymous@auth_http_code@@(int)@
+CCCC_MemExt@anonymous@auth_http_code@@(int)@src/ft_http_server.c@273@definition@FT???@LOC:15 COM:2 MVG:6@?@d@
+CCCC_Member@anonymous@auth_search_handle@@(FTNode *)@
+CCCC_MemExt@anonymous@auth_search_handle@@(FTNode *)@src/proto/ft_query.c@82@definition@FT??0@LOC:10 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@auth_search_request@@(FTNode *)@
+CCCC_MemExt@anonymous@auth_search_request@@(FTNode *)@src/proto/ft_query.c@96@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@auth_search_response@@(FTNode *)@
+CCCC_MemExt@anonymous@auth_search_response@@(FTNode *)@src/proto/ft_query.c@104@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@bin_to_hex@@(char *,char *,int)@
+CCCC_MemExt@anonymous@bin_to_hex@@(char *,char *,int)@src/md5.c@564@definition@FT??0@LOC:18 COM:1 MVG:5@0@d@
+CCCC_Member@anonymous@bm_close_db@@(DB *)@
+CCCC_MemExt@anonymous@bm_close_db@@(DB *)@src/ft_search_db.c@2730@definition@FT??0@LOC:6 COM:0 MVG:2@0@d@
+CCCC_MemExt@anonymous@bm_close_db@@(DB *)@src/test/db_bench.c@23@definition@FT???@LOC:6 COM:3 MVG:2@?@d@
+CCCC_MemExt@anonymous@bm_close_db@@(DB *)@src/test/old/test/db_bench.c@14@definition@FT???@LOC:6 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@bm_open_db@@(char *,char *)@
+CCCC_MemExt@anonymous@bm_open_db@@(char *,char *)@src/test/db_bench.c@31@definition@FT???@LOC:18 COM:0 MVG:5@?@d@
+CCCC_MemExt@anonymous@bm_open_db@@(char *,char *)@src/test/old/test/db_bench.c@22@definition@FT???@LOC:18 COM:0 MVG:5@?@d@
+CCCC_Member@anonymous@bm_open_db@@(const char *,const char *)@
+CCCC_MemExt@anonymous@bm_open_db@@(const char *,const char *)@src/ft_search_db.c@2738@definition@FT??0@LOC:18 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@browse_begin@@(FTBrowse *)@
+CCCC_MemExt@anonymous@browse_begin@@(FTBrowse *)@src/ft_search_obj.c@180@definition@FT???@LOC:8 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@browse_by_event@@(ds_data_t *,ds_data_t *,IFEvent *)@
+CCCC_MemExt@anonymous@browse_by_event@@(ds_data_t *,ds_data_t *,IFEvent *)@src/ft_search_obj.c@245@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@browse_free@@(FTBrowse *)@
+CCCC_MemExt@anonymous@browse_free@@(FTBrowse *)@src/ft_search_obj.c@207@definition@FT???@LOC:5 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@browse_timeout@@(FTBrowse *)@
+CCCC_MemExt@anonymous@browse_timeout@@(FTBrowse *)@src/ft_search_obj.c@174@definition@FT???@LOC:5 COM:1 MVG:1@?@d@
+CCCC_Member@anonymous@build_openft_url@@(search_result *)@
+CCCC_MemExt@anonymous@build_openft_url@@(search_result *)@src/ft_search.c@50@definition@FT??0@LOC:30 COM:22 MVG:4@0@d@
+CCCC_Member@anonymous@byteReverse@@(char *,unsigned)@
+CCCC_MemExt@anonymous@byteReverse@@(char *,unsigned)@src/md5.c@92@declaration@FT??0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_MemExt@anonymous@byteReverse@@(char *,unsigned)@src/md5.c@98@definition@FT??0@LOC:12 COM:3 MVG:1@0@d@
+CCCC_Member@anonymous@calc_shortest@@(cursor_stream *,void **)@
+CCCC_MemExt@anonymous@calc_shortest@@(cursor_stream *,void **)@src/ft_search_db.c@2174@definition@FT??0@LOC:16 COM:9 MVG:4@0@d@
+CCCC_Member@anonymous@check_demote@@(void)@
+CCCC_MemExt@anonymous@check_demote@@(void)@src/ft_conn.c@401@definition@FT???@LOC:33 COM:27 MVG:10@?@d@
+CCCC_Member@anonymous@check_local_allow@@(FTNode *)@
+CCCC_MemExt@anonymous@check_local_allow@@(FTNode *)@src/ft_conn.c@815@definition@FT???@LOC:9 COM:3 MVG:4@?@d@
+CCCC_Member@anonymous@check_overrun@@(FTPacket *,size_t)@
+CCCC_MemExt@anonymous@check_overrun@@(FTPacket *,size_t)@src/ft_packet.c@401@definition@FT???@LOC:10 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@check_promote@@(void)@
+CCCC_MemExt@anonymous@check_promote@@(void)@src/ft_conn.c@356@definition@FT???@LOC:20 COM:3 MVG:8@?@d@
+CCCC_Member@anonymous@check_tokens@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@check_tokens@@(FTSearchDB *)@src/ft_search_db.c@1405@definition@FT??0@LOC:39 COM:0 MVG:8@0@d@
+CCCC_Member@anonymous@clamp_openft_params@@(Protocol *,openft_data *)@
+CCCC_MemExt@anonymous@clamp_openft_params@@(Protocol *,openft_data *)@src/ft_openft.c@137@definition@FT??0@LOC:32 COM:12 MVG:8@0@d@
+CCCC_Member@anonymous@clamp_params@@(sparams_t *)@
+CCCC_MemExt@anonymous@clamp_params@@(sparams_t *)@src/proto/ft_query.c@517@definition@FT??0@LOC:21 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@clean_db_path@@(const char *)@
+CCCC_MemExt@anonymous@clean_db_path@@(const char *)@src/ft_search_db.c@650@definition@FT??0@LOC:21 COM:7 MVG:3@0@d@
+CCCC_Member@anonymous@cleanup_conn@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@cleanup_conn@@(FTNode *,void *)@src/ft_openft.c@277@definition@FT??0@LOC:6 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@cleanup_cursors@@(cursor_stream *,void *)@
+CCCC_MemExt@anonymous@cleanup_cursors@@(cursor_stream *,void *)@src/ft_search_db.c@2001@definition@FT??0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@cleanup_matches@@(DBT *,void *)@
+CCCC_MemExt@anonymous@cleanup_matches@@(DBT *,void *)@src/ft_search_db.c@1994@definition@FT??0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@clear_sdata@@(SearchData *)@
+CCCC_MemExt@anonymous@clear_sdata@@(SearchData *)@src/ft_search_exec.c@537@definition@FT??0@LOC:21 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@clear_search@@(ds_data_t *,ds_data_t *,int *)@
+CCCC_MemExt@anonymous@clear_search@@(ds_data_t *,ds_data_t *,int *)@src/proto/ft_query.c@114@definition@FT??0@LOC:10 COM:3 MVG:2@0@d@
+CCCC_Member@anonymous@clear_searches@@(void *)@
+CCCC_MemExt@anonymous@clear_searches@@(void *)@src/proto/ft_query.c@129@definition@FT??0@LOC:7 COM:3 MVG:1@0@d@
+CCCC_Member@anonymous@clear_stream@@(ds_data_t *,ds_data_t *,int *)@
+CCCC_MemExt@anonymous@clear_stream@@(ds_data_t *,ds_data_t *,int *)@src/ft_stream.c@645@definition@FT???@LOC:6 COM:1 MVG:1@?@d@
+CCCC_Member@anonymous@client_send_get_request@@(FTTransfer *)@
+CCCC_MemExt@anonymous@client_send_get_request@@(FTTransfer *)@src/ft_http_client.c@136@definition@FT???@LOC:24 COM:7 MVG:4@?@d@
+CCCC_Member@anonymous@close_db@@(DB *,char *,char *,BOOL)@
+CCCC_MemExt@anonymous@close_db@@(DB *,char *,char *,BOOL)@src/ft_search_db.c@335@definition@FT??0@LOC:20 COM:4 MVG:7@0@d@
+CCCC_Member@anonymous@cmp_filename@@(SearchData *,FileShare *)@
+CCCC_MemExt@anonymous@cmp_filename@@(SearchData *,FileShare *)@src/ft_search_exec.c@121@definition@FT??0@LOC:39 COM:11 MVG:18@0@d@
+CCCC_Member@anonymous@cmp_host@@(SearchData *,FileShare *)@
+CCCC_MemExt@anonymous@cmp_host@@(SearchData *,FileShare *)@src/ft_search_exec.c@183@definition@FT??0@LOC:6 COM:11 MVG:3@0@d@
+CCCC_Member@anonymous@cmp_md5@@(SearchData *,FileShare *)@
+CCCC_MemExt@anonymous@cmp_md5@@(SearchData *,FileShare *)@src/ft_search_exec.c@173@definition@FT??0@LOC:7 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@cmp_sdata@@(SearchData *,FileShare *)@
+CCCC_MemExt@anonymous@cmp_sdata@@(SearchData *,FileShare *)@src/ft_search_exec.c@561@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@cmp_sources@@(Source *,ft_source *,Source *,ft_source *)@
+CCCC_MemExt@anonymous@cmp_sources@@(Source *,ft_source *,Source *,ft_source *)@src/ft_transfer.c@733@definition@FT??0@LOC:16 COM:2 MVG:11@0@d@
+CCCC_Member@anonymous@cmp_token@@(const void *,const void *)@
+CCCC_MemExt@anonymous@cmp_token@@(const void *,const void *)@src/test/db_bench.c@175@definition@FT???@LOC:10 COM:0 MVG:5@?@d@
+CCCC_MemExt@anonymous@cmp_token@@(const void *,const void *)@src/test/old/test/db_bench.c@166@definition@FT???@LOC:10 COM:0 MVG:5@?@d@
+CCCC_Member@anonymous@conn_list_iter@@(conn_list *,ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@conn_list_iter@@(conn_list *,ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.c@299@definition@FT??0@LOC:43 COM:35 MVG:22@0@d@
+CCCC_Member@anonymous@connect_complete@@(TCPC *,int,input_id,int)@
+CCCC_MemExt@anonymous@connect_complete@@(TCPC *,int,input_id,int)@src/ft_session.c@533@definition@FT???@LOC:26 COM:8 MVG:6@?@d@
+CCCC_Member@anonymous@construct_reply@@(FTHttpRequest *,int,int,Share *,upload_auth_t *)@
+CCCC_MemExt@anonymous@construct_reply@@(FTHttpRequest *,int,int,Share *,upload_auth_t *)@src/ft_http_server.c@525@definition@FT???@LOC:17 COM:1 MVG:8@?@d@
+CCCC_Member@anonymous@consume_packets@@(FTStream *,FTStreamRecv,void *)@
+CCCC_MemExt@anonymous@consume_packets@@(FTStream *,FTStreamRecv,void *)@src/ft_stream.c@464@definition@FT???@LOC:30 COM:9 MVG:6@?@d@
+CCCC_Member@anonymous@create_nodes_share@@(Share *)@
+CCCC_MemExt@anonymous@create_nodes_share@@(Share *)@src/ft_http_server.c@163@definition@FT???@LOC:17 COM:1 MVG:6@?@d@
+CCCC_Member@anonymous@create_result@@(TCPC *,FTPacket *,int,Share *,ft_nodeinfo_t *,int *)@
+CCCC_MemExt@anonymous@create_result@@(TCPC *,FTPacket *,int,Share *,ft_nodeinfo_t *,int *)@src/proto/ft_query.c@548@definition@FT??0@LOC:73 COM:9 MVG:16@0@d@
+CCCC_Member@anonymous@create_session@@(FTNode *)@
+CCCC_MemExt@anonymous@create_session@@(FTNode *)@src/ft_session.c@177@definition@FT???@LOC:14 COM:2 MVG:6@?@d@
+CCCC_MemExt@anonymous@create_session@@(FTNode *)@src/test/db_bench.c@80@definition@FT???@LOC:14 COM:1 MVG:6@?@d@
+CCCC_MemExt@anonymous@create_session@@(FTNode *)@src/test/old/test/db_bench.c@71@definition@FT???@LOC:14 COM:1 MVG:6@?@d@
+CCCC_Member@anonymous@cursor_md5idx_md5@@(DB *,char *)@
+CCCC_MemExt@anonymous@cursor_md5idx_md5@@(DB *,char *)@src/ft_search_db.c@1849@definition@FT??0@LOC:25 COM:8 MVG:5@0@d@
+CCCC_Member@anonymous@db_abort@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_abort@@(FTSearchDB *)@src/ft_search_db.c@232@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_abort@@(FTSearchDB *)@src/ft_search_db.c@1743@definition@FT??0@LOC:8 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@db_close@@(FTSearchDB *,BOOL)@
+CCCC_MemExt@anonymous@db_close@@(FTSearchDB *,BOOL)@src/ft_search_db.c@230@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_close@@(FTSearchDB *,BOOL)@src/ft_search_db.c@1757@definition@FT??0@LOC:15 COM:2 MVG:5@0@d@
+CCCC_Member@anonymous@db_destroy@@(const char *)@
+CCCC_MemExt@anonymous@db_destroy@@(const char *)@src/ft_search_db.c@758@definition@FT??0@LOC:7 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@db_init@@(const char *,u_int32_t)@
+CCCC_MemExt@anonymous@db_init@@(const char *,u_int32_t)@src/ft_search_db.c@687@definition@FT??0@LOC:46 COM:13 MVG:13@0@d@
+CCCC_Member@anonymous@db_insert@@(FTSearchDB *,Share *)@
+CCCC_MemExt@anonymous@db_insert@@(FTSearchDB *,Share *)@src/ft_search_db.c@1080@definition@FT??0@LOC:30 COM:16 MVG:12@0@d@
+CCCC_Member@anonymous@db_insert_md5idx@@(FTSearchDB *,Hash *,uint32_t *,Share *)@
+CCCC_MemExt@anonymous@db_insert_md5idx@@(FTSearchDB *,Hash *,uint32_t *,Share *)@src/ft_search_db.c@992@definition@FT??0@LOC:27 COM:1 MVG:5@0@d@
+CCCC_Member@anonymous@db_insert_sharedata@@(FTSearchDB *,Hash *,uint32_t *,Share *)@
+CCCC_MemExt@anonymous@db_insert_sharedata@@(FTSearchDB *,Hash *,uint32_t *,Share *)@src/ft_search_db.c@945@definition@FT??0@LOC:31 COM:7 MVG:7@0@d@
+CCCC_Member@anonymous@db_insert_shareidx@@(FTSearchDB *,Hash *,uint32_t *)@
+CCCC_MemExt@anonymous@db_insert_shareidx@@(FTSearchDB *,Hash *,uint32_t *)@src/ft_search_db.c@905@definition@FT??0@LOC:27 COM:2 MVG:5@0@d@
+CCCC_Member@anonymous@db_insert_tokenidx@@(FTSearchDB *,Hash *,uint32_t *,Share *)@
+CCCC_MemExt@anonymous@db_insert_tokenidx@@(FTSearchDB *,Hash *,uint32_t *,Share *)@src/ft_search_db.c@1028@definition@FT??0@LOC:35 COM:7 MVG:9@0@d@
+CCCC_Member@anonymous@db_lookup_md5@@(FTSearchDB *,char *)@
+CCCC_MemExt@anonymous@db_lookup_md5@@(FTSearchDB *,char *)@src/ft_search_db.c@229@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_lookup_md5@@(FTSearchDB *,char *)@src/ft_search_db.c@1779@definition@FT??0@LOC:45 COM:9 MVG:12@0@d@
+CCCC_Member@anonymous@db_master@@(DB **,DBCompareFn,char *,DBTYPE)@
+CCCC_MemExt@anonymous@db_master@@(DB **,DBCompareFn,char *,DBTYPE)@src/ft_search_db.c@564@definition@FT??0@LOC:15 COM:1 MVG:7@0@d@
+CCCC_Member@anonymous@db_md5idx@@(void)@
+CCCC_MemExt@anonymous@db_md5idx@@(void)@src/ft_search_db.c@600@definition@FT??0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@db_remove@@(FTSearchDB *,char *,off_t *)@
+CCCC_MemExt@anonymous@db_remove@@(FTSearchDB *,char *,off_t *)@src/ft_search_db.c@1291@definition@FT??0@LOC:69 COM:31 MVG:17@0@d@
+CCCC_Member@anonymous@db_remove_host_finish@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_remove_host_finish@@(FTSearchDB *)@src/ft_search_db.c@1480@definition@FT??0@LOC:17 COM:3 MVG:2@0@d@
+CCCC_Member@anonymous@db_remove_host_init@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_remove_host_init@@(FTSearchDB *)@src/ft_search_db.c@1460@definition@FT??0@LOC:15 COM:1 MVG:6@0@d@
+CCCC_Member@anonymous@db_remove_host_next@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_remove_host_next@@(FTSearchDB *)@src/ft_search_db.c@1509@definition@FT??0@LOC:41 COM:30 MVG:5@0@d@
+CCCC_Member@anonymous@db_remove_host_next_scheduled@@(void)@
+CCCC_MemExt@anonymous@db_remove_host_next_scheduled@@(void)@src/ft_search_db.c@1659@definition@FT??0@LOC:19 COM:7 MVG:3@0@d@
+CCCC_Member@anonymous@db_remove_host_schedule@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_remove_host_schedule@@(FTSearchDB *)@src/ft_search_db.c@1596@definition@FT??0@LOC:23 COM:31 MVG:4@0@d@
+CCCC_Member@anonymous@db_remove_host_timer@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_remove_host_timer@@(FTSearchDB *)@src/ft_search_db.c@226@declaration@FT??0@LOC:1 COM:2 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_remove_host_timer@@(FTSearchDB *)@src/ft_search_db.c@1691@definition@FT??0@LOC:11 COM:10 MVG:3@0@d@
+CCCC_Member@anonymous@db_remove_md5idx@@(FTSearchDB *,char *)@
+CCCC_MemExt@anonymous@db_remove_md5idx@@(FTSearchDB *,char *)@src/ft_search_db.c@1249@definition@FT??0@LOC:26 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@db_remove_sharedata@@(FTSearchDB *,char *)@
+CCCC_MemExt@anonymous@db_remove_sharedata@@(FTSearchDB *,char *)@src/ft_search_db.c@227@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_remove_sharedata@@(FTSearchDB *,char *)@src/ft_search_db.c@1195@definition@FT??0@LOC:20 COM:2 MVG:5@0@d@
+CCCC_Member@anonymous@db_remove_shareidx@@(FTSearchDB *,char *)@
+CCCC_MemExt@anonymous@db_remove_shareidx@@(FTSearchDB *,char *)@src/ft_search_db.c@228@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_remove_shareidx@@(FTSearchDB *,char *)@src/ft_search_db.c@1223@definition@FT??0@LOC:20 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@db_remove_tokenidx@@(FTSearchDB *,uint32_t *,char *)@
+CCCC_MemExt@anonymous@db_remove_tokenidx@@(FTSearchDB *,uint32_t *,char *)@src/ft_search_db.c@1164@definition@FT??0@LOC:24 COM:2 MVG:9@0@d@
+CCCC_Member@anonymous@db_remove_tokenidx_token@@(DBC *,FTSearchDB *,char *,uint32_t)@
+CCCC_MemExt@anonymous@db_remove_tokenidx_token@@(DBC *,FTSearchDB *,char *,uint32_t)@src/ft_search_db.c@1139@definition@FT??0@LOC:19 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@db_search_md5@@(Array **,char *,int)@
+CCCC_MemExt@anonymous@db_search_md5@@(Array **,char *,int)@src/ft_search_db.c@1925@definition@FT??0@LOC:33 COM:18 MVG:11@0@d@
+CCCC_Member@anonymous@db_search_tokens@@(Array **,char *,uint32_t *,uint32_t *,int)@
+CCCC_MemExt@anonymous@db_search_tokens@@(Array **,char *,uint32_t *,uint32_t *,int)@src/ft_search_db.c@2399@definition@FT??0@LOC:18 COM:31 MVG:4@0@d@
+CCCC_Member@anonymous@db_sharedata@@(void)@
+CCCC_MemExt@anonymous@db_sharedata@@(void)@src/ft_search_db.c@452@definition@FT??0@LOC:6 COM:0 MVG:2@0@d@
+CCCC_Member@anonymous@db_shareidx@@(FTSearchDB *,BOOL)@
+CCCC_MemExt@anonymous@db_shareidx@@(FTSearchDB *,BOOL)@src/ft_search_db.c@548@definition@FT??0@LOC:12 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@db_shareidx_path@@(FTSearchDB *,char **)@
+CCCC_MemExt@anonymous@db_shareidx_path@@(FTSearchDB *,char **)@src/ft_search_db.c@460@definition@FT??0@LOC:18 COM:15 MVG:5@0@d@
+CCCC_Member@anonymous@db_sync@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@db_sync@@(FTSearchDB *)@src/ft_search_db.c@231@declaration@FT??0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_MemExt@anonymous@db_sync@@(FTSearchDB *)@src/ft_search_db.c@1718@definition@FT??0@LOC:16 COM:4 MVG:6@0@d@
+CCCC_Member@anonymous@db_tokenidx@@(void)@
+CCCC_MemExt@anonymous@db_tokenidx@@(void)@src/ft_search_db.c@636@definition@FT??0@LOC:6 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@dbg_wrapper@@(...)@
+CCCC_MemExt@anonymous@dbg_wrapper@@(...)@src/test/db_bench.c@103@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@dbg_wrapper@@(...)@src/test/old/test/db_bench.c@94@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@dec_value_from_hex@@(char)@
+CCCC_MemExt@anonymous@dec_value_from_hex@@(char)@src/ft_http.c@125@definition@FT???@LOC:9 COM:1 MVG:6@?@d@
+CCCC_Member@anonymous@decompose_source@@(ft_source *,char *)@
+CCCC_MemExt@anonymous@decompose_source@@(ft_source *,char *)@src/ft_transfer.c@99@definition@FT??0@LOC:27 COM:24 MVG:7@0@d@
+CCCC_Member@anonymous@delete_key_data@@(DBC *,DBT *,DBT *)@
+CCCC_MemExt@anonymous@delete_key_data@@(DBC *,DBT *,DBT *)@src/ft_search_db.c@386@definition@FT??0@LOC:15 COM:2 MVG:5@0@d@
+CCCC_Member@anonymous@deliver_result@@(IFEvent *,search_result *)@
+CCCC_MemExt@anonymous@deliver_result@@(IFEvent *,search_result *)@src/ft_search.c@108@definition@FT??0@LOC:23 COM:13 MVG:3@0@d@
+CCCC_Member@anonymous@destroy_result@@(Share *,ft_nodeinfo_t *)@
+CCCC_MemExt@anonymous@destroy_result@@(Share *,ft_nodeinfo_t *)@src/proto/ft_query.c@643@definition@FT??0@LOC:8 COM:3 MVG:0@0@d@
+CCCC_Member@anonymous@do_benchmarks@@()@
+CCCC_MemExt@anonymous@do_benchmarks@@()@src/test/db_bench.c@446@definition@FT??0@LOC:119 COM:16 MVG:23@0@d@
+CCCC_MemExt@anonymous@do_benchmarks@@()@src/test/old/test/db_bench.c@437@definition@FT??0@LOC:99 COM:15 MVG:20@0@d@
+CCCC_Member@anonymous@do_work_inflate@@(z_stream *)@
+CCCC_MemExt@anonymous@do_work_inflate@@(z_stream *)@src/ft_stream.c@444@definition@FT???@LOC:12 COM:5 MVG:7@?@d@
+CCCC_Member@anonymous@drop_after_demotion@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@drop_after_demotion@@(FTNode *,void *)@src/ft_conn.c@388@definition@FT???@LOC:6 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@drop_children@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@drop_children@@(FTNode *,void *)@src/ft_conn.c@395@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@drop_notalive@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@drop_notalive@@(FTNode *,void *)@src/ft_conn.c@77@definition@FT???@LOC:27 COM:18 MVG:4@?@d@
+CCCC_Member@anonymous@drop_parent_full@@(FTNode *)@
+CCCC_MemExt@anonymous@drop_parent_full@@(FTNode *)@src/proto/ft_sharing.c@131@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@dummy@@(FTNode *)@
+CCCC_MemExt@anonymous@dummy@@(FTNode *)@src/test/db_bench.c@442@definition@FT??0@LOC:3 COM:0 MVG:0@0@d@
+CCCC_MemExt@anonymous@dummy@@(FTNode *)@src/test/old/test/db_bench.c@433@definition@FT??0@LOC:3 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@dump_node@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@dump_node@@(FTNode *,void *)@src/ft_netorg.c@618@definition@FT??0@LOC:5 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@empty_result@@(TCPC *,ft_guid_t *)@
+CCCC_MemExt@anonymous@empty_result@@(TCPC *,ft_guid_t *)@src/proto/ft_query.c@295@definition@FT??0@LOC:11 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@err_wrapper@@(...)@
+CCCC_MemExt@anonymous@err_wrapper@@(...)@src/test/db_bench.c@127@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@err_wrapper@@(...)@src/test/old/test/db_bench.c@118@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@exec_browse@@(Protocol *,IFEvent *,in_addr_t)@
+CCCC_MemExt@anonymous@exec_browse@@(Protocol *,IFEvent *,in_addr_t)@src/ft_search.c@496@definition@FT??0@LOC:20 COM:10 MVG:7@0@d@
+CCCC_Member@anonymous@exec_search@@(Protocol *,IFEvent *,ft_search_flags_t,char *,char *,char *,Dataset *)@
+CCCC_MemExt@anonymous@exec_search@@(Protocol *,IFEvent *,ft_search_flags_t,char *,char *,char *,Dataset *)@src/ft_search.c@451@definition@FT??0@LOC:17 COM:16 MVG:6@0@d@
+CCCC_Member@anonymous@exec_search@@(TCPC *,sparams_t *)@
+CCCC_MemExt@anonymous@exec_search@@(TCPC *,sparams_t *)@src/proto/ft_query.c@402@definition@FT??0@LOC:30 COM:9 MVG:5@0@d@
+CCCC_Member@anonymous@fill_params@@(sparams_t *,FTNode *,FTPacket *)@
+CCCC_MemExt@anonymous@fill_params@@(sparams_t *,FTNode *,FTPacket *)@src/proto/ft_query.c@676@definition@FT??0@LOC:39 COM:7 MVG:9@0@d@
+CCCC_Member@anonymous@fill_sdata@@(SearchData *,int,FTSearchResultFn,void *,ft_search_flags_t,const char *,void *,void *)@
+CCCC_MemExt@anonymous@fill_sdata@@(SearchData *,int,FTSearchResultFn,void *,ft_search_flags_t,const char *,void *,void *)@src/ft_search_exec.c@466@definition@FT??0@LOC:59 COM:6 MVG:16@0@d@
+CCCC_Member@anonymous@final_match@@(FileShare *,SearchData *)@
+CCCC_MemExt@anonymous@final_match@@(FileShare *,SearchData *)@src/ft_search_exec.c@600@definition@FT??0@LOC:6 COM:3 MVG:3@0@d@
+CCCC_Member@anonymous@find_open@@(TCPC *,in_addr_t *)@
+CCCC_MemExt@anonymous@find_open@@(TCPC *,in_addr_t *)@src/ft_xfer.c@499@definition@FT??0@LOC:12 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@finish_params@@(ft_search_parms_t *)@
+CCCC_MemExt@anonymous@finish_params@@(ft_search_parms_t *)@src/ft_search_obj.c@84@definition@FT???@LOC:8 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@finish_source@@(ft_source *)@
+CCCC_MemExt@anonymous@finish_source@@(ft_source *)@src/ft_transfer.c@59@definition@FT??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@flush_queue@@(Array **)@
+CCCC_MemExt@anonymous@flush_queue@@(Array **)@src/ft_node.c@42@definition@FT???@LOC:7 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@foreach_list@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@foreach_list@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.c@392@definition@FT??0@LOC:20 COM:11 MVG:7@0@d@
+CCCC_Member@anonymous@forward_search@@(TCPC *,sparams_t *,int)@
+CCCC_MemExt@anonymous@forward_search@@(TCPC *,sparams_t *,int)@src/proto/ft_query.c@735@definition@FT??0@LOC:14 COM:2 MVG:4@0@d@
+CCCC_Member@anonymous@forward_search_peer@@(FTNode *,sparams_t *)@
+CCCC_MemExt@anonymous@forward_search_peer@@(FTNode *,sparams_t *)@src/proto/ft_query.c@449@definition@FT??0@LOC:39 COM:15 MVG:13@0@d@
+CCCC_Member@anonymous@free_conn_list@@(conn_list *)@
+CCCC_MemExt@anonymous@free_conn_list@@(conn_list *)@src/ft_netorg.c@597@definition@FT??0@LOC:5 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@free_dups@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@free_dups@@(FTSearchDB *)@src/ft_search_db.c@768@definition@FT??0@LOC:14 COM:0 MVG:2@0@d@
+CCCC_Member@anonymous@free_source@@(ft_source *)@
+CCCC_MemExt@anonymous@free_source@@(ft_source *)@src/ft_transfer.c@74@definition@FT??0@LOC:7 COM:0 MVG:2@0@d@
+CCCC_Member@anonymous@free_udata@@(openft_data *)@
+CCCC_MemExt@anonymous@free_udata@@(openft_data *)@src/ft_openft.c@53@definition@FT??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@ft_accept_test@@(TCPC *)@
+CCCC_MemExt@anonymous@ft_accept_test@@(TCPC *)@src/ft_utils.c@106@definition@FT???@LOC:11 COM:4 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_accept_test@@(TCPC *)@src/ft_utils.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@ft_browse_disable@@(FTBrowse *)@
+CCCC_MemExt@anonymous@ft_browse_disable@@(FTBrowse *)@src/ft_search_obj.c@258@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_browse_disable@@(FTBrowse *)@src/ft_search_obj.h@246@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_browse_find@@(ft_guid_t *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_browse_find@@(ft_guid_t *,in_addr_t)@src/ft_search_obj.c@232@definition@FT???@LOC:9 COM:0 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_browse_find@@(ft_guid_t *,in_addr_t)@src/ft_search_obj.h@236@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_browse_find_by_event@@(IFEvent *)@
+CCCC_MemExt@anonymous@ft_browse_find_by_event@@(IFEvent *)@src/ft_search_obj.c@252@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_browse_find_by_event@@(IFEvent *)@src/ft_search_obj.h@241@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_browse_finish@@(FTBrowse *)@
+CCCC_MemExt@anonymous@ft_browse_finish@@(FTBrowse *)@src/ft_search_obj.c@213@definition@FT???@LOC:11 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_browse_finish@@(FTBrowse *)@src/ft_search_obj.h@227@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_browse_new@@(IFEvent *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_browse_new@@(IFEvent *,in_addr_t)@src/ft_search_obj.c@191@definition@FT???@LOC:11 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_browse_new@@(IFEvent *,in_addr_t)@src/ft_search_obj.h@222@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_browse_reply@@(FTBrowse *,ft_nodeinfo_t *,Share *,int)@
+CCCC_MemExt@anonymous@ft_browse_reply@@(FTBrowse *,ft_nodeinfo_t *,Share *,int)@src/ft_search.c@265@definition@FT??0@LOC:12 COM:7 MVG:1@0@d@
+CCCC_MemExt@anonymous@ft_browse_reply@@(FTBrowse *,ft_nodeinfo_t *,Share *,int)@src/ft_search.h@59@declaration@F????@LOC:2 COM:5 MVG:0@?@D@
+CCCC_Member@anonymous@ft_cfg_get_int@@(char *)@
+CCCC_MemExt@anonymous@ft_cfg_get_int@@(char *)@src/ft_conf.c@23@definition@F????@LOC:4 COM:15 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_cfg_get_int@@(char *)@src/ft_conf.h@82@declaration@F????@LOC:1 COM:29 MVG:0@?@D@
+CCCC_Member@anonymous@ft_cfg_get_path@@(char *,char *)@
+CCCC_MemExt@anonymous@ft_cfg_get_path@@(char *,char *)@src/ft_conf.c@33@definition@F????@LOC:4 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_cfg_get_path@@(char *,char *)@src/ft_conf.h@84@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_cfg_get_str@@(char *)@
+CCCC_MemExt@anonymous@ft_cfg_get_str@@(char *)@src/ft_conf.c@28@definition@F????@LOC:4 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_cfg_get_str@@(char *)@src/ft_conf.h@83@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_auth@@(FTNode *,int)@
+CCCC_MemExt@anonymous@ft_conn_auth@@(FTNode *,int)@src/ft_conn.c@828@definition@FT???@LOC:38 COM:6 MVG:16@?@d@
+CCCC_MemExt@anonymous@ft_conn_auth@@(FTNode *,int)@src/ft_conn.h@63@declaration@F????@LOC:1 COM:10 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_children_left@@(void)@
+CCCC_MemExt@anonymous@ft_conn_children_left@@(void)@src/ft_conn.c@196@definition@FT???@LOC:12 COM:0 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_conn_children_left@@(void)@src/ft_conn.h@87@declaration@F????@LOC:1 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_initial@@(void)@
+CCCC_MemExt@anonymous@ft_conn_initial@@(void)@src/ft_conn.c@788@definition@FT???@LOC:11 COM:9 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_conn_initial@@(void)@src/ft_conn.h@51@declaration@F????@LOC:1 COM:7 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_maintain@@(void *)@
+CCCC_MemExt@anonymous@ft_conn_maintain@@(void *)@src/ft_conn.c@580@definition@FT???@LOC:22 COM:26 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_conn_maintain@@(void *)@src/ft_conn.h@42@declaration@F????@LOC:1 COM:33 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_need_index@@(void)@
+CCCC_MemExt@anonymous@ft_conn_need_index@@(void)@src/ft_conn.c@178@definition@FT???@LOC:10 COM:3 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_conn_need_index@@(void)@src/ft_conn.h@81@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_need_parents@@(void)@
+CCCC_MemExt@anonymous@ft_conn_need_parents@@(void)@src/ft_conn.c@153@definition@FT???@LOC:6 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_conn_need_parents@@(void)@src/ft_conn.h@70@declaration@F????@LOC:1 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_conn_need_peers@@(void)@
+CCCC_MemExt@anonymous@ft_conn_need_peers@@(void)@src/ft_conn.c@162@definition@FT???@LOC:10 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_conn_need_peers@@(void)@src/ft_conn.h@76@declaration@F????@LOC:1 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_downloads_access@@(void)@
+CCCC_MemExt@anonymous@ft_downloads_access@@(void)@src/ft_transfer.c@186@definition@FT??0@LOC:8 COM:6 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_downloads_access@@(void)@src/ft_transfer.h@218@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_guid_dup@@(ft_guid_t *)@
+CCCC_MemExt@anonymous@ft_guid_dup@@(ft_guid_t *)@src/ft_guid.c@61@definition@FT???@LOC:10 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_guid_dup@@(ft_guid_t *)@src/ft_guid.h@29@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_guid_fmt@@(ft_guid_t *)@
+CCCC_MemExt@anonymous@ft_guid_fmt@@(ft_guid_t *)@src/ft_guid.c@77@definition@FT???@LOC:13 COM:1 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_guid_fmt@@(ft_guid_t *)@src/ft_guid.h@30@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_guid_free@@(ft_guid_t *)@
+CCCC_MemExt@anonymous@ft_guid_free@@(ft_guid_t *)@src/ft_guid.c@54@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_guid_free@@(ft_guid_t *)@src/ft_guid.h@28@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_guid_new@@(void)@
+CCCC_MemExt@anonymous@ft_guid_new@@(void)@src/ft_guid.c@27@definition@FT???@LOC:19 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_guid_new@@(void)@src/ft_guid.h@27@declaration@F????@LOC:1 COM:1 MVG:0@?@D@
+CCCC_Member@anonymous@ft_http_client_get@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_http_client_get@@(FTTransfer *)@src/ft_http_client.c@112@definition@FT???@LOC:16 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_http_client_get@@(FTTransfer *)@src/ft_http_client.h@50@declaration@F????@LOC:1 COM:6 MVG:0@?@D@
+CCCC_Member@anonymous@ft_http_client_push@@(in_addr_t,in_port_t,const char *)@
+CCCC_MemExt@anonymous@ft_http_client_push@@(in_addr_t,in_port_t,const char *)@src/ft_http_client.c@35@definition@FT???@LOC:15 COM:2 MVG:7@?@d@
+CCCC_MemExt@anonymous@ft_http_client_push@@(in_addr_t,in_port_t,const char *)@src/ft_http_client.h@42@declaration@F????@LOC:1 COM:33 MVG:0@?@D@
+CCCC_Member@anonymous@ft_http_reply_free@@(FTHttpReply *)@
+CCCC_MemExt@anonymous@ft_http_reply_free@@(FTHttpReply *)@src/ft_http.c@242@definition@FT???@LOC:7 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_http_reply_free@@(FTHttpReply *)@src/ft_http.h@111@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_reply_new@@(int)@
+CCCC_MemExt@anonymous@ft_http_reply_new@@(int)@src/ft_http.c@228@definition@FT???@LOC:10 COM:2 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_http_reply_new@@(int)@src/ft_http.h@104@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_reply_send@@(FTHttpReply *,TCPC *)@
+CCCC_MemExt@anonymous@ft_http_reply_send@@(FTHttpReply *,TCPC *)@src/ft_http.c@314@definition@FT???@LOC:13 COM:1 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_http_reply_send@@(FTHttpReply *,TCPC *)@src/ft_http.h@146@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_reply_serialize@@(FTHttpReply *,size_t *)@
+CCCC_MemExt@anonymous@ft_http_reply_serialize@@(FTHttpReply *,size_t *)@src/ft_http.c@289@definition@FT???@LOC:18 COM:0 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_http_reply_serialize@@(FTHttpReply *,size_t *)@src/ft_http.h@136@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_reply_unserialize@@(char *)@
+CCCC_MemExt@anonymous@ft_http_reply_unserialize@@(char *)@src/ft_http.c@251@definition@FT???@LOC:20 COM:9 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_http_reply_unserialize@@(char *)@src/ft_http.h@128@declaration@F???0@LOC:1 COM:15 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_request_free@@(FTHttpRequest *)@
+CCCC_MemExt@anonymous@ft_http_request_free@@(FTHttpRequest *)@src/ft_http.c@355@definition@FT???@LOC:9 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_http_request_free@@(FTHttpRequest *)@src/ft_http.h@161@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_request_new@@(const char *,const char *)@
+CCCC_MemExt@anonymous@ft_http_request_new@@(const char *,const char *)@src/ft_http.c@336@definition@FT???@LOC:13 COM:1 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_http_request_new@@(const char *,const char *)@src/ft_http.h@156@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_request_send@@(FTHttpRequest *,TCPC *)@
+CCCC_MemExt@anonymous@ft_http_request_send@@(FTHttpRequest *,TCPC *)@src/ft_http.c@414@definition@FT???@LOC:13 COM:1 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_http_request_send@@(FTHttpRequest *,TCPC *)@src/ft_http.h@185@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_request_serialize@@(FTHttpRequest *,size_t *)@
+CCCC_MemExt@anonymous@ft_http_request_serialize@@(FTHttpRequest *,size_t *)@src/ft_http.c@394@definition@FT???@LOC:14 COM:0 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_http_request_serialize@@(FTHttpRequest *,size_t *)@src/ft_http.h@178@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_request_unserialize@@(char *)@
+CCCC_MemExt@anonymous@ft_http_request_unserialize@@(char *)@src/ft_http.c@366@definition@FT???@LOC:18 COM:4 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_http_request_unserialize@@(char *)@src/ft_http.h@168@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_http_server_incoming@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@ft_http_server_incoming@@(int,input_id,TCPC *)@src/ft_http_server.c@60@definition@FT???@LOC:16 COM:8 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_http_server_incoming@@(int,input_id,TCPC *)@src/ft_http_server.h@38@declaration@F????@LOC:1 COM:29 MVG:0@?@D@
+CCCC_Member@anonymous@ft_http_server_version@@(void)@
+CCCC_MemExt@anonymous@ft_http_server_version@@(void)@src/ft_http_server.c@41@definition@FT???@LOC:12 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@ft_netorg_add@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_netorg_add@@(FTNode *)@src/ft_netorg.c@205@definition@FT??0@LOC:11 COM:2 MVG:5@0@d@
+CCCC_MemExt@anonymous@ft_netorg_add@@(FTNode *)@src/ft_netorg.h@60@declaration@F????@LOC:1 COM:11 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_change@@(FTNode *,ft_class_t,ft_state_t)@
+CCCC_MemExt@anonymous@ft_netorg_change@@(FTNode *,ft_class_t,ft_state_t)@src/ft_netorg.c@269@definition@FT??0@LOC:15 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_netorg_change@@(FTNode *,ft_class_t,ft_state_t)@src/ft_netorg.h@75@declaration@F????@LOC:3 COM:7 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_clear@@(FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@ft_netorg_clear@@(FTNetorgForeach,void *)@src/ft_netorg.c@603@definition@FT??0@LOC:9 COM:0 MVG:0@0@d@
+CCCC_MemExt@anonymous@ft_netorg_clear@@(FTNetorgForeach,void *)@src/ft_netorg.h@135@declaration@F????@LOC:1 COM:10 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_dump@@(void)@
+CCCC_MemExt@anonymous@ft_netorg_dump@@(void)@src/ft_netorg.c@624@definition@FT??0@LOC:5 COM:0 MVG:0@0@d@
+CCCC_MemExt@anonymous@ft_netorg_dump@@(void)@src/ft_netorg.h@140@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_foreach@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@ft_netorg_foreach@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.c@450@definition@FT??0@LOC:18 COM:3 MVG:5@0@d@
+CCCC_MemExt@anonymous@ft_netorg_foreach@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.h@104@declaration@F????@LOC:2 COM:17 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_length@@(ft_class_t,ft_state_t)@
+CCCC_MemExt@anonymous@ft_netorg_length@@(ft_class_t,ft_state_t)@src/ft_netorg.c@540@definition@FT??0@LOC:26 COM:16 MVG:4@0@d@
+CCCC_MemExt@anonymous@ft_netorg_length@@(ft_class_t,ft_state_t)@src/ft_netorg.h@123@declaration@F????@LOC:1 COM:8 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_lookup@@(in_addr_t)@
+CCCC_MemExt@anonymous@ft_netorg_lookup@@(in_addr_t)@src/ft_netorg.c@289@definition@FT??0@LOC:6 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_netorg_lookup@@(in_addr_t)@src/ft_netorg.h@85@declaration@F????@LOC:1 COM:6 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_random@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@ft_netorg_random@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.c@498@definition@FT??0@LOC:24 COM:3 MVG:5@0@d@
+CCCC_MemExt@anonymous@ft_netorg_random@@(ft_class_t,ft_state_t,int,FTNetorgForeach,void *)@src/ft_netorg.h@111@declaration@F????@LOC:2 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_netorg_remove@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_netorg_remove@@(FTNode *)@src/ft_netorg.c@249@definition@FT??0@LOC:8 COM:6 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_netorg_remove@@(FTNode *)@src/ft_netorg.h@66@declaration@F????@LOC:1 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_node_add_class@@(FTNode *,ft_class_t)@
+CCCC_MemExt@anonymous@ft_node_add_class@@(FTNode *,ft_class_t)@src/ft_node.c@623@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_node_add_class@@(FTNode *,ft_class_t)@src/ft_node.h@356@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_cache_update@@(void)@
+CCCC_MemExt@anonymous@ft_node_cache_update@@(void)@src/ft_node_cache.c@269@definition@FT??0@LOC:18 COM:11 MVG:8@0@d@
+CCCC_MemExt@anonymous@ft_node_cache_update@@(void)@src/ft_node_cache.h@38@declaration@F????@LOC:1 COM:29 MVG:0@?@D@
+CCCC_Member@anonymous@ft_node_class@@(FTNode *,BOOL)@
+CCCC_MemExt@anonymous@ft_node_class@@(FTNode *,BOOL)@src/ft_node.c@633@definition@FT???@LOC:10 COM:1 MVG:4@?@d@
+CCCC_Member@anonymous@ft_node_class@@(FTNode *,int)@
+CCCC_MemExt@anonymous@ft_node_class@@(FTNode *,int)@src/ft_node.h@374@declaration@F???0@LOC:1 COM:10 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_classstr@@(ft_class_t)@
+CCCC_MemExt@anonymous@ft_node_classstr@@(ft_class_t)@src/ft_node.c@281@definition@FT???@LOC:17 COM:9 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_node_classstr@@(ft_class_t)@src/ft_node.h@383@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_classstr_full@@(ft_class_t)@
+CCCC_MemExt@anonymous@ft_node_classstr_full@@(ft_class_t)@src/ft_node.c@311@definition@FT???@LOC:19 COM:0 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_node_classstr_full@@(ft_class_t)@src/ft_node.h@390@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_err@@(FTNode *,ft_error_t,const char *)@
+CCCC_MemExt@anonymous@ft_node_err@@(FTNode *,ft_error_t,const char *)@src/ft_node.c@124@definition@FT???@LOC:8 COM:1 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_node_err@@(FTNode *,ft_error_t,const char *)@src/ft_node.h@283@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_fmt@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_fmt@@(FTNode *)@src/ft_node.c@651@definition@FT???@LOC:9 COM:2 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_fmt@@(FTNode *)@src/ft_node.h@405@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_MemExt@anonymous@ft_node_fmt@@(FTNode *)@src/test/db_bench.c@57@definition@FT???@LOC:6 COM:1 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_fmt@@(FTNode *)@src/test/old/test/db_bench.c@48@definition@FT???@LOC:6 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@ft_node_free@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_free@@(FTNode *)@src/ft_node.c@52@definition@FT???@LOC:14 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_node_free@@(FTNode *)@src/ft_node.h@221@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_fw@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_fw@@(FTNode *)@src/ft_node.c@686@definition@FT???@LOC:20 COM:3 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_node_fw@@(FTNode *)@src/ft_node.h@430@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_geterr@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_geterr@@(FTNode *)@src/ft_node.c@135@definition@FT???@LOC:20 COM:2 MVG:7@?@d@
+CCCC_MemExt@anonymous@ft_node_geterr@@(FTNode *)@src/ft_node.h@292@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_new@@(in_addr_t)@
+CCCC_MemExt@anonymous@ft_node_new@@(in_addr_t)@src/ft_node.c@27@definition@F????@LOC:11 COM:15 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_new@@(in_addr_t)@src/ft_node.h@214@declaration@F???0@LOC:1 COM:16 MVG:0@0@D@
+CCCC_MemExt@anonymous@ft_node_new@@(in_addr_t)@src/test/db_bench.c@66@definition@FT???@LOC:10 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_new@@(in_addr_t)@src/test/old/test/db_bench.c@57@definition@FT???@LOC:10 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@ft_node_queue@@(FTNode *,FTPacket *)@
+CCCC_MemExt@anonymous@ft_node_queue@@(FTNode *,FTPacket *)@src/ft_node.c@257@definition@FT???@LOC:11 COM:1 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_node_queue@@(FTNode *,FTPacket *)@src/ft_node.h@333@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_register@@(in_addr_t)@
+CCCC_MemExt@anonymous@ft_node_register@@(in_addr_t)@src/ft_node.c@74@definition@FT???@LOC:4 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_node_register@@(in_addr_t)@src/ft_node.h@255@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_register_full@@(in_addr_t,in_port_t,in_port_t,ft_class_t,time_t,time_t,uint32_t)@
+CCCC_MemExt@anonymous@ft_node_register_full@@(in_addr_t,in_port_t,in_port_t,ft_class_t,time_t,time_t,uint32_t)@src/ft_node.c@79@definition@FT???@LOC:20 COM:3 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_node_register_full@@(in_addr_t,in_port_t,in_port_t,ft_class_t,time_t,time_t,uint32_t)@src/ft_node.h@242@declaration@F???0@LOC:7 COM:19 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_remove_class@@(FTNode *,ft_class_t)@
+CCCC_MemExt@anonymous@ft_node_remove_class@@(FTNode *,ft_class_t)@src/ft_node.c@628@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_node_remove_class@@(FTNode *,ft_class_t)@src/ft_node.h@362@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_alias@@(FTNode *,const char *)@
+CCCC_MemExt@anonymous@ft_node_set_alias@@(FTNode *,const char *)@src/ft_node.c@232@definition@FT???@LOC:10 COM:8 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_node_set_alias@@(FTNode *,const char *)@src/ft_node.h@325@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_class@@(FTNode *,ft_class_t)@
+CCCC_MemExt@anonymous@ft_node_set_class@@(FTNode *,ft_class_t)@src/ft_node.c@589@definition@FT???@LOC:15 COM:12 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_node_set_class@@(FTNode *,ft_class_t)@src/ft_node.h@349@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_http_port@@(FTNode *,in_port_t)@
+CCCC_MemExt@anonymous@ft_node_set_http_port@@(FTNode *,in_port_t)@src/ft_node.c@196@definition@FT???@LOC:7 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_set_http_port@@(FTNode *,in_port_t)@src/ft_node.h@316@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_ip@@(FTNode *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_node_set_ip@@(FTNode *,in_addr_t)@src/ft_node.h@303@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_port@@(FTNode *,in_port_t)@
+CCCC_MemExt@anonymous@ft_node_set_port@@(FTNode *,in_port_t)@src/ft_node.c@179@definition@FT???@LOC:12 COM:2 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_node_set_port@@(FTNode *,in_port_t)@src/ft_node.h@311@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_set_state@@(FTNode *,ft_state_t)@
+CCCC_MemExt@anonymous@ft_node_set_state@@(FTNode *,ft_state_t)@src/ft_node.c@385@definition@FT???@LOC:12 COM:11 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_node_set_state@@(FTNode *,ft_state_t)@src/ft_node.h@343@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_statestr@@(ft_state_t)@
+CCCC_MemExt@anonymous@ft_node_statestr@@(ft_state_t)@src/ft_node.c@343@definition@FT???@LOC:20 COM:5 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_node_statestr@@(ft_state_t)@src/ft_node.h@395@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_unregister@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_unregister@@(FTNode *)@src/ft_node.c@108@definition@FT???@LOC:7 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_node_unregister@@(FTNode *)@src/ft_node.h@265@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_unregister_ip@@(in_addr_t)@
+CCCC_MemExt@anonymous@ft_node_unregister_ip@@(in_addr_t)@src/ft_node.c@117@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_node_unregister_ip@@(in_addr_t)@src/ft_node.h@272@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_user@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_node_user@@(FTNode *)@src/ft_node.c@665@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_node_user@@(FTNode *)@src/ft_node.h@410@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_node_user_host@@(in_addr_t,const char *)@
+CCCC_MemExt@anonymous@ft_node_user_host@@(in_addr_t,const char *)@src/ft_node.c@673@definition@FT???@LOC:9 COM:0 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_node_user_host@@(in_addr_t,const char *)@src/ft_node.h@420@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_command@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_command@@(FTPacket *)@src/ft_packet.c@240@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_command@@(FTPacket *)@src/ft_packet.h@116@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_dup@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_dup@@(FTPacket *)@src/ft_packet.c@108@definition@FT???@LOC:17 COM:2 MVG:7@?@d@
+CCCC_MemExt@anonymous@ft_packet_dup@@(FTPacket *)@src/ft_packet.h@66@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_flags@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_flags@@(FTPacket *)@src/ft_packet.c@248@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_flags@@(FTPacket *)@src/ft_packet.h@121@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_fmt@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_fmt@@(FTPacket *)@src/ft_packet.c@752@definition@FT???@LOC:10 COM:1 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_fmt@@(FTPacket *)@src/ft_packet.h@266@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_free@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_free@@(FTPacket *)@src/ft_packet.c@134@definition@FT???@LOC:7 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_packet_free@@(FTPacket *)@src/ft_packet.h@71@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_array@@(FTPacket *,size_t,size_t,int)@
+CCCC_MemExt@anonymous@ft_packet_get_array@@(FTPacket *,size_t,size_t,int)@src/ft_packet.c@515@definition@FT???@LOC:22 COM:1 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_array@@(FTPacket *,size_t,size_t,int)@src/ft_packet.h@231@declaration@F???0@LOC:2 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_arraynul@@(FTPacket *,size_t,int)@
+CCCC_MemExt@anonymous@ft_packet_get_arraynul@@(FTPacket *,size_t,int)@src/ft_packet.c@552@definition@FT???@LOC:23 COM:1 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_arraynul@@(FTPacket *,size_t,int)@src/ft_packet.h@233@declaration@F???0@LOC:2 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_ip@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_get_ip@@(FTPacket *)@src/ft_packet.c@460@definition@FT???@LOC:14 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_ip@@(FTPacket *)@src/ft_packet.h@228@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_raw@@(FTPacket *,size_t *)@
+CCCC_MemExt@anonymous@ft_packet_get_raw@@(FTPacket *,size_t *)@src/ft_packet.c@589@definition@FT???@LOC:14 COM:0 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_raw@@(FTPacket *,size_t *)@src/ft_packet.h@235@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_str@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_get_str@@(FTPacket *)@src/ft_packet.c@586@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_str@@(FTPacket *)@src/ft_packet.h@230@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_uint@@(FTPacket *,size_t,int)@
+CCCC_MemExt@anonymous@ft_packet_get_uint@@(FTPacket *,size_t,int)@src/ft_packet.c@414@definition@FT???@LOC:29 COM:0 MVG:10@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_uint@@(FTPacket *,size_t,int)@src/ft_packet.h@223@declaration@F???0@LOC:2 COM:1 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_uint16@@(FTPacket *,int)@
+CCCC_MemExt@anonymous@ft_packet_get_uint16@@(FTPacket *,int)@src/ft_packet.c@454@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_uint16@@(FTPacket *,int)@src/ft_packet.h@226@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_uint32@@(FTPacket *,int)@
+CCCC_MemExt@anonymous@ft_packet_get_uint32@@(FTPacket *,int)@src/ft_packet.c@457@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_uint32@@(FTPacket *,int)@src/ft_packet.h@227@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_uint8@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_get_uint8@@(FTPacket *)@src/ft_packet.c@451@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_uint8@@(FTPacket *)@src/ft_packet.h@225@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_get_ustr@@(FTPacket *,size_t)@
+CCCC_MemExt@anonymous@ft_packet_get_ustr@@(FTPacket *,size_t)@src/ft_packet.c@583@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_get_ustr@@(FTPacket *,size_t)@src/ft_packet.h@229@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_length@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_length@@(FTPacket *)@src/ft_packet.c@256@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_length@@(FTPacket *)@src/ft_packet.h@126@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_new@@(uint16_t,uint16_t)@
+CCCC_MemExt@anonymous@ft_packet_new@@(uint16_t,uint16_t)@src/ft_packet.c@83@definition@FT???@LOC:16 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_packet_new@@(uint16_t,uint16_t)@src/ft_packet.h@60@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_overrun@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_overrun@@(FTPacket *)@src/ft_packet.c@273@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_overrun@@(FTPacket *)@src/ft_packet.h@141@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_ip@@(FTPacket *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_packet_put_ip@@(FTPacket *,in_addr_t)@src/ft_packet.c@362@definition@FT???@LOC:8 COM:2 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_ip@@(FTPacket *,in_addr_t)@src/ft_packet.h@193@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_raw@@(FTPacket *,char *,size_t)@
+CCCC_MemExt@anonymous@ft_packet_put_raw@@(FTPacket *,char *,size_t)@src/ft_packet.c@396@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_raw@@(FTPacket *,char *,size_t)@src/ft_packet.h@219@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_str@@(FTPacket *,char *)@
+CCCC_MemExt@anonymous@ft_packet_put_str@@(FTPacket *,char *)@src/ft_packet.c@393@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_str@@(FTPacket *,char *)@src/ft_packet.h@211@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_uarray@@(FTPacket *,int,void *,int)@
+CCCC_MemExt@anonymous@ft_packet_put_uarray@@(FTPacket *,int,void *,int)@src/ft_packet.c@347@definition@FT???@LOC:12 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_uarray@@(FTPacket *,int,void *,int)@src/ft_packet.h@185@declaration@F???0@LOC:2 COM:13 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_uint@@(FTPacket *,void *,size_t,int)@
+CCCC_MemExt@anonymous@ft_packet_put_uint@@(FTPacket *,void *,size_t,int)@src/ft_packet.c@310@definition@FT???@LOC:24 COM:0 MVG:9@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_uint@@(FTPacket *,void *,size_t,int)@src/ft_packet.h@155@declaration@F???0@LOC:1 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_uint16@@(FTPacket *,uint16_t,int)@
+CCCC_MemExt@anonymous@ft_packet_put_uint16@@(FTPacket *,uint16_t,int)@src/ft_packet.c@341@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_uint16@@(FTPacket *,uint16_t,int)@src/ft_packet.h@165@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_uint32@@(FTPacket *,uint32_t,int)@
+CCCC_MemExt@anonymous@ft_packet_put_uint32@@(FTPacket *,uint32_t,int)@src/ft_packet.c@344@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_uint32@@(FTPacket *,uint32_t,int)@src/ft_packet.h@170@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_uint8@@(FTPacket *,uint8_t)@
+CCCC_MemExt@anonymous@ft_packet_put_uint8@@(FTPacket *,uint8_t)@src/ft_packet.c@338@definition@FT???@LOC:2 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_uint8@@(FTPacket *,uint8_t)@src/ft_packet.h@160@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_put_ustr@@(FTPacket *,char *,size_t)@
+CCCC_MemExt@anonymous@ft_packet_put_ustr@@(FTPacket *,char *,size_t)@src/ft_packet.c@375@definition@FT???@LOC:14 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_packet_put_ustr@@(FTPacket *,char *,size_t)@src/ft_packet.h@204@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_remaining@@(FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_remaining@@(FTPacket *)@src/ft_packet.c@264@definition@FT???@LOC:7 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_packet_remaining@@(FTPacket *)@src/ft_packet.h@132@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_send@@(TCPC *,FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_send@@(TCPC *,FTPacket *)@src/ft_packet.c@611@definition@FT???@LOC:18 COM:4 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_packet_send@@(TCPC *,FTPacket *)@src/ft_packet.h@242@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_sendto@@(in_addr_t,FTPacket *)@
+CCCC_MemExt@anonymous@ft_packet_sendto@@(in_addr_t,FTPacket *)@src/ft_packet.c@647@definition@FT???@LOC:14 COM:21 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_packet_sendto@@(in_addr_t,FTPacket *)@src/ft_packet.h@248@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_sendva@@(...)@
+CCCC_MemExt@anonymous@ft_packet_sendva@@(...)@src/ft_packet.c@698@definition@FT???@LOC:45 COM:0 MVG:14@?@d@
+CCCC_MemExt@anonymous@ft_packet_sendva@@(...)@src/ft_packet.h@254@declaration@F???0@LOC:2 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_serialize@@(FTPacket *,size_t *)@
+CCCC_MemExt@anonymous@ft_packet_serialize@@(FTPacket *,size_t *)@src/ft_packet.c@150@definition@FT???@LOC:18 COM:9 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_packet_serialize@@(FTPacket *,size_t *)@src/ft_packet.h@83@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_set_command@@(FTPacket *,uint16_t)@
+CCCC_MemExt@anonymous@ft_packet_set_command@@(FTPacket *,uint16_t)@src/ft_packet.c@220@definition@FT???@LOC:5 COM:1 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_packet_set_command@@(FTPacket *,uint16_t)@src/ft_packet.h@101@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_set_flags@@(FTPacket *,uint16_t)@
+CCCC_MemExt@anonymous@ft_packet_set_flags@@(FTPacket *,uint16_t)@src/ft_packet.c@226@definition@FT???@LOC:5 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_packet_set_flags@@(FTPacket *,uint16_t)@src/ft_packet.h@106@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_set_length@@(FTPacket *,uint16_t)@
+CCCC_MemExt@anonymous@ft_packet_set_length@@(FTPacket *,uint16_t)@src/ft_packet.c@232@definition@FT???@LOC:6 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_packet_set_length@@(FTPacket *,uint16_t)@src/ft_packet.h@111@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_packet_unserialize@@(const char *,size_t)@
+CCCC_MemExt@anonymous@ft_packet_unserialize@@(const char *,size_t)@src/ft_packet.c@185@definition@FT???@LOC:22 COM:8 MVG:10@?@d@
+CCCC_MemExt@anonymous@ft_packet_unserialize@@(const char *,size_t)@src/ft_packet.h@94@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_protocol_handle@@(TCPC *,FTPacket *)@
+CCCC_MemExt@anonymous@ft_protocol_handle@@(TCPC *,FTPacket *)@src/ft_protocol.h@272@declaration@F????@LOC:1 COM:8 MVG:0@?@D@
+CCCC_Member@anonymous@ft_search@@(int,FTSearchResultFn,void *,ft_search_flags_t,const char *,void *,void *)@
+CCCC_MemExt@anonymous@ft_search@@(int,FTSearchResultFn,void *,ft_search_flags_t,const char *,void *,void *)@src/ft_search_exec.c@703@definition@FT??0@LOC:31 COM:13 MVG:9@0@d@
+CCCC_MemExt@anonymous@ft_search@@(int,FTSearchResultFn,void *,ft_search_flags_t,const char *,void *,void *)@src/ft_search_exec.h@111@declaration@F????@LOC:3 COM:32 MVG:0@?@D@
+CCCC_Member@anonymous@ft_search_cmp@@(Share *,ft_search_flags_t,const char *,void *,void *)@
+CCCC_MemExt@anonymous@ft_search_cmp@@(Share *,ft_search_flags_t,const char *,void *,void *)@src/ft_search_exec.c@760@definition@FT??0@LOC:16 COM:0 MVG:7@0@d@
+CCCC_MemExt@anonymous@ft_search_cmp@@(Share *,ft_search_flags_t,const char *,void *,void *)@src/ft_search_exec.h@125@declaration@F????@LOC:2 COM:10 MVG:0@?@D@
+CCCC_Member@anonymous@ft_search_db_close@@(FTNode *,BOOL)@
+CCCC_MemExt@anonymous@ft_search_db_close@@(FTNode *,BOOL)@src/ft_search_db.c@2626@definition@FT??0@LOC:8 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_search_db_close@@(FTNode *,BOOL)@src/ft_search_db.h@206@declaration@F???0@LOC:1 COM:10 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_destroy@@(void)@
+CCCC_MemExt@anonymous@ft_search_db_destroy@@(void)@src/ft_search_db.c@2470@definition@FT??0@LOC:13 COM:1 MVG:4@0@d@
+CCCC_MemExt@anonymous@ft_search_db_destroy@@(void)@src/ft_search_db.h@136@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_init@@(const char *,long)@
+CCCC_MemExt@anonymous@ft_search_db_init@@(const char *,long)@src/ft_search_db.c@2447@definition@FT??0@LOC:14 COM:6 MVG:6@0@d@
+CCCC_MemExt@anonymous@ft_search_db_init@@(const char *,long)@src/ft_search_db.h@130@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_insert@@(FTNode *,Share *)@
+CCCC_MemExt@anonymous@ft_search_db_insert@@(FTNode *,Share *)@src/ft_search_db.c@2491@definition@FT??0@LOC:18 COM:2 MVG:7@0@d@
+CCCC_MemExt@anonymous@ft_search_db_insert@@(FTNode *,Share *)@src/ft_search_db.h@150@declaration@F???0@LOC:1 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_isopen@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_search_db_isopen@@(FTNode *)@src/ft_search_db.c@2614@definition@FT??0@LOC:7 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_search_db_isopen@@(FTNode *)@src/ft_search_db.h@194@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_lookup_md5@@(FTNode *,char *)@
+CCCC_MemExt@anonymous@ft_search_db_lookup_md5@@(FTNode *,char *)@src/ft_search_db.c@2642@definition@FT??0@LOC:8 COM:2 MVG:4@0@d@
+CCCC_MemExt@anonymous@ft_search_db_lookup_md5@@(FTNode *,char *)@src/ft_search_db.h@220@declaration@F???0@LOC:1 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_md5@@(Array **,char *,int)@
+CCCC_MemExt@anonymous@ft_search_db_md5@@(Array **,char *,int)@src/ft_search_db.c@2656@definition@FT??0@LOC:8 COM:1 MVG:4@0@d@
+CCCC_MemExt@anonymous@ft_search_db_md5@@(Array **,char *,int)@src/ft_search_db.h@237@declaration@F???0@LOC:1 COM:15 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_open@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_search_db_open@@(FTNode *)@src/ft_search_db.c@2590@definition@FT??0@LOC:13 COM:6 MVG:8@0@d@
+CCCC_MemExt@anonymous@ft_search_db_open@@(FTNode *)@src/ft_search_db.h@187@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_remove@@(FTNode *,char *)@
+CCCC_MemExt@anonymous@ft_search_db_remove@@(FTNode *,char *)@src/ft_search_db.c@2517@definition@FT??0@LOC:18 COM:2 MVG:5@0@d@
+CCCC_MemExt@anonymous@ft_search_db_remove@@(FTNode *,char *)@src/ft_search_db.h@161@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_remove_host@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_search_db_remove_host@@(FTNode *)@src/ft_search_db.c@2543@definition@FT??0@LOC:15 COM:9 MVG:7@0@d@
+CCCC_MemExt@anonymous@ft_search_db_remove_host@@(FTNode *)@src/ft_search_db.h@169@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_sync@@(FTNode *)@
+CCCC_MemExt@anonymous@ft_search_db_sync@@(FTNode *)@src/ft_search_db.c@2577@definition@FT??0@LOC:6 COM:2 MVG:1@0@d@
+CCCC_MemExt@anonymous@ft_search_db_sync@@(FTNode *)@src/ft_search_db.h@181@declaration@F???0@LOC:1 COM:10 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_db_tokens@@(Array **,char *,uint32_t *,uint32_t *,int)@
+CCCC_MemExt@anonymous@ft_search_db_tokens@@(Array **,char *,uint32_t *,uint32_t *,int)@src/ft_search_db.c@2670@definition@FT??0@LOC:10 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_search_db_tokens@@(Array **,char *,uint32_t *,uint32_t *,int)@src/ft_search_db.h@243@declaration@F???0@LOC:2 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_disable@@(FTSearch *)@
+CCCC_MemExt@anonymous@ft_search_disable@@(FTSearch *)@src/ft_search_obj.c@141@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_search_disable@@(FTSearch *)@src/ft_search_obj.h@208@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_find@@(ft_guid_t *)@
+CCCC_MemExt@anonymous@ft_search_find@@(ft_guid_t *)@src/ft_search_obj.c@123@definition@FT???@LOC:4 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_search_find@@(ft_guid_t *)@src/ft_search_obj.h@196@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_find_by_event@@(IFEvent *)@
+CCCC_MemExt@anonymous@ft_search_find_by_event@@(IFEvent *)@src/ft_search_obj.c@135@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_search_find_by_event@@(IFEvent *)@src/ft_search_obj.h@202@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_finish@@(FTSearch *)@
+CCCC_MemExt@anonymous@ft_search_finish@@(FTSearch *)@src/ft_search_obj.c@102@definition@FT???@LOC:11 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_finish@@(FTSearch *)@src/ft_search_obj.h@189@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_fwd_find@@(ft_guid_t *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_search_fwd_find@@(ft_guid_t *,in_addr_t)@src/ft_search_obj.c@459@definition@FT???@LOC:7 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_fwd_find@@(ft_guid_t *,in_addr_t)@src/ft_search_obj.h@273@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_fwd_finish@@(FTSearchFwd *)@
+CCCC_MemExt@anonymous@ft_search_fwd_finish@@(FTSearchFwd *)@src/ft_search_obj.c@446@definition@FT???@LOC:9 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_fwd_finish@@(FTSearchFwd *)@src/ft_search_obj.h@267@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_fwd_new@@(ft_guid_t *,in_addr_t,in_addr_t)@
+CCCC_MemExt@anonymous@ft_search_fwd_new@@(ft_guid_t *,in_addr_t,in_addr_t)@src/ft_search_obj.c@368@definition@FT???@LOC:25 COM:0 MVG:7@?@d@
+CCCC_MemExt@anonymous@ft_search_fwd_new@@(ft_guid_t *,in_addr_t,in_addr_t)@src/ft_search_obj.h@258@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_new@@(IFEvent *,ft_search_flags_t,const char *,const char *,const char *)@
+CCCC_MemExt@anonymous@ft_search_new@@(IFEvent *,ft_search_flags_t,const char *,const char *,const char *)@src/ft_search_obj.c@66@definition@FT???@LOC:13 COM:2 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_new@@(IFEvent *,ft_search_flags_t,const char *,const char *,const char *)@src/ft_search_obj.h@181@declaration@F???0@LOC:3 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_rcvdfrom@@(FTSearch *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_search_rcvdfrom@@(FTSearch *,in_addr_t)@src/ft_search_obj.c@162@definition@FT???@LOC:7 COM:0 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_search_rcvdfrom@@(FTSearch *,in_addr_t)@src/ft_search_obj.h@213@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_reply@@(FTSearch *,ft_nodeinfo_t *,ft_nodeinfo_t *,Share *,int)@
+CCCC_MemExt@anonymous@ft_search_reply@@(FTSearch *,ft_nodeinfo_t *,ft_nodeinfo_t *,Share *,int)@src/ft_search.c@243@definition@FT??0@LOC:12 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@ft_search_reply@@(FTSearch *,ft_nodeinfo_t *,ft_nodeinfo_t *,Share *,int)@src/ft_search.h@42@declaration@F????@LOC:3 COM:30 MVG:0@?@D@
+CCCC_Member@anonymous@ft_search_reply_self@@(FTSearch *,ft_nodeinfo_t *,Share *,int)@
+CCCC_MemExt@anonymous@ft_search_reply_self@@(FTSearch *,ft_nodeinfo_t *,Share *,int)@src/ft_search.c@259@definition@FT??0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@ft_search_reply_self@@(FTSearch *,ft_nodeinfo_t *,Share *,int)@src/ft_search.h@51@declaration@F????@LOC:2 COM:5 MVG:0@?@D@
+CCCC_Member@anonymous@ft_search_sentto@@(FTSearch *,in_addr_t)@
+CCCC_MemExt@anonymous@ft_search_sentto@@(FTSearch *,in_addr_t)@src/ft_search_obj.c@148@definition@FT???@LOC:9 COM:2 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_search_sentto@@(FTSearch *,in_addr_t)@src/ft_search_obj.h@212@declaration@F???0@LOC:1 COM:1 MVG:0@0@D@
+CCCC_Member@anonymous@ft_search_tokenize@@(const char *)@
+CCCC_MemExt@anonymous@ft_search_tokenize@@(const char *)@src/ft_search_exec.c@432@definition@FT??0@LOC:9 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_search_tokenize@@(const char *)@src/ft_search_exec.h@70@declaration@F????@LOC:1 COM:12 MVG:0@?@D@
+CCCC_MemExt@anonymous@ft_search_tokenize@@(const char *)@src/test/db_bench.c@270@definition@FT???@LOC:10 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_tokenize@@(const char *)@src/test/old/test/db_bench.c@261@definition@FT???@LOC:10 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@ft_search_tokenizef@@(FileShare *)@
+CCCC_MemExt@anonymous@ft_search_tokenizef@@(FileShare *)@src/test/db_bench.c@284@definition@FT???@LOC:15 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_search_tokenizef@@(FileShare *)@src/test/old/test/db_bench.c@275@definition@FT???@LOC:15 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@ft_search_tokenizef@@(Share *)@
+CCCC_MemExt@anonymous@ft_search_tokenizef@@(Share *)@src/ft_search_exec.c@445@definition@FT??0@LOC:14 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_search_tokenizef@@(Share *)@src/ft_search_exec.h@77@declaration@F????@LOC:1 COM:5 MVG:0@?@D@
+CCCC_Member@anonymous@ft_session_add_purpose@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_add_purpose@@(FTNode *,ft_purpose_t)@src/ft_session.c@705@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@ft_session_add_purpose@@(ft_node *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_add_purpose@@(ft_node *,ft_purpose_t)@src/ft_session.h@207@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_connect@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_connect@@(FTNode *,ft_purpose_t)@src/ft_session.c@578@definition@FT???@LOC:41 COM:13 MVG:11@?@d@
+CCCC_Member@anonymous@ft_session_connect@@(ft_node *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_connect@@(ft_node *,ft_purpose_t)@src/ft_session.h@192@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_drop_purpose@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_drop_purpose@@(FTNode *,ft_purpose_t)@src/ft_session.c@722@definition@FT???@LOC:34 COM:9 MVG:11@?@d@
+CCCC_Member@anonymous@ft_session_drop_purpose@@(ft_node *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_drop_purpose@@(ft_node *,ft_purpose_t)@src/ft_session.h@226@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_incoming@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@ft_session_incoming@@(int,input_id,TCPC *)@src/ft_session.c@649@definition@FT???@LOC:29 COM:4 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_session_incoming@@(int,input_id,TCPC *)@src/ft_session.h@193@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_queue@@(TCPC *,FTPacket *)@
+CCCC_MemExt@anonymous@ft_session_queue@@(TCPC *,FTPacket *)@src/ft_session.c@512@definition@FT???@LOC:11 COM:1 MVG:9@?@d@
+CCCC_MemExt@anonymous@ft_session_queue@@(TCPC *,FTPacket *)@src/ft_session.h@190@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_remove_purpose@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_remove_purpose@@(FTNode *,ft_purpose_t)@src/ft_session.c@713@definition@FT???@LOC:7 COM:0 MVG:4@?@d@
+CCCC_Member@anonymous@ft_session_remove_purpose@@(ft_node *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_remove_purpose@@(ft_node *,ft_purpose_t)@src/ft_session.h@215@declaration@F???0@LOC:2 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_set_purpose@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_set_purpose@@(FTNode *,ft_purpose_t)@src/ft_session.c@692@definition@FT???@LOC:8 COM:1 MVG:4@?@d@
+CCCC_Member@anonymous@ft_session_set_purpose@@(ft_node *,ft_purpose_t)@
+CCCC_MemExt@anonymous@ft_session_set_purpose@@(ft_node *,ft_purpose_t)@src/ft_session.h@201@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_stage@@(TCPC *,char)@
+CCCC_MemExt@anonymous@ft_session_stage@@(TCPC *,char)@src/ft_session.c@488@definition@FT???@LOC:17 COM:1 MVG:10@?@d@
+CCCC_MemExt@anonymous@ft_session_stage@@(TCPC *,char)@src/ft_session.h@189@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_start@@(TCPC *,int)@
+CCCC_MemExt@anonymous@ft_session_start@@(TCPC *,int)@src/ft_session.c@197@definition@FT???@LOC:10 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_session_start@@(TCPC *,int)@src/ft_session.h@169@declaration@F???0@LOC:1 COM:12 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_stop@@(TCPC *)@
+CCCC_MemExt@anonymous@ft_session_stop@@(TCPC *)@src/ft_session.c@361@definition@FT???@LOC:15 COM:5 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_session_stop@@(TCPC *)@src/ft_session.h@175@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_session_uptime@@(TCPC *)@
+CCCC_MemExt@anonymous@ft_session_uptime@@(TCPC *)@src/ft_session.c@158@definition@FT???@LOC:12 COM:1 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_session_uptime@@(TCPC *)@src/ft_session.h@180@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_complete@@(Share *)@
+CCCC_MemExt@anonymous@ft_share_complete@@(Share *)@src/ft_share_file.c@127@definition@F????@LOC:13 COM:4 MVG:8@?@d@
+CCCC_MemExt@anonymous@ft_share_complete@@(Share *)@src/ft_share_file.h@132@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_free@@(Share *)@
+CCCC_MemExt@anonymous@ft_share_free@@(Share *)@src/ft_share_file.c@94@definition@F????@LOC:6 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_share_free@@(Share *)@src/ft_share_file.h@77@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_free_data@@(Share *,FTShare *)@
+CCCC_MemExt@anonymous@ft_share_free_data@@(Share *,FTShare *)@src/ft_share_file.c@79@definition@F????@LOC:12 COM:1 MVG:4@?@d@
+CCCC_MemExt@anonymous@ft_share_free_data@@(Share *,FTShare *)@src/ft_share_file.h@98@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_local_add@@(FileShare *,int)@
+CCCC_MemExt@anonymous@ft_share_local_add@@(FileShare *,int)@src/ft_share.h@26@declaration@F????@LOC:1 COM:16 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_find@@(char *)@
+CCCC_MemExt@anonymous@ft_share_local_find@@(char *)@src/ft_share.h@31@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_flush@@()@
+CCCC_MemExt@anonymous@ft_share_local_flush@@()@src/ft_share.c@141@definition@FT???@LOC:5 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_share_local_flush@@()@src/ft_share.h@28@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_remove@@(FileShare *,int)@
+CCCC_MemExt@anonymous@ft_share_local_remove@@(FileShare *,int)@src/ft_share.h@27@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_submit@@(TCPC *)@
+CCCC_MemExt@anonymous@ft_share_local_submit@@(TCPC *)@src/ft_share.c@181@definition@FT???@LOC:21 COM:14 MVG:7@?@d@
+CCCC_MemExt@anonymous@ft_share_local_submit@@(TCPC *)@src/ft_share.h@32@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_sync@@(int)@
+CCCC_MemExt@anonymous@ft_share_local_sync@@(int)@src/ft_share.h@29@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_local_verify@@(char *)@
+CCCC_MemExt@anonymous@ft_share_local_verify@@(char *)@src/ft_share.h@30@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_share_new@@(FTNode *,off_t,char *,char *,char *)@
+CCCC_MemExt@anonymous@ft_share_new@@(FTNode *,off_t,char *,char *,char *)@src/ft_share_file.c@48@definition@F????@LOC:22 COM:0 MVG:7@?@d@
+CCCC_Member@anonymous@ft_share_new@@(ft_node *,off_t,char *,char *,char *)@
+CCCC_MemExt@anonymous@ft_share_new@@(ft_node *,off_t,char *,char *,char *)@src/ft_share_file.h@68@declaration@F???0@LOC:3 COM:15 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_new_data@@(Share *,FTNode *,ft_nodeinfo_t *)@
+CCCC_MemExt@anonymous@ft_share_new_data@@(Share *,FTNode *,ft_nodeinfo_t *)@src/ft_share_file.c@27@definition@F????@LOC:14 COM:16 MVG:6@?@d@
+CCCC_Member@anonymous@ft_share_new_data@@(Share *,ft_node *,ft_nodeinfo *)@
+CCCC_MemExt@anonymous@ft_share_new_data@@(Share *,ft_node *,ft_nodeinfo *)@src/ft_share_file.h@89@declaration@F???0@LOC:3 COM:10 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_ref@@(Share *)@
+CCCC_MemExt@anonymous@ft_share_ref@@(Share *)@src/ft_share_file.c@104@definition@F????@LOC:4 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_share_ref@@(Share *)@src/ft_share_file.h@110@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_share_unref@@(Share *)@
+CCCC_MemExt@anonymous@ft_share_unref@@(Share *)@src/ft_share_file.c@109@definition@F????@LOC:13 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_share_unref@@(Share *)@src/ft_share_file.h@121@declaration@F???0@LOC:1 COM:9 MVG:0@0@D@
+CCCC_Member@anonymous@ft_source_free@@(_ft_source *)@
+CCCC_MemExt@anonymous@ft_source_free@@(_ft_source *)@src/ft_xfer.c@126@definition@FT??0@LOC:7 COM:0 MVG:2@0@d@
+CCCC_Member@anonymous@ft_source_new@@(char *)@
+CCCC_MemExt@anonymous@ft_source_new@@(char *)@src/ft_xfer.c@136@definition@FT??0@LOC:20 COM:1 MVG:7@0@d@
+CCCC_Member@anonymous@ft_stats_collect@@(ft_stats_t *)@
+CCCC_MemExt@anonymous@ft_stats_collect@@(ft_stats_t *)@src/ft_stats.c@110@definition@FT???@LOC:10 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_stats_collect@@(ft_stats_t *)@src/ft_stats.h@39@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stats_insert@@(in_addr_t,in_addr_t,ft_stats_t *)@
+CCCC_MemExt@anonymous@ft_stats_insert@@(in_addr_t,in_addr_t,ft_stats_t *)@src/ft_stats.c@48@definition@FT???@LOC:12 COM:4 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_stats_insert@@(in_addr_t,in_addr_t,ft_stats_t *)@src/ft_stats.h@36@declaration@F???0@LOC:1 COM:1 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stats_remove@@(in_addr_t,in_addr_t)@
+CCCC_MemExt@anonymous@ft_stats_remove@@(in_addr_t,in_addr_t)@src/ft_stats.c@68@definition@FT???@LOC:7 COM:0 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_stats_remove@@(in_addr_t,in_addr_t)@src/ft_stats.h@37@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stats_remove_dep@@(in_addr_t)@
+CCCC_MemExt@anonymous@ft_stats_remove_dep@@(in_addr_t)@src/ft_stats.c@78@definition@FT???@LOC:8 COM:2 MVG:2@?@d@
+CCCC_MemExt@anonymous@ft_stats_remove_dep@@(in_addr_t)@src/ft_stats.h@38@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_clear@@(TCPC *,ft_stream_dir_t)@
+CCCC_MemExt@anonymous@ft_stream_clear@@(TCPC *,ft_stream_dir_t)@src/ft_stream.c@653@definition@FT???@LOC:11 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_stream_clear@@(TCPC *,ft_stream_dir_t)@src/ft_stream.h@195@declaration@F???0@LOC:1 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_clear_all@@(TCPC *)@
+CCCC_MemExt@anonymous@ft_stream_clear_all@@(TCPC *)@src/ft_stream.c@668@definition@FT???@LOC:7 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_stream_clear_all@@(TCPC *)@src/ft_stream.h@203@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_finish@@(FTStream *)@
+CCCC_MemExt@anonymous@ft_stream_finish@@(FTStream *)@src/ft_stream.c@323@definition@FT???@LOC:18 COM:4 MVG:5@?@d@
+CCCC_MemExt@anonymous@ft_stream_finish@@(FTStream *)@src/ft_stream.h@148@declaration@F???0@LOC:1 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_free@@(FTStream *)@
+CCCC_MemExt@anonymous@ft_stream_free@@(FTStream *)@src/ft_stream.c@351@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_stream_free@@(FTStream *)@src/ft_stream.h@154@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_get@@(TCPC *,ft_stream_dir_t,FTPacket *)@
+CCCC_MemExt@anonymous@ft_stream_get@@(TCPC *,ft_stream_dir_t,FTPacket *)@src/ft_stream.c@216@definition@FT???@LOC:41 COM:3 MVG:11@?@d@
+CCCC_MemExt@anonymous@ft_stream_get@@(TCPC *,ft_stream_dir_t,FTPacket *)@src/ft_stream.h@140@declaration@F???0@LOC:2 COM:13 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_recv@@(FTStream *,FTPacket *,FTStreamRecv,void *)@
+CCCC_MemExt@anonymous@ft_stream_recv@@(FTStream *,FTPacket *,FTStreamRecv,void *)@src/ft_stream.c@604@definition@FT???@LOC:26 COM:2 MVG:9@?@d@
+CCCC_MemExt@anonymous@ft_stream_recv@@(FTStream *,FTPacket *,FTStreamRecv,void *)@src/ft_stream.h@180@declaration@F???0@LOC:2 COM:11 MVG:0@0@D@
+CCCC_Member@anonymous@ft_stream_send@@(FTStream *,FTPacket *)@
+CCCC_MemExt@anonymous@ft_stream_send@@(FTStream *,FTPacket *)@src/ft_stream.c@412@definition@FT???@LOC:20 COM:5 MVG:6@?@d@
+CCCC_MemExt@anonymous@ft_stream_send@@(FTStream *,FTPacket *)@src/ft_stream.h@167@declaration@F???0@LOC:1 COM:10 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_cancel@@(Chunk *,TransferType)@
+CCCC_MemExt@anonymous@ft_transfer_cancel@@(Chunk *,TransferType)@src/ft_xfer.c@362@definition@FT??0@LOC:28 COM:21 MVG:11@0@d@
+CCCC_Member@anonymous@ft_transfer_close@@(FTTransfer *,int)@
+CCCC_MemExt@anonymous@ft_transfer_close@@(FTTransfer *,int)@src/ft_xfer.c@428@definition@FT??0@LOC:26 COM:24 MVG:7@0@d@
+CCCC_Member@anonymous@ft_transfer_free@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_free@@(FTTransfer *)@src/ft_transfer.c@236@definition@FT??0@LOC:12 COM:4 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_transfer_free@@(FTTransfer *)@src/ft_xfer.c@328@definition@FT??0@LOC:16 COM:6 MVG:6@0@d@
+CCCC_Member@anonymous@ft_transfer_get_chunk@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_get_chunk@@(FTTransfer *)@src/ft_transfer.c@321@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_transfer_get_chunk@@(FTTransfer *)@src/ft_transfer.h@102@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_get_fhandle@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_get_fhandle@@(FTTransfer *)@src/ft_transfer.c@355@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_transfer_get_fhandle@@(FTTransfer *)@src/ft_transfer.h@108@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_get_source@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_get_source@@(FTTransfer *)@src/ft_transfer.c@338@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_transfer_get_source@@(FTTransfer *)@src/ft_transfer.h@105@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_get_transfer@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_get_transfer@@(FTTransfer *)@src/ft_transfer.c@304@definition@FT??0@LOC:6 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@ft_transfer_get_transfer@@(FTTransfer *)@src/ft_transfer.h@99@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_log@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_log@@(FTTransfer *)@src/ft_xfer.c@275@definition@FT??0@LOC:15 COM:6 MVG:10@0@d@
+CCCC_Member@anonymous@ft_transfer_new@@(TransferType,Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@ft_transfer_new@@(TransferType,Transfer *,Chunk *,Source *)@src/ft_transfer.c@205@definition@FT??0@LOC:19 COM:5 MVG:6@0@d@
+CCCC_MemExt@anonymous@ft_transfer_new@@(TransferType,Transfer *,Chunk *,Source *)@src/ft_transfer.h@84@declaration@F???0@LOC:2 COM:5 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_new@@(in_addr_t,in_port_t,off_t,off_t)@
+CCCC_MemExt@anonymous@ft_transfer_new@@(in_addr_t,in_port_t,off_t,off_t)@src/ft_xfer.c@304@definition@FT??0@LOC:13 COM:2 MVG:3@0@d@
+CCCC_Member@anonymous@ft_transfer_open_request@@(FTTransfer *,int *)@
+CCCC_MemExt@anonymous@ft_transfer_open_request@@(FTTransfer *,int *)@src/ft_xfer.c@901@definition@FT??0@LOC:30 COM:8 MVG:9@0@d@
+CCCC_Member@anonymous@ft_transfer_ref@@(TCPC *,Chunk *,FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_ref@@(TCPC *,Chunk *,FTTransfer *)@src/ft_xfer.c@600@definition@FT??0@LOC:20 COM:14 MVG:9@0@d@
+CCCC_Member@anonymous@ft_transfer_set_chunk@@(FTTransfer *,Chunk *)@
+CCCC_MemExt@anonymous@ft_transfer_set_chunk@@(FTTransfer *,Chunk *)@src/ft_transfer.c@312@definition@FT??0@LOC:7 COM:0 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_set_chunk@@(FTTransfer *,Chunk *)@src/ft_transfer.h@101@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_set_fhandle@@(FTTransfer *,FILE *)@
+CCCC_MemExt@anonymous@ft_transfer_set_fhandle@@(FTTransfer *,FILE *)@src/ft_transfer.c@346@definition@FT??0@LOC:7 COM:0 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_set_fhandle@@(FTTransfer *,FILE *)@src/ft_transfer.h@107@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_set_request@@(FTTransfer *,char *)@
+CCCC_MemExt@anonymous@ft_transfer_set_request@@(FTTransfer *,char *)@src/ft_xfer.c@776@definition@FT??0@LOC:23 COM:9 MVG:9@0@d@
+CCCC_Member@anonymous@ft_transfer_set_source@@(FTTransfer *,Source *)@
+CCCC_MemExt@anonymous@ft_transfer_set_source@@(FTTransfer *,Source *)@src/ft_transfer.c@329@definition@FT??0@LOC:7 COM:0 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_set_source@@(FTTransfer *,Source *)@src/ft_transfer.h@104@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_set_transfer@@(FTTransfer *,Transfer *)@
+CCCC_MemExt@anonymous@ft_transfer_set_transfer@@(FTTransfer *,Transfer *)@src/ft_transfer.c@295@definition@FT??0@LOC:7 COM:1 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_set_transfer@@(FTTransfer *,Transfer *)@src/ft_transfer.h@98@declaration@F???0@LOC:1 COM:1 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_status@@(FTTransfer *,SourceStatus,char *)@
+CCCC_MemExt@anonymous@ft_transfer_status@@(FTTransfer *,SourceStatus,char *)@src/ft_xfer.c@484@definition@FT??0@LOC:9 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@ft_transfer_status@@(FTTransfer *,SourceStatus,const char *)@
+CCCC_MemExt@anonymous@ft_transfer_status@@(FTTransfer *,SourceStatus,const char *)@src/ft_transfer.c@365@definition@FT??0@LOC:10 COM:1 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_status@@(FTTransfer *,SourceStatus,const char *)@src/ft_transfer.h@115@declaration@F???0@LOC:2 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_stop@@(FTTransfer *)@
+CCCC_MemExt@anonymous@ft_transfer_stop@@(FTTransfer *)@src/ft_transfer.c@260@definition@FT??0@LOC:17 COM:9 MVG:2@0@d@
+CCCC_MemExt@anonymous@ft_transfer_stop@@(FTTransfer *)@src/ft_transfer.h@94@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_stop_status@@(FTTransfer *,SourceStatus,const char *)@
+CCCC_MemExt@anonymous@ft_transfer_stop_status@@(FTTransfer *,SourceStatus,const char *)@src/ft_transfer.c@380@definition@FT??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_MemExt@anonymous@ft_transfer_stop_status@@(FTTransfer *,SourceStatus,const char *)@src/ft_transfer.h@124@declaration@F???0@LOC:2 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@ft_transfer_unref@@(TCPC **,Chunk **,FTTransfer **)@
+CCCC_MemExt@anonymous@ft_transfer_unref@@(TCPC **,Chunk **,FTTransfer **)@src/ft_xfer.c@633@definition@FT??0@LOC:36 COM:11 MVG:19@0@d@
+CCCC_Member@anonymous@ft_upload_avail@@(void)@
+CCCC_MemExt@anonymous@ft_upload_avail@@(void)@src/ft_transfer.c@816@definition@FT??0@LOC:7 COM:4 MVG:1@0@d@
+CCCC_MemExt@anonymous@ft_upload_avail@@(void)@src/ft_transfer.h@227@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_MemExt@anonymous@ft_upload_avail@@(void)@src/ft_xfer.c@1118@definition@FT??0@LOC:6 COM:4 MVG:1@0@d@
+CCCC_Member@anonymous@ft_version@@(uint8_t,uint8_t,uint8_t,uint8_t)@
+CCCC_MemExt@anonymous@ft_version@@(uint8_t,uint8_t,uint8_t,uint8_t)@src/ft_version.c@32@definition@FT???@LOC:7 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_version@@(uint8_t,uint8_t,uint8_t,uint8_t)@src/ft_version.h@55@declaration@F????@LOC:2 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@ft_version_eq@@(ft_version_t,ft_version_t)@
+CCCC_MemExt@anonymous@ft_version_eq@@(ft_version_t,ft_version_t)@src/ft_version.c@74@definition@FT???@LOC:4 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_version_eq@@(ft_version_t,ft_version_t)@src/ft_version.h@74@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_version_gt@@(ft_version_t,ft_version_t)@
+CCCC_MemExt@anonymous@ft_version_gt@@(ft_version_t,ft_version_t)@src/ft_version.c@64@definition@FT???@LOC:4 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_version_gt@@(ft_version_t,ft_version_t)@src/ft_version.h@72@declaration@F????@LOC:1 COM:1 MVG:0@?@D@
+CCCC_Member@anonymous@ft_version_local@@()@
+CCCC_MemExt@anonymous@ft_version_local@@()@src/ft_version.c@42@definition@FT???@LOC:8 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@ft_version_local@@()@src/ft_version.h@68@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@ft_version_lt@@(ft_version_t,ft_version_t)@
+CCCC_MemExt@anonymous@ft_version_lt@@(ft_version_t,ft_version_t)@src/ft_version.c@69@definition@FT???@LOC:4 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@ft_version_lt@@(ft_version_t,ft_version_t)@src/ft_version.h@73@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@ft_version_parse@@(ft_version_t,uint8_t *,uint8_t *,uint8_t *,uint8_t *)@
+CCCC_MemExt@anonymous@ft_version_parse@@(ft_version_t,uint8_t *,uint8_t *,uint8_t *,uint8_t *)@src/ft_version.c@52@definition@FT???@LOC:9 COM:0 MVG:0@?@d@
+CCCC_MemExt@anonymous@ft_version_parse@@(ft_version_t,uint8_t *,uint8_t *,uint8_t *,uint8_t *)@src/ft_version.h@61@declaration@F????@LOC:3 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@fwd_free@@(FTSearchFwd *)@
+CCCC_MemExt@anonymous@fwd_free@@(FTSearchFwd *)@src/ft_search_obj.c@265@declaration@FT???@LOC:1 COM:1 MVG:0@?@D@
+CCCC_MemExt@anonymous@fwd_free@@(FTSearchFwd *)@src/ft_search_obj.c@437@definition@FT???@LOC:6 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@fwd_insert@@(FTSearchFwd *,ft_guid_t *)@
+CCCC_MemExt@anonymous@fwd_insert@@(FTSearchFwd *,ft_guid_t *)@src/ft_search_obj.c@317@definition@FT???@LOC:31 COM:10 MVG:7@?@d@
+CCCC_Member@anonymous@fwd_remove@@(FTSearchFwd *)@
+CCCC_MemExt@anonymous@fwd_remove@@(FTSearchFwd *)@src/ft_search_obj.c@409@definition@FT???@LOC:17 COM:8 MVG:2@?@d@
+CCCC_Member@anonymous@fwd_tick_by_addr@@(ds_data_t *,ds_data_t *,void *)@
+CCCC_MemExt@anonymous@fwd_tick_by_addr@@(ds_data_t *,ds_data_t *,void *)@src/ft_search_obj.c@267@definition@FT???@LOC:11 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@fwd_tick_by_guid@@(ds_data_t *,ds_data_t *,void *)@
+CCCC_MemExt@anonymous@fwd_tick_by_guid@@(ds_data_t *,ds_data_t *,void *)@src/ft_search_obj.c@282@definition@FT???@LOC:12 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@fwd_timeout@@(void *)@
+CCCC_MemExt@anonymous@fwd_timeout@@(void *)@src/ft_search_obj.c@298@definition@FT???@LOC:5 COM:12 MVG:1@?@d@
+CCCC_Member@anonymous@gather_stats@@(FTNode *,ft_stats_t *)@
+CCCC_MemExt@anonymous@gather_stats@@(FTNode *,ft_stats_t *)@src/ft_stats.c@126@definition@FT???@LOC:13 COM:1 MVG:6@?@d@
+CCCC_Member@anonymous@gather_stats@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@gather_stats@@(FTNode *,void *)@src/ft_conn.c@215@definition@FT???@LOC:5 COM:1 MVG:1@?@d@
+CCCC_Member@anonymous@gen_nodepage@@(in_addr_t,char *)@
+CCCC_MemExt@anonymous@gen_nodepage@@(in_addr_t,char *)@src/ft_xfer.c@685@definition@FT??0@LOC:9 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@generate_msg@@(Dataset *)@
+CCCC_MemExt@anonymous@generate_msg@@(Dataset *)@src/proto/ft_handshake.c@41@definition@FT???@LOC:13 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@get_client_request@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@get_client_request@@(int,input_id,TCPC *)@src/ft_http_server.c@83@definition@FT???@LOC:46 COM:2 MVG:15@?@d@
+CCCC_MemExt@anonymous@get_client_request@@(int,input_id,TCPC *)@src/ft_http_server.h@44@declaration@F????@LOC:1 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@get_complete_connect@@(int,input_id,FTTransfer *)@
+CCCC_MemExt@anonymous@get_complete_connect@@(int,input_id,FTTransfer *)@src/ft_http_client.c@180@definition@FT???@LOC:23 COM:13 MVG:7@?@d@
+CCCC_MemExt@anonymous@get_complete_connect@@(int,input_id,FTTransfer *)@src/ft_http_client.h@57@declaration@F????@LOC:1 COM:5 MVG:0@?@D@
+CCCC_Member@anonymous@get_conn_list@@(ft_state_t)@
+CCCC_MemExt@anonymous@get_conn_list@@(ft_state_t)@src/ft_netorg.c@105@definition@FT??0@LOC:18 COM:5 MVG:10@0@d@
+CCCC_Member@anonymous@get_connection@@(Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@get_connection@@(Transfer *,Chunk *,Source *)@src/ft_transfer.c@651@definition@FT??0@LOC:12 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@get_cost@@(FTNode *,time_t)@
+CCCC_MemExt@anonymous@get_cost@@(FTNode *,time_t)@src/ft_conn.c@655@definition@FT???@LOC:12 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@get_cursor@@(DB *,uint32_t)@
+CCCC_MemExt@anonymous@get_cursor@@(DB *,uint32_t)@src/ft_search_db.c@2014@definition@FT??0@LOC:21 COM:2 MVG:5@0@d@
+CCCC_Member@anonymous@get_direction@@(TCPC *,ft_stream_dir_t)@
+CCCC_MemExt@anonymous@get_direction@@(TCPC *,ft_stream_dir_t)@src/ft_stream.c@137@definition@FT???@LOC:14 COM:1 MVG:4@?@d@
+CCCC_Member@anonymous@get_direction_str@@(FTStream *)@
+CCCC_MemExt@anonymous@get_direction_str@@(FTStream *)@src/ft_stream.c@155@definition@FT???@LOC:14 COM:0 MVG:4@?@d@
+CCCC_Member@anonymous@get_fd_limit@@(void)@
+CCCC_MemExt@anonymous@get_fd_limit@@(void)@src/ft_conn.c@696@definition@FT???@LOC:33 COM:13 MVG:9@?@d@
+CCCC_Member@anonymous@get_file_records@@(FTNode *,DB *,Array **)@
+CCCC_MemExt@anonymous@get_file_records@@(FTNode *,DB *,Array **)@src/ft_search_db.c@2764@definition@FT??0@LOC:31 COM:1 MVG:5@0@d@
+CCCC_Member@anonymous@get_ft_transfer@@(Chunk *)@
+CCCC_MemExt@anonymous@get_ft_transfer@@(Chunk *)@src/ft_transfer.c@518@definition@FT??0@LOC:9 COM:0 MVG:2@0@d@
+CCCC_Member@anonymous@get_gift_transfer@@(Chunk **,Source **,TCPC *,FTHttpRequest *,Share *,off_t,off_t)@
+CCCC_MemExt@anonymous@get_gift_transfer@@(Chunk **,Source **,TCPC *,FTHttpRequest *,Share *,off_t,off_t)@src/ft_http_server.c@677@definition@FT???@LOC:17 COM:2 MVG:1@?@d@
+CCCC_Member@anonymous@get_max_active@@(void)@
+CCCC_MemExt@anonymous@get_max_active@@(void)@src/ft_conn.c@754@definition@FT???@LOC:25 COM:3 MVG:6@?@d@
+CCCC_Member@anonymous@get_new_parent@@()@
+CCCC_MemExt@anonymous@get_new_parent@@()@src/ft_share.c@158@definition@FT???@LOC:8 COM:3 MVG:1@?@d@
+CCCC_Member@anonymous@get_nodes@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@get_nodes@@(FTNode *,void *)@src/ft_conn.c@221@definition@FT???@LOC:12 COM:1 MVG:5@?@d@
+CCCC_Member@anonymous@get_openft_transfer@@(Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@get_openft_transfer@@(Transfer *,Chunk *,Source *)@src/ft_http_server.c@701@definition@FT???@LOC:10 COM:6 MVG:3@?@d@
+CCCC_Member@anonymous@get_parent_info@@(FTNode *,FTPacket *)@
+CCCC_MemExt@anonymous@get_parent_info@@(FTNode *,FTPacket *)@src/proto/ft_query.c@817@definition@FT??0@LOC:24 COM:11 MVG:6@0@d@
+CCCC_Member@anonymous@get_read_file@@(int,input_id,FTTransfer *)@
+CCCC_MemExt@anonymous@get_read_file@@(int,input_id,FTTransfer *)@src/ft_http_client.c@31@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@get_read_file@@(int,input_id,FTTransfer *)@src/ft_http_client.c@340@definition@FT???@LOC:24 COM:6 MVG:4@?@d@
+CCCC_Member@anonymous@get_request_range@@(FTHttpRequest *,off_t *,off_t *)@
+CCCC_MemExt@anonymous@get_request_range@@(FTHttpRequest *,off_t *,off_t *)@src/ft_http_server.c@400@definition@FT???@LOC:18 COM:10 MVG:5@?@d@
+CCCC_Member@anonymous@get_search_request_type@@(ft_search_flags_t)@
+CCCC_MemExt@anonymous@get_search_request_type@@(ft_search_flags_t)@src/proto/ft_query.c@657@definition@FT??0@LOC:10 COM:4 MVG:5@0@d@
+CCCC_Member@anonymous@get_search_type@@(sparams_t *)@
+CCCC_MemExt@anonymous@get_search_type@@(sparams_t *)@src/proto/ft_query.c@381@definition@FT??0@LOC:10 COM:7 MVG:3@0@d@
+CCCC_Member@anonymous@get_server_reply@@(int,input_id,FTTransfer *)@
+CCCC_MemExt@anonymous@get_server_reply@@(int,input_id,FTTransfer *)@src/ft_http_client.c@28@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@get_server_reply@@(int,input_id,FTTransfer *)@src/ft_http_client.c@216@definition@FT???@LOC:36 COM:1 MVG:11@?@d@
+CCCC_Member@anonymous@get_share_auth_gift@@(FTTransfer *,char *,int *)@
+CCCC_MemExt@anonymous@get_share_auth_gift@@(FTTransfer *,char *,int *)@src/ft_xfer.c@858@definition@FT??0@LOC:28 COM:8 MVG:11@0@d@
+CCCC_Member@anonymous@get_share_auth_openft@@(FTTransfer *,char *,int *)@
+CCCC_MemExt@anonymous@get_share_auth_openft@@(FTTransfer *,char *,int *)@src/ft_xfer.c@815@definition@FT??0@LOC:31 COM:2 MVG:8@0@d@
+CCCC_Member@anonymous@get_start_cursor@@(List **)@
+CCCC_MemExt@anonymous@get_start_cursor@@(List **)@src/ft_search_db.c@2202@definition@FT??0@LOC:20 COM:14 MVG:5@0@d@
+CCCC_Member@anonymous@get_tokens_len@@(uint32_t *)@
+CCCC_MemExt@anonymous@get_tokens_len@@(uint32_t *)@src/ft_search_db.c@893@definition@FT??0@LOC:8 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@handle_class_change@@(FTNode *,ft_class_t,ft_class_t,ft_class_t,ft_class_t)@
+CCCC_MemExt@anonymous@handle_class_change@@(FTNode *,ft_class_t,ft_class_t,ft_class_t,ft_class_t)@src/ft_node.c@549@definition@FT???@LOC:20 COM:10 MVG:9@?@d@
+CCCC_Member@anonymous@handle_class_gain@@(FTNode *,ft_class_t,ft_class_t)@
+CCCC_MemExt@anonymous@handle_class_gain@@(FTNode *,ft_class_t,ft_class_t)@src/ft_node.c@471@definition@FT???@LOC:20 COM:15 MVG:7@?@d@
+CCCC_Member@anonymous@handle_class_loss@@(FTNode *,ft_class_t,ft_class_t)@
+CCCC_MemExt@anonymous@handle_class_loss@@(FTNode *,ft_class_t,ft_class_t)@src/ft_node.c@428@definition@FT???@LOC:14 COM:5 MVG:3@?@d@
+CCCC_Member@anonymous@handle_forward_result@@(TCPC *,FTPacket *,ft_guid_t *,FTSearchFwd *)@
+CCCC_MemExt@anonymous@handle_forward_result@@(TCPC *,FTPacket *,ft_guid_t *,FTSearchFwd *)@src/proto/ft_query.c@882@definition@FT??0@LOC:28 COM:6 MVG:8@0@d@
+CCCC_Member@anonymous@handle_forward_sentinel@@(TCPC *,FTPacket *,ft_guid_t *,FTSearchFwd *)@
+CCCC_MemExt@anonymous@handle_forward_sentinel@@(TCPC *,FTPacket *,ft_guid_t *,FTSearchFwd *)@src/proto/ft_query.c@933@definition@FT??0@LOC:18 COM:9 MVG:4@0@d@
+CCCC_Member@anonymous@handle_packet@@(TCPC *,char *,size_t)@
+CCCC_MemExt@anonymous@handle_packet@@(TCPC *,char *,size_t)@src/ft_session.c@61@definition@FT???@LOC:16 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@handle_search_result@@(TCPC *,FTPacket *,ft_guid_t *,FTSearch *)@
+CCCC_MemExt@anonymous@handle_search_result@@(TCPC *,FTPacket *,ft_guid_t *,FTSearch *)@src/proto/ft_query.c@857@definition@FT??0@LOC:16 COM:4 MVG:6@0@d@
+CCCC_Member@anonymous@handle_search_sentinel@@(TCPC *,FTPacket *,ft_guid_t *,FTSearch *)@
+CCCC_MemExt@anonymous@handle_search_sentinel@@(TCPC *,FTPacket *,ft_guid_t *,FTSearch *)@src/proto/ft_query.c@924@definition@FT??0@LOC:5 COM:3 MVG:0@0@d@
+CCCC_Member@anonymous@handle_server_reply@@(FTTransfer *,input_id,FTHttpReply *)@
+CCCC_MemExt@anonymous@handle_server_reply@@(FTTransfer *,input_id,FTHttpReply *)@src/ft_http_client.c@29@declaration@FT???@LOC:2 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@handle_server_reply@@(FTTransfer *,input_id,FTHttpReply *)@src/ft_http_client.c@267@definition@FT???@LOC:43 COM:30 MVG:9@?@d@
+CCCC_Member@anonymous@handle_state_change@@(FTNode *,ft_state_t,ft_state_t)@
+CCCC_MemExt@anonymous@handle_state_change@@(FTNode *,ft_state_t,ft_state_t)@src/ft_node.c@368@definition@FT???@LOC:12 COM:4 MVG:1@?@d@
+CCCC_Member@anonymous@handle_test_suite@@(Protocol *)@
+CCCC_MemExt@anonymous@handle_test_suite@@(Protocol *)@src/ft_openft.c@119@definition@FT??0@LOC:7 COM:13 MVG:2@0@d@
+CCCC_Member@anonymous@handshake_timeout@@(TCPC *)@
+CCCC_MemExt@anonymous@handshake_timeout@@(TCPC *)@src/ft_session.c@393@definition@FT???@LOC:6 COM:2 MVG:1@?@d@
+CCCC_Member@anonymous@head_get_and_write@@(TCPC *,FTHttpRequest *,int *)@
+CCCC_MemExt@anonymous@head_get_and_write@@(TCPC *,FTHttpRequest *,int *)@src/ft_http_server.c@549@definition@FT???@LOC:15 COM:4 MVG:2@?@d@
+CCCC_Member@anonymous@hex_char_to_bin@@(char)@
+CCCC_MemExt@anonymous@hex_char_to_bin@@(char)@src/md5.c@598@definition@FT??0@LOC:7 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@hex_to_bin@@(char *,char *,int)@
+CCCC_MemExt@anonymous@hex_to_bin@@(char *,char *,int)@src/md5.c@608@definition@FT??0@LOC:11 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@http_bind@@(in_port_t)@
+CCCC_MemExt@anonymous@http_bind@@(in_port_t)@src/ft_openft.c@82@definition@FT??0@LOC:9 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@http_check_sentinel@@(char *,size_t)@
+CCCC_MemExt@anonymous@http_check_sentinel@@(char *,size_t)@src/ft_http.c@103@definition@FT???@LOC:14 COM:2 MVG:6@?@d@
+CCCC_MemExt@anonymous@http_check_sentinel@@(char *,size_t)@src/ft_http.h@82@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@http_code_string@@(int)@
+CCCC_MemExt@anonymous@http_code_string@@(int)@src/ft_http.c@75@definition@FT???@LOC:21 COM:2 MVG:11@?@d@
+CCCC_MemExt@anonymous@http_code_string@@(int)@src/ft_http.h@73@declaration@F???0@LOC:1 COM:12 MVG:0@0@D@
+CCCC_Member@anonymous@http_connection_close@@(TCPC *,int)@
+CCCC_MemExt@anonymous@http_connection_close@@(TCPC *,int)@src/ft_xfer.c@558@definition@FT??0@LOC:17 COM:7 MVG:6@0@d@
+CCCC_Member@anonymous@http_connection_open@@(in_addr_t,in_port_t)@
+CCCC_MemExt@anonymous@http_connection_open@@(in_addr_t,in_port_t)@src/ft_xfer.c@544@definition@FT??0@LOC:7 COM:7 MVG:2@0@d@
+CCCC_Member@anonymous@http_is_secure_path@@(const char *)@
+CCCC_MemExt@anonymous@http_is_secure_path@@(const char *)@src/ft_http_server.c@293@definition@FT???@LOC:23 COM:8 MVG:12@?@d@
+CCCC_Member@anonymous@http_parse_keylist@@(Dataset **,char *)@
+CCCC_MemExt@anonymous@http_parse_keylist@@(Dataset **,char *)@src/ft_http.c@204@definition@FT???@LOC:16 COM:1 MVG:7@?@d@
+CCCC_Member@anonymous@http_url_decode@@(const char *)@
+CCCC_MemExt@anonymous@http_url_decode@@(const char *)@src/ft_http.c@138@definition@FT???@LOC:23 COM:9 MVG:9@?@d@
+CCCC_MemExt@anonymous@http_url_decode@@(const char *)@src/ft_http.h@93@declaration@F???0@LOC:1 COM:0 MVG:0@0@D@
+CCCC_Member@anonymous@http_url_encode@@(const char *)@
+CCCC_MemExt@anonymous@http_url_encode@@(const char *)@src/ft_http.c@178@definition@FT???@LOC:18 COM:0 MVG:7@?@d@
+CCCC_MemExt@anonymous@http_url_encode@@(const char *)@src/ft_http.h@92@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@import_cache@@(FILE *,char *)@
+CCCC_MemExt@anonymous@import_cache@@(FILE *,char *)@src/ft_node_cache.c@50@definition@FT??0@LOC:42 COM:5 MVG:5@0@d@
+CCCC_Member@anonymous@import_meta@@(Share *,char *,u_int16_t)@
+CCCC_MemExt@anonymous@import_meta@@(Share *,char *,u_int16_t)@src/ft_search_db.c@848@definition@FT??0@LOC:16 COM:1 MVG:4@0@d@
+CCCC_Member@anonymous@incoming_complete@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@incoming_complete@@(int,input_id,TCPC *)@src/ft_session.c@644@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@init_openft_obj@@(Protocol *,openft_data *)@
+CCCC_MemExt@anonymous@init_openft_obj@@(Protocol *,openft_data *)@src/ft_openft.c@192@definition@FT??0@LOC:32 COM:12 MVG:9@0@d@
+CCCC_Member@anonymous@init_source@@(ft_source *)@
+CCCC_MemExt@anonymous@init_source@@(ft_source *)@src/ft_transfer.c@52@definition@FT??0@LOC:5 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@insert_stream@@(TCPC *,ft_stream_dir_t,uint32_t,FTStream *)@
+CCCC_MemExt@anonymous@insert_stream@@(TCPC *,ft_stream_dir_t,uint32_t,FTStream *)@src/ft_stream.c@187@definition@FT???@LOC:11 COM:0 MVG:7@?@d@
+CCCC_Member@anonymous@is_child@@(TCPC *)@
+CCCC_MemExt@anonymous@is_child@@(TCPC *)@src/proto/ft_sharing.c@31@definition@FT???@LOC:6 COM:15 MVG:3@?@d@
+CCCC_Member@anonymous@is_stale_db@@(DBT *)@
+CCCC_MemExt@anonymous@is_stale_db@@(DBT *)@src/ft_search_db.c@2099@definition@FT??0@LOC:10 COM:7 MVG:2@0@d@
+CCCC_Member@anonymous@is_token_punct@@(int)@
+CCCC_MemExt@anonymous@is_token_punct@@(int)@src/ft_search_exec.c@204@definition@FT??0@LOC:10 COM:2 MVG:4@0@d@
+CCCC_Member@anonymous@is_valid_alias@@(const char *)@
+CCCC_MemExt@anonymous@is_valid_alias@@(const char *)@src/ft_node.c@205@definition@FT???@LOC:16 COM:5 MVG:9@?@d@
+CCCC_Member@anonymous@iter_state@@(ft_class_t,ft_state_t,int,int *,FTNetorgForeach,void *)@
+CCCC_MemExt@anonymous@iter_state@@(ft_class_t,ft_state_t,int,int *,FTNetorgForeach,void *)@src/ft_netorg.c@432@definition@FT??0@LOC:14 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@keep_alive@@(void)@
+CCCC_MemExt@anonymous@keep_alive@@(void)@src/ft_conn.c@299@definition@FT???@LOC:33 COM:14 MVG:6@?@d@
+CCCC_Member@anonymous@key_as_md5@@(ds_data_t *,ds_data_t *,SearchData *)@
+CCCC_MemExt@anonymous@key_as_md5@@(ds_data_t *,ds_data_t *,SearchData *)@src/ft_search_exec.c@674@definition@FT??0@LOC:9 COM:1 MVG:4@0@d@
+CCCC_Member@anonymous@length_dummy@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@length_dummy@@(FTNode *,void *)@src/ft_netorg.c@534@definition@FT??0@LOC:4 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@load_queries@@(char *)@
+CCCC_MemExt@anonymous@load_queries@@(char *)@src/test/db_bench.c@416@definition@FT??0@LOC:21 COM:1 MVG:6@0@d@
+CCCC_MemExt@anonymous@load_queries@@(char *)@src/test/old/test/db_bench.c@407@definition@FT??0@LOC:21 COM:1 MVG:6@0@d@
+CCCC_Member@anonymous@load_queries@@(const char *)@
+CCCC_MemExt@anonymous@load_queries@@(const char *)@src/ft_search_db.c@2924@definition@FT??0@LOC:26 COM:1 MVG:6@0@d@
+CCCC_Member@anonymous@load_test_data@@(char *)@
+CCCC_MemExt@anonymous@load_test_data@@(char *)@src/test/db_bench.c@314@definition@FT??0@LOC:83 COM:3 MVG:19@0@d@
+CCCC_MemExt@anonymous@load_test_data@@(char *)@src/test/old/test/db_bench.c@305@definition@FT??0@LOC:83 COM:3 MVG:19@0@d@
+CCCC_Member@anonymous@load_test_data@@(const char *)@
+CCCC_MemExt@anonymous@load_test_data@@(const char *)@src/ft_search_db.c@2806@definition@FT??0@LOC:86 COM:0 MVG:16@0@d@
+CCCC_Member@anonymous@local_flush@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@local_flush@@(FTNode *,void *)@src/ft_share.c@134@definition@FT???@LOC:5 COM:2 MVG:1@?@d@
+CCCC_Member@anonymous@localize_request@@(FTTransfer *,int *)@
+CCCC_MemExt@anonymous@localize_request@@(FTTransfer *,int *)@src/ft_xfer.c@698@definition@FT??0@LOC:54 COM:12 MVG:13@0@d@
+CCCC_Member@anonymous@locate_future_parent@@(FTNode *,FTNode **)@
+CCCC_MemExt@anonymous@locate_future_parent@@(FTNode *,FTNode **)@src/ft_share.c@149@definition@FT???@LOC:7 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@locate_to@@(FTNode *,in_addr_t *)@
+CCCC_MemExt@anonymous@locate_to@@(FTNode *,in_addr_t *)@src/ft_packet.c@638@definition@FT???@LOC:5 COM:3 MVG:1@?@d@
+CCCC_Member@anonymous@log_class_change@@(FTNode *,ft_class_t,ft_class_t,ft_class_t)@
+CCCC_MemExt@anonymous@log_class_change@@(FTNode *,ft_class_t,ft_class_t,ft_class_t)@src/ft_node.c@510@definition@FT???@LOC:27 COM:2 MVG:7@?@d@
+CCCC_Member@anonymous@log_format_time@@(time_t)@
+CCCC_MemExt@anonymous@log_format_time@@(time_t)@src/ft_xfer.c@166@definition@FT??0@LOC:49 COM:6 MVG:3@0@d@
+CCCC_Member@anonymous@look_for@@(cursor_stream *,DBT *)@
+CCCC_MemExt@anonymous@look_for@@(cursor_stream *,DBT *)@src/ft_search_db.c@2117@definition@FT??0@LOC:30 COM:18 MVG:7@0@d@
+CCCC_Member@anonymous@lookup_connection@@(in_addr_t,in_port_t)@
+CCCC_MemExt@anonymous@lookup_connection@@(in_addr_t,in_port_t)@src/ft_xfer.c@516@definition@FT??0@LOC:15 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@lookup_ret@@(DBT *,void **)@
+CCCC_MemExt@anonymous@lookup_ret@@(DBT *,void **)@src/ft_search_db.c@2346@definition@FT??0@LOC:16 COM:6 MVG:6@0@d@
+CCCC_Member@anonymous@lookup_stream@@(TCPC *,ft_stream_dir_t,uint32_t)@
+CCCC_MemExt@anonymous@lookup_stream@@(TCPC *,ft_stream_dir_t,uint32_t)@src/ft_stream.c@173@definition@FT???@LOC:10 COM:0 MVG:6@?@d@
+CCCC_Member@anonymous@main@@()@
+CCCC_MemExt@anonymous@main@@()@src/ft_version.c@82@definition@FT???@LOC:13 COM:1 MVG:4@?@d@
+CCCC_Member@anonymous@main@@(int,char **)@
+CCCC_MemExt@anonymous@main@@(int,char **)@src/ft_guid.c@98@definition@FT???@LOC:20 COM:1 MVG:5@?@d@
+CCCC_MemExt@anonymous@main@@(int,char **)@src/ft_http.c@437@definition@FT???@LOC:9 COM:1 MVG:1@?@d@
+CCCC_MemExt@anonymous@main@@(int,char **)@src/md5.c@650@definition@FT??0@LOC:9 COM:7 MVG:3@0@d@
+CCCC_Member@anonymous@make_conn@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@make_conn@@(FTNode *,void *)@src/ft_conn.c@279@definition@FT???@LOC:4 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@make_conn_for_new_parents@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@make_conn_for_new_parents@@(FTNode *,void *)@src/ft_conn.c@284@definition@FT???@LOC:6 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@make_conn_get_nodes@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@make_conn_get_nodes@@(FTNode *,void *)@src/ft_conn.c@292@definition@FT???@LOC:4 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@make_conn_purpose@@(FTNode *,ft_purpose_t)@
+CCCC_MemExt@anonymous@make_conn_purpose@@(FTNode *,ft_purpose_t)@src/ft_conn.c@255@definition@FT???@LOC:13 COM:6 MVG:4@?@d@
+CCCC_Member@anonymous@make_token@@(const char *,size_t)@
+CCCC_MemExt@anonymous@make_token@@(const char *,size_t)@src/ft_search_exec.c@251@definition@FT??0@LOC:13 COM:4 MVG:6@0@d@
+CCCC_Member@anonymous@match_et@@(List **,List **,int)@
+CCCC_MemExt@anonymous@match_et@@(List **,List **,int)@src/ft_search_db.c@2325@definition@FT??0@LOC:6 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@match_qt@@(List **,List **,int)@
+CCCC_MemExt@anonymous@match_qt@@(List **,List **,int)@src/ft_search_db.c@2243@definition@FT??0@LOC:39 COM:31 MVG:14@0@d@
+CCCC_Member@anonymous@math_dist@@(...)@
+CCCC_MemExt@anonymous@math_dist@@(...)@src/ft_conn.c@633@definition@FT???@LOC:15 COM:3 MVG:4@?@d@
+CCCC_Member@anonymous@md5_bin@@(char *)@
+CCCC_MemExt@anonymous@md5_bin@@(char *)@src/md5.c@622@definition@FT??0@LOC:14 COM:0 MVG:7@0@d@
+CCCC_MemExt@anonymous@md5_bin@@(char *)@src/md5.h@28@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@md5_checksum@@(const char *,off_t)@
+CCCC_MemExt@anonymous@md5_checksum@@(const char *,off_t)@src/md5.h@23@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@md5_digest@@(const char *,off_t)@
+CCCC_MemExt@anonymous@md5_digest@@(const char *,off_t)@src/md5.c@529@definition@FT??0@LOC:11 COM:2 MVG:5@0@d@
+CCCC_MemExt@anonymous@md5_digest@@(const char *,off_t)@src/md5.h@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@md5_dup@@(char *)@
+CCCC_MemExt@anonymous@md5_dup@@(char *)@src/md5.c@548@definition@FT??0@LOC:10 COM:0 MVG:5@0@d@
+CCCC_MemExt@anonymous@md5_dup@@(char *)@src/md5.h@25@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@md5_fmt@@(char *)@
+CCCC_MemExt@anonymous@md5_fmt@@(char *)@src/md5.c@588@definition@FT??0@LOC:7 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@md5_fmt@@(char *)@src/md5.h@27@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@md5_hash_file@@(const char *,off_t)@
+CCCC_MemExt@anonymous@md5_hash_file@@(const char *,off_t)@src/md5.c@341@definition@FT??0@LOC:45 COM:15 MVG:16@0@d@
+CCCC_Member@anonymous@md5_hash_file_mmap@@(char *,long,char **)@
+CCCC_MemExt@anonymous@md5_hash_file_mmap@@(char *,long,char **)@src/md5.c@415@definition@FT??0@LOC:78 COM:17 MVG:23@0@d@
+CCCC_Member@anonymous@md5_string@@(char *)@
+CCCC_MemExt@anonymous@md5_string@@(char *)@src/md5.h@26@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@method_get@@(TCPC *,FTHttpRequest *)@
+CCCC_MemExt@anonymous@method_get@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@31@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@method_get@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@580@definition@FT???@LOC:20 COM:14 MVG:6@?@d@
+CCCC_Member@anonymous@method_head@@(TCPC *,FTHttpRequest *)@
+CCCC_MemExt@anonymous@method_head@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@30@declaration@FT???@LOC:1 COM:15 MVG:0@?@D@
+CCCC_MemExt@anonymous@method_head@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@571@definition@FT???@LOC:5 COM:2 MVG:1@?@d@
+CCCC_Member@anonymous@method_push@@(TCPC *,FTHttpRequest *)@
+CCCC_MemExt@anonymous@method_push@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@32@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@method_push@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@622@definition@FT???@LOC:14 COM:7 MVG:3@?@d@
+CCCC_Member@anonymous@method_unsupported@@(TCPC *,FTHttpRequest *)@
+CCCC_MemExt@anonymous@method_unsupported@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@33@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@method_unsupported@@(TCPC *,FTHttpRequest *)@src/ft_http_server.c@648@definition@FT???@LOC:8 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@netorg_valid@@(FTNode *)@
+CCCC_MemExt@anonymous@netorg_valid@@(FTNode *)@src/ft_netorg.c@95@definition@FT??0@LOC:6 COM:15 MVG:4@0@d@
+CCCC_Member@anonymous@new_parents@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@new_parents@@(FTNode *,void *)@src/ft_conn.c@244@definition@FT???@LOC:8 COM:1 MVG:4@?@d@
+CCCC_Member@anonymous@new_source@@(void)@
+CCCC_MemExt@anonymous@new_source@@(void)@src/ft_transfer.c@64@definition@FT??0@LOC:7 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@next_letter@@(const char **,size_t *)@
+CCCC_MemExt@anonymous@next_letter@@(const char **,size_t *)@src/ft_search_exec.c@218@definition@FT??0@LOC:20 COM:2 MVG:6@0@d@
+CCCC_Member@anonymous@node_set_indirect@@(FTNode *)@
+CCCC_MemExt@anonymous@node_set_indirect@@(FTNode *)@src/ft_node.c@166@definition@FT???@LOC:7 COM:3 MVG:0@?@d@
+CCCC_Member@anonymous@nodelist_add@@(FTNode *,Array **)@
+CCCC_MemExt@anonymous@nodelist_add@@(FTNode *,Array **)@src/proto/ft_handshake.c@294@definition@FT???@LOC:22 COM:15 MVG:4@?@d@
+CCCC_Member@anonymous@nodelist_default@@(Array **)@
+CCCC_MemExt@anonymous@nodelist_default@@(Array **)@src/proto/ft_handshake.c@340@definition@FT???@LOC:12 COM:2 MVG:2@?@d@
+CCCC_Member@anonymous@nodelist_request@@(TCPC *,FTPacket **,ft_class_t,int)@
+CCCC_MemExt@anonymous@nodelist_request@@(TCPC *,FTPacket **,ft_class_t,int)@src/proto/ft_handshake.c@358@definition@FT???@LOC:17 COM:7 MVG:2@?@d@
+CCCC_Member@anonymous@nuke_source@@(FTNode *,in_addr_t,FTTransfer *)@
+CCCC_MemExt@anonymous@nuke_source@@(FTNode *,in_addr_t,FTTransfer *)@src/proto/ft_push.c@133@definition@FT???@LOC:21 COM:10 MVG:7@?@d@
+CCCC_Member@anonymous@open_db@@(DB *,char *,char *,DBTYPE,u_int32_t,int)@
+CCCC_MemExt@anonymous@open_db@@(DB *,char *,char *,DBTYPE,u_int32_t,int)@src/ft_search_db.c@274@definition@FT??0@LOC:15 COM:5 MVG:2@0@d@
+CCCC_Member@anonymous@open_db_sharedata@@(void)@
+CCCC_MemExt@anonymous@open_db_sharedata@@(void)@src/ft_search_db.c@435@definition@FT??0@LOC:13 COM:1 MVG:6@0@d@
+CCCC_Member@anonymous@open_db_shareidx@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@open_db_shareidx@@(FTSearchDB *)@src/ft_search_db.c@501@definition@FT??0@LOC:23 COM:13 MVG:11@0@d@
+CCCC_Member@anonymous@open_share@@(Share *)@
+CCCC_MemExt@anonymous@open_share@@(Share *)@src/ft_http_server.c@663@definition@FT???@LOC:10 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@openft_bind@@(in_port_t)@
+CCCC_MemExt@anonymous@openft_bind@@(in_port_t)@src/ft_openft.c@60@definition@FT??0@LOC:9 COM:10 MVG:4@0@d@
+CCCC_Member@anonymous@openft_browse@@(Protocol *,IFEvent *,char *,char *)@
+CCCC_MemExt@anonymous@openft_browse@@(Protocol *,IFEvent *,char *,char *)@src/ft_search.c@532@definition@FT??0@LOC:14 COM:14 MVG:4@0@d@
+CCCC_MemExt@anonymous@openft_browse@@(Protocol *,IFEvent *,char *,char *)@src/ft_search.h@73@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@openft_chunk_resume@@(Protocol *,Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@openft_chunk_resume@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.c@679@definition@FT??0@LOC:8 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@openft_chunk_resume@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.h@162@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_chunk_resume@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_xfer.c@1207@definition@FT??0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@openft_chunk_suspend@@(Protocol *,Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@openft_chunk_suspend@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.c@667@definition@FT??0@LOC:8 COM:0 MVG:3@0@d@
+CCCC_MemExt@anonymous@openft_chunk_suspend@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.h@157@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_chunk_suspend@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_xfer.c@1201@definition@FT??0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@openft_destroy@@(Protocol *)@
+CCCC_MemExt@anonymous@openft_destroy@@(Protocol *)@src/ft_openft.c@285@definition@FT??0@LOC:18 COM:7 MVG:0@0@d@
+CCCC_Member@anonymous@openft_download_start@@(Protocol *,Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@openft_download_start@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.c@532@definition@FT??0@LOC:51 COM:17 MVG:17@0@d@
+CCCC_MemExt@anonymous@openft_download_start@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.h@132@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_download_start@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_xfer.c@1013@definition@FT??0@LOC:51 COM:7 MVG:13@0@d@
+CCCC_Member@anonymous@openft_download_stop@@(Protocol *,Transfer *,Chunk *,Source *,BOOL)@
+CCCC_MemExt@anonymous@openft_download_stop@@(Protocol *,Transfer *,Chunk *,Source *,BOOL)@src/ft_transfer.c@613@definition@FT??0@LOC:13 COM:1 MVG:2@0@d@
+CCCC_MemExt@anonymous@openft_download_stop@@(Protocol *,Transfer *,Chunk *,Source *,BOOL)@src/ft_transfer.h@140@declaration@F???0@LOC:2 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@openft_download_stop@@(Protocol *,Transfer *,Chunk *,Source *,int)@
+CCCC_MemExt@anonymous@openft_download_stop@@(Protocol *,Transfer *,Chunk *,Source *,int)@src/ft_xfer.c@1086@definition@FT??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@openft_locate@@(Protocol *,IFEvent *,char *,char *)@
+CCCC_MemExt@anonymous@openft_locate@@(Protocol *,IFEvent *,char *,char *)@src/ft_search.c@569@definition@FT??0@LOC:6 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@openft_locate@@(Protocol *,IFEvent *,char *,char *)@src/ft_search.h@78@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@openft_md5@@(const char *,size_t *)@
+CCCC_MemExt@anonymous@openft_md5@@(const char *,size_t *)@src/ft_openft.c@97@definition@FT??0@LOC:5 COM:1 MVG:1@0@d@
+CCCC_Member@anonymous@openft_search@@(Protocol *,IFEvent *,char *,char *,char *,Dataset *)@
+CCCC_MemExt@anonymous@openft_search@@(Protocol *,IFEvent *,char *,char *,char *,Dataset *)@src/ft_search.c@489@definition@FT??0@LOC:6 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@openft_search@@(Protocol *,IFEvent *,char *,char *,char *,Dataset *)@src/ft_search.h@67@declaration@F????@LOC:2 COM:4 MVG:0@?@D@
+CCCC_Member@anonymous@openft_search_cancel@@(Protocol *,IFEvent *)@
+CCCC_MemExt@anonymous@openft_search_cancel@@(Protocol *,IFEvent *)@src/ft_search.c@578@definition@FT??0@LOC:9 COM:0 MVG:2@0@d@
+CCCC_MemExt@anonymous@openft_search_cancel@@(Protocol *,IFEvent *)@src/ft_search.h@83@declaration@F????@LOC:1 COM:3 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_add@@(Protocol *,FileShare *,void *)@
+CCCC_MemExt@anonymous@openft_share_add@@(Protocol *,FileShare *,void *)@src/ft_share.h@38@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_add@@(Protocol *,Share *,void *)@
+CCCC_MemExt@anonymous@openft_share_add@@(Protocol *,Share *,void *)@src/ft_share.c@246@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@openft_share_free@@(Protocol *,FileShare *,void *)@
+CCCC_MemExt@anonymous@openft_share_free@@(Protocol *,FileShare *,void *)@src/ft_share.h@37@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_free@@(Protocol *,Share *,void *)@
+CCCC_MemExt@anonymous@openft_share_free@@(Protocol *,Share *,void *)@src/ft_share.c@231@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@openft_share_hide@@(Protocol *)@
+CCCC_MemExt@anonymous@openft_share_hide@@(Protocol *)@src/ft_share.c@297@definition@FT???@LOC:3 COM:2 MVG:0@?@d@
+CCCC_MemExt@anonymous@openft_share_hide@@(Protocol *)@src/ft_share.h@41@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_new@@(Protocol *,FileShare *)@
+CCCC_MemExt@anonymous@openft_share_new@@(Protocol *,FileShare *)@src/ft_share.h@36@declaration@F????@LOC:1 COM:1 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_new@@(Protocol *,Share *)@
+CCCC_MemExt@anonymous@openft_share_new@@(Protocol *,Share *)@src/ft_share.c@226@definition@FT???@LOC:4 COM:1 MVG:1@?@d@
+CCCC_Member@anonymous@openft_share_remove@@(Protocol *,FileShare *,void *)@
+CCCC_MemExt@anonymous@openft_share_remove@@(Protocol *,FileShare *,void *)@src/ft_share.h@39@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_remove@@(Protocol *,Share *,void *)@
+CCCC_MemExt@anonymous@openft_share_remove@@(Protocol *,Share *,void *)@src/ft_share.c@262@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@openft_share_show@@(Protocol *)@
+CCCC_MemExt@anonymous@openft_share_show@@(Protocol *)@src/ft_share.c@302@definition@FT???@LOC:3 COM:1 MVG:0@?@d@
+CCCC_MemExt@anonymous@openft_share_show@@(Protocol *)@src/ft_share.h@42@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_share_sync@@(Protocol *,int)@
+CCCC_MemExt@anonymous@openft_share_sync@@(Protocol *,int)@src/ft_share.c@283@definition@FT???@LOC:7 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@openft_share_sync@@(Protocol *,int)@src/ft_share.h@40@declaration@F????@LOC:1 COM:0 MVG:0@?@D@
+CCCC_Member@anonymous@openft_source_add@@(Protocol *,Transfer *,Source *)@
+CCCC_MemExt@anonymous@openft_source_add@@(Protocol *,Transfer *,Source *)@src/ft_transfer.c@693@definition@FT??0@LOC:17 COM:2 MVG:5@0@d@
+CCCC_MemExt@anonymous@openft_source_add@@(Protocol *,Transfer *,Source *)@src/ft_transfer.h@173@declaration@F???0@LOC:1 COM:8 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_source_add@@(Protocol *,Transfer *,Source *)@src/ft_xfer.c@1215@definition@FT??0@LOC:4 COM:2 MVG:1@0@d@
+CCCC_Member@anonymous@openft_source_cmp@@(Protocol *,Source *,Source *)@
+CCCC_MemExt@anonymous@openft_source_cmp@@(Protocol *,Source *,Source *)@src/ft_transfer.c@762@definition@FT??0@LOC:10 COM:5 MVG:1@0@d@
+CCCC_MemExt@anonymous@openft_source_cmp@@(Protocol *,Source *,Source *)@src/ft_transfer.h@187@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_source_cmp@@(Protocol *,Source *,Source *)@src/ft_xfer.c@1244@definition@FT??0@LOC:22 COM:2 MVG:7@0@d@
+CCCC_Member@anonymous@openft_source_remove@@(Protocol *,Transfer *,Source *)@
+CCCC_MemExt@anonymous@openft_source_remove@@(Protocol *,Transfer *,Source *)@src/ft_transfer.c@717@definition@FT??0@LOC:10 COM:1 MVG:1@0@d@
+CCCC_MemExt@anonymous@openft_source_remove@@(Protocol *,Transfer *,Source *)@src/ft_transfer.h@178@declaration@F???0@LOC:1 COM:3 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_source_remove@@(Protocol *,Transfer *,Source *)@src/ft_xfer.c@1221@definition@FT??0@LOC:16 COM:0 MVG:5@0@d@
+CCCC_Member@anonymous@openft_start@@(Protocol *)@
+CCCC_MemExt@anonymous@openft_start@@(Protocol *)@src/ft_openft.c@130@definition@FT??0@LOC:4 COM:0 MVG:1@0@d@
+CCCC_MemExt@anonymous@openft_start@@(Protocol *)@src/ft_openft.c@245@definition@FT??0@LOC:15 COM:9 MVG:6@0@d@
+CCCC_Member@anonymous@openft_stats@@(Protocol *,long *,long *,double *,Dataset **)@
+CCCC_MemExt@anonymous@openft_stats@@(Protocol *,long *,long *,double *,Dataset **)@src/ft_stats.c@145@definition@FT???@LOC:26 COM:7 MVG:4@?@d@
+CCCC_MemExt@anonymous@openft_stats@@(Protocol *,long *,long *,double *,Dataset **)@src/ft_stats.h@43@declaration@F???0@LOC:2 COM:1 MVG:0@0@D@
+CCCC_Member@anonymous@openft_upload_avail@@(Protocol *,long)@
+CCCC_MemExt@anonymous@openft_upload_avail@@(Protocol *,long)@src/ft_transfer.c@805@definition@FT??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_MemExt@anonymous@openft_upload_avail@@(Protocol *,long)@src/ft_transfer.h@202@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_upload_avail@@(Protocol *,long)@src/ft_xfer.c@1109@definition@FT??0@LOC:6 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@openft_upload_stop@@(Protocol *,Transfer *,Chunk *,Source *)@
+CCCC_MemExt@anonymous@openft_upload_stop@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.c@633@definition@FT??0@LOC:11 COM:3 MVG:2@0@d@
+CCCC_MemExt@anonymous@openft_upload_stop@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_transfer.h@150@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_MemExt@anonymous@openft_upload_stop@@(Protocol *,Transfer *,Chunk *,Source *)@src/ft_xfer.c@1097@definition@FT??0@LOC:5 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@openft_user_cmp@@(Protocol *,char *,char *)@
+CCCC_MemExt@anonymous@openft_user_cmp@@(Protocol *,char *,char *)@src/ft_xfer.c@1274@definition@FT??0@LOC:9 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@openft_user_cmp@@(Protocol *,const char *,const char *)@
+CCCC_MemExt@anonymous@openft_user_cmp@@(Protocol *,const char *,const char *)@src/ft_transfer.c@776@definition@FT??0@LOC:9 COM:1 MVG:3@0@d@
+CCCC_MemExt@anonymous@openft_user_cmp@@(Protocol *,const char *,const char *)@src/ft_transfer.h@193@declaration@F???0@LOC:1 COM:4 MVG:0@0@D@
+CCCC_Member@anonymous@outgoing_complete@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@outgoing_complete@@(int,input_id,TCPC *)@src/ft_session.c@573@definition@FT???@LOC:4 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@output_flush@@(FTStream *)@
+CCCC_MemExt@anonymous@output_flush@@(FTStream *)@src/ft_stream.c@274@definition@FT???@LOC:36 COM:2 MVG:13@?@d@
+CCCC_Member@anonymous@packet_append@@(FTPacket *,void *,size_t)@
+CCCC_MemExt@anonymous@packet_append@@(FTPacket *,void *,size_t)@src/ft_packet.c@283@definition@FT???@LOC:15 COM:6 MVG:9@?@d@
+CCCC_Member@anonymous@packet_resize@@(FTPacket *,size_t)@
+CCCC_MemExt@anonymous@packet_resize@@(FTPacket *,size_t)@src/ft_packet.c@34@definition@FT???@LOC:30 COM:26 MVG:11@?@d@
+CCCC_Member@anonymous@parse_request@@(char *,in_addr_t *,in_port_t *,in_addr_t *,in_port_t *,char **)@
+CCCC_MemExt@anonymous@parse_request@@(char *,in_addr_t *,in_port_t *,in_addr_t *,in_port_t *,char **)@src/ft_xfer.c@75@definition@FT??0@LOC:33 COM:20 MVG:14@0@d@
+CCCC_Member@anonymous@parse_source@@(ft_source *,const char *)@
+CCCC_MemExt@anonymous@parse_source@@(ft_source *,const char *)@src/ft_transfer.c@146@definition@FT??0@LOC:19 COM:2 MVG:6@0@d@
+CCCC_Member@anonymous@pending_packets@@(in_addr_t,in_port_t,in_port_t,short)@
+CCCC_MemExt@anonymous@pending_packets@@(in_addr_t,in_port_t,in_port_t,short)@src/proto/ft_handshake.c@174@definition@FT???@LOC:15 COM:9 MVG:6@?@d@
+CCCC_Member@anonymous@prep_upload@@(TCPC *,FTHttpRequest *,Share *)@
+CCCC_MemExt@anonymous@prep_upload@@(TCPC *,FTHttpRequest *,Share *)@src/ft_http_server.c@34@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@prep_upload@@(TCPC *,FTHttpRequest *,Share *)@src/ft_http_server.c@724@definition@FT???@LOC:33 COM:3 MVG:9@?@d@
+CCCC_Member@anonymous@push_access@@(in_addr_t,const char *)@
+CCCC_MemExt@anonymous@push_access@@(in_addr_t,const char *)@src/ft_transfer.c@477@definition@FT??0@LOC:12 COM:4 MVG:3@0@d@
+CCCC_MemExt@anonymous@push_access@@(in_addr_t,const char *)@src/ft_transfer.h@211@declaration@F???0@LOC:1 COM:6 MVG:0@0@D@
+CCCC_Member@anonymous@push_add@@(ft_source *,FTTransfer *)@
+CCCC_MemExt@anonymous@push_add@@(ft_source *,FTTransfer *)@src/ft_transfer.c@443@definition@FT??0@LOC:7 COM:4 MVG:1@0@d@
+CCCC_Member@anonymous@push_complete_connect@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@push_complete_connect@@(int,input_id,TCPC *)@src/ft_http_client.c@27@declaration@FT???@LOC:1 COM:15 MVG:0@?@D@
+CCCC_MemExt@anonymous@push_complete_connect@@(int,input_id,TCPC *)@src/ft_http_client.c@67@definition@FT???@LOC:28 COM:7 MVG:7@?@d@
+CCCC_Member@anonymous@push_find_xfer@@(ds_data_t *,ds_data_t *,void **)@
+CCCC_MemExt@anonymous@push_find_xfer@@(ds_data_t *,ds_data_t *,void **)@src/ft_transfer.c@465@definition@FT??0@LOC:9 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@push_forward_error@@(FTNode *,in_addr_t,const char *)@
+CCCC_MemExt@anonymous@push_forward_error@@(FTNode *,in_addr_t,const char *)@src/proto/ft_push.c@173@definition@FT???@LOC:18 COM:7 MVG:3@?@d@
+CCCC_Member@anonymous@push_forward_success@@(FTNode *,in_addr_t)@
+CCCC_MemExt@anonymous@push_forward_success@@(FTNode *,in_addr_t)@src/proto/ft_push.c@205@definition@FT???@LOC:4 COM:2 MVG:0@?@d@
+CCCC_Member@anonymous@push_remove@@(FTTransfer *)@
+CCCC_MemExt@anonymous@push_remove@@(FTTransfer *)@src/ft_transfer.c@456@definition@FT??0@LOC:8 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@push_send_request@@(ft_source *)@
+CCCC_MemExt@anonymous@push_send_request@@(ft_source *)@src/ft_transfer.c@389@definition@FT??0@LOC:31 COM:15 MVG:8@0@d@
+CCCC_Member@anonymous@put_uint32_array@@(FTPacket *,uint32_t *)@
+CCCC_MemExt@anonymous@put_uint32_array@@(FTPacket *,uint32_t *)@src/ft_packet.c@690@definition@FT???@LOC:6 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@randomize_conn_iptr@@(ft_state_t)@
+CCCC_MemExt@anonymous@randomize_conn_iptr@@(ft_state_t)@src/ft_netorg.c@478@definition@FT??0@LOC:13 COM:3 MVG:7@0@d@
+CCCC_Member@anonymous@read_cache@@()@
+CCCC_MemExt@anonymous@read_cache@@()@src/ft_node_cache.c@108@definition@FT??0@LOC:33 COM:4 MVG:7@0@d@
+CCCC_Member@anonymous@rem_conn_list@@(ft_state_t,FTNode *)@
+CCCC_MemExt@anonymous@rem_conn_list@@(ft_state_t,FTNode *)@src/ft_netorg.c@225@definition@FT??0@LOC:12 COM:8 MVG:5@0@d@
+CCCC_Member@anonymous@remove_db@@(DB_ENV *,char *,char *)@
+CCCC_MemExt@anonymous@remove_db@@(DB_ENV *,char *,char *)@src/ft_search_db.c@303@definition@FT??0@LOC:20 COM:1 MVG:8@0@d@
+CCCC_Member@anonymous@remove_download@@(FTTransfer *)@
+CCCC_MemExt@anonymous@remove_download@@(FTTransfer *)@src/ft_transfer.c@181@definition@FT??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@remove_dups@@(uint32_t *,int)@
+CCCC_MemExt@anonymous@remove_dups@@(uint32_t *,int)@src/test/db_bench.c@189@definition@FT???@LOC:18 COM:1 MVG:7@?@d@
+CCCC_MemExt@anonymous@remove_dups@@(uint32_t *,int)@src/test/old/test/db_bench.c@180@definition@FT???@LOC:18 COM:1 MVG:7@?@d@
+CCCC_Member@anonymous@remove_stream@@(FTStream *)@
+CCCC_MemExt@anonymous@remove_stream@@(FTStream *)@src/ft_stream.c@202@definition@FT???@LOC:10 COM:0 MVG:5@?@d@
+CCCC_Member@anonymous@result_add_meta@@(ds_data_t *,ds_data_t *,FTPacket *)@
+CCCC_MemExt@anonymous@result_add_meta@@(ds_data_t *,ds_data_t *,FTPacket *)@src/proto/ft_query.c@219@definition@FT??0@LOC:5 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@result_reply@@(Share *,FTSearch *)@
+CCCC_MemExt@anonymous@result_reply@@(Share *,FTSearch *)@src/ft_search.c@384@definition@FT??0@LOC:21 COM:1 MVG:5@0@d@
+CCCC_Member@anonymous@rewrite_cache@@(char *)@
+CCCC_MemExt@anonymous@rewrite_cache@@(char *)@src/ft_node_cache.c@219@definition@FT??0@LOC:32 COM:3 MVG:10@0@d@
+CCCC_Member@anonymous@run_insert@@(void)@
+CCCC_MemExt@anonymous@run_insert@@(void)@src/ft_search_db.c@2959@definition@FT??0@LOC:32 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@run_remove@@(int)@
+CCCC_MemExt@anonymous@run_remove@@(int)@src/ft_search_db.c@3039@definition@FT??0@LOC:74 COM:0 MVG:11@0@d@
+CCCC_Member@anonymous@run_search@@(void)@
+CCCC_MemExt@anonymous@run_search@@(void)@src/ft_search_db.c@3000@definition@FT??0@LOC:30 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@search_begin@@(FTSearch *)@
+CCCC_MemExt@anonymous@search_begin@@(FTSearch *)@src/ft_search_obj.c@55@definition@FT???@LOC:8 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@search_by_event@@(ds_data_t *,ds_data_t *,IFEvent *)@
+CCCC_MemExt@anonymous@search_by_event@@(ds_data_t *,ds_data_t *,IFEvent *)@src/ft_search_obj.c@128@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@search_children@@(FTSearch *)@
+CCCC_MemExt@anonymous@search_children@@(FTSearch *)@src/ft_search.c@416@definition@FT??0@LOC:7 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@search_db_free@@(FTSearchDB *)@
+CCCC_MemExt@anonymous@search_db_free@@(FTSearchDB *)@src/ft_search_db.c@252@definition@FT??0@LOC:10 COM:7 MVG:2@0@d@
+CCCC_Member@anonymous@search_db_new@@(FTNode *)@
+CCCC_MemExt@anonymous@search_db_new@@(FTNode *)@src/ft_search_db.c@236@definition@FT??0@LOC:11 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@search_free@@(FTSearch *)@
+CCCC_MemExt@anonymous@search_free@@(FTSearch *)@src/ft_search_obj.c@93@definition@FT???@LOC:7 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@search_local@@(SearchData *)@
+CCCC_MemExt@anonymous@search_local@@(SearchData *)@src/ft_search_exec.c@687@definition@FT??0@LOC:8 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@search_parents@@(FTSearch *)@
+CCCC_MemExt@anonymous@search_parents@@(FTSearch *)@src/ft_search.c@425@definition@FT??0@LOC:15 COM:3 MVG:3@0@d@
+CCCC_Member@anonymous@search_remote@@(SearchData *)@
+CCCC_MemExt@anonymous@search_remote@@(SearchData *)@src/ft_search_exec.c@610@definition@FT??0@LOC:35 COM:23 MVG:10@0@d@
+CCCC_Member@anonymous@search_reply@@(FTSearch *,search_result *)@
+CCCC_MemExt@anonymous@search_reply@@(FTSearch *,search_result *)@src/ft_search.c@173@definition@FT??0@LOC:26 COM:18 MVG:8@0@d@
+CCCC_Member@anonymous@search_reply_logic@@(FTSearch *,search_result *)@
+CCCC_MemExt@anonymous@search_reply_logic@@(FTSearch *,search_result *)@src/ft_search.c@227@definition@FT??0@LOC:10 COM:2 MVG:2@0@d@
+CCCC_Member@anonymous@search_reply_term@@(FTSearch *,search_result *)@
+CCCC_MemExt@anonymous@search_reply_term@@(FTSearch *,search_result *)@src/ft_search.c@153@definition@FT??0@LOC:9 COM:8 MVG:2@0@d@
+CCCC_Member@anonymous@search_result@@(Share *,sreply_t *)@
+CCCC_MemExt@anonymous@search_result@@(Share *,sreply_t *)@src/proto/ft_query.c@364@definition@FT??0@LOC:9 COM:4 MVG:3@0@d@
+CCCC_Member@anonymous@search_result_logic@@(Share *,sreply_t *)@
+CCCC_MemExt@anonymous@search_result_logic@@(Share *,sreply_t *)@src/proto/ft_query.c@311@definition@FT??0@LOC:34 COM:9 MVG:12@0@d@
+CCCC_Member@anonymous@search_timeout@@(FTSearch *)@
+CCCC_MemExt@anonymous@search_timeout@@(FTSearch *)@src/ft_search_obj.c@49@definition@FT???@LOC:5 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@send_browse@@(ds_data_t *,ds_data_t *,sreply_t *)@
+CCCC_MemExt@anonymous@send_browse@@(ds_data_t *,ds_data_t *,sreply_t *)@src/proto/ft_query.c@1026@definition@FT??0@LOC:26 COM:1 MVG:7@0@d@
+CCCC_Member@anonymous@send_file@@(int,input_id,FTTransfer *)@
+CCCC_MemExt@anonymous@send_file@@(int,input_id,FTTransfer *)@src/ft_http_server.c@35@declaration@FT???@LOC:1 COM:0 MVG:0@?@D@
+CCCC_MemExt@anonymous@send_file@@(int,input_id,FTTransfer *)@src/ft_http_server.c@770@definition@FT???@LOC:51 COM:10 MVG:12@?@d@
+CCCC_Member@anonymous@send_heartbeat@@(FTNode *,Dataset *)@
+CCCC_MemExt@anonymous@send_heartbeat@@(FTNode *,Dataset *)@src/ft_conn.c@135@definition@FT???@LOC:10 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@send_packet@@(FTPacket *,TCPC *)@
+CCCC_MemExt@anonymous@send_packet@@(FTPacket *,TCPC *)@src/ft_session.c@213@definition@FT???@LOC:6 COM:4 MVG:1@?@d@
+CCCC_Member@anonymous@send_packet@@(TCPC *,FTStream *,FTPacket *)@
+CCCC_MemExt@anonymous@send_packet@@(TCPC *,FTStream *,FTPacket *)@src/ft_share.c@42@definition@FT???@LOC:7 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@send_push@@(char *,off_t,off_t,in_addr_t,in_port_t,in_addr_t,in_port_t)@
+CCCC_MemExt@anonymous@send_push@@(char *,off_t,off_t,in_addr_t,in_port_t,in_addr_t,in_port_t)@src/ft_xfer.c@952@definition@FT??0@LOC:36 COM:16 MVG:8@0@d@
+CCCC_Member@anonymous@send_search@@(FTNode *,FTSearch *)@
+CCCC_MemExt@anonymous@send_search@@(FTNode *,FTSearch *)@src/ft_search.c@290@definition@FT??0@LOC:42 COM:27 MVG:12@0@d@
+CCCC_Member@anonymous@serialize_fld@@(sharedata_data *,char *,size_t)@
+CCCC_MemExt@anonymous@serialize_fld@@(sharedata_data *,char *,size_t)@src/ft_search_db.c@788@definition@FT??0@LOC:17 COM:2 MVG:4@0@d@
+CCCC_Member@anonymous@serialize_record@@(DBT *,Hash *,uint32_t *,Share *)@
+CCCC_MemExt@anonymous@serialize_record@@(DBT *,Hash *,uint32_t *,Share *)@src/ft_search_db.c@822@definition@FT??0@LOC:14 COM:3 MVG:1@0@d@
+CCCC_Member@anonymous@session_auth_packet@@(TCPC *,FTPacket *)@
+CCCC_MemExt@anonymous@session_auth_packet@@(TCPC *,FTPacket *)@src/ft_session.c@34@definition@FT???@LOC:22 COM:18 MVG:12@?@d@
+CCCC_Member@anonymous@session_destroy_data@@(FTSession *)@
+CCCC_MemExt@anonymous@session_destroy_data@@(FTSession *)@src/ft_session.c@286@definition@FT???@LOC:11 COM:5 MVG:0@?@d@
+CCCC_Member@anonymous@session_flush_queue@@(TCPC *,int)@
+CCCC_MemExt@anonymous@session_flush_queue@@(TCPC *,int)@src/ft_session.c@224@definition@FT???@LOC:24 COM:9 MVG:7@?@d@
+CCCC_Member@anonymous@session_handle@@(int,input_id,TCPC *)@
+CCCC_MemExt@anonymous@session_handle@@(int,input_id,TCPC *)@src/ft_session.c@86@definition@FT???@LOC:46 COM:10 MVG:15@?@d@
+CCCC_Member@anonymous@session_reset_data@@(FTSession *)@
+CCCC_MemExt@anonymous@session_reset_data@@(FTSession *)@src/ft_session.c@268@definition@FT???@LOC:14 COM:2 MVG:0@?@d@
+CCCC_Member@anonymous@session_stop@@(TCPC *)@
+CCCC_MemExt@anonymous@session_stop@@(TCPC *)@src/ft_session.c@335@definition@FT???@LOC:14 COM:6 MVG:2@?@d@
+CCCC_Member@anonymous@set_ft_transfer@@(Chunk *,FTTransfer *)@
+CCCC_MemExt@anonymous@set_ft_transfer@@(Chunk *,FTTransfer *)@src/ft_transfer.c@500@definition@FT??0@LOC:6 COM:11 MVG:1@0@d@
+CCCC_Member@anonymous@set_keep@@(FTNode *,void *)@
+CCCC_MemExt@anonymous@set_keep@@(FTNode *,void *)@src/ft_conn.c@129@definition@FT???@LOC:5 COM:1 MVG:1@?@d@
+CCCC_Member@anonymous@set_params@@(ft_search_parms_t *,ft_search_flags_t,const char *,const char *,const char *)@
+CCCC_MemExt@anonymous@set_params@@(ft_search_parms_t *,ft_search_flags_t,const char *,const char *,const char *)@src/ft_search_obj.c@34@definition@FT???@LOC:13 COM:1 MVG:0@?@d@
+CCCC_Member@anonymous@setup_functbl@@(Protocol *)@
+CCCC_MemExt@anonymous@setup_functbl@@(Protocol *)@src/ft_openft.c@321@definition@FT??0@LOC:34 COM:17 MVG:0@0@d@
+CCCC_Member@anonymous@share_add@@(FTNode *,Share *)@
+CCCC_MemExt@anonymous@share_add@@(FTNode *,Share *)@src/ft_share.c@238@definition@FT???@LOC:6 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@share_foreach@@(DatasetForeachExFn,void *)@
+CCCC_MemExt@anonymous@share_foreach@@(DatasetForeachExFn,void *)@src/ft_search_exec.c@25@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_MemExt@anonymous@share_foreach@@(DatasetForeachExFn,void *)@src/proto/ft_query.c@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@share_index@@(long *,double *)@
+CCCC_MemExt@anonymous@share_index@@(long *,double *)@src/ft_share.c@22@declaration@F????@LOC:1 COM:15 MVG:0@?@D@
+CCCC_Member@anonymous@share_remove@@(FTNode *,Share *)@
+CCCC_MemExt@anonymous@share_remove@@(FTNode *,Share *)@src/ft_share.c@254@definition@FT???@LOC:6 COM:0 MVG:2@?@d@
+CCCC_Member@anonymous@share_sync@@(FTNode *,int *)@
+CCCC_MemExt@anonymous@share_sync@@(FTNode *,int *)@src/ft_share.c@271@definition@FT???@LOC:9 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@share_sync_begin@@(FTNode *)@
+CCCC_MemExt@anonymous@share_sync_begin@@(FTNode *)@src/ft_share.c@96@definition@FT???@LOC:10 COM:8 MVG:1@?@d@
+CCCC_Member@anonymous@share_sync_end@@(FTNode *)@
+CCCC_MemExt@anonymous@share_sync_end@@(FTNode *)@src/ft_share.c@117@definition@FT???@LOC:11 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@sharedata_meta@@(ds_data_t *,ds_data_t *,sharedata_data *)@
+CCCC_MemExt@anonymous@sharedata_meta@@(ds_data_t *,ds_data_t *,sharedata_data *)@src/ft_search_db.c@812@definition@FT??0@LOC:8 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@sort_and_uniq@@(token_list *)@
+CCCC_MemExt@anonymous@sort_and_uniq@@(token_list *)@src/ft_search_exec.c@379@definition@FT??0@LOC:23 COM:8 MVG:6@0@d@
+CCCC_Member@anonymous@sreply_finish@@(sreply_t *)@
+CCCC_MemExt@anonymous@sreply_finish@@(sreply_t *)@src/proto/ft_query.c@201@definition@FT??0@LOC:4 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@sreply_init@@(sreply_t *,TCPC *,FTStream *,sparams_t *)@
+CCCC_MemExt@anonymous@sreply_init@@(sreply_t *,TCPC *,FTStream *,sparams_t *)@src/proto/ft_query.c@193@definition@FT??0@LOC:7 COM:1 MVG:0@0@d@
+CCCC_Member@anonymous@sreply_result@@(sreply_t *,ft_nodeinfo_t *,Share *,int,BOOL)@
+CCCC_MemExt@anonymous@sreply_result@@(sreply_t *,ft_nodeinfo_t *,Share *,int,BOOL)@src/proto/ft_query.c@225@definition@FT??0@LOC:34 COM:21 MVG:10@0@d@
+CCCC_Member@anonymous@sreply_send@@(sreply_t *,FTPacket *)@
+CCCC_MemExt@anonymous@sreply_send@@(sreply_t *,FTPacket *)@src/proto/ft_query.c@206@definition@FT??0@LOC:9 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@stage_1@@(TCPC *)@
+CCCC_MemExt@anonymous@stage_1@@(TCPC *)@src/ft_session.c@403@definition@FT???@LOC:6 COM:3 MVG:0@?@d@
+CCCC_Member@anonymous@stage_2@@(TCPC *)@
+CCCC_MemExt@anonymous@stage_2@@(TCPC *)@src/ft_session.c@414@definition@FT???@LOC:30 COM:9 MVG:7@?@d@
+CCCC_Member@anonymous@stage_3@@(TCPC *)@
+CCCC_MemExt@anonymous@stage_3@@(TCPC *)@src/ft_session.c@461@definition@FT???@LOC:4 COM:2 MVG:0@?@d@
+CCCC_Member@anonymous@stage_4@@(TCPC *)@
+CCCC_MemExt@anonymous@stage_4@@(TCPC *)@src/ft_session.c@468@definition@FT???@LOC:8 COM:8 MVG:0@?@d@
+CCCC_Member@anonymous@start_connection@@(FTNode *,int *)@
+CCCC_MemExt@anonymous@start_connection@@(FTNode *,int *)@src/ft_conn.c@672@definition@FT???@LOC:13 COM:5 MVG:7@?@d@
+CCCC_Member@anonymous@stats_collect@@(ds_data_t *,ds_data_t *,ft_stats_t *)@
+CCCC_MemExt@anonymous@stats_collect@@(ds_data_t *,ds_data_t *,ft_stats_t *)@src/ft_stats.c@102@definition@FT???@LOC:6 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@stats_collect_by_user@@(ds_data_t *,ds_data_t *,ft_stats_t *)@
+CCCC_MemExt@anonymous@stats_collect_by_user@@(ds_data_t *,ds_data_t *,ft_stats_t *)@src/ft_stats.c@92@definition@FT???@LOC:8 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@stream_copy@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@
+CCCC_MemExt@anonymous@stream_copy@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@src/ft_stream.c@552@definition@FT???@LOC:23 COM:6 MVG:4@?@d@
+CCCC_Member@anonymous@stream_decompress@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@
+CCCC_MemExt@anonymous@stream_decompress@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@src/ft_stream.c@513@definition@FT???@LOC:24 COM:6 MVG:7@?@d@
+CCCC_Member@anonymous@stream_deflate@@(FTStream *,char *,size_t)@
+CCCC_MemExt@anonymous@stream_deflate@@(FTStream *,char *,size_t)@src/ft_stream.c@398@definition@FT???@LOC:7 COM:2 MVG:1@?@d@
+CCCC_Member@anonymous@stream_free@@(FTStream *)@
+CCCC_MemExt@anonymous@stream_free@@(FTStream *)@src/ft_stream.c@118@definition@FT???@LOC:13 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@stream_id@@(TCPC *)@
+CCCC_MemExt@anonymous@stream_id@@(TCPC *)@src/ft_stream.c@37@definition@FT???@LOC:14 COM:2 MVG:6@?@d@
+CCCC_Member@anonymous@stream_init@@(FTStream *,ft_stream_dir_t)@
+CCCC_MemExt@anonymous@stream_init@@(FTStream *,ft_stream_dir_t)@src/ft_stream.c@58@definition@FT???@LOC:26 COM:2 MVG:8@?@d@
+CCCC_Member@anonymous@stream_new@@(TCPC *,ft_stream_dir_t,uint32_t,ft_stream_flags_t,uint16_t)@
+CCCC_MemExt@anonymous@stream_new@@(TCPC *,ft_stream_dir_t,uint32_t,ft_stream_flags_t,uint16_t)@src/ft_stream.c@91@definition@FT???@LOC:21 COM:0 MVG:7@?@d@
+CCCC_Member@anonymous@stream_recv@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@
+CCCC_MemExt@anonymous@stream_recv@@(FTStream *,const char *,size_t,FTStreamRecv,void *)@src/ft_stream.c@589@definition@FT???@LOC:10 COM:1 MVG:2@?@d@
+CCCC_Member@anonymous@stream_write@@(FTStream *,char *,size_t)@
+CCCC_MemExt@anonymous@stream_write@@(FTStream *,char *,size_t)@src/ft_stream.c@28@declaration@FT???@LOC:1 COM:15 MVG:0@?@D@
+CCCC_MemExt@anonymous@stream_write@@(FTStream *,char *,size_t)@src/ft_stream.c@358@definition@FT???@LOC:14 COM:2 MVG:2@?@d@
+CCCC_Member@anonymous@submit_addshare@@(TCPC *,FTStream *,Share *)@
+CCCC_MemExt@anonymous@submit_addshare@@(TCPC *,FTStream *,Share *)@src/ft_share.c@50@definition@FT???@LOC:19 COM:1 MVG:5@?@d@
+CCCC_Member@anonymous@submit_avail@@(FTNode *,long *)@
+CCCC_MemExt@anonymous@submit_avail@@(FTNode *,long *)@src/ft_transfer.c@792@definition@FT??0@LOC:9 COM:1 MVG:3@0@d@
+CCCC_Member@anonymous@submit_digest_child@@(FTNode *,FTNode *)@
+CCCC_MemExt@anonymous@submit_digest_child@@(FTNode *,FTNode *)@src/ft_node.c@450@definition@FT???@LOC:13 COM:2 MVG:5@?@d@
+CCCC_Member@anonymous@submit_digest_index@@(FTNode *,FTNode *)@
+CCCC_MemExt@anonymous@submit_digest_index@@(FTNode *,FTNode *)@src/proto/ft_sharing.c@228@definition@FT???@LOC:11 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@submit_remshare@@(TCPC *,FTStream *,Share *)@
+CCCC_MemExt@anonymous@submit_remshare@@(TCPC *,FTStream *,Share *)@src/ft_share.c@77@definition@FT???@LOC:12 COM:0 MVG:5@?@d@
+CCCC_Member@anonymous@submit_to_index@@(FTNode *,ft_nodeinfo_t *)@
+CCCC_MemExt@anonymous@submit_to_index@@(FTNode *,ft_nodeinfo_t *)@src/ft_node.c@416@definition@FT???@LOC:8 COM:1 MVG:3@?@d@
+CCCC_Member@anonymous@submit_uploads@@(FTNode *,long *)@
+CCCC_MemExt@anonymous@submit_uploads@@(FTNode *,long *)@src/ft_xfer.c@1103@definition@FT??0@LOC:5 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@submit_write@@(ds_data_t *,ds_data_t *,FTNode *)@
+CCCC_MemExt@anonymous@submit_write@@(ds_data_t *,ds_data_t *,FTNode *)@src/ft_share.c@174@definition@FT???@LOC:5 COM:1 MVG:0@?@d@
+CCCC_Member@anonymous@test_benchmarks@@(void)@
+CCCC_MemExt@anonymous@test_benchmarks@@(void)@src/ft_search_db.c@3133@definition@FT??0@LOC:15 COM:3 MVG:0@0@d@
+CCCC_Member@anonymous@test_suite_search_db@@(Protocol *)@
+CCCC_MemExt@anonymous@test_suite_search_db@@(Protocol *)@src/ft_search_db.c@3156@definition@FT??0@LOC:17 COM:0 MVG:5@0@d@
+CCCC_MemExt@anonymous@test_suite_search_db@@(Protocol *)@src/ft_search_db.h@256@declaration@F???0@LOC:1 COM:7 MVG:0@0@D@
+CCCC_Member@anonymous@throttle_resume@@(Chunk *,int,float)@
+CCCC_MemExt@anonymous@throttle_resume@@(Chunk *,int,float)@src/ft_xfer.c@1158@definition@FT??0@LOC:17 COM:0 MVG:7@0@d@
+CCCC_Member@anonymous@throttle_sopt@@(Transfer *)@
+CCCC_MemExt@anonymous@throttle_sopt@@(Transfer *)@src/ft_xfer.c@1184@definition@FT??0@LOC:14 COM:0 MVG:4@0@d@
+CCCC_Member@anonymous@throttle_suspend@@(Chunk *,int,float)@
+CCCC_MemExt@anonymous@throttle_suspend@@(Chunk *,int,float)@src/ft_xfer.c@1134@definition@FT??0@LOC:17 COM:1 MVG:7@0@d@
+CCCC_Member@anonymous@tidy_node@@(FTNode *)@
+CCCC_MemExt@anonymous@tidy_node@@(FTNode *)@src/ft_session.c@325@definition@FT???@LOC:6 COM:2 MVG:0@?@d@
+CCCC_Member@anonymous@tidy_node_search@@(FTNode *)@
+CCCC_MemExt@anonymous@tidy_node_search@@(FTNode *)@src/ft_session.c@308@definition@FT???@LOC:7 COM:5 MVG:1@?@d@
+CCCC_Member@anonymous@tidy_push@@(TCPC *)@
+CCCC_MemExt@anonymous@tidy_push@@(TCPC *)@src/ft_http_client.c@57@definition@FT???@LOC:7 COM:0 MVG:0@?@d@
+CCCC_Member@anonymous@tlist_add@@(token_list *,uint32_t)@
+CCCC_MemExt@anonymous@tlist_add@@(token_list *,uint32_t)@src/ft_search_exec.c@309@definition@FT??0@LOC:7 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@tlist_addstr@@(token_list *,const char *)@
+CCCC_MemExt@anonymous@tlist_addstr@@(token_list *,const char *)@src/ft_search_exec.c@364@definition@FT??0@LOC:7 COM:1 MVG:2@0@d@
+CCCC_Member@anonymous@tlist_addword@@(token_list *,const char *,size_t)@
+CCCC_MemExt@anonymous@tlist_addword@@(token_list *,const char *,size_t)@src/ft_search_exec.c@319@definition@FT??0@LOC:8 COM:0 MVG:3@0@d@
+CCCC_Member@anonymous@tlist_finish@@(token_list *)@
+CCCC_MemExt@anonymous@tlist_finish@@(token_list *)@src/ft_search_exec.c@418@definition@FT??0@LOC:6 COM:3 MVG:1@0@d@
+CCCC_Member@anonymous@tlist_init@@(token_list *)@
+CCCC_MemExt@anonymous@tlist_init@@(token_list *)@src/ft_search_exec.c@279@definition@FT??0@LOC:6 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@tlist_resize_min@@(token_list *,size_t)@
+CCCC_MemExt@anonymous@tlist_resize_min@@(token_list *,size_t)@src/ft_search_exec.c@286@definition@FT??0@LOC:16 COM:0 MVG:7@0@d@
+CCCC_Member@anonymous@token_add_result@@(List **,DBT *)@
+CCCC_MemExt@anonymous@token_add_result@@(List **,DBT *)@src/ft_search_db.c@2074@definition@FT??0@LOC:13 COM:1 MVG:4@0@d@
+CCCC_Member@anonymous@token_add_str@@(uint32_t **,int *,int *,char *)@
+CCCC_MemExt@anonymous@token_add_str@@(uint32_t **,int *,int *,char *)@src/test/db_bench.c@232@definition@FT???@LOC:29 COM:4 MVG:10@?@d@
+CCCC_MemExt@anonymous@token_add_str@@(uint32_t **,int *,int *,char *)@src/test/old/test/db_bench.c@223@definition@FT???@LOC:29 COM:4 MVG:10@?@d@
+CCCC_Member@anonymous@token_cleanup@@(List *,List *)@
+CCCC_MemExt@anonymous@token_cleanup@@(List *,List *)@src/ft_search_db.c@2008@definition@FT??0@LOC:5 COM:0 MVG:0@0@d@
+CCCC_Member@anonymous@token_cmp@@(const void *,const void *)@
+CCCC_MemExt@anonymous@token_cmp@@(const void *,const void *)@src/ft_search_exec.c@374@definition@FT??0@LOC:4 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@token_gather_cursors@@(DB *,uint32_t *)@
+CCCC_MemExt@anonymous@token_gather_cursors@@(DB *,uint32_t *)@src/ft_search_db.c@2044@definition@FT??0@LOC:21 COM:2 MVG:6@0@d@
+CCCC_Member@anonymous@token_lookup_match@@(List *,List *,int)@
+CCCC_MemExt@anonymous@token_lookup_match@@(List *,List *,int)@src/ft_search_db.c@2333@definition@FT??0@LOC:9 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@token_lookup_ret@@(Array **,List *,char *,int)@
+CCCC_MemExt@anonymous@token_lookup_ret@@(Array **,List *,char *,int)@src/ft_search_db.c@2374@definition@FT??0@LOC:9 COM:0 MVG:1@0@d@
+CCCC_Member@anonymous@token_remove_punct@@(char *)@
+CCCC_MemExt@anonymous@token_remove_punct@@(char *)@src/test/db_bench.c@142@definition@FT???@LOC:13 COM:2 MVG:4@?@d@
+CCCC_MemExt@anonymous@token_remove_punct@@(char *)@src/test/old/test/db_bench.c@133@definition@FT???@LOC:13 COM:2 MVG:4@?@d@
+CCCC_Member@anonymous@tokenize_str@@(char *)@
+CCCC_MemExt@anonymous@tokenize_str@@(char *)@src/test/db_bench.c@159@definition@FT???@LOC:11 COM:0 MVG:6@?@d@
+CCCC_MemExt@anonymous@tokenize_str@@(char *)@src/test/old/test/db_bench.c@150@definition@FT???@LOC:11 COM:0 MVG:6@?@d@
+CCCC_Member@anonymous@tokens_resize@@(uint32_t **,int *,int)@
+CCCC_MemExt@anonymous@tokens_resize@@(uint32_t **,int *,int)@src/test/db_bench.c@215@definition@FT???@LOC:9 COM:0 MVG:3@?@d@
+CCCC_MemExt@anonymous@tokens_resize@@(uint32_t **,int *,int)@src/test/old/test/db_bench.c@206@definition@FT???@LOC:9 COM:0 MVG:3@?@d@
+CCCC_Member@anonymous@trace_wrapper@@(...)@
+CCCC_MemExt@anonymous@trace_wrapper@@(...)@src/test/db_bench.c@111@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@trace_wrapper@@(...)@src/test/old/test/db_bench.c@102@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@unserialize_record@@(FTSearchDB *,char *,sharedata_data *)@
+CCCC_MemExt@anonymous@unserialize_record@@(FTSearchDB *,char *,sharedata_data *)@src/ft_search_db.c@869@definition@FT??0@LOC:16 COM:0 MVG:6@0@d@
+CCCC_Member@anonymous@update_nodes_len@@(FTNode *,ft_class_t,ft_state_t,ft_class_t,ft_state_t)@
+CCCC_MemExt@anonymous@update_nodes_len@@(FTNode *,ft_class_t,ft_state_t,ft_class_t,ft_state_t)@src/ft_netorg.c@174@definition@FT??0@LOC:17 COM:11 MVG:1@0@d@
+CCCC_Member@anonymous@version_outdated@@(TCPC *)@
+CCCC_MemExt@anonymous@version_outdated@@(TCPC *)@src/proto/ft_handshake.c@58@definition@FT???@LOC:19 COM:5 MVG:4@?@d@
+CCCC_Member@anonymous@warn_wrapper@@(...)@
+CCCC_MemExt@anonymous@warn_wrapper@@(...)@src/test/db_bench.c@119@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_MemExt@anonymous@warn_wrapper@@(...)@src/test/old/test/db_bench.c@110@definition@FT???@LOC:6 COM:0 MVG:1@?@d@
+CCCC_Member@anonymous@write_node@@(FTNode *,FILE *)@
+CCCC_MemExt@anonymous@write_node@@(FTNode *,FILE *)@src/ft_http_server.c@147@definition@FT???@LOC:12 COM:2 MVG:3@?@d@
+CCCC_Member@anonymous@write_node@@(FTNode *,cache_state *)@
+CCCC_MemExt@anonymous@write_node@@(FTNode *,cache_state *)@src/ft_node_cache.c@156@definition@FT??0@LOC:32 COM:20 MVG:12@0@d@
+CCCC_Member@anonymous@zlib_deflate@@(FTStream *,char *,size_t)@
+CCCC_MemExt@anonymous@zlib_deflate@@(FTStream *,char *,size_t)@src/ft_stream.c@377@definition@FT???@LOC:16 COM:0 MVG:2@?@d@
+CCCC_RejExt@config.h@1@<file scope items>@?????@LOC:0 COM:0 MVG:0@?@r@
+CCCC_RejExt@src/ft_conf.c@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_conf.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_conn.c@1@<file scope items>@FT???@LOC:5 COM:41 MVG:0@?@r@
+CCCC_RejExt@src/ft_conn.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_guid.c@1@<file scope items>@FT???@LOC:2 COM:16 MVG:0@?@r@
+CCCC_RejExt@src/ft_guid.h@1@<file scope items>@F????@LOC:2 COM:16 MVG:0@?@r@
+CCCC_RejExt@src/ft_http.c@1@<file scope items>@FT???@LOC:30 COM:162 MVG:0@?@r@
+CCCC_RejExt@src/ft_http.h@1@<file scope items>@F???0@LOC:13 COM:44 MVG:0@0@r@
+CCCC_RejExt@src/ft_http_client.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_http_client.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_http_server.c@1@<file scope items>@FT???@LOC:2 COM:2 MVG:0@?@r@
+CCCC_RejExt@src/ft_http_server.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_netorg.c@1@<file scope items>@FT??0@LOC:6 COM:29 MVG:0@0@r@
+CCCC_RejExt@src/ft_netorg.h@1@<file scope items>@F????@LOC:2 COM:37 MVG:0@?@r@
+CCCC_RejExt@src/ft_node.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_node.h@1@<file scope items>@F???0@LOC:48 COM:147 MVG:0@0@r@
+CCCC_RejExt@src/ft_node_cache.c@1@<file scope items>@FT??0@LOC:8 COM:22 MVG:0@0@r@
+CCCC_RejExt@src/ft_node_cache.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_openft.c@1@<file scope items>@FT??0@LOC:3 COM:17 MVG:0@0@r@
+CCCC_RejExt@src/ft_openft.h@1@<file scope items>@????0@LOC:5 COM:21 MVG:0@0@r@
+CCCC_RejExt@src/ft_packet.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_packet.h@1@<file scope items>@F???0@LOC:10 COM:38 MVG:0@0@r@
+CCCC_RejExt@src/ft_protocol.c@49@FT_VERSION_REQUEST , ft_version_request @?T??0@LOC:0 COM:0 MVG:0@0@r@
+CCCC_RejExt@src/ft_protocol.h@1@<file scope items>@F????@LOC:36 COM:193 MVG:0@?@r@
+CCCC_RejExt@src/ft_search.c@1@<file scope items>@FT??0@LOC:1 COM:1 MVG:0@0@r@
+CCCC_RejExt@src/ft_search.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_search_db.c@1@<file scope items>@FT??0@LOC:20 COM:80 MVG:0@0@r@
+CCCC_RejExt@src/ft_search_db.h@1@<file scope items>@F???0@LOC:11 COM:90 MVG:0@0@r@
+CCCC_RejExt@src/ft_search_exec.c@1@<file scope items>@FT??0@LOC:20 COM:34 MVG:0@0@r@
+CCCC_RejExt@src/ft_search_exec.h@1@<file scope items>@F????@LOC:2 COM:44 MVG:0@?@r@
+CCCC_RejExt@src/ft_search_obj.c@1@<file scope items>@FT???@LOC:5 COM:20 MVG:0@?@r@
+CCCC_RejExt@src/ft_search_obj.h@1@<file scope items>@F???0@LOC:44 COM:114 MVG:0@0@r@
+CCCC_RejExt@src/ft_session.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_session.h@1@<file scope items>@F???0@LOC:36 COM:102 MVG:0@0@r@
+CCCC_RejExt@src/ft_share.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_share.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_share_file.c@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_share_file.h@1@<file scope items>@F???0@LOC:7 COM:13 MVG:0@0@r@
+CCCC_RejExt@src/ft_stats.c@1@<file scope items>@FT???@LOC:2 COM:37 MVG:0@?@r@
+CCCC_RejExt@src/ft_stats.h@1@<file scope items>@F???0@LOC:7 COM:24 MVG:0@0@r@
+CCCC_RejExt@src/ft_stream.c@1@<file scope items>@FT???@LOC:2 COM:3 MVG:0@?@r@
+CCCC_RejExt@src/ft_stream.h@1@<file scope items>@F???0@LOC:30 COM:85 MVG:0@0@r@
+CCCC_RejExt@src/ft_transfer.c@1@<file scope items>@FT??0@LOC:4 COM:34 MVG:0@0@r@
+CCCC_RejExt@src/ft_transfer.h@1@<file scope items>@F???0@LOC:12 COM:41 MVG:0@0@r@
+CCCC_RejExt@src/ft_utils.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_utils.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/ft_version.c@1@<file scope items>@FT???@LOC:2 COM:16 MVG:0@?@r@
+CCCC_RejExt@src/ft_version.h@1@<file scope items>@F????@LOC:2 COM:25 MVG:0@?@r@
+CCCC_RejExt@src/ft_xfer.c@1@<file scope items>@FT??0@LOC:6 COM:23 MVG:0@0@r@
+CCCC_RejExt@src/md5.c@1@<file scope items>@FT??0@LOC:2 COM:4 MVG:0@0@r@
+CCCC_RejExt@src/md5.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_handshake.c@1@<file scope items>@FT???@LOC:2 COM:17 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_handshake.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_push.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_push.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_query.c@1@<file scope items>@FT??0@LOC:26 COM:20 MVG:0@0@r@
+CCCC_RejExt@src/proto/ft_query.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_sharing.c@1@<file scope items>@FT???@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_sharing.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_stats_digest.c@1@<file scope items>@FT???@LOC:2 COM:24 MVG:0@?@r@
+CCCC_RejExt@src/proto/ft_stats_digest.h@1@<file scope items>@F????@LOC:1 COM:1 MVG:0@?@r@
+CCCC_RejExt@src/test/db_bench.c@1@<file scope items>@FT??0@LOC:6 COM:0 MVG:0@0@r@
+CCCC_RejExt@src/test/old/test/db_bench.c@1@<file scope items>@FT??0@LOC:6 COM:0 MVG:0@0@r@

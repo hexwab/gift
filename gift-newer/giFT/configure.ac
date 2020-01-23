@@ -1,0 +1,396 @@
+# -*- sh -*-
+
+# Process this file with autoconf to produce a configure script.
+AC_INIT
+AC_CONFIG_SRCDIR([src/main.c])
+
+GIFT_MAJOR=0
+GIFT_MINOR=10
+GIFT_MICRO=0
+GIFT_VERSION=$GIFT_MAJOR.$GIFT_MINOR.$GIFT_MICRO
+
+VERSION=$GIFT_VERSION
+
+AM_INIT_AUTOMAKE(giFT, $VERSION)
+AM_CONFIG_HEADER(config.h)
+
+# AM_MAINTAINER_MODE
+
+
+
+# Checks for programs.
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_PROG_INSTALL
+
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+# Checks for libraries.
+AC_CHECK_LIB(nsl, gethostbyname)
+AC_CHECK_LIB(socket, socket)
+
+# Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(dirent.h fcntl.h sys/time.h unistd.h limits.h linux/limits.h)
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(void *)
+GIFT_DEF_INT_TO_PTR
+
+# Checks for library functions.
+AC_FUNC_MEMCMP
+AC_CHECK_FUNCS(socket select strdup strstr)
+AC_TRY_COMPILE([#include <sys/types.h>
+#include <sys/socket.h>], [socklen_t slen;],[],[AC_DEFINE(NEED_SOCKLEN_T)])
+
+# All of the lovely arguments
+AC_ARG_ENABLE(daemon,[  --disable-daemon        disable compiling the daemon],,[enable_daemon=yes])
+AM_CONDITIONAL(DAEMON, test x$enable_daemon = xyes)
+AC_ARG_ENABLE(openft,[  --disable-openft        disable compiling the OpenFT plugin],,[enable_openft=yes])
+AM_CONDITIONAL(OPENFT, test x$enable_openft = xyes)
+AC_ARG_ENABLE(gtk-client,[  --disable-gtk-client    disable compiling the GTK+ frontend],,[enable_gtk_client=no])
+AM_CONDITIONAL(GTK_CLIENT, test x$enable_gtk_client = xyes)
+AC_ARG_ENABLE(libdl,[  --disable-libdl         do not use libdl],,[enable_libdl=yes])
+AM_CONDITIONAL(LIBDL, test x$enable_libdl = xyes)
+
+if test x$enable_libdl = xyes; then
+	AC_DEFINE(USE_DLOPEN)
+	AC_SUBST(USE_DLOPEN)
+else
+	GIFT_CFLAGS="\$(top_srcdir)/OpenFT"
+	GIFT_LIBS="\$(top_builddir)/OpenFT/libOpenFT.la"
+	GIFT_LDFLAGS=""
+fi
+
+DL_MODULE=
+DL_LIBS=
+DL_LDFLAGS=
+
+GIFT_ARCH_LIBS=
+
+DIR_SEP=/
+PATH_SEP=':'
+
+# Architecture specific stuff
+AC_CANONICAL_HOST
+case "$host_os" in
+	freebsd*)
+		AC_DEFINE(FREEBSD, 1, [This is a FreeBSD system])
+		;;
+	linux*)
+		AC_DEFINE(LINUX, 1, [This is a Linux system])
+		DL_LDFLAGS='-rdynamic'
+		;;
+	netbsd*)
+		AC_DEFINE(NETBSD, 1, [This is a NetBSD system])
+		;;
+	openbsd*)
+		AC_DEFINE(OPENBSD, 1, [This is a OpenBSD system])
+		;;
+	mingw32*)
+		WIN32=yes
+		GIFT_ARCH_LIBS="-lws2_32"
+		DIR_SEP='\\'
+		PATH_SEP=';'
+		;;
+	*)
+		;;
+esac
+
+AC_DEFINE_UNQUOTED(DIR_SEP_CHAR, '$DIR_SEP')
+AC_DEFINE_UNQUOTED(DIR_SEP_STR, "$DIR_SEP")
+AC_DEFINE_UNQUOTED(PATH_SEP_CHAR, '$PATH_SEP')
+AC_DEFINE_UNQUOTED(PATH_SEP_STR, "$PATH_SEP")
+
+# libdl checks
+if test x$enable_libdl = xyes; then
+	dnl check for dlopen and dlsym in the native c library
+	AC_CHECK_FUNC(dlopen,
+		AC_CHECK_FUNC(dlsym,
+			DL_MODULE=DL_MODULE_DL
+		,)
+	,)
+
+	dnl check for dlopen and dlsym in libdl
+	AC_CHECK_LIB(dl, dlopen,
+		AC_CHECK_LIB(dl, dlsym,
+			DL_LIBS=-ldl
+			DL_MODULE=DL_MODULE_DL
+		,)
+		,)
+
+	dnl TODO - HPUX
+
+	GIFT_LIBS="$LIBS $DL_LIBS"
+	GIFT_LDFLAGS="$LDFLAGS $DL_LDFLAGS"
+fi
+
+GIFT_LIBS="$GIFT_LIBS $GIFT_ARCH_LIBS"
+
+# Override -g -O2
+CFLAGS="-g -Wall"
+
+AC_SUBST(GIFT_LIBS)
+AC_SUBST(GIFT_LDFLAGS)
+AC_SUBST(GIFT_CFLAGS)
+
+if test x$prefix = xNONE; then
+	prefix="/usr/local"
+	AC_SUBST(prefix)
+fi
+
+plugindir=${prefix}/lib/giFT
+AC_SUBST(plugindir)
+
+AC_DEFINE_UNQUOTED(PLUGIN_DIR, "${prefix}/lib/giFT")
+
+giftdatadir=${prefix}/share/giFT
+AC_SUBST(giftdatadir)
+
+if test x$WIN32 != xyes; then
+	AC_DEFINE_UNQUOTED(DATA_DIR, "${prefix}/share/giFT")
+fi
+
+giftperldir=${prefix}/bin
+AC_SUBST(giftperldir)
+
+dnl Check for the presence of ZLIB libraries and headers
+
+dnl Default to compiler & linker defaults for files & libraries.
+OPT_ZLIB=yes
+AC_ARG_WITH(zlib,dnl
+[  --with-zlib[=DIR]         where to look for ZLIB [compiler/linker default paths]
+                          DIR points to the ZLIB installation prefix [/usr/local]],
+ OPT_ZLIB=$withval,
+)
+
+AC_MSG_CHECKING(where to look for ZLIB)
+if test X"$OPT_ZLIB" = Xno
+then
+  AC_MSG_RESULT([defaults (or given in environment)])
+else
+  dnl z lib?
+  AC_CHECK_FUNC(gzread, , AC_CHECK_LIB(z, gzread))
+  
+  test X"$OPT_ZLIB" = Xyes && OPT_ZLIB=/usr/local
+  LIBS="$LIBS -L$OPT_ZLIB/lib"
+  CPPFLAGS="$CPPFLAGS -I$OPT_ZLIB/include"
+  AC_MSG_RESULT([$OPT_ZLIB])
+
+  AC_CACHE_CHECK([for zlib version 1.1.4 later], zlib114,
+    AC_TRY_RUN([
+      #include <zlib.h>
+      #include <string.h>
+      void main() {
+        exit(strcmp(ZLIB_VERSION, "1.1.4") < 0);
+      }
+    ],
+    [
+    zlib114=yes
+    ],
+    [
+    zlib114=no
+    ]
+    )
+    )
+  if test "$zlib114" = "yes"; then
+    AC_DEFINE(USE_ZLIB)
+    AC_SUBST(USE_ZLIB)
+  fi
+fi
+
+# Checks for GTK+
+if test x$enable_gtk_client = xyes ; then
+#	AM_PATH_GTK(,,[AM_CONDITIONAL(GTK_CLIENT, false); enable_gtk_client=no])
+	AM_PATH_GTK(1.2.0,,AC_MSG_ERROR([*** GTK+ >= 1.2.0 not fully installed - please either install development packages or build with --disable-gtk-client]))
+	GTKCFLAGS="$GTK_CFLAGS"
+	GTKLIBS="$GTK_LIBS"
+	AC_SUBST(GTKCFLAGS)
+	AC_SUBST(GTKLIBS)
+fi
+
+# lifted almost verbatim from glib1.3's configure.in
+
+AC_OUTPUT_COMMANDS([
+
+## Generate `giftconfig.h' in two cases
+## 1. `config.status' is run either explicitly, or via configure.
+##     Esp. not when it is run in `Makefile' to generate makefiles and
+##     config.h
+## 2. CONFIG_OTHER is set explicitly
+##
+## Case 1 is difficult.  We know that `automake' sets one of
+## CONFIG_FILES or CONFIG_HEADERS to empty.  This heuristic works
+## only when AM_CONFIG_HEADER is set, however.
+
+if test -n "${CONFIG_FILES}" && test -n "${CONFIG_HEADERS}"; then
+  # Both CONFIG_FILES and CONFIG_HEADERS are non-empty ==> Case 1
+  CONFIG_OTHER=${CONFIG_OTHER:-giftconfig.h}
+fi
+case "$CONFIG_OTHER" in
+*giftconfig.h*)
+	echo creating giftconfig.h
+	outfile=giftconfig.h-tmp
+	cat > $outfile <<\_______EOF
+/* giftconfig.h
+ *
+ * This is a generated file.  Please modify 'configure.in'
+ */
+
+#ifndef __GIFTCONFIG_H
+#define __GIFTCONFIG_H
+
+_______EOF
+
+	### this should always be true in a modern C/C++ compiler
+	cat >>$outfile <<_______EOF
+typedef signed char ft_int8;
+typedef unsigned char ft_uint8;
+_______EOF
+
+
+	if test -n "$ft_int16"; then
+	  cat >>$outfile <<_______EOF
+typedef signed $ft_int16 ft_int16;
+typedef unsigned $ft_int16 ft_uint16;
+#define G_FT_INT16_FORMAT $ft_int16_format
+#define G_FT_UINT16_FORMAT $ft_uint16_format
+_______EOF
+	fi
+
+
+	if test -n "$ft_int32"; then
+	  cat >>$outfile <<_______EOF
+typedef signed $ft_int32 ft_int32;
+typedef unsigned $ft_int32 ft_uint32;
+#define G_FT_INT32_FORMAT $ft_int32_format
+#define G_FT_UINT32_FORMAT $ft_uint32_format
+_______EOF
+	fi
+
+	cat >>$outfile <<_______EOF
+	
+#define I_PTR(x)      ((void *)($voidptr)x)
+#define P_INT(x)      (($voidptr)x)
+
+#endif /* __GIFTCONFIG_H */
+_______EOF
+
+	if cmp -s $outfile giftconfig.h; then
+	  echo giftconfig.h is unchanged
+	  rm -f $outfile
+	else
+	  mv $outfile giftconfig.h
+	fi ;;
+esac
+],[
+
+# Note that if two cases are the same, case goes with the first one.
+# Note also that this is inside an AC_OUTPUT_COMMAND.  We do not depend
+# on variable expansion in case labels.  Look at the generated config.status
+# for a hint.
+
+case 2 in
+$ac_cv_sizeof_short)
+  ft_int16=short
+  ft_int16_format='"hi"'
+  ft_uint16_format='"hu"'
+  ;;
+$ac_cv_sizeof_int)
+  ft_int16=int
+  ft_int16_format='"i"'
+  ft_uint16_format='"u"'
+  ;;
+esac
+case 4 in
+$ac_cv_sizeof_short)
+  ft_int32=short
+  ft_int32_format='"hi"'
+  ft_uint32_format='"hu"'
+  ;;
+$ac_cv_sizeof_int)
+  ft_int32=int
+  ft_int32_format='"i"'
+  ft_uint32_format='"u"'
+  ;;
+$ac_cv_sizeof_long)
+  ft_int32=long
+  ft_int32_format='"li"'
+  ft_uint32_format='"lu"'
+  ;;
+esac
+case 8 in
+$ac_cv_sizeof_int)
+  ft_int64=int
+  ft_int64_format='"i"'
+  ft_uint64_format='"u"'
+  gift_extension=
+  ft_int64_constant='(val)'
+  ;;
+$ac_cv_sizeof_long)
+  ft_int64=long
+  ft_int64_format='"li"'
+  ft_uint64_format='"lu"'
+  gift_extension=
+  ft_int64_constant='(val##L)'
+  ;;
+esac
+gift_size_t=$gift_cv_sizeof_size_t
+gift_void_p=$ac_cv_sizeof_long
+gift_long=$ac_cv_sizeof_void_p
+
+gintbits=`expr $ac_cv_sizeof_int \* 8`
+glongbits=`expr $ac_cv_sizeof_long \* 8`
+
+case $ac_cv_sizeof_void_p in
+$ac_cv_sizeof_int)  	gift_gpi_cast=''        gift_gpui_cast=''         ;;
+$ac_cv_sizeof_long) 	gift_gpi_cast='(glong)' gift_gpui_cast='(gulong)' ;;
+*) 			gift_unknown_void_p=yes ;;
+esac
+])
+
+# god autoconf is a damn nightmare
+AC_CONFIG_FILES([
+giFT-setup
+gift.spec
+Makefile
+lib/Makefile
+src/Makefile
+ui/Makefile
+OpenFT/Makefile
+ui/perl/Makefile
+data/Makefile
+data/OpenFT/Makefile
+])
+AC_CONFIG_COMMANDS([default],[[
+chmod +x giFT-setup
+]],[[]])
+
+AC_OUTPUT
+
+echo
+echo $PACKAGE $VERSION
+echo
+echo Build Daemon............: $enable_daemon
+echo Build OpenFT............: $enable_openft
+echo Build GTK+ Frontend.....: $enable_gtk_client \(deprecated, see giftcurs.sf.net\)
+echo Use dlopen..............: $enable_libdl
+echo Use zlib................: $zlib114 \($OPT_ZLIB\)
+echo
+echo $PACKAGE will be installed in $prefix/bin
+echo
+echo configure complete, now type \'make\'
+echo

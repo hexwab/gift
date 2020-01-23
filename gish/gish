@@ -1,0 +1,472 @@
+#!/usr/bin/perl
+
+use Gift::Interface;
+use Gift::Config;
+
+use Getopt::Long;
+
+$| = 1;
+
+my $Interface = Gift::Interface->new;
+my $Config = Gift::Config->new;
+
+my $FUNCTION;
+my $PIPED = -p STDIN;
+my $PIPING = -p STDOUT;
+my $FORMAT;
+
+my @DEBUGMESSAGES =
+(
+#	"+download",
+#	"+search",
+#	"+all",
+	"+print_daemon",
+#	"+read_daemon",
+#	"+parse_null"
+);
+
+sub gift_connect
+{
+	my $gift_host = $Config->read("ui/ui.conf", "daemon", "host");
+	my $gift_port = $Config->read("ui/ui.conf", "daemon", "port");
+
+	return 0 unless $gift_host && $gift_port;
+	$Interface->connect ($gift_host, $gift_port) || return 0;
+}
+
+sub usage
+{
+	my $command = lc shift;
+
+	if ($command eq "search")
+	{
+		print <<EOF
+		
+gish search [--protocol=<protocol> --exclude=<exclude>] <query> [<realm>]
+
+--protocol <protocol>		giFT protocol to search on
+--exclude <exclude>		specific terms to exclude from search
+
+<query>				What to search format
+<realm>				What realm to search (audio, video, ...)
+
+EOF
+	}
+	elsif ($command eq "locate")
+	{
+		print <<EOF
+
+gish locate <query>
+
+<query>				HASH_TYPE:HASH (MD5:...)
+
+EOF
+	}
+	elsif ($command eq "stats")
+	{
+		print <<EOF
+
+gish stats [--protocol=<protocol>]
+
+--protocol <protocol>		Protocol to retrieve statistics for
+
+EOF
+	}
+	elsif ($command eq "shares")
+	{
+		print <<EOF
+
+gish shares <action>
+
+<action>			Share action (list, sync, hide, show)
+
+EOF
+	}	
+	elsif ($command eq "transfer")
+	{
+		print <<EOF
+
+gish transfer [--direction=<direction>] <action> [<id>]
+
+--direction <direction>		Only valid when <action> is "list"
+				Choose direction to perform action on
+
+<action>			Transfer action (cancel, list, pause, resume)
+<id>				Required for cancel, pause, and resume
+
+
+EOF
+	}		
+	else
+	{
+		print <<EOF
+
+Usage:
+
+gish [gish options] <command> [context options] [<arg1> [<arg2> [...]]]
+
+[gish options]
+
+	--printf <format>	format output
+	--print0		output null-separated list
+	--dry-run		don't really perform actions
+	--help			this screen
+
+<commands>
+
+	search			Perform a search
+	locate			Find a specific file based on its hash
+	transfer		Perform an operation on an existing transfer
+	source			Modify or create a new source
+	stats			View network statistics
+
+* For command specific help, use `gish <command> -h'
+
+EOF
+	}
+	
+	exit 0;
+}
+	
+
+sub handle_options
+{
+	# Determine the "command"
+	
+	my $command;
+	my %options;
+	my %getopts;
+
+	foreach my $arg (@ARGV)
+	{
+		if ($arg !~ /^-/)
+		{
+			$command = $arg;
+			last;
+		}
+	}
+	usage unless $command;
+
+	# Options for specific commands
+	
+	if ($command eq "search")
+	{
+		%getopts =
+		(
+			"exclude=s" => \$options{'exclude'},
+			"protocol=s" => \$options{'protocol'},
+		);
+	}
+	
+	elsif ($command eq "transfer")
+	{
+		%getopts =
+		(
+			"direction=s" => \$options{'direction'},
+		);
+	}
+	
+	elsif ($command eq "source" || $command eq "download")
+	{
+		%getopts =
+		(
+			"user=s" => \$options{'user'},
+			"size=s" => \$options{'size'},
+			"file=s" => \$options{'file'}
+		);
+	}
+	
+	elsif ($command eq "stats")
+	{
+		%getopts = ( "protocol=s" => \$options{'protocol'} );
+	}
+	
+	# Global Options
+	
+	$getopts{'dry-run'} = sub
+	{
+			$Interface->pretend ( 1 );
+			$Interface->debugmessage (@DEBUGMESSAGES);
+	};
+	
+	$getopts{'help'} = sub { usage ($command) };
+	
+	$getopts{'debug'} = sub { $Interface->debugmessage (@DEBUGMESSAGES) };
+	
+	$getopts{'printf=s'} = \$FORMAT;
+
+
+	GetOptions ( %getopts ) || usage;
+
+	return (shift @ARGV, @ARGV, \%options);
+}
+
+sub main
+{
+	my ($command, @arguments) = handle_options (@_);
+	
+	my %options = %{pop (@arguments)};
+	
+	local @_ = @arguments;
+	
+	gift_connect if (!$options{'dry-run'});
+
+	if ($command eq "search")
+	{
+		my $query = shift || usage $command;
+		my $realm = shift; $realm ||= "everything";
+		
+		my $exclude = $options{'exclude'};
+		my $protocol = $options{'protocol'};
+		
+		$Interface->search ($realm, $query, $exclude, $protocol);
+	}
+
+	elsif ($command eq "locate")
+	{
+		if ($PIPED)
+		{
+			while (my %pipe = parse_nullseparated())
+			{
+				my $query = $pipe{'query'} || usage $command;
+				
+				return 0 unless ($query =~ /^(.*?):(.*)/);
+				$Interface->locate ($query);
+			}
+		}
+		else
+		{
+			my $query = shift || usage $command;
+		
+			die "Invalid hash" unless ($query =~ /^(.*?):(.*)/);
+			$Interface->locate ($query);
+		}
+	}
+				
+	elsif ($command eq "source")
+	{
+		my %ids;
+		my $action = shift || usage $command;
+		
+		$Interface->attach;
+		
+		if ($PIPED)
+		{
+			while (my %pipe = parse_nullseparated())
+			{
+				my ($id, $file);
+			
+				if ($ids{$pipe{'hash'}}{'id'})
+				{
+					$id = $ids{$pipe{'hash'}}{'id'};
+					$file = $ids{$pipe{'hash'}}{'file'};
+				}
+			
+				$file ||= $pipe{'file'};
+
+				$id = $Interface->download
+				(
+					$pipe{'url'},
+					$pipe{'hash'},
+					$pipe{'size'},
+					$file,
+					$pipe{'user'},
+					$id
+				);
+			
+				$ids{$pipe{'hash'}}{'id'} = $id;
+				$ids{$pipe{'hash'}}{'file'} = $file;
+			}
+		}
+		else
+		{
+			my $hash = shift || usage $command;
+			my $url = shift || usage $command;
+			my $size = $options{'size'};
+			my $file = $options{'file'};
+			my $user = $options{'user'};
+
+			my $id = $Interface->download ( $url, $hash, $size, $file, $user );
+		}
+		$Interface->detach;
+	}
+	
+	elsif ($command eq "stats")
+	{
+		$Interface->stats($options{'protocol'});
+	}
+	
+	elsif ($command eq "transfer")
+	{
+		my $action = lc shift || usage $command;
+		
+		if ($action eq "list")
+		{	
+			$FUNCTION = $options{'direction'};
+			
+			$Interface->attach;
+			$Interface->detach;
+		}
+		elsif ($action eq "cancel" || $action eq "pause" || $action eq "resume")
+		{
+			if ($PIPED)
+			{
+				while (my %pipe = parse_nullseparated())
+				{
+					my $id = $pipe{'id'} || usage $command;
+					$Interface->transfer ($id, $action);
+				}
+			}
+			else
+			{
+				my $id = shift || usage $command;
+				$Interface->transfer ($id, $action);
+			}
+			$Interface->detach;
+		}
+		else
+		{
+			usage;
+		}
+	}
+	
+	elsif ($command eq "shares")
+	{
+		my $action = shift || usage $command;
+		
+		$Interface->share ($action);
+	}
+}
+
+
+
+#
+# What to do with things coming in from the daemon
+#
+
+main (@ARGV);
+
+while ($Interface->can_read)
+{
+	my ($head,%tree) = $Interface->read;
+
+	if ($head eq "ITEM")
+	{
+		my $file;
+		
+		$tree{'file'} =~ /^\/(.*)\/(.*)$/;
+		($file = $2) ||= $tree{'file'};
+		
+		print_formatted (
+		{
+			"url" => $tree{'url'},
+			"hash" => $tree{'hash'},
+			"size" => $tree{'size'},
+			"file" => $file,
+			"user" => $tree{'user'}
+		});
+	}
+	
+	elsif ($head eq "ADDUPLOAD")
+	{
+		if ($FUNCTION eq "up")
+		{
+			print_formatted (
+			{
+				"direction" => "up",
+				"id" => $tree{'id'},
+				"file" => $tree{'file'},
+				"user" => $tree{'source'}{'user'}
+			});
+		}
+	}
+	
+	elsif ($head eq "ADDDOWNLOAD")
+	{
+		if ($FUNCTION eq "down")
+		{
+			print_formatted (
+			{
+				"direction" => "down",
+				"id" => $tree{'id'},
+				"hash" => $tree{'hash'},
+				"file" => $tree{'file'},
+				"user" => $tree{'source'}{'user'}
+			});
+		}
+	}
+	
+	elsif ($head eq "STATS")
+	{
+		foreach my $protocol (keys %tree)
+		{
+			print STDERR "$protocol:\n";
+			foreach my $info (keys %{$tree{$protocol}})
+			{
+				print_formatted ( { $info => $tree{$protocol}{$info} });
+			}
+		}
+	}		
+}
+
+sub print_formatted
+{
+	my %output = %{$_[0]};
+	
+	if ($PIPING && !$FORMAT)
+	{
+		foreach my $key (keys(%output))
+		{
+			print STDOUT "$key\0$output{$key}\0:\0";
+		}
+		print STDOUT "\n";
+	}
+	elsif (defined $FORMAT)
+	{
+		my $data = $FORMAT;
+	
+		my %formats =
+		(
+			'H' => $output{'hash'},
+			'O' => $output{'url'},
+			's' => $output{'size'},
+			'u' => $output{'user'},
+			'f' => $output{'file'},
+		);
+		
+		$data =~ s/\%(.)/$formats{$1}/g;
+			
+		eval "print qq{$data}";
+	}
+	elsif (!$PIPING && !$FORMAT)
+	{
+		print STDOUT "[\e[1;32m!\e[m]";
+		foreach my $key (keys(%output))
+		{
+			if (length($output{$key}) >= 54)
+			{
+				$output{$key} = substr ($output{$key},0,50);
+				$output{$key} .= " ...";
+			}
+			print STDOUT "\t\u$key: $output{$key}\n";
+		}
+		print STDOUT "\n";
+	}
+
+	# ....
+}
+
+sub parse_nullseparated
+{
+	my %list;
+	
+	my $data = <STDIN>;
+	
+	while ($data =~ /(.*?)\0(.*?)\0:\0/g)
+	{
+		$Interface->debug ("parse_null", 3, "$1 = $2\n");
+		$list{$1} = $2;
+	}
+	
+	return %list;
+}

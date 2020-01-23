@@ -1,0 +1,28 @@
+/*
+ * Copyright (C) 2003 Arend van Beelen jr. (arend@auton.nl)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#ifndef __UTILS_H
+#define __UTILS_H
+
+#include "sl_soulseek.h"
+
+/*****************************************************************************/
+
+uint32_t sl_swap_byte_order(uint32_t integer);
+
+void sl_switch_forward_slashes(sl_string *string);
+
+/*****************************************************************************/
+
+#endif /* __UTILS_H */

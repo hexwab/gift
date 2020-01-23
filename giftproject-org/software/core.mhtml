@@ -1,0 +1,71 @@
+<%perl>
+###############################################################################
+##
+## $Id: core.mhtml,v 1.3 2004/08/28 02:54:10 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'Core Components'
+	nocontact => 1
+</%attr>
+
+<h2><% $m->base_comp()->attr ('title') %></h2>
+
+<p>
+	The core giFT components are distributed standard with the release
+	tarballs.  They are listed here simply for documentation purposes.
+</p>
+
+<dl>
+
+	<li>
+		<dt><span class="comp">giftd</span></dt>
+		<dd>
+			This is the central component for the giFT framework.
+			<span class="comp">giftd</span> is responsible for loading and
+			executing network plugins, handling the remote interface
+			protocol, managing searches, file exchanges, and other critical
+			activities that exist above the network protocols themselves.
+			In other words, <span class="comp">giftd</span> is the giFT
+			work horse.
+		</dd>
+	</li>
+
+	<li>
+		<dt><a href="#"><span class="comp">libgift</span></a></dt>
+		<dd>
+			Support and utility library for <span class="comp">giftd</span>
+			and giFT network plugins.  This library is essentially a 
+			grab bag of tools, data structures, and common functionality
+			needed by, and found in, most large C projects.  While it is
+			only critical for <span class="comp">giftd</span>, it can be
+			a very useful tool to aid in developing user interfaces and
+			other giFT-related utilities.  The source is heavily documented
+			with the <a href="http://www.doxygen.org/">doxygen</a> tool
+			format.
+		</dd>	
+	</li>
+
+	<li>
+		<dt><a href="#"><span class="comp">libgiftproto</span></a></dt>
+		<dd>
+			TODO
+		</dd>
+	</li>
+
+</dl>
+

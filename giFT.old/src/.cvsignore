@@ -1,0 +1,10 @@
+Makefile
+Makefile.in
+*.o
+giFT
+giFTget
+.deps
+.giFTnodes
+*core*
+.libs
+.deps

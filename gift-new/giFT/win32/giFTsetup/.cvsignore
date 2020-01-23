@@ -1,0 +1,10 @@
+*.aps
+*.ncb
+*.opt
+*.plg
+*.res
+*.tws
+Debug
+DebugDLL
+Release
+ReleaseDLL

@@ -1,0 +1,79 @@
+# $Id: Makefile.msvc,v 1.2 2003/07/11 02:28:44 rasa Exp $
+
+!include ../../Make.msvc
+
+INCLUDES = $(INCLUDES) -Icrypt
+
+INCLUDES = $(INCLUDES) -I../../win32 -I../../src -I../../lib -I../../OpenFT -I../../Gnutella -I../../plugin
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+FASTTRACK_DEF = "../win32/fasttrack_api.def"
+TARGET     = $(FASTTRACK_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+TARGET     = $(FASTTRACK_STATIC)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+OBJECTS = \
+	fst_download$(O) \
+	fst_fasttrack$(O) \
+	fst_hash$(O) \
+	fst_http$(O) \
+	fst_meta$(O) \
+	fst_node$(O) \
+	fst_packet$(O) \
+	fst_search$(O) \
+	fst_session$(O) \
+	fst_stats$(O) \
+	fst_utils$(O) \
+	md5$(O) \
+	crypt\enc_type_1$(O) \
+	crypt\enc_type_2$(O) \
+	crypt\enc_type_20$(O) \
+	crypt\fst_crypt$(O)
+	
+all : $(TARGET)
+
+install : $(TARGET)
+!if defined(dynamic) || defined(DYNAMIC)
+	@copy /y $(TARGET) ..\win32-dist\FastTrack.dll
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+	@-del /Q /F crypt\*$(O)
+	@-del /Q /F crypt\*.lib
+	@-del /Q /F crypt\*.exp
+	@-del /Q /F crypt\*.idb
+	@-del /Q /F crypt\*.ilk
+	@-del /Q /F crypt\*.pch
+	@-del /Q /F crypt\*.pdb
+	@-del /Q /F crypt\*.plg
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS) $(FASTTRACK_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(FASTTRACK_DEF) $(LIBS) \
+	       $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

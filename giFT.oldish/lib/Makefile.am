@@ -1,0 +1,49 @@
+AM_CFLAGS = $(GIFT_CFLAGS)
+
+INCLUDES =
+
+lib_LTLIBRARIES = libgiFT.la
+
+libgiFT_la_SOURCES = \
+    gift.h \
+	conf.c          conf.h \
+	connection.c    connection.h \
+	dataset.c       dataset.h \
+	event.c         event.h \
+	file.c          file.h \
+	if_event.c      if_event.h \
+	interface.c     interface.h \
+	list.c          list.h \
+	list_lock.c     list_lock.h \
+	list_queue.c    list_queue.h \
+	tree.c          tree.h \
+	log.c           log.h \
+	nb.c            nb.h \
+	network.c       network.h \
+	parse.c         parse.h \
+	platform.c      platform.h \
+	protocol.c      protocol.h \
+	queue.c         queue.h \
+	stopwatch.c     stopwatch.h
+
+pkginclude_HEADERS = \
+	gift.h \
+	conf.h \
+	connection.h \
+	dataset.h \
+	event.h \
+	file.h \
+	if_event.h \
+	interface.h \
+	list.h \
+	list_lock.h \
+	list_queue.h \
+	tree.h \
+	log.h \
+	nb.h \
+	network.h \
+	parse.h \
+	platform.h \
+	protocol.h \
+	queue.h \
+	stopwatch.h

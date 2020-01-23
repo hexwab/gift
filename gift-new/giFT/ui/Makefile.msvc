@@ -1,0 +1,62 @@
+# $Id: Makefile.msvc,v 1.26 2002/05/08 04:16:35 rossta Exp $
+
+!include ../Make.msvc
+
+!if "$(GTK_ROOT)" == ""
+GTK_ROOT=d:\gtk
+!endif
+!if !exists($(GTK_ROOT))
+!error Directory $(GTK_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) \
+	-Ipixmaps \
+	-I"$(GTK_ROOT)\include" \
+	-I"$(GTK_ROOT)\INCLUDE\GLIB-2.0" \
+	-I"$(GTK_ROOT)\lib\glib-2.0\include" \
+	-I"$(GTK_ROOT)\lib\gtk+\include"
+LDFLAGS = $(LDFLAGS) -libpath:"$(GTK_ROOT)\lib"
+LIBS    = $(LIBS) gtk.lib glib-2.0.lib gdk.lib
+ 
+OBJECTS = \
+	fe_daemon$(O) \
+	fe_connect$(O) \
+	fe_download$(O) \
+	fe_share$(O) \
+	fe_transfer$(O) \
+	fe_fifo$(O) \
+	fe_menu$(O) \
+	fe_obj$(O) \
+	fe_pref$(O) \
+	fe_search$(O) \
+	fe_stats$(O) \
+	fe_ui$(O) \
+	fe_ui_utils$(O) \
+	fe_upload$(O) \
+	fe_utils$(O) \
+	gift-fe$(O)
+    
+TARGET = $(GIFTFE_EXE)
+
+!if defined(static) || defined(STATIC)
+LIBS = $(LIBS) $(LIBGIFT_STATIC)
+!else
+LIBS = $(LIBS) $(LIBGIFT_LIB)
+!endif
+
+
+all: $(TARGET)
+
+install: $(TARGET)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGET): $(OBJECTS) 
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(OBJECTS) -libpath:../src 
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

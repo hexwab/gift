@@ -1,0 +1,45 @@
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_http_server.c
+--- ft_http_server.c	15 Nov 2003 12:15:58 -0000	1.58
++++ ft_http_server.c	11 Dec 2003 03:26:47 -0000
+@@ -294,7 +294,17 @@
+ 		 * actually ask giFT for authorization.
+ 		 */
+ 		if ((share = FT->share_lookup (FT, SHARE_LOOKUP_HPATH, spath)))
++		{
++			FTNode *node;
+ 			ret = FT->upload_auth (FT, net_ip_str (c->host), share, auth_info);
++			
++			/* allow our parent a free slot */
++			if (ret == UPLOAD_AUTH_MAX &&
++			    (node = ft_netorg_lookup (c->host)) &&
++			    (node->state & FT_NODE_CONNECTED) &&
++			    (node->ninfo.klass & FT_NODE_PARENT))
++				ret = UPLOAD_AUTH_ALLOW;
++		}
+ 		else
+ 			ret = UPLOAD_AUTH_NOTSHARED;
+ 	}
+@@ -404,11 +414,16 @@
+ 	 * protocol as the protocol-specific status.
+ 	 */
+ 	buf_retry = stringf_dup ("%u", (60 * SECONDS));
+-	buf_pos   = stringf_dup ("%u of %u",
+-	                         auth_info->queue_pos, auth_info->queue_ttl);
++
++	if (auth_info->queue_pos && auth_info->queue_ttl)
++	{
++		buf_pos = stringf_dup ("%u of %u",
++				       auth_info->queue_pos,
++				       auth_info->queue_ttl);
++		dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
++	}
+ 
+ 	dataset_insertstr (&reply->keylist, "X-ShareStatus",   "Queued");
+-	dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
+ 	dataset_insertstr (&reply->keylist, "X-QueueRetry",    buf_retry);
+ 
+ 	free (buf_retry);

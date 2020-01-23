@@ -1,0 +1,5 @@
+?package(gift): \
+  needs="x11" \
+  section="Apps/Net" \
+  title="giFT (daemon)" \
+  command="/usr/bin/giFT -d"  

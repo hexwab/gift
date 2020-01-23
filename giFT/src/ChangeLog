@@ -1,0 +1,144 @@
+$Id: ChangeLog,v 1.32 2007/05/16 23:16:05 hexwab Exp $
+
+giftd 0.11.9:
+
+   * Gracefully handle corrupt shares file without asserting.
+
+   * Made keeping corrupted files a config option.
+
+   * Ignore duplicate and inclusive share roots. Specifically avoid sharing
+     download folder twice if user adds it to share root as well.
+
+   * It is now possible for front ends to search on an arbitrary subset of
+     networks by passing multiple network names separated by spaces in the
+     proto() field.
+
+   * Add sharing/hidden_extensions key to avoid sharing useless stuff
+     in an attempt to limit the fallout from those silly people who
+     share their entire filesystem.
+	
+giftd 0.11.8:
+
+   * Shares are now keyed by pathname instead of by hash. (Hashes
+     weren't guaranteed to exist, could collide for identical files,
+     and no lookup function was provided in any case).
+
+   * Handle syncing properly.  Share objects are no longer freed
+     without letting plugins know, and plugin-specific data is no
+     longer leaked.
+
+   * ImageMagick support removed and replaced by Jef Pokanzer's
+     image_size.  This fixes a multitude of problems related to
+     dependencies, performance, stability and security.
+
+   * The --index-only option no longer tries to bind to the interface
+     port.
+
+   * Avoid aborting on transfers >=2Gb.  Such transfers still don't
+     work, though, but this is a stdio limitation and cannot be portably
+     solved.
+
+giftd 0.11.7:
+
+   * Filter LOCATE requests so that they are not delivered to protocol plugins
+     which do not have a registered hash handler for the hash type being
+     searched for.
+
+   * Preserve extension when renaming downloaded files because the file name
+     is already used.
+
+   * Removed requirement for state files having leading dot on Windows.
+
+   * Fixed bug which prevented completed dir from being shared if no sharing
+     root was set.
+
+   * Added meta data extraction for bittorrent files.
+
+   * Added check to not share incoming dir if not specifically allowed by
+     config. 
+
+   * Fixed some bugs which could lead to shares db corruption.
+
+   * Added saving of download paused state across restarts.
+
+giftd 0.11.6:
+
+   * Fixed a major bug that caused assertion failures in OpenFT because
+     wrapper_source_abort was discarding source information on active chunks.
+
+   * Fixed a problem with the download queue where after six hours the
+     re-request interval becomes less than is needed to stay on the _upload_
+     queue.
+
+   * Fixed some minor memory leaks related to the interface protocol.
+
+   * Added a timer to abort stale uploads that don't make progress for a
+     while.
+
+   * Updated documentation.
+
+   * Made some attempt at handling the situation when downloads encounter
+     write-errors instead of aborting.
+
+giftd 0.11.5:
+
+   * Case-insensitive scheme names in protocol-specific URLs in an
+     ongoing effort to comply with RFC1738.
+
+   * Fixed a minor memory leak when searching on non-ATTACH'd sessions.
+
+   * Fixed a potential race condition where the forked share_cache.c child
+     might use the memory local to gift_conf_path.  Perhaps other
+     thread-safety issues exist?
+
+   * Minor cleanups in download.c to fix an obscure throttling bug.
+   
+   * Decreased the minimum chunk size to 100KB to obscure the lack of proper
+     source election for the last part of a transfer.
+     
+   * Fixed a problem writing state files for downloads which have no plugin
+     hash associated.  This is extremely common on some networks such as
+     Gnutella and OpenNap.
+
+   * If we have a problem writing the state file or temporary data
+     for a transfer, abort the entire giftd process rather than pretend to
+     gracefully handle the condition.  This condition always results in
+     a corrupted transfer if it is unpaused as there is no rollback method
+     implemented.
+
+   * Fixed a bug that would prevent loading plugins from the command-line in
+     the current directory without prefixing the plugin name with "./".
+
+   * Major win32 portability improvements.
+
+giftd 0.11.4:
+
+   * Made the upload queue support small chunks better.  The upload slot is
+     now retained across requests until a size allocation is exceeded.
+
+giftd 0.11.3:
+
+   * Added new command line switches to override the compile time directory
+     paths.  This is useful for projects which are attempting to package
+     giFT in a self-contained distribution.  See giftd -h.
+
+   * Various build environment improvements.
+
+giftd 0.11.2:
+
+   * Separated OpenFT and Gnutella into their own modules, and in the process
+     inadvertantly broke the optional libltdl support (it will not work
+     without).  Hopefully this will be corrected in future releases.
+
+   * Renamed several components to their lowercase alternatives.  Also changed
+     the giFT binary to giftd and updated the name of gift.log and gift.conf
+     to reflect this change.
+
+giftd 0.11.1:
+
+   * First public release.  Enjoy :)
+
+giftd 0.10.0:
+
+   * Rewritten from the ground up.  See the ChangeLog in the parent
+     directory for more information on what giFT once was.

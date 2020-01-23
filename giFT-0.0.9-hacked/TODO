@@ -1,0 +1,28 @@
+Documentation:
+
+  * update documentation :)
+
+Design:
+
+  * add an HTTP/HTML default web interface built into the daemon that can
+    be used to supplement the features not provided by the interface protocol
+  * allow for greater control of giFT behaviour from plugins, including
+    the ability to control multi-source transfer chunk boundaries
+
+Code:
+
+  * switch to the newly introduced BOOL libgift type
+  * doxygen the entire project
+  * improve mime support using mime.magic
+  * fair upload queue
+  * transfer system rewrite (pending in jasta's local source tree, but not
+    yet completed)
+
+    UNIX:
+
+      * test for fork's presence and implement a blocking platform_child_proc
+        if it's nowhere to be found.
+
+    Windows:
+
+      * add code (in win32/) to run giFT as an NT/2000/XP service.

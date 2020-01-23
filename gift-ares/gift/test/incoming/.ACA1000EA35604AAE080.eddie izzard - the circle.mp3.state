@@ -1,0 +1,11 @@
+[transfer]
+uniq = ACA1000EA35604AAE080.eddie izzard - the circle.mp3
+filename = eddie izzard - the circle.mp3
+hash = SHA1:4DP6KKC5SP5R2TV3HQUIFWB5FWEMTQXM
+path = ./incoming/ACA1000EA35604AAE080.eddie izzard - the circle.mp3
+transmit = 108032
+total = 78307456
+max_seek = 108032
+paused = 0
+chunks = 108032-78307456 
+

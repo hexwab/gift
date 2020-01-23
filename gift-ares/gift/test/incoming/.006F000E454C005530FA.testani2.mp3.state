@@ -1,0 +1,10 @@
+[transfer]
+uniq = 006F000E454C005530FA.testani2.mp3
+filename = testani2.mp3
+hash = SHA1:7ZZDCWUYIUR2OMZGCLT6TWJYJDFBN3XQ
+transmit = 0
+total = 5583098
+max_seek = 0
+paused = 0
+chunks = 0-5583098 
+

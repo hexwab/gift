@@ -1,0 +1,10 @@
+[transfer]
+uniq = 5010000EF86100202978.Tom Lehrer  Songs From The Electric Company.mp3
+filename = Tom Lehrer  Songs From The Electric Company.mp3
+hash = SHA1:A6ZV6QSYDMUHTHBX3573GUR7NFGXOSRN
+transmit = 0
+total = 2107768
+max_seek = 0
+paused = 0
+chunks = 0-1053884 1053884-2107768 
+

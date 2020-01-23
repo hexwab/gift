@@ -1,0 +1,16 @@
+Makefile
+Makefile.in
+acinclude.m4
+aclocal.m4
+config.cache
+config.h
+config.log
+config.status
+configure
+configure.files
+configure.in
+kadeau.kdevses
+libtool
+stamp-h
+stamp-h.in
+subdirs

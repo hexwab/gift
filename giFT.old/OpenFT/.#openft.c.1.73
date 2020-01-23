@@ -1,0 +1,334 @@
+/*
+ * openft.c
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include <signal.h>
+
+#include "openft.h"
+
+#include "netorg.h"
+
+#include "search.h"
+#include "daemon.h"
+
+#include "http.h"
+#include "html.h"
+
+#include "file.h"
+#include "parse.h"
+
+/*****************************************************************************/
+
+/* if no nodes can be found, use this one */
+#define DEFAULT_NODE       "65.4.102.175"
+#define DEFAULT_PORT       1215
+#define DEFAULT_HTTP_PORT  1216
+
+/*****************************************************************************/
+
+Config *openft_conf = NULL;
+
+/* current class */
+Connection *ft_self = NULL;
+Connection *http_bind = NULL;
+
+/* timer descriptor for connection maintenance */
+static int ft_maint = -1;
+
+/*****************************************************************************/
+
+/* report back the progress of this upload chunk */
+void ft_upload (Connection *c, Chunk *chunk, char *segment, size_t len)
+{
+	HTTPTransfer *transfer = c->data;
+
+	if (!chunk)
+		return;
+
+	if (!segment || len == 0)
+	{
+		upload_free (chunk->transfer);
+
+		free (chunk);
+		transfer->chunk = NULL;
+
+		return;
+	}
+
+	upload_report (chunk->transfer, segment, len);
+}
+
+/* report back the progress of this download chunk */
+void ft_download (Connection *c, Chunk *chunk, char *segment, size_t len)
+{
+	HTTPTransfer *transfer = c->data;
+
+	if (!transfer->file_transfer)
+	{
+		trace ();
+		printf ("... uhh ...\n");
+	}
+
+	/* we received an EOF from the socket, notify the daemon */
+	if (!segment || len == 0)
+	{
+		/* WARNING: if this condition fails, chunk->transfer has already
+		 * been freed! */
+		if (transfer->range_start + transfer->transmit < transfer->range_stop)
+			download_remove_source (chunk->transfer, chunk->source);
+
+		return;
+	}
+
+	/* otherwise, write it */
+	chunk_write (chunk, segment, len);
+}
+
+/*****************************************************************************/
+
+/* daemon has requested we download a file
+ * TODO -- this can fail, but returns void? */
+void ft_daemon_download (Chunk *chunk)
+{
+	HTTPTransfer *transfer;
+	char *head, *source;
+	char *ip, *request;
+	unsigned short port;
+
+	trace ();
+
+	if (!chunk->active)
+	{
+		http_cancel (chunk);
+		return;
+	}
+
+	if (!chunk->source)
+	{
+		trace ();
+		return;
+	}
+
+	/* we need to evaluate the protocol-specific source-line in the form:
+	 *
+	 * PULL:
+	 * http://node:port/requested/file
+	 *
+	 *  - or -
+	 *
+	 * PUSH:
+	 * http://searchnode:port/?local_port=myport&requested_host=node&requested_file=/requested/file
+	 */
+
+	/* TODO - error checking */
+	head = source = STRDUP (chunk->source);
+
+	printf ("*** source = %s\n", source);
+
+	/*        */ string_sep (&source, "://"); /* push past http:// */
+	ip   =       string_sep (&source, ":");   /* push past 127.0.0.1: */
+	port = ATOI (string_sep (&source, "/"));  /* push past 1216/ */
+
+	printf ("ip = %s, port = %hu\n", ip, port);
+
+	if (!source || !source[0])
+	{
+		free (head);
+		return;
+	}
+
+	/* rewind source to see the leading / on the request ... just easier :) */
+	source--;
+	*source = '/';
+	request = url_decode (source); /* this is a hack, its just going to get
+									* encoded again in http_transfer_new */
+
+	printf ("request = %s\n", request);
+
+	transfer = http_transfer_new (ft_download, chunk->transfer->p,
+								  inet_addr (ip), port, request, chunk);
+
+	free (request);
+	free (head);
+
+	http_pull_file (transfer);
+}
+
+/*****************************************************************************/
+
+/* user has a closed a dc connection */
+void ft_daemon_close (Connection *c)
+{
+	/* remove the id possibly associated w/ this connection */
+	search_id_remove_by_conn (c);
+}
+
+/*****************************************************************************/
+
+static Connection *cleanup_conn (Connection *c, Node *node, void *data)
+{
+	node_remove_connection (c->protocol, c);
+
+	return NULL;
+}
+
+static void ft_daemon_destroy (Protocol *p)
+{
+	trace ();
+
+	conn_foreach ((ConnForeachFunc) cleanup_conn, NULL,
+				  NODE_NONE, NODE_CONNECTED, 0);
+	conn_foreach ((ConnForeachFunc) cleanup_conn, NULL,
+				  NODE_NONE, NODE_CONNECTING, 0);
+
+	config_free (openft_conf);
+
+	timer_remove (ft_maint);
+
+	net_close (http_bind->fd);
+	net_close (ft_self->fd);
+}
+
+/*****************************************************************************/
+
+static Connection *http_start (Protocol *p, unsigned short port)
+{
+	Connection *c;
+
+	printf ("binding port = %hu\n", port);
+
+	c = connection_new (p);
+	c->fd = net_bind (port);
+
+	input_add (p, c, INPUT_READ, (InputCallback) http_handle_incoming);
+
+	node_conn_set (ft_self, 0, -1, port);
+
+	return c;
+}
+
+static Connection *ft_start (Protocol *p, unsigned short klass,
+                             unsigned short port)
+{
+	Connection *c;
+
+	/* firewalled users can not go beyond the user class */
+	if (port == 0)
+		klass = NODE_USER;
+
+	/* node_add_connection is being abused here, and should not add to
+	 * the connection list */
+	c = node_add_connection (p, net_bind (port));
+	conn_remove (c);
+
+	input_add (p, c, INPUT_READ,
+	           (InputCallback) ft_handle_incoming);
+
+	node_state_set (c, NODE_CONNECTED);
+	node_class_set (c, klass);
+	node_conn_set  (c, 0, port, -1);
+
+	return c;
+}
+
+static void ft_initial_connect (Protocol *p)
+{
+	Connection *c;
+	FILE *f;
+	char *buf = NULL;
+	char *ptr;
+
+	/* start the initial connections */
+	f = fopen (gift_conf_path ("OpenFT/nodes"), "r");
+
+	if (!f)
+	{
+		c = node_add_connection (p, -1);
+		node_conn_set (c, inet_addr (DEFAULT_NODE), DEFAULT_PORT,
+					   DEFAULT_HTTP_PORT);
+
+		return;
+	}
+
+	while (file_read_line (f, &buf))
+	{
+		char *ip;
+		unsigned short port;
+		unsigned short http_port;
+
+		ptr = buf;
+
+		/* [vitality] [ip]:[port] [http_port] */
+
+		/*             */ string_sep (&ptr, " ");
+		ip        =       string_sep (&ptr, ":");
+		port      = ATOI (string_sep (&ptr, " "));
+		http_port = ATOI (string_sep (&ptr, " "));
+
+		if (!ip)
+			continue;
+
+	printf ("adding node: ip = %s, port = %hu\n", ip, port);
+
+		c = node_add_connection (p, -1);
+		node_conn_set (c, inet_addr (ip), port, http_port);
+	}
+
+	fclose (f);
+}
+
+/*****************************************************************************/
+
+/*
+ * OpenFT was parsed out of /path/to/libOpenFT.so
+ */
+int OpenFT_init (Protocol *p)
+{
+	int klass;
+	int port;
+	int http_port;
+
+	trace ();
+
+	/* p->name = strdup ("OpenFT"); */
+
+	dataset_insert (p->support, "resume", TRUE);
+
+	/* setup the symbols for the daemon to call */
+	p->callback = ft_daemon_callback;
+	p->destroy  = ft_daemon_destroy;
+	p->download = ft_daemon_download;
+	p->dc_close = ft_daemon_close;
+
+	/* setup the configuration table */
+	openft_conf = gift_config_new ("OpenFT");
+	port        = config_get_int (openft_conf, "main/port=1215");
+	http_port   = config_get_int (openft_conf, "main/http_port=1216");
+	klass       = config_get_int (openft_conf, "main/class=1");
+
+	/* startup the listening sockets */
+	ft_self   = ft_start   (p, klass, port);
+	http_bind = http_start (p, http_port);
+
+	share_local_import ();
+
+	/* setup the connection maintenance timer (2 minute intervals) */
+	ft_maint = timer_add (120, (TimerCallback) node_maintain_links, p);
+
+	ft_initial_connect (p);
+	node_maintain_links (p);
+
+	return TRUE;
+}

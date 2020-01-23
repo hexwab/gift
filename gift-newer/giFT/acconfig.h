@@ -1,0 +1,9 @@
+#undef NEED_SOCKLEN_T
+#undef PLUGIN_DIR
+#undef DATA_DIR
+#undef USE_DLOPEN
+#undef DIR_SEP_CHAR
+#undef DIR_SEP_STR
+#undef PATH_SEP_CHAR
+#undef PATH_SEP_STR
+#undef USE_ZLIB

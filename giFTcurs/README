@@ -1,0 +1,81 @@
+
+                           giFTcurs README File
+
+                    Christian Häggström <chm@c00.info>
+                Göran Weinholt <weinholt@dtek.chalmers.se>
+
+
+INSTALLATION
+
+To compile giFTcurs you need to have the development headers for ncurses
+and glib-2.0 installed. pkg-config is also required. When you've untarred
+the sources, cd into the giFTcurs directory and type:
+
+     ./configure
+     make
+     su
+     make install
+
+If things went well you should be able to run giFTcurs and connect to the
+giFT daemon. If you don't have giFT, look at http://giFT.sf.net/.
+
+Currenly giFTcurs only works with the CVS version of giFT. This is because
+the interface protocol changes frequently. If things don't work then maybe
+you need to get a newer version of giFTcurs, visit http://giFTcurs.sf.net/.
+
+CONTACTING THE DEVELOPERS / GETTING SUPPORT
+
+You can find us in #giFTcurs on irc.freenode.net. These mailing lists are
+available:
+
+     giFTcurs-user     discussion between users
+
+     giFTcurs-devel    discussion between developers
+
+     giFTcurs-commits  changes to the CVS
+
+Go to http://fnord.csbnet.se/pipermail to subscribe or see the list
+archives. See the AUTHORS file if you want to contact one of us personally.
+
+BUILDING FROM CVS
+
+When reporting a bug, please try to make sure that it is present in the CVS
+version of giFTcurs. Run this to get the CVS source:
+
+     export CVSROOT=:pserver:anonymous@cvs.sf.net:/cvsroot/giftcurs
+     cvs login
+     cvs -z3 co giFTcurs
+
+Then whenever you want to update the source, just run "cvs -z3 up -Pd" in
+the giFTcurs directory. To compile giFTcurs from CVS you must have the GNU
+autotools (automake, autoconf), the ncurses headers, gettext and GLib 2. A
+fairly recent (think 0.10.40) version of gettext is required, since we use
+ngettext. With some distributions you'll need the package gettext-devel as
+well. To compile type this:
+
+     ./autogen.sh
+     make
+     su
+     make install
+
+A common problem is parse errors in the po/ directory, if this happens you
+should try to run "cvs up -C" first. If this doesn't help, you probably
+have a broken gettext installation.
+
+PORTABILITY
+
+giFTcurs is known to work on the following systems:
+
+     Debian GNU/Linux, Mac OS X, Solaris, and cygwin.
+
+Versions prior to giFTcurs 0.6.0 worked with at least these systems:
+
+     AIX, BeOS, Debian GNU/Hurd, Debian GNU/Linux bo hamm slink potato
+     woody, FreeBSD 4.4, Mac OS X, NetBSD 1.5.2, OpenBSD 3.0, SunOS,
+     Solaris, Tru64 (OSF1 V4.0), and cygwin.
+
+Patches/suggestions which fix portability issues are highly appreciated.
+
+SEE ALSO
+
+giFTcurs(1), giFTcurs.conf(5), The giFTcurs FAQ

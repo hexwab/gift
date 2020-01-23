@@ -1,0 +1,35 @@
+Design goals:
+
+* Small amount of desktop real estate required
+* Lots of features
+* Emphasis on utility rather than user-friendliness
+* Separate windows for each activity
+* Absolutely no fucking tabs! 
+	I don't like tabs. You probably already guessed that.
+
+FUQ ("unasked")
+
+Q: Why no realm search?
+A: Realm searches are evil.
+
+
+TODO:
+* Exclusive downloads (only one; any one)
+* Quick download by hash
+* Search within results
+* Weed out obviously-bad results (1 disagrees on hash when n agree)
+* Sort parents of tuplets by most popular filename
+* Drag'n'drop files: drag from shares/uploads to get filename; drag from downloads to get partial filename/completed filename
+* Files listed by hits in shares window; also failed hits (need gift.pl cooperation)
+* Upload manager: set rates by filename/type/size/dir (need gift.pl cooperation)
+* Group uploads by user/filename
+* Karma (-- for downloading stuff, ++ for uploading, ++ for resharing downloads)
+* Whole album downloading (check tracknumber tag or /\D?(\d\d)\D/)
+* Freedb album verification
+* Auto-renaming by tag
+* Socket connection for command submission
+* Search ShareReactor clone
+* Collections (file containing several filenames and hashes)
+
+* Total filesize of selected items
+* Free disk space/ETA till out of space

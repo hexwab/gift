@@ -1,0 +1,7 @@
+     ../src/main.c \
+     ../src/stats.c \
+     ../src/gui.c \
+     ../src/search.c \
+     ../src/search_tab.c \
+     ../src/parse.c \
+     ../src/utils.c

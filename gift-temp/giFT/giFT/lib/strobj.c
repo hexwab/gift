@@ -1,0 +1,207 @@
+/*
+ * $Id: strobj.c,v 1.6 2003/05/05 11:53:56 jasta Exp $
+ *
+ * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gift.h"
+
+#include "string.h"
+
+/*****************************************************************************/
+
+#define STRING_SIZE 128
+
+/*****************************************************************************/
+
+String *string_new (char *str, int alloc, int len, int resizable)
+{
+	String *s;
+
+	if (!(s = MALLOC (sizeof (String))))
+		return NULL;
+
+	s->str       = str;
+	s->alloc     = alloc;
+	s->len       = len;
+	s->resizable = resizable;
+
+	/* guarantee a sentinel if possible */
+	if (s->str && s->alloc > s->len)
+		s->str[s->len] = 0;
+
+	return s;
+}
+
+void string_free (String *s)
+{
+	if (!s)
+		return;
+
+	if (s->resizable)
+		free (s->str);
+
+	free (s);
+}
+
+char *string_free_keep (String *s)
+{
+	char *str;
+
+	if (!s)
+		return NULL;
+
+	str = s->str;
+
+	s->resizable = FALSE;
+	string_free (s);
+
+	return str;
+}
+
+int string_resize (String *s, int new_alloc)
+{
+	char *new_str;
+
+	/* hmm. */
+	if (new_alloc > 65535)
+		return 0;
+
+	/* the string was reset, but the allocation was never reduced */
+	if (s->len == 0)
+	{
+		/* it is safe for this operation to fail, so we are making sure we
+		 * dont return an error condition in that event */
+		if (s->resizable && (new_str = realloc (s->str, new_alloc)))
+		{
+			s->str   = new_str;
+			s->alloc = new_alloc;
+		}
+	}
+
+	/* not enough room to hold new_alloc, resize */
+	if (new_alloc > s->alloc)
+	{
+		if (!s->resizable)
+			return 0;
+
+		if (!(new_str = realloc (s->str, new_alloc)))
+			return 0;
+
+		s->str = new_str;
+	}
+
+	s->alloc = new_alloc;
+
+	return s->alloc;
+}
+
+/*****************************************************************************/
+
+int string_appendf (String *s, const char *fmt, ...)
+{
+	va_list args;
+	int     written = 0;
+
+	if (!s)
+		return 0;
+
+	if (s->alloc == 0)
+	{
+		if (!string_resize (s, s->alloc + STRING_SIZE))
+			return 0;
+	}
+
+	for (;;)
+	{
+		int max;
+
+		if (s->len < s->alloc)
+		{
+			max = s->alloc - s->len - 1;
+
+			va_start (args, fmt);
+			written = vsnprintf (s->str + s->len, max, fmt, args);
+			va_end (args);
+
+			if (written > -1 && written < max)
+				break;
+		}
+
+#if 0
+		if (written > -1)
+			max = s->alloc + written + 1;
+		else
+			max = s->alloc * 2;
+#endif
+
+		if (!string_resize (s, s->alloc * 2))
+			break;
+	}
+
+	/* get the new written length */
+	s->len = CLAMP (s->len + written, 0, s->alloc);
+
+	return written;
+}
+
+int string_append (String *s, const char *str)
+{
+	/* TODO -- opt */
+	return string_appendf (s, "%s", str);
+}
+
+int string_appendu (String *s, unsigned char *str, size_t len)
+{
+	/* TODO: FIXME */
+	if (!string_resize (s, s->len + len + 1))
+		return 0;
+
+	memcpy (s->str + s->len, str, len);
+	s->len += len;
+
+	/* always maintain a trailing \0, even when the data interface is
+	 * not a human readable string by convention */
+	s->str[s->len] = 0;
+
+	return len;
+}
+
+int string_appendc (String *s, char c)
+{
+	return string_appendf (s, "%c", c);
+}
+
+/*****************************************************************************/
+
+#if 0
+int main (int argc, char **argv)
+{
+	String *s;
+
+	s = string_new (NULL, 0, 0, TRUE);
+
+	string_append (s, "s: ");
+
+	while (argc--)
+		string_appendf (s, "%s ", *argv++);
+
+	string_appendc (s, '\n');
+
+	printf ("%s", s->str);
+
+	string_free (s);
+
+	return 0;
+}
+#endif

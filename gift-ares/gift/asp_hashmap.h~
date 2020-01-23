@@ -1,0 +1,4 @@
+void asp_hashmap_init (void);
+void asp_hashmap_destroy (void);
+as_bool asp_hashmap_lookup (ASHash *hash, char **name, size_t *size);
+void asp_hashmap_insert (ASHash *hash, char *name, size_t size);

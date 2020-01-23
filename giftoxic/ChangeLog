@@ -1,0 +1,129 @@
+2003-05-27 Tilman Sauerbeck <tilman@code-monkey.de>
+        * Added dutch translation by Eelco Lempsink
+        * Use pkg-config to get the GTK and libgiFT flags
+
+2003-05-25 Franco Catrin <fcatrin@tuxpan.cl>
+        * Fixed Automake warning (AM_CONFIG_HEADER)
+        * Human readable stats inspired by GNOME CVS version
+        * More texts added to translations
+		
+2003-05-25 Tilman Sauerbeck <tilman@code-monkey.de>
+        * Added German translation (alpha state)
+
+2003-05-24 Franco Catrin <fcatrin@tuxpan.cl>
+        * Added i18n support
+        * Spanish translation added
+
+2003-05-21 Franco Catrin <fcatrin@tuxpan.cl>
+        * Size column sorted correctly (not alphanumerical)
+        * Show real connected networks (users>0)
+        * Added text in progress indicators
+
+2003-05-20 Tilman Sauerbeck <tilman@code-monkey.de>
+        * Display list networks connected to on startup
+        * Get stats and transfer sources on attach
+
+2003-05-19 Tilman Sauerbeck <tilman@code-monkey.de>
+        * UI changes as proposed by Mark Finlay.
+        * Fixed a search bug caused by protocols which don't use hashes
+        * Window icon and desktop file added.
+        * The giFT daemon is now automatically started in certain situations
+
+2003-05-18 Franco Catrin <fcatrin@tuxpan.cl>
+        * search_tab and some gui staff separated in other source files.
+        * Added stop search button on search tab.
+        * Human readable stats
+        * Look for libgiFT into default prefix
+
+2003-04-21 Tilman Sauerbeck <tilman@code-monkey.de>
+        * Added AM_PATH_LIBGIFT_ALT m4 macro
+        * configure.in: check for libgiFT
+
+2003-01-01 Tilman:
+        * search.c: make start_source_search() search for the hash and
+          not for "hash"
+        * search.c, parse.c, utils.c, utils.h: When adding sources,
+          free the list's element afterwards at once.
+        * parse.c: Don't free search result when it's coming from a
+          source search.
+
+2002-12-29 Tilman:
+        * Added "Clear all" context menu entry which removes
+          cancelled or completed transfers (disabled on GTK 2.0 systems)
+        * Renamed functions in transfer.c
+          (cancel_transfer => transfer_cancel etc)
+        * Use GIFTOXIC_DEBUG instead of DEBUG cause gift.h may define
+          DEBUG :(
+
+2002-12-28 Tilman:
+        * Make use of libgiFT for interface stuff
+        * Fixed GIOChannel issues
+        * The user can you specify a host (or a IP) to connect to
+		
+2002-12-24 Tilman:
+        * RELEASE: 0.0.5
+
+2002-12-23 Tilman:
+        * Code cleanup
+        * Fixed a bug that caused multiple sources with the same alias
+          not to be displayed
+        * Fixed a bug related to cancelled downloads (id wasn't reset)
+        * Cleaned up Makefile.am's to make "make dist" work
+        * The giFToxic logo is now loaded at runtime, not using a XPM
+        * Added show_dialog()
+
+2002-12-22 Tilman:
+        * Started GUI cleanup (preferences tab, stats tab)
+        * Improved statusbar handling
+        * Save/read settings from/to ~/.giFToxicrc
+		
+2002-12-20 Tilman:
+        * Improved statusbar text
+        * Fixed a bug causing uploads to be displayed as downloads
+        * Transfer cancelling bugfixes
+        * Fixed GIOChannel issues
+        * Correct number of search results is now shown in the statusbar
+        * Cancel running searches before starting a new one
+        * Misc. code cleanup
+
+2002-12-19 Tilman:
+        * Sharing can now be disabled/enabled
+        * Added ability to synchronize shares
+        * Show number of active transfers in statusbar and stats tab
+	
+2002-12-19 Franco:
+        * Improved ETA calculation
+        * Added search feedback to the user
+
+2002-12-19 Tilman:
+        * Fixed transfer cancelling
+        * Added "autoclean" options (automatically remove completed or
+          cancelled transfers)
+
+2002-12-17 Franco:
+        * Fixed speed computation (reset speed if giFT doesn't report change)
+
+2002-12-16 Tilman:
+        * partially fixed speed computation
+        * add ETA for transfers
+
+2002-12-15 Franco:
+        * Fixed Nasty bug in get_new_event_id creating duplicate entries
+
+2002-12-14 Franco:
+        * Columns containing names don't grow automatically
+
+2002-12-13 Tilman:
+        * Look for sources for active transfers every 5 minutes
+        * Added commandline parameter to specify ip/port to connect to
+
+2002-12-11 Franco:
+        * Human readable file sizes
+        * Download/Upload panels contained in gtk_vpanel
+
+2002-12-10 Franco:
+        * Small Interface Protocol FIXUP
+        * Added more giFT realms : image, text and application
+
+ChangeLog began to be used.
+giFToxic almost usable thanks to Tilman

@@ -1,0 +1,296 @@
+/*
+ * $Id: tx_link.c,v 1.8 2004/03/11 16:26:52 mkern Exp $
+ *
+ * Copyright (C) 2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gt_gnutella.h"
+
+#include "io/tx_stack.h"
+#include "io/tx_layer.h"
+#include "io/io_buf.h"
+
+/*****************************************************************************/
+
+#define TX_LINK_DEBUG 0
+
+#if TX_LINK_DEBUG
+
+#ifndef _MSC_VER
+#define LINK_TRACE(tx,fmt...) \
+	GT->DBGSOCK(GT, gt_tx_stack_get_conn(tx->stack), fmt)
+#else
+#define LINK_TRACE(tx,fmt) \
+	GT->DBGSOCK(GT, gt_tx_stack_get_conn(tx->stack), "LINK_TRACE")
+#endif
+
+#else
+
+#ifndef _MSC_VER
+#define LINK_TRACE(tx,fmt,args...)
+#else
+#define LINK_TRACE(tx,fmt)
+#endif
+
+#endif
+
+/*****************************************************************************/
+
+struct tx_link
+{
+	input_id       id;
+	struct io_buf *buf;
+#if 0
+	TCPC          *c;
+#endif
+};
+
+/*****************************************************************************/
+
+static void deactivate_queue    (struct tx_layer *tx);
+static void activate_queue      (struct tx_layer *tx);
+
+/*****************************************************************************/
+
+static BOOL tx_link_init (struct tx_layer *tx)
+{
+	struct tx_link *tx_link;
+
+	if (!(tx_link = NEW (struct tx_link)))
+		return FALSE;
+
+	tx_link->id  = 0;
+	tx_link->buf = NULL;
+
+	/* store our layer-specific info in the toplevel layer */
+	tx->udata = tx_link;
+
+	return TRUE;
+}
+
+static void tx_link_destroy (struct tx_layer *tx)
+{
+	struct tx_link *tx_link = tx->udata;
+
+	input_remove (tx_link->id);
+	tx_link->id = 0;
+
+	io_buf_free (tx_link->buf);
+
+	FREE (tx_link);
+}
+
+/*****************************************************************************/
+
+static const char *tx_status_str (tx_status_t ret)
+{
+	switch (ret)
+	{
+	 case TX_EMPTY: return "TX_EMPTY";
+	 case TX_FULL:  return "TX_FULL";
+	 case TX_ERROR: return "TX_ERROR";
+	 case TX_OK:    return "TX_OK";
+	 case TX_PARTIAL: return "TX_PARTIAL";
+	 default:       return "TX_UNKNOWN";
+	}
+}
+
+static tx_status_t request_more_data (struct tx_layer *tx)
+{
+	int ret;
+
+	/*
+	 * Ask the layer above this one to send this layer data.
+	 */
+	if ((ret = gt_tx_layer_ready (tx)) == TX_ERROR)
+		return TX_ERROR;
+
+	LINK_TRACE(tx, "ret=%s", tx_status_str (ret));
+
+	return ret;
+}
+
+static tx_status_t tx_link_process (struct tx_layer *tx, struct io_buf *io_buf)
+{
+	uint8_t *ptr;
+	size_t   len;
+	int      n;
+
+	ptr = io_buf_read_ptr   (io_buf);
+	len = io_buf_read_avail (io_buf);
+
+	/*
+	 * gt_tx_stack_send() calls tcp_send() to send the data on the
+	 * connection. This is done because no interface for passing parameters
+	 * like a TCPC is exposed anywhere to users of GtTxStack.
+	 */
+	if ((n = gt_tx_stack_send (tx->stack, ptr, len)) <= 0)
+		return TX_ERROR;
+
+	/*
+	 * Pop whatever bytes were written off the buffer.  This may be less than
+	 * the the whole buffer in the case of a short write.  In that case we
+	 * don't remove the buffer, but continue writing it later.
+	 */
+	io_buf_pop (io_buf, n);
+
+	return TX_OK;
+}
+
+/*
+ * The packet-sending input callback.
+ */
+static void tx_link_send_data (int fd, input_id id, struct tx_layer *tx)
+{
+	struct tx_link *tx_link = tx->udata;
+	struct io_buf  *io_buf;
+	size_t          len;
+
+	/*
+	 * If there's no data to write, request more from the upper layer.
+	 */
+	if (!(io_buf = tx_link->buf))
+	{
+		tx_status_t ret;
+
+		if ((ret = request_more_data (tx)) == TX_ERROR)
+		{
+			gt_tx_stack_abort (tx->stack);
+			return;
+		}
+
+		/* deactivate the queue until more data arrives */
+		if (ret == TX_EMPTY)
+		{
+			LINK_TRACE(tx, "empty, deactivating");
+			assert (tx_link->buf == NULL);
+			deactivate_queue (tx);
+			return;
+		}
+
+		/* upper layer must have called our queue function */
+		assert (tx_link->buf != NULL);
+		io_buf = tx_link->buf;
+
+		/* fall through and send the buffer */
+	}
+
+	len = io_buf_read_avail (io_buf);
+
+	/*
+	 * It is safe to abort the tx-stack if we encountered an error because
+	 * there are no other callers into it currently.
+	 */
+	if (tx_link_process (tx, io_buf) == TX_ERROR)
+	{
+		gt_tx_stack_abort (tx->stack);
+		return;
+	}
+
+	if (io_buf_read_avail (io_buf) > 0)
+	{
+		assert (io_buf_read_avail (io_buf) < len);
+		return;
+	}
+
+	/*
+	 * The complete buffer was written.  This input callback will continue
+	 * grabbing data from the upper layer until gt_tx_layer_ready() returns
+	 * TX_EMPTY or TX_ERROR.
+	 */
+	io_buf_free (io_buf);
+	tx_link->buf = NULL;
+}
+
+static void activate_queue (struct tx_layer *tx)
+{
+	struct tx_link *tx_link = tx->udata;
+
+	/* skip if input already active */
+	if (tx_link->id)
+		return;
+
+	tx_link->id = gt_tx_stack_input_add (tx->stack,
+	                                     (InputCallback)tx_link_send_data, tx);
+}
+
+static void deactivate_queue (struct tx_layer *tx)
+{
+	struct tx_link *tx_link = tx->udata;
+
+	if (!tx_link->id)
+		return;
+
+	input_remove (tx_link->id);
+	tx_link->id = 0;
+}
+
+/* begin or end consuming data in this layer */
+static void tx_link_toggle (struct tx_layer *tx, BOOL stop)
+{
+	if (stop)
+		deactivate_queue (tx);
+	else
+		activate_queue (tx);
+}
+
+/*****************************************************************************/
+
+static tx_status_t tx_link_queue (struct tx_layer *tx, struct io_buf *io_buf)
+{
+	struct tx_link *tx_link = tx->udata;
+
+	if (tx_link->buf != NULL)
+	{
+		/* this layer is "saturated" with its single packet */
+		return TX_FULL;
+	}
+
+	tx_link->buf = io_buf;
+	activate_queue (tx);
+
+	/* TODO: need to change this if we change to writing as much
+	 * as possible synchronously instead of one message from the handler */
+	return TX_OK;
+}
+
+static tx_status_t tx_link_ready (struct tx_layer *tx)
+{
+	abort (); /* can't handle layers underneath us */
+	return TX_ERROR;
+}
+
+/*****************************************************************************/
+
+static void tx_link_enable (struct tx_layer *tx)
+{
+	activate_queue (tx);
+}
+
+static void tx_link_disable (struct tx_layer *tx)
+{
+	deactivate_queue (tx);
+}
+
+/*****************************************************************************/
+
+struct tx_layer_ops gt_tx_link_ops =
+{
+	tx_link_init,
+	tx_link_destroy,
+	tx_link_toggle,
+	tx_link_queue,
+	tx_link_ready,
+	tx_link_enable,
+	tx_link_disable,
+};

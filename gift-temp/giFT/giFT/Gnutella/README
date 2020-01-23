@@ -1,0 +1,32 @@
+
+Compilation & Installation
+--------------------------
+
+In the main giFT directory, do:
+
+	./autogen.sh --enable-gnutella
+	make install
+
+Then add Gnutella to the [main]/plugins line in ~/.giFT/gift.conf,
+like so:
+
+	[main]
+	plugins = OpenFT:Gnutella
+
+You may also use a fully qualified path to the plugin filename:
+	
+	[main]
+	plugins = OpenFT:/usr/local/lib/giFT/libGnutella.la
+
+Previously, you had to copy configuration files from
+giFT/etc/Gnutella to $HOME/.giFT/Gnutella/, but this is no longer
+true. Now, the plugin will copy these files from the
+$PREFIX/share/giFT/Gnutella/ directory if necessary.
+
+Contact
+-------
+
+Email:  hipnod@bellsouth.net  [Original author]
+
+IRC:    #giFT-gnutella on irc.freenode.net
+

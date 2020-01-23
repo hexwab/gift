@@ -1,0 +1,47 @@
+/* -*- C -*- */
+
+body, table {
+	font-family: Verdana, Tahoma, sans-serif;
+	font-size: 11px;
+	color: #000;
+}
+th {
+	font-weight: bold;
+	text-align: left;
+}
+
+i {
+	font-style: italic;
+}
+b {
+	font-weight: bold;
+}
+
+input, textarea, select {
+	border: 1px outset #000;
+	background: #CCF;
+}
+
+#meny_text, #menyrubrik, #menyrubrik, #rubrik {
+	color: #C0C0C0;
+	font-weight: bold;
+}
+
+/* #text { } */
+#text_gra {
+	color: #909090;
+}
+#varningstext {
+	color: #F00;
+	font-weight: bold;
+}
+
+a {
+	font-weight: bold;
+	text-decoration: none;
+	color: #505050;
+}
+a:hover {
+	color: #E79B1D;
+	font-weight: bold;
+}

@@ -1,0 +1,74 @@
+# $Id: Makefile.msvc,v 1.26 2003/05/04 20:53:50 rossta Exp $
+
+!include ../Make.msvc
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+OPENFT_DEF = "../win32/openft_api.def"
+TARGET     = $(OPENFT_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+TARGET     = $(OPENFT_STATIC)
+
+!endif
+
+OBJECTS = \
+	ft_openft$(O) \
+	ft_node$(O) \
+	ft_node_cache$(O) \
+	ft_conf$(O) \
+	ft_conn$(O) \
+	ft_packet$(O) \
+	ft_protocol$(O) \
+	ft_utils$(O) \
+	ft_version$(O) \
+	ft_share$(O) \
+	ft_share_file$(O) \
+	ft_stats$(O) \
+	ft_shost$(O) \
+	ft_event$(O) \
+	ft_search$(O) \
+	ft_search_exec$(O) \
+	ft_search_db$(O) \
+	ft_html$(O) \
+	ft_netorg$(O) \
+	ft_xfer$(O) \
+	ft_http_client$(O) \
+	ft_http_server$(O) \
+	ft_stream$(O) \
+	ft_session$(O) \
+	md5$(O)
+	
+all : $(TARGET)
+
+install : $(TARGET)
+!if defined(dynamic) || defined(DYNAMIC)
+	@copy /y $(TARGET) ..\win32-dist\OpenFT.dll
+!endif
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS) $(OPENFT_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(OPENFT_DEF) $(LIBS) \
+	       $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

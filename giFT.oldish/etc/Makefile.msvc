@@ -1,0 +1,9 @@
+# -*- makefile -*-
+# $Id: Makefile.msvc,v 1.3 2002/05/06 06:09:04 rossta Exp $
+
+install:
+	@-md ..\win32-dist\OpenFT
+	@-md ..\win32-dist\ui
+#	@-copy /y gift.conf ..\win32-dist
+#	@-copy /y OpenFT\OpenFT.conf ..\win32-dist\OpenFT
+#	@-copy /y ui\ui.conf ..\win32-dist\ui

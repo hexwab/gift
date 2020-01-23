@@ -1,0 +1,38 @@
+# $Id: Makefile.msvc,v 1.3 2005/12/18 16:45:38 mkern Exp $
+
+
+!include ../../Make.msvc
+
+INCLUDES = -I. -Iwin32 -Icompat -Icompat\sys $(INCLUDES)
+
+# use win32\config.h
+DEFS = $(DEFS) -DHAVE_CONFIG_H
+
+CFLAGS = $(CFLAGS) -DWIN32_SELECT
+
+
+OBJECTS = \
+	err$(O) \
+	event$(O) \
+	win32\misc$(O) \
+	win32\win32select$(O)
+	
+
+all: $(OBJECTS)
+#	$(LT) -nologo -out:libevent$(DEXT).lib -def:libevent.def $(OBJECTS)
+	$(LT) -nologo -out:libevent$(DEXT).lib $(OBJECTS)
+
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F win32\*$(O)
+	@-del /Q /F libevent$(DEXT).lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

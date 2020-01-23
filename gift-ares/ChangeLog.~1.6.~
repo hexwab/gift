@@ -1,0 +1,21 @@
+ $Id: ChangeLog,v 1.6 2005/02/28 14:19:14 mkern Exp $
+
+	* Fixed missing album meta data in search results
+
+	* Fixed crash on duplicate hash search.
+
+	* Fixed assertion failure when download chunk was of size 1.
+
+gift-ares 0.2.1:
+
+	* Adjusted to protocol changes introduced in Ares build 2951.
+	
+	* Fixed path conversion bug leading to failing uploads in windows.
+
+	* Fixed unhandled download completion case leading to abort.
+
+	* Fixed metadata parser.
+	
+gift-ares 0.2:
+
+	* Automagic build system

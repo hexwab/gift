@@ -1,0 +1,1020 @@
+# giFTcurs - curses interface to giFT
+# This file is put in the public domain.
+# Göran Weinholt <weinholt@dtek.chalmers.se>, 2001–2004.
+# Christian Häggström <chm@c00.info>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: giFTcurs 0.6.2\n"
+"Report-Msgid-Bugs-To: giftcurs-devel@nongnu.org\n"
+"POT-Creation-Date: 2004-01-11 21:17+0100\n"
+"PO-Revision-Date: 2004-01-09 08:03+0100\n"
+"Last-Translator: Göran Weinholt <weinholt@dtek.chalmers.se>\n"
+"Language-Team: Sweden <sv@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
+
+#: src/get.c:48
+msgid "A source search for this file is already in progress."
+msgstr "En källsökning har redan startats för den här filen."
+
+#: src/get.c:86
+msgid "Already downloading from this source"
+msgstr "Laddar redan ner från den här källan"
+
+#: src/get.c:90
+msgid "Downloading from a single source"
+msgstr "Laddar ner från en ensam källa"
+
+#: src/get.c:97
+#, c-format
+msgid "Revived '%s'."
+msgstr "Återupplivade ”%s”."
+
+#: src/get.c:104
+#, c-format
+msgid "I have no sources for '%s'."
+msgstr "Jag har inga källor för ”%s”."
+
+#: src/get.c:119
+#, c-format
+msgid "Already downloading '%s'."
+msgstr "Laddar redan ner ”%s”."
+
+#: src/get.c:122
+msgid "Downloading..."
+msgstr "Laddar ner…"
+
+#: src/get.c:153
+#, c-format
+msgid "Source search complete for '%s'."
+msgstr "Källsökning färdig för filen ”%s”."
+
+#: src/get.c:188
+#, c-format
+msgid "Started a source search for '%s'."
+msgstr "Startade källsökning för filen ”%s”."
+
+#: src/gift.c:66
+msgid "I'm all out of id's, Jim. Maybe you could cancel a search?"
+msgstr "Jag har fått slut på ID:n, Sven. Kanske du kan avbryta en sökning?"
+
+#: src/gift.c:81
+#, c-format
+msgid "The daemon used the reserved ID %u, upgrade the daemon."
+msgstr "Demonen använde det reserverade ID:t %u, uppgradera demonen."
+
+#: src/gift.c:100
+msgid "The connection with the daemon was unexpectedly closed!"
+msgstr "Anslutningen till demonen stängdes oväntat."
+
+#: src/gift.c:133
+#, c-format
+msgid "Can't connect to the daemon at %s:%s, is giFT running?"
+msgstr "Kan inte ansluta till demonen vid %s:%s, är giFT igång?"
+
+#: src/main.c:153
+#, c-format
+msgid "%s v%s - This is Free Software. Press F1 or M-1 for more info."
+msgstr "%s v%s - Detta är fri programvara. Tryck F1 eller M-1 för mer info."
+
+#: src/main.c:214
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr "%s version %s, kompilerad %s %s\n"
+
+#: src/main.c:251
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr "%s - curses-gränssnitt till giFT\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr "Användning: %s [FLAGGA]…\n"
+
+#: src/main.c:253
+#, c-format
+msgid ""
+"Options:\n"
+"  -a, --stickchars        use 7-bit chars for line drawing\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%s]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+"Flaggor:\n"
+"  -a, --stickchars        använd 7-bitarstecken för linjeritning\n"
+"  -h, --help              visa den här hjälpen och avsluta\n"
+"  -V, --version           visa versionsinformation och avsluta\n"
+"  -v, --verbose           skriv avlusningsinformation till stderr\n"
+"  -s, --server=värd:port  sätt serveradress [%s:%s]\n"
+"  -p, --profile=namn      välj vilken profil som ska användas [%s]\n"
+
+#: src/main.c:262
+#, c-format
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr "  -d, --nomouse           använd inte musen\n"
+
+#: src/misc.c:205
+#, c-format
+msgid "The daemon has synced %i file."
+msgid_plural "The daemon has synced %i files."
+msgstr[0] "Demonen har synkat %i fil."
+msgstr[1] "Demonen har synkat %i filer."
+
+#: src/misc.c:208
+msgid "The daemon is done syncing shares."
+msgstr "Demonen är klar med synkroniseringen av filer."
+
+#: src/misc.c:210
+#, c-format
+msgid "The daemon reported the following sync status: %s"
+msgstr "Demonen rapporterade följande synkroniseringsstatus: %s"
+
+#: src/misc.c:215
+msgid "Daemon reported that sharing now is enabled."
+msgstr "Demonen rapporterade att fildelning nu är påslaget."
+
+#: src/misc.c:222
+msgid "Daemon reported that sharing now is disabled."
+msgstr "Demonen rapporterade att fildelning nu är avslaget."
+
+#: src/misc.c:245
+#, c-format
+msgid "Attached to %s v%s."
+msgstr "Ansluten till %s v%s."
+
+#: src/misc.c:263
+msgid "never mind"
+msgstr "det var inget"
+
+#: src/misc.c:265
+msgid "There is an important message from the daemon! Check the console."
+msgstr "Det finns ett viktigt meddelande från demonen! Kolla konsollen."
+
+#: src/misc.c:268
+msgid "And now a few words from our sponsor:"
+msgstr "Och nu ett par ord från våra sponsorer:"
+
+#: src/screen.c:69
+msgid "standard"
+msgstr "standard"
+
+#: src/screen.c:70
+msgid "header"
+msgstr "etikett"
+
+#: src/screen.c:71
+msgid "search box"
+msgstr "sökruta"
+
+#: src/screen.c:72
+msgid "result box"
+msgstr "resultatruta"
+
+#: src/screen.c:73
+msgid "statistics box"
+msgstr "statistikruta"
+
+#: src/screen.c:74
+msgid "statistics data"
+msgstr "statistikdata"
+
+#: src/screen.c:75
+msgid "bad statistics"
+msgstr "dålig statistik"
+
+#: src/screen.c:76
+msgid "info box"
+msgstr "inforuta"
+
+#: src/screen.c:77
+msgid "download box"
+msgstr "nerladdningsruta"
+
+#: src/screen.c:78
+msgid "upload box"
+msgstr "uppladdningsruta"
+
+#: src/screen.c:79
+msgid "help box"
+msgstr "hjälpruta"
+
+#: src/screen.c:80
+msgid "console box"
+msgstr "konsollruta"
+
+#: src/screen.c:81
+msgid "good hits"
+msgstr "bra träffar"
+
+#: src/screen.c:82
+msgid "bad hits"
+msgstr "dålig träffar"
+
+#: src/screen.c:83
+msgid "progress bar"
+msgstr "framgångsindikator"
+
+#: src/screen.c:84
+msgid "total progress"
+msgstr "total framgång"
+
+#: src/screen.c:85
+msgid "scroll indicator"
+msgstr "listindikator"
+
+#: src/screen.c:86
+msgid "selection"
+msgstr "urval"
+
+#: src/screen.c:87
+msgid "button bar"
+msgstr "knapprad"
+
+#: src/screen.c:88
+msgid "button bar selection"
+msgstr "val i knappraden"
+
+#: src/screen.c:89
+msgid "button bar alert"
+msgstr "brask i knappraden"
+
+#: src/screen.c:94
+msgid "black"
+msgstr "svart"
+
+#: src/screen.c:95
+msgid "red"
+msgstr "rött"
+
+#: src/screen.c:96
+msgid "green"
+msgstr "grönt"
+
+#: src/screen.c:97
+msgid "yellow"
+msgstr "gult"
+
+#: src/screen.c:98
+msgid "blue"
+msgstr "blått"
+
+#: src/screen.c:99
+msgid "magenta"
+msgstr "magenta"
+
+#: src/screen.c:100
+msgid "cyan"
+msgstr "cyan"
+
+#: src/screen.c:101
+msgid "white"
+msgstr "vitt"
+
+#: src/screen.c:103
+msgid "default"
+msgstr "standard"
+
+#: src/search.c:329
+#, c-format
+msgid "Search complete. We got %i unique hit for %s."
+msgid_plural "Search complete. We got %i unique hits for %s."
+msgstr[0] "Sökning färdig. Vi fick %i unik träff för %s."
+msgstr[1] "Sökning färdig. Vi fick %i unika träffar för %s."
+
+#: src/search.c:376
+#, c-format
+msgid "The limit of %d unique hits was reached."
+msgstr "Gränsen på %d unika träffar nåddes."
+
+#: src/settings.c:119
+#, c-format
+msgid "Could not rename %s to %s: %s"
+msgstr "Kunde inte döpa om %s till %s: %s"
+
+#: src/settings.c:145
+#, c-format
+msgid "# %s configuration file created by v%s.\n"
+msgstr "# %s konfigurationsfil skapad av v%s.\n"
+
+#: src/settings.c:148
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals.\n"
+msgstr ""
+"\n"
+"# 'default' betyder ingen färg, dvs. genomskinligt på en del terminaler.\n"
+
+#: src/settings.c:149
+msgid "# See giFTcurs.conf(5) for more information.\n"
+msgstr "# Se giFTcurs.conf(5) för mer information.\n"
+
+#: src/transfer.c:39
+msgid "Waiting"
+msgstr "Väntar"
+
+#: src/transfer.c:40
+msgid "Paused"
+msgstr "Pausad"
+
+#: src/transfer.c:41
+msgid "Queued (Remotely)"
+msgstr "Fjärrköad"
+
+#: src/transfer.c:42
+msgid "Queued"
+msgstr "Kölagd"
+
+#: src/transfer.c:43
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/transfer.c:44
+msgid "Complete"
+msgstr "Färdig"
+
+#: src/transfer.c:45
+msgid "Cancelled (Remotely)"
+msgstr "Fjärravbruten"
+
+#: src/transfer.c:46
+msgid "Timed out"
+msgstr "Timeout"
+
+#: src/transfer.c:47
+msgid "Awaiting connection"
+msgstr "Vänta på anslutning"
+
+#: src/transfer.c:48
+msgid "Connecting"
+msgstr "Ansluter"
+
+#: src/transfer.c:49
+msgid "Receiving"
+msgstr "Tar emot"
+
+#: src/transfer.c:50
+msgid "Verifying"
+msgstr "Verifierar"
+
+#: src/transfer.c:52
+msgid "Sending"
+msgstr "Sänder"
+
+#: src/transfer.c:53
+msgid "Received HTTP PUSH"
+msgstr "Mottog HTTP PUSH"
+
+#: src/transfer.c:54
+msgid "Received HTTP headers"
+msgstr "Mottog HTTP-huvuden"
+
+#: src/transfer.c:55
+msgid "Sent HTTP request"
+msgstr "Sände HTTP-begäran"
+
+#: src/transfer.c:56
+msgid "Malformed HTTP header"
+msgstr "Felformaterat HTTP-huvud"
+
+#: src/transfer.c:57
+msgid "Remote host had an aneurism"
+msgstr "Fjärrvärden fick hjärnblödning"
+
+#: src/transfer.c:58
+msgid "Connection closed"
+msgstr "Anslutningen stängd"
+
+#: src/transfer.c:59
+msgid "Connection refused"
+msgstr "Anslutning nekad"
+
+#: src/transfer.c:60
+msgid "File not found"
+msgstr "Filen fanns inte"
+
+#: src/transfer.c:61
+msgid "Local read error"
+msgstr "Lokalt läsfel"
+
+#: src/transfer.c:62
+msgid "Incorrect chunk size"
+msgstr "Ogiltig klumpstorlek"
+
+#: src/transfer.c:63
+msgid "No route to host"
+msgstr "Ingen ryttare till hästen"
+
+#: src/transfer.c:71
+msgid "duration"
+msgstr "längd"
+
+#: src/transfer.c:72
+msgid "title"
+msgstr "titel"
+
+#: src/transfer.c:73
+msgid "track"
+msgstr "spår"
+
+#: src/transfer.c:74
+msgid "comment"
+msgstr "kommentar"
+
+#: src/transfer.c:75
+msgid "frequency"
+msgstr "frekvens"
+
+#: src/transfer.c:76
+msgid "year"
+msgstr "år"
+
+#: src/transfer.c:77
+msgid "album"
+msgstr "album"
+
+#: src/transfer.c:78
+msgid "artist"
+msgstr "artist"
+
+#: src/transfer.c:79
+msgid "bitrate"
+msgstr "bithastighet"
+
+#: src/transfer.c:80
+msgid "resolution"
+msgstr "upplösning"
+
+#: src/transfer.c:81
+msgid "language"
+msgstr "språk"
+
+#: src/transfer.c:82
+msgid "category"
+msgstr "kategori"
+
+#: src/transfer.c:83
+msgid "keywords"
+msgstr "nyckelord"
+
+#: src/transfer.c:187
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: src/transfer.c:225 src/ui_transfer.c:620
+msgid "Unknown status"
+msgstr "Okänd status"
+
+#: src/transfer.c:606
+#, c-format
+msgid "Download of %s completed."
+msgstr "Nerladdning av %s färdig."
+
+#: src/transfer.c:608
+#, c-format
+msgid "Download of %s cancelled."
+msgstr "Nerladdning av %s avbruten."
+
+#: src/transfer.c:617
+msgid "Cancelled"
+msgstr "Avbruten"
+
+#: src/ui.c:225
+msgid "Exit"
+msgstr "Avsluta"
+
+#: src/ui_console.c:102 src/ui_console.c:211
+msgid "Console"
+msgstr "Konsoll"
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned on."
+msgstr "Utförligt läge aktiverat."
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned off."
+msgstr "Utförligt läge avaktiverat."
+
+#: src/ui_console.c:134
+msgid "Wrapping lines."
+msgstr "Radbryter."
+
+#: src/ui_console.c:134
+msgid "Line wrapping turned off."
+msgstr "Radbrytning avstängt."
+
+#: src/ui_help.c:44
+#, c-format
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"Key list:\n"
+"{%header:B}up{%prev}/{%header:B}down{%prev}        select item or scroll in "
+"a list\n"
+"{%header:B}PgUp{%prev}/{%header:B}PgDown{%prev}    scroll lists one screen "
+"at a time\n"
+"{%header:B}tab{%prev}            move to the next input field\n"
+"{%header:B}F1{%prev}             this help screen\n"
+"{%header:B}F2{%prev}             the main screen\n"
+"    {%header:B}enter{%prev}      download the highlighted file\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}e{%prev}          expand/collapse search results\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        scroll information box\n"
+"    {%header:B}p{%prev}          change network in statistics box\n"
+"    {%header:B}u{%prev}          browse selected user\n"
+"    {%header:B}i{%prev}          ignore selected user, this session\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    ignore selected user, all "
+"sessions\n"
+"{%header:B}F3{%prev}             the transfer screen\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}    expand/collapse transfer\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        move window splitter\n"
+"{%header:B}F4{%prev}             the console screen\n"
+"    {%header:B}v{%prev}          toggle verbose mode\n"
+"    {%header:B}w{%prev}          toggle line wrap\n"
+"{%header:B}F5{%prev}             the settings screen\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}          exit the program\n"
+"\n"
+"See giFTcurs(1) and giFTcurs.conf(5) for more information."
+msgstr ""
+"Välkommen till giFTcurs!\n"
+"\n"
+"Tangentlista:\n"
+"{%header:B}upp{%prev}/{%header:B}ner{%prev}        välj något i en lista\n"
+"{%header:B}PgUp{%prev}/{%header:B}PgDown{%prev}    rulla i listan en skärm i "
+"taget\n"
+"{%header:B}tab{%prev}            flytta till nästa indatafält\n"
+"{%header:B}F1{%prev}             denna hjälpskärm\n"
+"{%header:B}F2{%prev}             huvudskärmen\n"
+"    {%header:B}enter{%prev}      ladda ner den markerade filen\n"
+"    {%header:B}vänster{%prev}/{%header:B}höger{%prev} byt sorteringsordning\n"
+"    {%header:B}e{%prev}          expandera/kollapsa sökresultat\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        rulla i "
+"informationsrutan\n"
+"    {%header:B}p{%prev}          byt nätverk i statistikrutan\n"
+"    {%header:B}u{%prev}          titta på den valda användarens filer\n"
+"    {%header:B}i{%prev}          ignorera den valda användaren, denna "
+"session\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    ignorera den valda "
+"användaren, alla sessioner\n"
+"{%header:B}F3{%prev}             överföringsskärmen\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}    expandera/kollapsa "
+"överföring\n"
+"    {%header:B}vänster{%prev}/{%header:B}höger{%prev} byt sorteringsmetod\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        flytta skärmdelaren\n"
+"{%header:B}F4{%prev}             konsollskärmen\n"
+"    {%header:B}v{%prev}          växla utförligt läge\n"
+"    {%header:B}w{%prev}          växla radbrytning\n"
+"{%header:B}F5{%prev}             inställningskärmen\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}          avsluta programmet\n"
+"\n"
+"Se giFTcurs(1) och giFTcurs.conf(5) för mer information."
+
+#. TRANSLATORS: The authors' names are G"oran Weinholt and
+#. Christian H"aggstr"om, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:76
+msgid ""
+"Copyright (C) 2001, 2002, 2003 Goran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright (C) 2003 Christian Haggstrom <chm@c00.info>.\n"
+"Our homepage is at http://www.nongnu.org/giftcurs/."
+msgstr ""
+"Copyright © 2001, 2002, 2003 Göran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright © 2003 Christian Häggström <chm@c00.info>.\n"
+"Vår hemsida är http://www.nongnu.org/giftcurs/."
+
+#: src/ui_help.c:137 src/ui_help.c:190
+msgid "Help"
+msgstr "Hjälp"
+
+#: src/ui_main.c:116
+msgid "everything"
+msgstr "allt"
+
+#: src/ui_main.c:116
+msgid "audio"
+msgstr "ljud"
+
+#: src/ui_main.c:116
+msgid "video"
+msgstr "video"
+
+#: src/ui_main.c:117
+msgid "images"
+msgstr "bilder"
+
+#: src/ui_main.c:117
+msgid "text documents"
+msgstr "textdokument"
+
+#: src/ui_main.c:117
+msgid "software"
+msgstr "mjukvara"
+
+#: src/ui_main.c:118
+msgid "user"
+msgstr "användare"
+
+#: src/ui_main.c:118
+msgid "hash"
+msgstr "kontrollsumma"
+
+#: src/ui_main.c:118
+msgid "list my shares"
+msgstr "lista mina utdelningar"
+
+#: src/ui_main.c:251 src/ui_main.c:295
+msgid "Couldn't start search!"
+msgstr "Kunde inte starta sökning!"
+
+#: src/ui_main.c:253
+msgid "Retrieving file list..."
+msgstr "Hämtar fillista…"
+
+#: src/ui_main.c:297
+msgid "Searching..."
+msgstr "Söker…"
+
+#: src/ui_main.c:315
+msgid "No previous search pattern."
+msgstr "Inget tidigare sökmönster."
+
+#: src/ui_main.c:319
+msgid "No hits to search on."
+msgstr "Inga träffar att söka på."
+
+#: src/ui_main.c:342
+#, c-format
+msgid "Pattern not found: '%s'."
+msgstr "Mönstret hittades inte: ”%s”."
+
+#: src/ui_main.c:449
+msgid "Search stopped."
+msgstr "Sökning stannad."
+
+#: src/ui_main.c:452
+msgid "Search cleared."
+msgstr "Sökning rensad."
+
+#: src/ui_main.c:455
+msgid "A magical search appears, but it is cancelled too soon."
+msgstr "En magisk sökning uppenbarar sig, men den avbryts för tidigt."
+
+#: src/ui_main.c:485
+#, c-format
+msgid "Sorting order changed to %s."
+msgstr "Sorteringsordningen ändrad till %s."
+
+#: src/ui_main.c:526
+#, c-format
+msgid "Always ignoring results from '%s'."
+msgstr "Ignorerar alltid resultat från ”%s”."
+
+#: src/ui_main.c:528
+#, c-format
+msgid "Ignoring results from '%s' in this session only."
+msgstr "Ignorerar resultat från ”%s” endast för denna session."
+
+#: src/ui_main.c:576
+msgid "Search"
+msgstr "Sök"
+
+#: src/ui_main.c:580
+msgid "Extra Information"
+msgstr "Extra Information"
+
+#: src/ui_main.c:585
+msgid "Search Results"
+msgstr "Sökresultat"
+
+#: src/ui_main.c:598
+msgid "Statistics"
+msgstr "Statistik"
+
+#: src/ui_main.c:611 src/ui_main.c:617
+msgid "Query"
+msgstr "Fråga"
+
+#: src/ui_main.c:614 src/ui_main.c:620
+msgid "Realm"
+msgstr "Domän"
+
+#: src/ui_main.c:627
+msgid "Start search"
+msgstr "Starta sökning"
+
+#: src/ui_main.c:632
+msgid "Stop search"
+msgstr "Hejda sökning"
+
+#: src/ui_main.c:632
+msgid "Clear search"
+msgstr "Rensa sökning"
+
+#: src/ui_main.c:654
+msgid "Size"
+msgstr "Storlek"
+
+#: src/ui_main.c:655
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+#: src/ui_main.c:661
+msgid "User"
+msgstr "Användare"
+
+#: src/ui_main.c:670
+msgid "Path"
+msgstr "Sökväg"
+
+#: src/ui_main.c:676
+msgid "Hash"
+msgstr "Kontrollsumma"
+
+#: src/ui_main.c:683
+msgid "Mime"
+msgstr "Mime"
+
+#: src/ui_main.c:708
+msgid "Nothing selected."
+msgstr "Inget valt."
+
+#: src/ui_main.c:733
+#, c-format
+msgid ""
+"{%header:B}Users online: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+msgstr ""
+"{%header:B}   Användare: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+
+#: src/ui_main.c:734
+#, c-format
+msgid ""
+"{%header:B}Total shared: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+msgstr ""
+"{%header:B}Totalt delat: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+
+#: src/ui_main.c:735
+#, c-format
+msgid ""
+"{%header:B}Local shares: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:"
+"B}/{%stat-data}{own_files:b}{else}Hidden{endif}"
+msgstr ""
+"{%header:B}Lokalt delat: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:"
+"B}/{%stat-data}{own_files:b}{else}Hidden{endif}"
+
+#: src/ui_main.c:736
+#, c-format
+msgid ""
+"{%header:B} Shared/user: {%stat-data}{if users}{shared_per_user:bi}B{else} - "
+"{endif}"
+msgstr ""
+"{%header:B}Delat/Anvnd.: {%stat-data}{if users}{shared_per_user:bi}B{else} - "
+"{endif}"
+
+#: src/ui_main.c:1072
+msgid "Searches"
+msgstr "Sökningar"
+
+#: src/ui_settings.c:149
+msgid "Color theme saved."
+msgstr "Färgtemat sparades."
+
+#: src/ui_settings.c:158
+msgid "Default color theme loaded."
+msgstr "Ursprungliga färgtemat laddades."
+
+#: src/ui_settings.c:190
+msgid "Color Theme"
+msgstr "Färgtema"
+
+#: src/ui_settings.c:195
+msgid "Item"
+msgstr "Komponent"
+
+#: src/ui_settings.c:197
+msgid "Foreground"
+msgstr "Förgrund"
+
+#: src/ui_settings.c:199
+msgid "Background"
+msgstr "Bakgrund"
+
+#: src/ui_settings.c:208
+msgid "Save theme"
+msgstr "Spara tema"
+
+#: src/ui_settings.c:211
+msgid "Load defaults"
+msgstr "Ladda fabriksinställningarna"
+
+#: src/ui_settings.c:216
+msgid "Sharing"
+msgstr "Fildelning"
+
+#: src/ui_settings.c:220
+msgid "Sync shares"
+msgstr "Synkronisera utdelningar"
+
+#: src/ui_settings.c:226
+msgid "Unknown sharing status"
+msgstr "Okänd utdelningsstatus"
+
+#: src/ui_settings.c:226
+msgid "Hide shares"
+msgstr "Göm utdelningar"
+
+#: src/ui_settings.c:226
+msgid "Show shares"
+msgstr "Visa utdelningar"
+
+#: src/ui_settings.c:304
+msgid "Settings"
+msgstr "Inställningar"
+
+#: src/ui_transfer.c:101
+msgid ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+msgstr ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+
+#: src/ui_transfer.c:108
+msgid ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+msgstr ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+
+#: src/ui_transfer.c:115
+msgid ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:bi}B{endif}{space}Total: {transferred:bi}/{filesize:bi} at "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk ledigt: "
+"{disk_free:bi}B{endif}{space}Totalt: {transferred:bi}/{filesize:bi} vid "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:122
+msgid ""
+"{progress filesize transferred}{space}Total: {transferred:bi}/{filesize:bi} "
+"at {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{space}Totalt: {transferred:bi}/{filesize:bi} "
+"vid {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:315
+#, c-format
+msgid "Please confirm deletion of %sB downloaded data by pressing shift-t"
+msgstr "Bekräfta borttagningen av %sB nerladdat data genom att trycka shift-t"
+
+#: src/ui_transfer.c:347
+#, c-format
+msgid "Source sorting order changed to %s."
+msgstr "Sorteringsordningen för källor ändrad till %s."
+
+#: src/ui_transfer.c:349
+#, c-format
+msgid "Transfer sorting order changed to %s."
+msgstr "Sorteringsordningen för överföringar ändrad till %s."
+
+#: src/ui_transfer.c:368
+msgid "find more sources"
+msgstr "finn fler källor"
+
+#: src/ui_transfer.c:369
+msgid "kill transfer"
+msgstr "avbryt"
+
+#: src/ui_transfer.c:370
+msgid "clear finished"
+msgstr "rensa färdiga"
+
+#: src/ui_transfer.c:371
+msgid "(un)pause"
+msgstr "växla pausläge"
+
+#: src/ui_transfer.c:387
+msgid "Downloads"
+msgstr "Nerladdningar"
+
+#: src/ui_transfer.c:388
+msgid "Uploads"
+msgstr "Uppladdningar"
+
+#: src/ui_transfer.c:648
+msgid "Transfers"
+msgstr "Överföringar"
+
+#~ msgid "This translation by %s."
+#~ msgstr "Svensk översättning av %s."
+
+#~ msgid "Users online"
+#~ msgstr "   Användare"
+
+#~ msgid "Total shared"
+#~ msgstr "Totalt delat"
+
+#~ msgid "Local shares"
+#~ msgstr "Lokalt delat"
+
+#~ msgid " Shared/user"
+#~ msgstr "Delat/Anvnd."
+
+#~ msgid "Hidden"
+#~ msgstr "Gömda"
+
+#~ msgid ""
+#~ "A message from the daemon:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Ett meddelande från demonen:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "# Available colors:"
+#~ msgstr "# Tillgängliga färger:"
+
+#~ msgid "Press any key to continue..."
+#~ msgstr "Tryck på valfri tangent för att fortsätta..."
+
+#~ msgid "Queued (%d)"
+#~ msgstr "Kölagd (%d)"
+
+#~ msgid "Queued (position %d)"
+#~ msgstr "Kölagd (position %d)"
+
+#~ msgid "Overrun"
+#~ msgstr "Spill"
+
+#~ msgid "B/s"
+#~ msgstr "B/s"
+
+#~ msgid "bps"
+#~ msgstr "bps"
+
+#~ msgid "Net"
+#~ msgstr "Nät"
+
+#~ msgid " Searching"
+#~ msgstr " Söker"
+
+#~ msgid "Toggle sharing"
+#~ msgstr "Växla fildelning"
+
+#~ msgid "Your shares are now available."
+#~ msgstr "Dina delade filer är nu tillgängliga."
+
+#~ msgid "Got new source from %s"
+#~ msgstr "Fick ny källa från %s"
+
+#~ msgid "Completed"
+#~ msgstr "Färdig"
+
+#~ msgid "Search in progress..."
+#~ msgstr "Söker..."
+
+#~ msgid "Your shares are temporarily hidden."
+#~ msgstr "Dina delade filer är temporärt gömda."
+
+#~ msgid "Completed transfers are automatically removed."
+#~ msgstr "Färdiga överföringar tas automatiskt bort."
+
+#~ msgid "Completed transfers remain on screen."
+#~ msgstr "Färdiga överföringar stannar kvar."
+
+#~ msgid "Tools and Actions"
+#~ msgstr "Verktyg och Händelser"
+
+#~ msgid "Reread shared directories"
+#~ msgstr "Läs om delade kataloger"
+
+#~ msgid "Toggle autocleaning"
+#~ msgstr "Växla autorensning"
+
+#~ msgid "Disable sharing"
+#~ msgstr "Slå av fildelning"
+
+#~ msgid "giFT plugins"
+#~ msgstr "giFT-moduler"
+
+#~ msgid "Speed"
+#~ msgstr "Fart"

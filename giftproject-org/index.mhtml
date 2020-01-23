@@ -1,0 +1,60 @@
+<%perl>
+###############################################################################
+##
+## $Id: index.mhtml,v 1.4 2004/09/05 02:41:51 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'Internet File Transfer'
+</%attr>
+
+<%init>
+	my $news = $m->comp ('/get-news.m') || [];
+</%init>
+
+<p>
+	This is the giFT project web site.  This site is actively being worked on
+	and might be slightly (or severely) broken in some areas.  Please have
+	patience.
+</p>
+
+<p>
+	Wondering what giFT is <a href="/about.mhtml">all about</a>?
+</p>
+
+% foreach my $item (@$news)
+% {
+
+	<div class="newsItem">
+		<h2><% $item->{'title'} %></h2>
+		<span class="newsDate">
+			<span class="date"><% $item->{'pubDate'} %></span> by
+			<a href="<% $item->{'sf:userLink'} %>">
+				<span class="poster"><% $item->{'sf:user'} %></span>
+			</a>
+		</span>
+
+		<p>
+			<% $item->{'description'} %>
+		</p>
+
+		<p class="readMore">
+			<a href="<% $item->{'link'} %>">Continue reading...</a>
+		</p>
+	</div>
+
+% }

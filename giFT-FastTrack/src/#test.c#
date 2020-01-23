@@ -1,0 +1,8 @@
+#include "fst_fasttrack.h"
+
+int main(void)
+{
+  FSTNodeCache *cache=fst_nodecache_create();
+  
+  
+  

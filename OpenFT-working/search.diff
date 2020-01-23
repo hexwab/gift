@@ -1,0 +1,1204 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_search_db.c,v
+retrieving revision 1.61
+diff -u -r1.61 ft_search_db.c
+--- ft_search_db.c	29 May 2003 09:37:41 -0000	1.61
++++ ft_search_db.c	2 Jun 2003 01:31:39 -0000
+@@ -42,7 +42,39 @@
+  * Sync all databases after changes have been made to ease debugging.  This
+  * greatly hurts performance and should not be enabled for every day usage.
+  */
+-/* #define SEARCH_DB_SYNC */
++
++#ifdef BENCHMARK
++ 
++//#define SEARCH_DB_SYNC
++
++//#define NEW_REMOVE /* failed removal optimization attempt */
++
++#define SPLIT_SECONDARIES
++
++#define TOKENS_ARRAY
++
++#undef FT_SEARCH_ENV_PATH
++#undef FT_SEARCH_ENV_CACHE
++#undef FT_SEARCH_ENV_PRIV 
++#undef FT_SEARCH_ENV_TXN
++
++#define FT_SEARCH_ENV_PATH "benchtemp"
++#define FT_SEARCH_ENV_CACHE 83886080
++#define FT_SEARCH_ENV_PRIV  0
++#define FT_SEARCH_ENV_TXN 0
++
++#else /*BENCHMARK*/
++
++#define SEARCH_DB_SYNC
++
++#endif
++
++
++#if defined(SPLIT_SECONDARIES) || defined(NEW_REMOVE)
++#define ATOMIC_REMOVE
++#else
++#define BLOCKING_REMOVE
++#endif
+ 
+ /*
+  * Apply a custom hash function for the child data so that a well distributed
+@@ -93,21 +125,32 @@
+ 	unsigned char  data[8192];
+ } DataRec;
+ 
++#ifdef SPLIT_SECONDARIES
++/*
++ * Master secondary database:
++ * [ 4 BYTE TOKEN ] => [ *HOST ]
++ *
++ * Per-host secondaries:
++ * [ 4 BYTE TOKEN ] => [ MD5 ]
++ */
++#else
+ /*
+  * Master Secondary Database:
+- * [ 4 BYTE TOKEN ] => [ TokensRec ]
++ * [ 4 BYTE TOKEN ] => [ SecRec ]
+  */
+ typedef struct
+ {
+-	in_addr_t     ip_addr;
++	FTSHost      *shost;
+ 	unsigned char md5[16];
+ } TokensRec;
++#endif
++
+ 
+ /*****************************************************************************/
+ 
+ #define ERR_DB_SHOST(method,ret,shost) \
+-	FT->DBGFN (FT, "%s: %s failed: %s", \
+-	           net_ip_str(shost->host), method, db_strerror(ret))
++	FT->DBGFN (FT, "%s (%p): %s failed: %s", \
++	           net_ip_str(shost->host), shost, method, db_strerror(ret))
+ 
+ #define ERR_DB_PATH(method,ret,path,db) \
+ 	FT->DBGFN (FT, "%s(%s:%s) failed: %s", method, path, db, db_strerror(ret))
+@@ -205,7 +248,7 @@
+ }
+ 
+ static int allow_dups (DB *dbp,
+-                       int (*cmpfunc) (DB *, const DBT *, const DBT *))
++                       int sorted, int (*cmpfunc) (DB *, const DBT *, const DBT *))
+ {
+ 	int ret;
+ 
+@@ -216,7 +259,9 @@
+ 	{
+ 		if ((ret = dbp->set_dup_compare (dbp, cmpfunc)))
+ 			ERR_DB("DB->set_dup_compare", ret);
+-
++	}
++	if (sorted)
++	{
+ 		if ((ret = dbp->set_flags (dbp, DB_DUPSORT)))
+ 			ERR_DB("DB->set_flags", ret);
+ 	}
+@@ -274,6 +319,22 @@
+ 	return "children.data";
+ }
+ 
++#ifdef SPLIT_SECONDARIES
++static char *db_sec_local_path (FTSHost *shost, char **dbname)
++{
++	/* we are actually opening multiple databases within one file here so
++	 * we need to specify a unique database name to assist libdb in
++	 * figuring out wtf we are talking about */
++	if (dbname)
++		*dbname = net_ip_str (shost->host);
++
++	/* the environment will provide the complete path for us, so we can
++	 * specify relative paths here, in fact i think we have to if using an
++	 * environment */
++	return "hosttokens.index";
++}
++#endif
++
+ #ifdef SEARCH_DB_DIRHASH
+ static u_int32_t pri_local_hash (DB *dbp, const void *bytes, u_int32_t length)
+ {
+@@ -319,6 +380,43 @@
+ 	return dbp;
+ }
+ 
++#ifdef SPLIT_SECONDARIES
++static DB *open_db_sec_local (FTSHost *shost)
++{
++	DB   *dbp = NULL;
++	char *path;
++	char *dbname;
++	int   ret;
++
++	if (!(path = db_sec_local_path (shost, &dbname)))
++		return NULL;
++
++	if (db_create (&dbp, search_env, 0) || !dbp)
++		return NULL;
++
++	allow_dups (dbp, 1, NULL);
++
++	if ((ret = open_db (dbp, path, dbname, DB_BTREE, DB_CREATE, 0664)) != 0)
++	{
++		close_db (dbp, path, dbname, TRUE);
++		return NULL;
++	}
++
++	return dbp;
++}
++
++static DB *db_sec_local (FTSHost *shost)
++{
++	if (!shost)
++		return NULL;
++
++	if (!shost->sec)
++		shost->sec = open_db_sec_local (shost);
++
++	return shost->sec;
++}
++#endif
++
+ static DB *db_pri_local (FTSHost *shost)
+ {
+ 	if (!shost)
+@@ -343,7 +441,7 @@
+ 	if (db_create (&dbp, search_env, 0) || !dbp)
+ 		return NULL;
+ 
+-	allow_dups (dbp, cmpfunc);
++	allow_dups (dbp, 1, cmpfunc);
+ 
+ 	if (open_db (dbp, path, NULL, type, DB_CREATE, 0644) != 0)
+ 		close_db (dbp, path, NULL, TRUE);
+@@ -370,6 +468,8 @@
+ 	return dbp;
+ }
+ 
++#ifndef SPLIT_SECONDARIES
++/* compare two TokensRecs */
+ static int compare_md5 (DB *dbp, const DBT *a, const DBT *b)
+ {
+ 	TokensRec *a_rec = a->data;
+@@ -386,16 +486,21 @@
+ 	/* we still need the ability to insert two md5s from different hosts, so
+ 	 * we have to compare the host here in order to allow the insert to
+ 	 * succeed */
+-	return INTCMP (a_rec->ip_addr, b_rec->ip_addr);
++	return INTCMP (a_rec->shost, b_rec->shost);
+ }
++#endif
+ 
+-static DB *db_sec ()
++static DB *db_sec (void)
+ {
+ 	DB *dbp;
+ 
++#ifdef SPLIT_SECONDARIES
++	/* default sorting will do nicely */
++	dbp = db_master (&tokens_idx, NULL, "tokens.index", DB_BTREE);
++#else
+ 	/* secondary database is insert sorted by MD5 */
+ 	dbp = db_master (&tokens_idx, compare_md5, "tokens.index", DB_BTREE);
+-
++#endif
+ 	return dbp;
+ }
+ 
+@@ -414,6 +519,7 @@
+ 	file_unlink (stringf ("%s/children.data", path));
+ 	file_unlink (stringf ("%s/md5.index", path));
+ 	file_unlink (stringf ("%s/tokens.index", path));
++	file_unlink (stringf ("%s/hosttokens.index", path));
+ }
+ 
+ /*
+@@ -422,7 +528,7 @@
+  * underlying memory cache so that we dont need to guess the distribution of
+  * the cache across the three core databases.
+  */
+-static BOOL db_init ()
++static BOOL db_init (void)
+ {
+ 	int       ret;
+ 	u_int32_t flags = 0;
+@@ -550,7 +656,7 @@
+ 	/* copy the staticly sized fields */
+ 	rec.size = file->size;
+ #if 0
+-	memcpy (rec.md5, sh->hash, sh->len);
++	memcpy (rec.md5, hash->data, hash->len);
+ #endif
+ 
+ 	/* copy the variably sized fields */
+@@ -644,6 +750,10 @@
+ 	if ((ret = dbp->put (dbp, NULL, &key, &data, DB_NOOVERWRITE)))
+ 	{
+ 		ERR_DB_SHOST("DB->put", ret, shost);
++#if 0
++		db_sync (shost);
++		abort();
++#endif
+ 		return FALSE;
+ 	}
+ 
+@@ -667,8 +777,8 @@
+ 
+ 	key.data  = hash->data;
+ 	key.size  = hash->len;
+-	data.data = &shost->host;
+-	data.size = sizeof (shost->host);
++	data.data = &shost;
++	data.size = sizeof (shost);
+ 
+ 	if ((ret = dbp->put (dbp, NULL, &key, &data, DB_NODUPDATA)))
+ 	{
+@@ -679,11 +789,12 @@
+ 	return TRUE;
+ }
+ 
++#ifndef SPLIT_SECONDARIES
+ static int sec_record (DBT *data, FTSHost *shost, unsigned char *md5)
+ {
+ 	static TokensRec rec;
+ 
+-	rec.ip_addr = shost->host;
++	rec.shost = shost;
+ 	memcpy (rec.md5, md5, sizeof (rec.md5));
+ 
+ 	data->data = &rec;
+@@ -691,6 +802,7 @@
+ 
+ 	return TRUE;
+ }
++#endif
+ 
+ static int db_insert_sec (FTSHost *shost, Hash *hash, uint32_t *tokens,
+                           FileShare *file)
+@@ -699,42 +811,144 @@
+ 	DBT key;
+ 	DBT data;
+ 	int ret;
++	DBC *dbcp;
+ 
+ 	if (!(dbp = db_sec ()))
+ 		return FALSE;
+ 
++	/* create a cursor because it seems we cant insert sorted without
++	 * one...hmm, libdb is quirky */
++	if ((ret = dbp->cursor (dbp, NULL, &dbcp, 0)))
++	{
++		ERR_DB_SHOST("DBcursor", ret, shost);
++		return FALSE;
++	}
++
++
+ 	memset (&key, 0, sizeof (key));
+ 	memset (&data, 0, sizeof (data));
+ 
++#ifdef SPLIT_SECONDARIES
++
++	/* store a pointer to FTSHost */
++	data.data = &shost;
++	data.size = sizeof (shost);
++
++	for (; tokens && *tokens; tokens++)
++	{
++		/* insert only one of each token */
++
++		key.data = tokens;
++		key.size = sizeof (*tokens);
++
++		if ((ret = dbcp->c_get (dbcp, &key, &data, DB_GET_BOTH)))
++		{
++			if (ret == DB_NOTFOUND)
++			{
++				if ((ret = dbcp->c_put (dbcp, &key, &data, DB_KEYFIRST)))
++				{
++					if (ret != DB_NOTFOUND)
++						ERR_DB_SHOST("DBcursor->c_put", ret, shost);
++				}
++
++#ifdef TOKENS_ARRAY
++				/* assumes void* >= uint32 */
++				if (!shost->tokens)
++					shost->tokens = array (NULL);
++
++				push (&shost->tokens, (void *)*tokens);
++#endif
++			}
++			else
++			{
++				ERR_DB_SHOST("DBcursor->c_get", ret, shost);
++				break;
++			}
++		}
++	}
++#else
+ 	assert (hash->len == 16);
+ 	if (!sec_record (&data, shost, hash->data))
++	{
++		dbcp->c_close (dbcp);
+ 		return FALSE;
++	}
+ 
+ 	/* insert one record for each token in the stream, effectively
+ 	 * "pre-searching" for this file */
+ 	for (; tokens && *tokens; tokens++)
+ 	{
+-		DBC *dbcp;
+-
+ 		key.data = tokens;
+ 		key.size = sizeof (*tokens);
+ 
+-		/* create a cursor because it seems we cant insert sorted without
+-		 * one...hmm, libdb is quirky */
+-		if (dbp->cursor (dbp, NULL, &dbcp, 0))
+-			continue;
+-
+ 		if ((ret = dbcp->c_put (dbcp, &key, &data, DB_KEYFIRST)))
+ 		{
+-			if (ret != DB_KEYFIRST)
++			if (ret != DB_NOTFOUND)
++			{
+ 				ERR_DB_SHOST("DBcursor->c_put", ret, shost);
++				db_sync (shost);
++				abort ();
++			}
+ 		}
++	}
++#endif
+ 
+-		dbcp->c_close (dbcp);
++	dbcp->c_close (dbcp);
++
++	return TRUE;
++}
++
++#ifdef SPLIT_SECONDARIES
++static int db_insert_sec_local (FTSHost *shost, Hash *hash, uint32_t *tokens,
++                          FileShare *file)
++{
++	DB *dbp;
++	DBT key;
++	DBT data;
++	int ret;
++	DBC *dbcp;
++
++	if (!(dbp = db_sec_local (shost)))
++	{
++		FT->DBGFN (FT, "%s: unable to open secondary local database",
++		           net_ip_str (shost->host));
++		return FALSE;
++	}
++
++	/* create a cursor because it seems we cant insert sorted without
++	 * one...hmm, libdb is quirky */
++	if ((ret = dbp->cursor (dbp, NULL, &dbcp, 0)))
++	{
++		ERR_DB_SHOST("DBcursor", ret, shost);
++		return FALSE;
+ 	}
+ 
++//	FT->DBGFN (FT, "inserting %s (%p)",net_ip_str(shost->host), shost);
++
++	memset (&key, 0, sizeof (key));
++	memset (&data, 0, sizeof (data));
++
++	data.data = hash->data;
++	data.size = hash->len;
++
++	for (; tokens && *tokens; tokens++)
++	{
++		key.data = tokens;
++		key.size = sizeof (*tokens);
++
++		if ((ret = dbcp->c_put (dbcp, &key, &data, DB_KEYFIRST)))
++		{
++			ERR_DB_SHOST("DBcursor->c_put", ret, shost);
++		}
++	}
++
++	dbcp->c_close (dbcp);
++
++//	db_stats(dbp, net_ip_str(shost->host));
++	
+ 	return TRUE;
+ }
++#endif
+ 
+ static BOOL db_insert (FTSHost *shost, FileShare *file)
+ {
+@@ -757,9 +971,14 @@
+ 	 * on exactly how this stuff is designed, if you're willing to believe it
+ 	 * was designed at all :)
+ 	 */
+-	db_insert_pri_local (shost, hash, tokens, file);
+-	db_insert_pri       (shost, hash, tokens, file);
+-	db_insert_sec       (shost, hash, tokens, file);
++	if (db_insert_pri_local (shost, hash, tokens, file))
++	{
++		db_insert_pri       (shost, hash, tokens, file);
++#ifdef SPLIT_SECONDARIES
++		db_insert_sec_local (shost, hash, tokens, file);
++#endif
++		db_insert_sec       (shost, hash, tokens, file);
++	}
+ 
+ 	free (tokens);
+ 
+@@ -780,20 +999,31 @@
+ 	key.data = &token;
+ 	key.size = sizeof (token);
+ 
++#ifdef SPLIT_SECONDARIES
++	data.data = md5;
++	data.size = 16;
++#else
+ 	if (!sec_record (&data, shost, md5))
+ 		return FALSE;
++#endif
+ 
+ 	return delete_key_data (dbcp, &key, &data);
+ }
+ 
+-static int db_remove_sec (FTSHost *shost, uint32_t *tokens, unsigned char *md5)
++/* remove a list of tokens from a per-host db (e.g. when removing a single file) */
++static int db_remove_sec_tokens (FTSHost *shost, uint32_t *tokens, unsigned char *md5)
+ {
+ 	DB  *dbp;
+ 	DBC *dbcp;
+ 	int  ret = TRUE;
+ 
+-	if (!(dbp = db_sec()))
++#ifdef SPLIT_SECONDARIES
++	if (!(dbp = db_sec_local (shost)))
+ 		return FALSE;
++#else
++	if (!(dbp = db_sec ()))
++		return FALSE;
++#endif
+ 
+ 	/* construct a cursor so that we may use it for removing all tokens
+ 	 * at once */
+@@ -810,6 +1040,93 @@
+ 	return ret;
+ }
+ 
++#ifdef NEW_REMOVE
++static int db_nuke_sec_token (DBC *dbcp, FTSHost *shost, unsigned char *md5,
++                                uint32_t token)
++{
++	/* iterate the list of hashes for a given token and remove all
++	   of the records that match the given host */
++	DBT key;
++	DBT data;
++	TokensRec *rec;
++	int ret;
++
++	memset (&key, 0, sizeof (key));
++	memset (&data, 0, sizeof (data));
++
++	key.data = &token;
++	key.size = sizeof (token);
++
++	/* find the start of the list */ 
++	if ((ret = dbcp->c_get (dbcp, &key, &data, DB_SET)))
++	{
++		ERR_DB("DBcursor->c_get", ret);
++		return ret;
++	}
++
++	do {
++		rec = (TokensRec *)data.data;
++//		FT->DBGFN(FT,"record %s: %s", md5_string(rec->md5,""),net_ip_str(rec->shost->host));
++
++		if (rec->shost == shost) { /* should use memcmp? */
++			/* host matches, delete it */
++			if ((ret = dbcp->c_del (dbcp, 0)))
++			{
++				ERR_DB_SHOST("DBcursor->c_del", ret, shost);
++				break;
++			} else {
++//				FT->DBGFN(FT,"%s: removed %s for token %lu", net_ip_str(shost->host), md5_string(rec->md5, ""), token);
++			}
++		} else {
++//			FT->DBGFN(FT,"skipping host %s for token %lu", net_ip_str(rec->shost->host),token);
++		}
++		
++	} while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT_DUP)));
++
++	if (ret && ret != DB_NOTFOUND)
++		ERR_DB_SHOST("DBcursor->c_get", ret, shost);
++
++	return ret;
++}
++
++static int db_nuke_sec (FTSHost *shost, uint32_t *tokens, unsigned char *md5, Dataset **done)
++{
++	DB  *dbp;
++	DBC *dbcp;
++	int  ret = TRUE;
++
++//	FT->DBGFN (FT, "%s: %s", net_ip_str (shost->host), md5_string(md5, ""));
++
++	if (!(dbp = db_sec()))
++		return FALSE;
++
++	/* construct a cursor so that we may use it for removing all tokens
++	 * at once */
++	if (dbp->cursor (dbp, NULL, &dbcp, 0))
++	{
++		ERR_DB_SHOST("DB->cursor", ret, shost);
++		return FALSE;
++	}
++
++	for (; tokens && *tokens; tokens++)
++	{
++		if (!dataset_lookup (*done, tokens, sizeof (*tokens)))
++		{
++//			FT->DBGFN(FT,"%s: deleting token %lu",net_ip_str(shost->host),*tokens);
++			dataset_insert (done, tokens, sizeof (*tokens), "foo", 0); /* arbitrary non-null pointer */
++			if (!(ret = db_nuke_sec_token (dbcp, shost, md5, *tokens)))
++				break;
++		} else
++		{
++//			FT->DBGFN(FT,"%s: skipping token %lu", net_ip_str(shost->host),*tokens);
++		}
++	}
++
++	dbcp->c_close (dbcp);
++	return ret;
++}
++#endif /* NEW_REMOVE */
++
+ static int db_remove_pri_local (FTSHost *shost, unsigned char *md5)
+ {
+ 	DB *dbp;
+@@ -857,15 +1174,58 @@
+ 	key.data = md5;
+ 	key.size = 16;
+ 
+-	data.data = &shost->host;
+-	data.size = sizeof (shost->host);
++	data.data = &shost;
++	data.size = sizeof (shost);
+ 
+ 	ret = delete_key_data (dbcp, &key, &data);
++	
++	dbcp->c_close (dbcp);
++
++	return ret;
++}
++
++#ifdef SPLIT_SECONDARIES
++/* remove a token/host pair from the main secondary db (used when nuking an entire host) */
++static int db_remove_sec (FTSHost *shost, uint32_t *token)
++{
++	DB       *dbp;
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	int       ret;
++
++	if (!(dbp = db_sec ()))
++			return FALSE;
++
++	if (dbp->cursor (dbp, NULL, &dbcp, 0))
++		return FALSE;
++
++	memset (&key, 0, sizeof (key));
++	memset (&data, 0, sizeof (data));
++
++	key.data = token;
++	key.size = sizeof (*token);
++
++	data.data = &shost;
++	data.size = sizeof (shost);
++
++	ret = delete_key_data (dbcp, &key, &data);
++
++#if 0
++	if (!ret)
++	{
++		FT->DBGFN(FT, "failed to remove %x from %p (%s)", *token, shost, net_ip_str(shost->host));
++		abort();
++	}
++	else
++		FT->DBGFN(FT, "removed %x from %p (%s)", *token, shost, net_ip_str(shost->host));
++#endif
+ 
+ 	dbcp->c_close (dbcp);
+ 
+ 	return ret;
+ }
++#endif /* SPLIT_SECONDARIES */
+ 
+ static BOOL db_remove (FTSHost *shost, unsigned char *md5, off_t *size)
+ {
+@@ -875,14 +1235,14 @@
+ 	if (!db_pri() || !db_sec())
+ 		return FALSE;
+ 
+-	db_remove_pri_local (shost, md5);
+-	db_remove_pri (shost, md5);
+-
+ 	/* grab the per-user data entry at the supplied key, which will contain
+ 	 * enough information to get the token list */
+ 	if (!(file = ft_search_db_lookup_md5 (shost, md5)))
+ 		return FALSE;
+ 
++	db_remove_pri_local (shost, md5);
++	db_remove_pri (shost, md5);
++
+ 	/* so that the caller knows how large the entry was that was just
+ 	 * removed (for stats purposes) */
+ 	if (size)
+@@ -892,7 +1252,7 @@
+ 	 * from the secondary database */
+ 	if ((tokens = ft_search_tokenizef (file)))
+ 	{
+-		db_remove_sec (shost, tokens, md5);
++		db_remove_sec_tokens (shost, tokens, md5);
+ 		free (tokens);
+ 	}
+ 
+@@ -903,6 +1263,7 @@
+ 
+ /*****************************************************************************/
+ 
++#ifndef SPLIT_SECONDARIES
+ /* initialize the transaction and cursor data to ensure a clean removal of all
+  * shares */
+ static int init_removal (FTSHost *shost)
+@@ -995,7 +1356,94 @@
+ 	/* switch to bool retval */
+ 	return (ret == 0);
+ }
++#endif
++
++#ifdef NEW_REMOVE
++static int db_nuke_host (FTSHost *shost)
++{
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	DBT       data_tokens;
++	int       ret;
++	u_int16_t tokens_len = 0;
++	Dataset  *done;
++
++	done = dataset_new (DATASET_HASH);
+ 
++	/* construct the cursor if necessary, if this fails we will simply abort
++	 * the removal on error (which is a TRUE result from this func) */
++	if (!init_removal (shost))
++		return TRUE;
++
++	dbcp = shost->pri_curs;
++	assert (dbcp != NULL);
++
++	memset (&key, 0, sizeof (key));
++
++      	/* initially we want to retrieve just the start position of the
++	 * mime data so that we can figure out the length of the token data */
++	make_dbt_partial (&data, offsetof (DataRec, path), sizeof (tokens_len));
++
++	/* an uninitialized (unset) DB_NEXT c_get will result in a DB_FIRST call,
++	 * so we don't really need to do any special call before we begin the
++	 * loop */
++	while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT)))
++	{
++		assert (data.size == sizeof (tokens_len));
++		assert (key.size == 16);
++
++		/* remove from the primary database immediately as we dont need to
++		 * "complete" the lookup in order to get the md5sum */
++		db_remove_pri (shost, key.data);
++		
++		/* setup the data member to get the complete token data from the
++		 * database */
++		memcpy (&tokens_len, data.data, sizeof (tokens_len));
++		make_dbt_partial (&data_tokens, offsetof (DataRec, data), tokens_len);
++		
++		/* retrieve the token list as a partial get */
++		if ((ret = dbcp->c_get (dbcp, &key, &data_tokens, DB_CURRENT)))
++		{
++			ERR_DB_SHOST("DBcursor->c_get", ret, shost);
++			break;
++		}
++		
++		/* remove the all tokens in the list from the master secondary db */
++		if (!db_nuke_sec (shost, (uint32_t *)(data_tokens.data), key.data, &done))
++		{
++			FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
++				   net_ip_str (shost->host));
++		}
++
++		/* delete the current position to minimize the possibility of a race
++		 * condition on this childs data (NOTE: this doesnt affect the cursor
++		 * position, so the DB_NEXT is still required at the next call) */
++		if ((ret = dbcp->c_del (dbcp, 0)))
++		{
++			ERR_DB_SHOST("DBcursor->c_del", ret, shost);
++			break;
++		}
++	}
++
++	if (ret != DB_NOTFOUND)
++	{
++		ERR_DB_SHOST("DB->c_get", ret, shost);
++	}
++	dataset_clear (done);
++
++	/* we're finished removing, yay! */
++	FT->DBGFN (FT, "%s(%lu): %.06fs elapsed", net_ip_str (shost->host),
++	           shost->shares, stopwatch_free_elapsed (shost->sw));
++
++	/* destroy all the berkeley db specific stuff */
++	destroy_removal (shost);
++
++	return (ret==0);
++}
++#endif
++
++#ifndef SPLIT_SECONDARIES
+ /*
+  * Remove a single share record from all databases, based on the cursor
+  * associated with the shost option.  Returning TRUE here means that the
+@@ -1055,7 +1503,7 @@
+ 	}
+ 
+ 	/* remove the all tokens in the list from the master secondary db */
+-	if (!db_remove_sec (shost, (uint32_t *)(data_tokens.data), key.data))
++	if (!db_remove_sec_tokens (shost, (uint32_t *)(data_tokens.data), key.data))
+ 	{
+ 		FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
+ 		           net_ip_str (shost->host));
+@@ -1090,6 +1538,118 @@
+ 	/* nuke the timer */
+ 	return FALSE;
+ }
++#else /* SPLIT_SECONDARIES */
++
++static int db_nuke_pri (FTSHost *shost)
++{
++	DB       *dbp;
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	int       ret;
++
++	if (!(dbp = db_pri_local (shost)))
++	{
++		FT->DBGFN (FT, "%s: unable to open primary local database",
++		           net_ip_str (shost->host));
++		return FALSE;
++	}
++
++	if ((ret = dbp->cursor (dbp, NULL, &dbcp, 0)))
++	{
++		ERR_DB_SHOST("DBcursor", ret, shost);
++		return FALSE;
++	}
++
++	memset (&key, 0, sizeof (key));
++	
++	/* we only need the key, so with any luck a zero-length partial record will tell libdb
++	   that and might speed things up slightly */
++	make_dbt_partial (&data, 0, 0);
++
++	/* an uninitialized (unset) DB_NEXT c_get will result in a DB_FIRST call,
++	 * so we don't really need to do any special call before we begin the
++	 * loop */
++	while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT)))
++	{
++		assert (key.size == 16);
++
++		db_remove_pri (shost, key.data);
++	}
++
++	dbcp->c_close (dbcp);
++
++#ifdef BENCHMARK
++	//	db_stats (dbp, net_ip_str(shost->host));
++#endif
++
++	return ret;
++}
++
++static int db_nuke_sec (FTSHost *shost)
++{
++#ifndef TOKENS_ARRAY
++	DB       *dbp;
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	int       ret;
++
++	if (!(dbp = db_sec_local (shost)))
++	{
++		FT->DBGFN (FT, "%s: unable to open secondary local database",
++		           net_ip_str (shost->host));
++		return FALSE;
++	}
++
++	if ((ret = dbp->cursor (dbp, NULL, &dbcp, 0)))
++	{
++		ERR_DB_SHOST("DBcursor", ret, shost);
++		return FALSE;
++	}
++
++	memset (&key, 0, sizeof (key));
++	
++	/* we only need the key, so with any luck a zero-length partial record will tell libdb
++	   that and might speed things up slightly */
++	make_dbt_partial (&data, 0, 0);
++
++	/* an uninitialized (unset) DB_NEXT c_get will result in a DB_FIRST call,
++	 * so we don't really need to do any special call before we begin the
++	 * loop */
++	while (!(ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT_NODUP)))
++	{
++		assert (key.size == sizeof (uint32_t));
++
++		db_remove_sec (shost, key.data);
++	}
++
++	dbcp->c_close (dbcp);
++#else
++	int len=count (&shost->tokens);
++	int i;
++	int ret = TRUE;
++
++	for (i=0;i<len;i++)
++	{
++		uint32_t token=(uint32_t) splice (&shost->tokens, i, 0, NULL);
++		if (token)
++			db_remove_sec (shost, &token);
++	}
++#endif
++
++#ifdef BENCHMARK
++	//	db_stats (db_sec(),"master sec");
++#endif
++
++	return ret;
++}
++
++static int db_nuke_host (FTSHost *shost)
++{
++	return db_nuke_pri (shost) && db_nuke_sec (shost);
++}
++#endif /* SPLIT_SECONDARIES */
+ 
+ /*****************************************************************************/
+ 
+@@ -1097,16 +1657,24 @@
+ static BOOL db_sync (FTSHost *shost)
+ {
+ 	DB *pri_local;
++	DB *sec_local;
+ 	DB *pri;
+ 	DB *sec;
+ 
+-	if ((pri_local = db_pri_local(shost)))
++	FT->DBGFN (FT, "syncing");
++
++	if ((pri_local = db_pri_local (shost)))
+ 		pri_local->sync (pri_local, 0);
+ 
+-	if ((pri = db_pri()))
++#ifdef SPLIT_SECONDARIES
++	if ((sec_local = db_sec_local (shost)))
++		sec_local->sync (sec_local, 0);
++#endif
++
++	if ((pri = db_pri ()))
+ 		pri->sync (pri, 0);
+ 
+-	if ((sec = db_sec()))
++	if ((sec = db_sec ()))
+ 		sec->sync (sec, 0);
+ 
+ 	return TRUE;
+@@ -1197,11 +1765,12 @@
+  * completely unserialized FileShare structure and then add it to the search
+  * results list.  This is utilized by both of the search interfaces.
+  */
+-static int add_search_result (Array **a, in_addr_t ip, unsigned char *md5)
++static int add_search_result (Array **a, FTSHost *shost, unsigned char *md5)
+ {
+ 	FileShare *file;
+-	FTSHost   *shost;
+ 
++#ifndef BENCHMARK
++#if 0
+ 	/*
+ 	 * Lookup the shost structure for the sole purpose of satisfying the
+ 	 * API as we only really need the ip address to begin with.  This is
+@@ -1209,13 +1778,14 @@
+ 	 */
+ 	if (!(shost = ft_shost_get (ip)))
+ 	{
++		assert (shost->dirty);
+ 		FT->DBGFN (FT, "unable to lookup shost for %s", net_ip_str (ip));
+ 		return FALSE;
+ 	}
++#endif
+ 
+ 	if (shost->dirty)
+ 		return FALSE;
+-
+ 	/*
+ 	 * Retrieve the actual share record containing enough data to
+ 	 * completely unserialize the original FileShare object inserted into
+@@ -1230,6 +1800,7 @@
+ 	/* last but not least, at the completely constructed file */
+ 	if (!push (a, file))
+ 		return FALSE;
++#endif
+ 
+ 	return TRUE;
+ }
+@@ -1262,11 +1833,12 @@
+ 	     dbcp->c_get (dbcp, &key, &data, flags) == 0;
+ 	     flags = DB_NEXT_DUP)
+ 	{
+-		in_addr_t ip;
++		FTSHost *shost;
+ 
+ 		/* make sure we're looking at an ip here */
+-		assert (data.size == sizeof (ip));
+-		memcpy (&ip, data.data, sizeof (ip));
++		assert (data.size == sizeof (shost));
++		//		shost = *(FHSHost **)data.data;
++		memcpy (&shost, data.data, sizeof (shost));
+ 
+ 		/*
+ 		 * Add the search result.  This should NOT fail, unless something
+@@ -1275,7 +1847,7 @@
+ 		 * master database.  This database design does not utilize stale
+ 		 * entries.
+ 		 */
+-		if (add_search_result (a, ip, md5))
++		if (add_search_result (a, shost, md5))
+ 		{
+ 			/* if not provided, or provided as the initial value 0, do not
+ 			 * obey any kind of maximum result set */
+@@ -1398,6 +1970,7 @@
+ 	*results = list_prepend (*results, copy);
+ }
+ 
++#ifndef SPLIT_SECONDARIES
+ static int look_for (struct cursor_stream *s, DBT *cmp_data)
+ {
+ 	TokensRec *cmp_rec;
+@@ -1449,6 +2022,56 @@
+ 	 * some special cursor flag so that we stop searching this stream. */
+ 	return FALSE;
+ }
++#else
++
++static int look_for (struct cursor_stream *s, DBT *cmp_data)
++{
++	unsigned char *cmp_rec;
++	char *rec;
++	DBT key;
++	DBT data;
++	int cmp;
++
++	cmp_rec = cmp_data->data;
++
++	memset (&key, 0, sizeof (key));
++
++	memset (&data, 0, sizeof (data));
++/* TODO: if we were using DB_GET_BOTH for exact matching */
++//	memcpy (&data, cmp_data, sizeof (data)); /* = might be unsafe? */
++
++	for (; (s->cursor)->c_get (s->cursor, &key, &data, s->flags) == 0;
++	     s->flags = DB_NEXT_DUP)
++	{
++		rec = data.data;
++
++		cmp = memcmp (rec, cmp_rec, data.size);
++
++		/*
++		 * We've gone too far, therefore we know for sure this data does
++		 * not exist in the current set.
++		 */
++		if (cmp > 0)
++		{
++			/*
++			 * This data set is beyond the current set we are looking for,
++			 * so we will want to start the next search here.
++			 */
++			s->flags = DB_CURRENT;
++			return FALSE;
++		}
++
++		/* matched, note that we will not reset flags as this exact position
++		 * will be passed by the parent cursor as well */
++		if (cmp == 0)
++			return TRUE;
++	}
++
++	/* this set has exhausted, no more data left...we should really set
++	 * some special cursor flag so that we stop searching this stream. */
++	return FALSE;
++}
++#endif
+ 
+ static void calc_shortest (struct cursor_stream *s, void **args)
+ {
+@@ -1617,6 +2240,7 @@
+ 	return results;
+ }
+ 
++#ifndef SPLIT_SECONDARIES
+ static int lookup_ret (DBT *dbt, void **args)
+ {
+ 	Array    **a           = args[0];
+@@ -1636,10 +2260,47 @@
+ 	 * Realm matches need to use a partial database lookup before the result
+ 	 * is fully selected and added to the list.
+ 	 */
+-	if (add_search_result (a, rec->ip_addr, rec->md5))
++	if (add_search_result (a, rec->shost, rec->md5))
+ 		(*matches)++;
++	cleanup_matches (dbt, NULL);
++
++	return TRUE;
++}
++
++static int token_lookup_ret (Array **a, List *cursors, char *realm,
++                             int max_results)
++{
++	int nmatches = 0;
++	void *args[] = { a, &max_results, &nmatches, realm };
++
++	cursors = list_foreach_remove (cursors, (ListForeachFunc)lookup_ret, args);
++	list_free (cursors);
++
++	return nmatches;
++}
++#else 
++
++static int lookup_ret (DBT *dbt, void **args)
++{
++	Array    **a           = args[0];
++	int       *max_results = args[1];
++	int       *matches     = args[2];
++	return TRUE;
++
++	/* do not process more results than we were allowed */
++	if (*max_results && *matches >= *max_results)
++		return TRUE;
+ 
++#if 0
++	/*
++	 * WARNING/TODO: We do not match realm here, and we REALLY NEED TO.
++	 * Realm matches need to use a partial database lookup before the result
++	 * is fully selected and added to the list.
++	 */
++	if (add_search_result (a, rec->shost, rec->md5))
++		(*matches)++;
+ 	cleanup_matches (dbt, NULL);
++#endif
+ 
+ 	return TRUE;
+ }
+@@ -1655,6 +2316,8 @@
+ 
+ 	return nmatches;
+ }
++#endif /* SPLIT_SECONDARIES */
++
+ 
+ /*
+  * Perform a search through the query and exclude token sets.  This adds a
+@@ -1780,6 +2443,21 @@
+ 	return ret;
+ }
+ 
++#ifdef BENCHMARK
++static int db_stats(DB *dbp, const char *info)
++{
++	DB_BTREE_STAT *stats;
++	if (!dbp->stat(dbp, &stats, 0))
++		FT->DBGFN(FT, "db %s contains %d keys, %d records", info, stats->bt_nkeys, stats->bt_ndata);
++	else
++	{
++		FT->err(FT, "failed to get %s db stats", info);
++		return 1;
++	}
++	return 0;
++}
++#endif
++
+ int ft_search_db_remove_host (FTSHost *shost, void (*fptr)(FTSHost *))
+ {
+ 	int ret = TRUE;
+@@ -1797,8 +2475,19 @@
+ 
+ 	FT->DBGFN (FT, "%s: scheduled", net_ip_str (shost->host));
+ 
++//	sec_db_stats();
++#ifdef ATOMIC_REMOVE
++	db_nuke_host (shost);
++	shost->removecb (shost);
++#else
++#ifdef BLOCKING_REMOVE
++	while (db_remove_host_timer(shost));
++#else	
+ 	/* initiate the timer to handle resource scheduling for us */
+ 	timer_add (100 * MSEC, (TimerCallback)db_remove_host_timer, shost);
++#endif
++#endif
++//	sec_db_stats();
+ #else
+ 	FT->err (FT, "this should not happen...");
+ 	shost->removecb (shost);
+@@ -1819,7 +2508,7 @@
+ }
+ 
+ /* this doesn't actually affect the master databases, simply the per-user
+- * one associated w/ shost */
++ * ones associated w/ shost */
+ BOOL ft_search_db_close (FTSHost *shost, int rm)
+ {
+ #ifdef USE_LIBDB
+@@ -1842,6 +2531,20 @@
+ 
+ 		shost->pri = NULL;
+ 	}
++
++#ifdef SPLIT_SECONDARIES
++	if (shost->sec)
++	{
++		if ((path = db_sec_local_path (shost, &dbname)))
++			ret = close_db (shost->pri, path, dbname, rm);
++
++		shost->sec = NULL;
++	}
++
++	if (shost->tokens)
++		unset (&shost->tokens);
++
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	/* close_db is using the libdb scheme */
+@@ -1893,3 +2596,4 @@
+ 
+ 	return results;
+ }
++

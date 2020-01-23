@@ -1,0 +1,7136 @@
+/*
+ * $Id: enc_type_2.c,v 1.9 2003/06/29 07:31:17 beren12 Exp $
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*
+ * This file was relayed to me and is originally from Raimar Falke.
+ * I cleaned it up a bit to save bandwidth.
+ * Used for encryption version 0x02
+ * Then it was cleaned up a whole lot more...
+ */
+
+typedef unsigned char	u8;
+typedef unsigned int	u32;
+
+static u32 mix_major0 (u32 *state, u32 extra_state);
+
+/* this all works on unsigned ints so endianess is not an issue */
+
+void enc_type_2 (unsigned int *key, unsigned int seed)
+{
+	mix_major0 (key, seed);
+}
+
+static u32	mix_major0 (u32 *state, u32 extra_state);
+static u32	mix_major1 (u32 *state, u32 extra_state);
+static u32	mix_major2 (u32 *state, u32 extra_state);
+static u32	mix_major3 (u32 *state, u32 extra_state);
+static u32	mix_major4 (u32 *state, u32 extra_state);
+static u32	mix_major5 (u32 *state, u32 extra_state);
+static u32	mix_major6 (u32 *state, u32 extra_state);
+static u32	mix_major7 (u32 *state, u32 extra_state);
+static u32	mix_major8 (u32 *state, u32 extra_state);
+static u32	mix_major9 (u32 *state, u32 extra_state);
+static u32	mix_major10 (u32 *state, u32 extra_state);
+static u32	mix_major11 (u32 *state, u32 extra_state);
+static u32	mix_major12 (u32 *state, u32 extra_state);
+static u32	mix_major13 (u32 *state, u32 extra_state);
+static u32	mix_major14 (u32 *state, u32 extra_state);
+static u32	mix_major15 (u32 *state, u32 extra_state);
+static u32	mix_major16 (u32 *state, u32 extra_state);
+static u32	mix_major17 (u32 *state, u32 extra_state);
+static u32	mix_major18 (u32 *state, u32 extra_state);
+static u32	mix_major19 (u32 *state, u32 extra_state);
+static u32	mix_major20 (u32 *state, u32 extra_state);
+static u32	mix_major21 (u32 *state, u32 extra_state);
+static u32	mix_major22 (u32 *state, u32 extra_state);
+static u32	mix_major23 (u32 *state, u32 extra_state);
+static u32	mix_major24 (u32 *state, u32 extra_state);
+
+static u32	mix_minor0 (u32 *state, u32 extra_state);
+static u32	mix_minor1 (u32 *state, u32 extra_state);
+static u32	mix_minor2 (u32 *state, u32 extra_state);
+static u32	mix_minor3 (u32 *state, u32 extra_state);
+static u32	mix_minor4 (u32 *state, u32 extra_state);
+static u32	mix_minor5 (u32 *state, u32 extra_state);
+static u32	mix_minor6 (u32 *state, u32 extra_state);
+static u32	mix_minor7 (u32 *state, u32 extra_state);
+static u32	mix_minor8 (u32 *state, u32 extra_state);
+static u32	mix_minor9 (u32 *state, u32 extra_state);
+static u32	mix_minor10 (u32 *state, u32 extra_state);
+static u32	mix_minor11 (u32 *state, u32 extra_state);
+static u32	mix_minor12 (u32 *state, u32 extra_state);
+static u32	mix_minor13 (u32 *state, u32 extra_state);
+static u32	mix_minor14 (u32 *state, u32 extra_state);
+static u32	mix_minor15 (u32 *state, u32 extra_state);
+static u32	mix_minor16 (u32 *state, u32 extra_state);
+static u32	mix_minor17 (u32 *state, u32 extra_state);
+static u32	mix_minor18 (u32 *state, u32 extra_state);
+static u32	mix_minor19 (u32 *state, u32 extra_state);
+static u32	mix_minor20 (u32 *state, u32 extra_state);
+static u32	mix_minor21 (u32 *state, u32 extra_state);
+static u32	mix_minor22 (u32 *state, u32 extra_state);
+static u32	mix_minor23 (u32 *state, u32 extra_state);
+static u32	mix_minor24 (u32 *state, u32 extra_state);
+static u32	mix_minor25 (u32 *state, u32 extra_state);
+static u32	mix_minor26 (u32 *state, u32 extra_state);
+static u32	mix_minor27 (u32 *state, u32 extra_state);
+static u32	mix_minor28 (u32 *state, u32 extra_state);
+static u32	mix_minor29 (u32 *state, u32 extra_state);
+static u32	mix_minor30 (u32 *state, u32 extra_state);
+static u32	mix_minor31 (u32 *state, u32 extra_state);
+static u32	mix_minor32 (u32 *state, u32 extra_state);
+static u32	mix_minor33 (u32 *state, u32 extra_state);
+static u32	mix_minor34 (u32 *state, u32 extra_state);
+static u32	mix_minor35 (u32 *state, u32 extra_state);
+static u32	mix_minor36 (u32 *state, u32 extra_state);
+static u32	mix_minor37 (u32 *state, u32 extra_state);
+static u32	mix_minor38 (u32 *state, u32 extra_state);
+static u32	mix_minor39 (u32 *state, u32 extra_state);
+static u32	mix_minor40 (u32 *state, u32 extra_state);
+static u32	mix_minor41 (u32 *state, u32 extra_state);
+static u32	mix_minor42 (u32 *state, u32 extra_state);
+static u32	mix_minor43 (u32 *state, u32 extra_state);
+static u32	mix_minor44 (u32 *state, u32 extra_state);
+static u32	mix_minor45 (u32 *state, u32 extra_state);
+static u32	mix_minor46 (u32 *state, u32 extra_state);
+static u32	mix_minor47 (u32 *state, u32 extra_state);
+static u32	mix_minor48 (u32 *state, u32 extra_state);
+static u32	mix_minor49 (u32 *state, u32 extra_state);
+static u32	mix_minor50 (u32 *state, u32 extra_state);
+static u32	mix_minor51 (u32 *state, u32 extra_state);
+static u32	mix_minor52 (u32 *state, u32 extra_state);
+static u32	mix_minor53 (u32 *state, u32 extra_state);
+static u32	mix_minor54 (u32 *state, u32 extra_state);
+static u32	mix_minor55 (u32 *state, u32 extra_state);
+static u32	mix_minor56 (u32 *state, u32 extra_state);
+static u32	mix_minor57 (u32 *state, u32 extra_state);
+static u32	mix_minor58 (u32 *state, u32 extra_state);
+static u32	mix_minor59 (u32 *state, u32 extra_state);
+static u32	mix_minor60 (u32 *state, u32 extra_state);
+static u32	mix_minor61 (u32 *state, u32 extra_state);
+static u32	mix_minor62 (u32 *state, u32 extra_state);
+static u32	mix_minor63 (u32 *state, u32 extra_state);
+static u32	mix_minor64 (u32 *state, u32 extra_state);
+static u32	mix_minor65 (u32 *state, u32 extra_state);
+static u32	mix_minor66 (u32 *state, u32 extra_state);
+static u32	mix_minor67 (u32 *state, u32 extra_state);
+static u32	mix_minor68 (u32 *state, u32 extra_state);
+static u32	mix_minor69 (u32 *state, u32 extra_state);
+
+static u32	call (u32 addr, u32 *state, u32 extra_state);
+
+static u32 ROR (u32 value, u32 count)
+{
+	count = count & 0x1f;
+	return (value >> count) | (value << (32 - count));
+}
+
+static u32 ROL (u32 value, u32 count)
+{
+	count = count & 0x1f;
+	return (value << count) | (value >> (32 - count));
+}
+
+
+u32 mix_major0 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	local_u32_0 = (extra_state ^ state[19] ^ state[15])%11;
+	state[6] *= 0x1bb4a70d * state[8];
+	state[12] += 0xe087bd96 + state[14];
+	edi &= state[13] | 0x39367989;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x806c400, state, 0xec9ed2c1); 
+		eax = call (0xcd17376-eax, state, 0x828f1883);
+		eax = call (0x7fedfe28-eax, state, 0xd02b60f3);
+		eax = call (0xd8e0ef9-eax, state, state[19]);
+	}
+
+	state[14] -= ROR (edi, 31);
+	state[8] ^= edi & 0x8e30c76;
+	state[3] = (state[12] ^ 0xd05f635) * state[3];
+	state[10] = (state[10]<<1) + 0xa92dc43a;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x805dd98, state, 0x91fc47a9);
+		eax = call (0x673914f0 - eax, state, 0x2590bef0);
+		eax = call (0x84d24a2 - eax, state, 0x2c669b26);
+		eax = call (0x13b5d4bf-eax, state, state[5]);
+	}
+
+	edi += 0xff92b824 + state[17];
+	state[1] += state[3] ^ 0x62c448c0;
+	state[8] ^= 0x43c25efd ^ state[3];
+	state[9] ^= ROL (state[9], 16);
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x809e2f8, state, 0x863938ef);
+		eax = call (0x385884a8 - eax, state, 0x58da27f4);
+		eax = call (0x2817dc29 - eax, state, 0x51e80a45);
+		eax = call (0x5970efc8 - eax, state, state[5]);
+	}
+
+	state[3] += 0xef553b21-state[2];
+	state[18]+=0x3b26991e + state[13];
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x807de40, state, 0xbfa21ddc);
+		eax = call (0x477c46e2-eax, state, 0x4fedb0f5);
+		eax = call (0xf3777b1-eax, state, 0xf6783a2a);
+		eax = call (0x128873ac-eax, state, state[7]);
+	}
+
+	state[12] += state[11] & 0x4be050d;
+	state[17] ^= ROR (edi, 8);
+	state[8] = ROR (state[8], state[16] + 0xf7);
+	state[12] *= state[8] + 0xf3910fa;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x805d75c, state, 0xcbbfcc48);
+		eax = call (0x13c43c50 - eax, state, 0xc3a7a161);
+		eax = call (0x2c9b8cf7 - eax, state, 0x9cffc26b);
+		eax = call (0x4b5da352 - eax, state, edi);
+	}
+	state[8] = (state[8] + 0x4088eb5f) + edi;
+	state[5] = state[5] & (state[7] ^ 0x1387a250);
+	state[2] = state[2] | (state[1] ^ 0x47f3a78b);
+	state[17] = state[17] | (state[10] * 0x1d208465);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x807de40, state, 0x48ca60c);
+		eax = call (0x19bff38e - eax, state, 0x28fc4e79);
+		eax = call (0x279ea40d - eax, state, 0xa7bd5f5a);
+		eax = call (0x6433f0b6 - eax, state, state[9]);
+	}
+
+	eax = edi;
+	state[1] = state[1] - (eax & 0x4be5deac);
+	state[4] = state[4] + (state[15] & 0x3496b61a);
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x809e914, state, 0x3ad6754a);
+		eax = call (0xee2d3f9 - eax, state, 0x3be35f99);
+		eax = call (0x9278fd4 - eax, state, 0xcaceada2);
+		eax = call (0x29f42662 - eax, state, state[8]);
+	}
+
+	ebx = edi * 0xffffffb0;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	edx = state[12];
+	edx = edx + 0x6b465da;
+	state[13] = state[13] & edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x8069514, state, 0x6fd435f0);
+		eax = call (0x1d3fa489 - eax, state, 0xc1903471);
+		eax = call (0x149c284e - eax, state, 0x7846089f);
+		eax = call (0x4e937a56 - eax, state, state[11]);
+	}
+	state[16] = state[16] | (state[14] + 0xff7068bf);
+	state[7] = state[7] & (state[19] ^ 0x1e569f2b);
+	state[12] = state[12] + (state[15] * 0x49f90b6a);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x806c008, state, 0xd5456f37);
+		eax = call (0x7a984c7b - eax, state, 0x8ef487de);
+		eax = call (0x23022cdc - eax, state, 0xe92764c1);
+		eax = call (0x171a0123 - eax, state, state[7]);
+	}
+	state[6] = state[6] - (state[18] * 0xb0223a7);
+	edx = state[17];
+	edx = edx + 0x19da7ccb;
+	edx = edx + state[3];
+	state[17] = edx;
+	state[19] = state[19] - (state[4] * 0x4f4bc59);
+	eax = edi;
+	eax = eax & 0x3a423827;
+	edx = edx - eax;
+	state[17] = edx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x80871a4, state, 0xc4e7f9c9);
+		eax = call (0x4898a548 - eax, state, 0x18122df);
+		eax = call (0x1a1780e4 - eax, state, 0x245e6d52);
+		eax = call (0xb9a137b - eax, state, edi);
+	}
+
+	eax = state[11];
+	edi = 0xea268d79 +  eax + edi ;
+	eax = eax + 0x7b41453;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x8087210, state, 0xfe003ce6);
+		eax = call (0x3c2eada9 - eax, state, 0x78d525ec);
+		eax = call (0x208b92a8 - eax, state, 0xf91e3f43);
+		eax = call (0x833a0d6 - eax, state, edi);
+	}
+
+	ecx = state[0];
+	ecx = ecx ^ 0x361eddb9;
+	eax = state[2];
+	local_u32_3 = eax;
+	ecx = ecx ^ eax;
+	local_u32_1 = ecx;
+	state[0] = ecx;
+	ebx = state[4];
+	ebx = ebx + 0xf9;
+	eax = ROR (state[4], ebx);
+	ebx = eax;
+	state[4] = ebx;
+	edx = local_u32_1;
+	edx = 0xc3201c46 +  edi + edx ;
+	state[0] = edx;
+	ecx = state[16];
+	ecx = ecx + 0xf6c0ea7;
+	ecx = ecx * state[8];
+	local_u32_2 = ecx;
+	state[8] = ecx;
+	eax = state[18] * 0x11e13f53;
+	local_u32_1 = eax;
+	state[11] = (ROR (state[11], local_u32_1));
+	local_u32_3 = local_u32_3 | 0x5747f7c;
+	ebx = ebx | local_u32_3;
+	state[2] = ebx;
+	edx = state[3] * 0x336a3c4f;
+	edi = edi ^ edx;
+	ecx = 0x2b702a62 + edi;
+	eax = state[9];
+	ecx = ecx ^ eax;
+	edx = local_u32_2;
+	edx = edx + 0x5ff3732;
+	ecx = ecx ^ edx;
+	state[9] = ecx;
+	ecx = state[1];
+	ecx = ecx + 0xfa4e2f52;
+	ecx = ecx * state[1];
+	state[1] = ecx;
+	return edi;
+}
+
+
+u32 mix_major1 (u32 *state, u32 extra_state)
+{
+	u32 eax;
+	u32 ebx;
+	u32 ecx;
+	u32 edx;
+	u32 esi;
+
+	u32 local_u32_0;
+	u32 local_u32_1;
+	u32 local_u32_2;
+	u32 local_u32_3;
+	eax = state[12] ^ state[9];
+	edx = state[6];
+	eax = eax ^ edx;
+	local_u32_2 = eax;
+	esi = local_u32_2 % 0x0B;
+	eax = extra_state;
+	eax = eax + 0x2183b643;
+	edx = state[3];
+	local_u32_1 = edx;
+	local_u32_1 = local_u32_1 & 0x24398ab;
+	ecx = local_u32_1;
+	state[5] = state[5] + ecx;
+	eax = 0x24631391 +  edx + eax ;
+	edx = state[18];
+	eax = eax - edx;
+	local_u32_0 = eax;
+
+	if (esi == 2)
+	{
+		eax = call (0x80694f4, state, 0x69f1e613);
+		eax = call (0x1c9b43e7 - eax, state, 0xb2461575);
+		eax = call (0x29431d6b - eax, state, 0xbc73e0ff);
+		eax = call (0x512274f2 - eax, state, state[19]);
+	}
+	eax = state[14] + 0xc0fd80ba;
+	local_u32_0 = local_u32_0 ^ eax;
+	state[12] = state[12] - (state[1] * 0xe99b672);
+	state[15] = state[15] ^ (state[0] + 0xca70bf60);
+
+	if (esi == 1)
+	{
+		eax = call (0x806c02c, state, 0x13db4bec);
+		eax = call (0x10e81e47 - eax, state, 0x17885b09);
+		eax = call (0x2d15d4a5 - eax, state, 0x214006c6);
+		eax = call (0x1a444cb4 - eax, state, state[11]);
+	}
+
+	eax = local_u32_0;
+	eax = eax ^ 0x17339c6;
+	local_u32_0 = local_u32_0 + eax;
+	state[15] = (state[7] * 0x15f0a011 + state[15]);
+	edx = state[17];
+	ecx = 0x1b597286 + edx;
+	state[4] = state[4] & ecx;
+	eax = eax & 0x389e630b;
+	edx = edx * eax;
+	state[17] = edx;
+
+	if (esi == 3)
+	{
+		eax = call (0x808baa8, state, 0xe47fc3c0);
+		eax = call (0x1a0c63e0 - eax, state, 0x14a32681);
+		eax = call (0xf535100 - eax, state, 0x5d77fb22);
+		eax = call (0x69c49b7b - eax, state, state[3]);
+	}
+
+	ecx = state[18];
+	ecx = ecx ^ 0x31a138ce;
+	ecx = ecx ^ state[19];
+	state[18] = ecx;
+	state[16] = state[16] & (local_u32_0 * 0x271fe1f1);
+	ebx = state[16];
+	ebx = ebx ^ 0x29;
+	state[7] = (ROR (state[7], ebx));
+
+	if (esi == 5)
+	{
+		ebx = 0x4aa39479;
+		ebx = ebx + 0xbd652653;
+		eax = call (ebx, state, 0x8cf196c0);
+		eax = call (0x5aef696f - eax, state, 0x8271071);
+		eax = call (0x8282716 - eax, state, 0x489ed59f);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x25e4ff52;
+		edx = local_u32_0;
+		eax = call (ebx, state, edx);
+	}
+	eax = ROR (state[6], 0x1f);
+	state[2] = (eax * state[2]);
+	edx = local_u32_0;
+	edx = edx + 0xfee822a8;
+	ecx = state[14];
+	edx = edx - ecx;
+	eax = edx * 0x9dfbe4;
+	eax = eax * state[5];
+	edx = state[13];
+	edx = 0xfd2ead2f +  edx + eax ;
+	local_u32_0 = edx;
+
+	if (esi == 9)
+	{
+		eax = call (0x808bba8, state, 0x5d331920);
+		eax = call (0x9314b65 - eax, state, 0xb702090e);
+		eax = call (0x23905e6d - eax, state, 0x28394e8a);
+		eax = call (0xb2da803 - eax, state, state[18]);
+	}
+
+	ecx = state[7];
+	ecx = ecx + 0x2b29baf9;
+	ecx = ecx + state[17];
+	state[7] = ecx;
+	ebx = state[0];
+	ecx = 0x19;
+	ebx = ROL (ebx, ecx);
+	state[2] = (ROR (state[2], ebx));
+
+	if (esi == 6)
+	{
+		eax = call (0x808bb18, state, 0x12314128);
+		eax = call (0x3aa83d76 - eax, state, 0xca477dca);
+		eax = call (0x392786b1 - eax, state, 0x23ef45d7);
+		eax = call (0x1f4a0bf0 - eax, state, state[4]);
+	}
+
+	eax = state[5] * 0x282f40d5;
+	local_u32_0 = local_u32_0 - eax;
+	state[12] = state[12] & (state[16] + 0x2223fa4b);
+	eax = ROR (state[18], 0x10);
+	local_u32_0 = local_u32_0 & eax;
+
+	if (esi == 8)
+	{
+		ebx = 0x1fda2667;
+		ebx = ebx + 0xe82e94b1;
+		eax = call (ebx, state, 0x60ffb509);
+		eax = call (0x4d5b9499 - eax, state, 0xcf7247dd);
+		eax = call (0x1afdd132 - eax, state, 0x48b70310);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x14e94bd9;
+		eax = local_u32_0;
+		eax = call (ebx, state, eax);
+	}
+
+	edx = state[17];
+	edx = edx + 0xf9ac8515;
+	eax = state[7];
+	edx = edx + eax;
+	state[17] = edx;
+	eax = eax + state[10];
+	state[7] = (eax + 0xf9b69577);
+
+	if (esi == 4)
+	{
+		eax = call (0x80750c0, state, 0x375ebf07);
+		eax = call (0x198daaac - eax, state, 0x7c04333);
+		eax = call (0xb4aa056 - eax, state, 0x4c285c11);
+		eax = call (0x289ffaaf - eax, state, state[13]);
+	}
+	state[7] = state[7] + (state[13] ^ 0x6d56f7f);
+	eax = state[8] + 0x8c8d3d9c;
+	state[8] = (eax - local_u32_0);
+
+	if (esi == 7)
+	{
+		eax = call (0x805ee44, state, 0x404a4067);
+		eax = call (0xd8d9db1 - eax, state, 0x2230c395);
+		eax = call (0x2cf21292 - eax, state, 0x58e89828);
+		eax = call (0xa200ca2 - eax, state, state[4]);
+	}
+	eax = state[5] + 0x4d2bd380;
+	state[5] = (eax - state[12]);
+	ecx = state[1];
+	ecx = ecx + 0xfcee8aad;
+	ecx = ecx - local_u32_0;
+	state[1] = ecx;
+	eax = state[18];
+	edx = eax + 8 * eax;
+	edx = edx << 2;
+	edx = edx - eax;
+	edx = eax + 8 * edx;
+	edx = eax + 8 * edx;
+	eax = 4 * edx;
+	eax = eax - edx;
+	state[18] = (eax << 6) * ecx;
+	eax = state[4] + 0xdc2745dc;
+	state[8] = (eax * state[8]);
+
+	if (esi == 10)
+	{
+		eax = call (0x805d75c, state, 0xc6cb6995);
+		eax = call (0x3cadd51f - eax, state, 0x2929b86);
+		eax = call (0x1d63f237 - eax, state, 0x261970a0);
+		eax = call (0x276b6cfc - eax, state, state[2]);
+	}
+
+	edx = state[7];
+	edx = edx + 0xd9de0ed7;
+	ecx = state[18];
+	edx = edx ^ ecx;
+	local_u32_2 = edx;
+	state[18] = edx;
+	ebx = state[6];
+	ebx = ebx + 0x71;
+	state[11] = (ROR (state[11], ebx));
+	edx = state[19];
+	edx = edx + 0xb295dc;
+	edx = edx + local_u32_2;
+	state[19] = edx;
+
+	if (esi == 0)
+	{
+		ebx = 0x98d24d1;
+		ebx = ebx + 0xfe7b4d1b;
+		eax = call (ebx, state, 0x4faf7da4);
+		eax = call (0x430baa55 - eax, state, 0xf086a434);
+		eax = call (0x4b5c18e6 - eax, state, 0x24526842);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0xa1ffa8b;
+		ecx = local_u32_0;
+		eax = call (ebx, state, ecx);
+	}
+
+	ebx = local_u32_0;
+	ebx = ebx | 0x58eafd;
+	eax = state[15] - ebx;
+	local_u32_3 = eax;
+	state[15] = eax;
+	edx = state[12];
+	ebx = edx * 0xffffffc6;
+	state[5] = (ROR (state[5], ebx));
+	esi = state[2];
+	esi = esi + 0xf42fd441;
+	esi = esi + state[19];
+	state[2] = esi;
+	local_u32_1 = esi;
+	local_u32_1 = local_u32_1 | 0x10d913b8;
+	edx = edx * local_u32_1;
+	state[12] = edx;
+	ebx = state[11];
+	edx = 0x2039d1f9 + ebx;
+	ecx = state[1];
+	edx = edx ^ ecx;
+	local_u32_2 = edx;
+	state[1] = edx;
+	eax = esi;
+	eax = ROR (eax, 0x3);
+	edx = local_u32_3;
+	edx = edx + eax;
+	state[15] = edx;
+	ecx = local_u32_2;
+	ebx = 0x55f96491 +  ecx + ebx ;
+	state[11] = ebx;
+	edx = edx & 0x864fe18;
+	edx = edx * state[4];
+	state[4] = edx;
+	eax = local_u32_0;
+	edx = state[10];
+	eax = 0x2ff6c3cc +  edx + eax ;
+	local_u32_0 = eax;
+	edx = state[18];
+	edx = edx + 0xf5eb4571;
+	edx = edx * state[18];
+	state[18] = edx;
+	return eax;
+}
+
+
+u32 mix_major2 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	edx = state[9] % 0x0B;
+	local_u32_0 = edx;
+	ecx = state[0];
+	ecx = ecx | 0x4d9f89df;
+	ecx = ecx | edi;
+	state[0] = ecx;
+	ebx = edi;
+	ebx = ebx & 0x10691818;
+	edi = edi - ebx;
+	eax = ROR (state[15], 0x12);
+	edx = state[15];
+	edx = edx & eax;
+	state[15] = edx;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x806c398, state, 0xfbf48d65);
+		eax = call (0x8e608c2 - eax, state, 0x70c92c02);
+		eax = call (0x284089ee - eax, state, 0xb02e6efb);
+		eax = call (0x2db761e7 - eax, state, state[9]);
+	}
+
+	ecx = state[7];
+	ecx = ecx ^ 0x1f11181f;
+	edi = edi | ecx;
+	ebx = state[18];
+	ebx = ebx + 0x18;
+	state[17] = (ROR (state[17], ebx));
+	edx = state[18];
+	edx = edx + 0xc18379a4;
+	state[3] = state[3] & edx;
+	ecx = state[8];
+	ecx = ecx + 0x8845990;
+	ecx = ecx + state[2];
+	state[8] = ecx;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x806bfb0, state, 0x25323763);
+		eax = call (0x286ce3f0 - eax, state, 0x21afc536);
+		eax = call (0xed778f7 - eax, state, 0x1e4c2347);
+		eax = call (0xaa419d0 - eax, state, edi);
+	}
+
+	eax = state[7];
+	eax = ROL (eax, 0x1e);
+	edi = edi * eax;
+	ebx = edi;
+	ebx = ebx ^ 0x61;
+	state[14] = (ROR (state[14], ebx));
+	edx = state[3];
+	edx = edx ^ 0x1a11c1c;
+	state[3] = state[3] - edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x809e938, state, 0x7536608b);
+		eax = call (0x30dbd554 - eax, state, 0x9b43e646);
+		eax = call (0x1f84397f - eax, state, 0x52535671);
+		eax = call (0x1f77893c - eax, state, edi);
+	}
+	state[5] = (state[5] + 0xbdf50793) + edi;
+	eax = state[6] ^ 0x341c6ce5;
+	edi = edi - eax;
+	eax = state[14] | 0x11712ba;
+	edi = edi ^ eax;
+	eax = state[4] + 0x1df0f08c;
+	state[4] = (eax - edi);
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x808baa8, state, 0xf86aaa73);
+		eax = call (0xe35c113 - eax, state, 0x1a29e230);
+		eax = call (0x1886cd1d - eax, state, 0x465d1441);
+		eax = call (0x2c223af4 - eax, state, state[2]);
+	}
+	eax = state[15] + 0xd8a810b1;
+	edi = edi * eax;
+	state[0] = (state[0] + 0x8e4e3c5) - state[7];
+	eax = edi;
+	state[9] = state[9] - (eax ^ 0x13f1a8da);
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x8054bc8, state, 0x7b6ddac5);
+		eax = call (0x134e16ff - eax, state, 0x2425a128);
+		eax = call (0x99745ec - eax, state, 0x72049ca2);
+		eax = call (0x1e1f3e77 - eax, state, state[12]);
+	}
+
+	eax = 0xf2dd8a98 + edi;
+	state[14] = (eax ^ state[14]);
+	edx = state[3];
+	edx = edx & 0xb51383c;
+	state[14] = (state[14] | edx);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x807d7d4, state, 0x88f8d35d);
+		eax = call (0x77bb3057 - eax, state, 0x7fd3d182);
+		eax = call (0x1cdea49d - eax, state, 0x18222407);
+		eax = call (0x5b845f7c - eax, state, state[9]);
+	}
+	eax = state[0] + 0x16bda446;
+	edx = state[2];
+	state[0] = eax - edx;
+	eax = state[0] ^ 0x3576dfb9;
+	edx = edx - eax;
+	state[2] = edx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x80694f4, state, 0xf858a0fc);
+		eax = call (0x2bf1386d - eax, state, 0xfbe68a32);
+		eax = call (0x2f7c6448 - eax, state, 0x7069477);
+		eax = call (0xa07aacb - eax, state, state[9]);
+	}
+	state[5] = state[5] - (state[6] | 0x1720cf3);
+	state[16] = (state[16] ^ 0x2dfed60) ^ state[19];
+	eax = state[12] + 0xffcf5d22;
+	edi = edi * eax;
+	eax = state[11] ^ 0x26b4296;
+	edi = edi + eax;
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x809e914, state, 0x4de0fdb2);
+		eax = call (0x5df4e4f1 - eax, state, 0xd70512e7);
+		eax = call (0x36e4bdd6 - eax, state, 0x46d51d34);
+		eax = call (0x16c52d15 - eax, state, edi);
+	}
+
+	ebx = edi;
+	ecx = 0xb;
+	ebx = ROL (ebx, ecx);
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	eax = state[17];
+	eax = ROL (eax, 0x19);
+	edi = edi - eax;
+	edx = state[3];
+	edx = edx ^ 0x125c14db;
+	state[4] = state[4] + edx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8084cb4, state, 0x33e6ff92);
+		eax = call (0x13d331a3 - eax, state, 0x4e055014);
+		eax = call (0xb2b1cbb - eax, state, 0x224ebd80);
+		eax = call (0x20ae8949 - eax, state, state[9]);
+	}
+	eax = ROR (state[15], 0x1f);
+	state[9] = (eax | state[9]);
+	edi = edi + 0xfde54451;
+	edi = edi - state[19];
+	edx = state[11];
+	edx = edx | 0x3;
+	state[9] = ROR (state[9], edx);
+	eax = state[18] ^ 0x22da8ee3;
+	state[18] = (eax ^ edi);
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x808bb18, state, 0x292c53f8);
+		eax = call (0x13adb3e6 - eax, state, 0xcbffd850);
+		eax = call (0x4f64bf4e - eax, state, 0x1df7b162);
+		eax = call (0xdf3d432 - eax, state, state[2]);
+	}
+
+	ebx = state[9];
+	ebx = ebx + 0x8f;
+	state[2] = (ROR (state[2], ebx));
+	ebx = state[18];
+	ebx = ebx & 0x53;
+	state[5] = (ROR (state[5], ebx));
+	edx = state[1];
+	edx = edx ^ 0x2822999;
+	state[5] = (eax - edx);
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x808bacc, state, 0x4cf0e3f7);
+		eax = call (0x5ac26dfb - eax, state, 0x54c9ac57);
+		eax = call (0x9774b32 - eax, state, 0x79c6b50b);
+		eax = call (0x47036796 - eax, state, state[9]);
+	}
+
+	eax = edi;
+	eax = ROR (eax, 0x18);
+	edx = state[1];
+	eax = eax + edx;
+	local_u32_3 = eax;
+	state[1] = eax;
+	ebx = state[4];
+	local_u32_1 = ebx;
+	local_u32_1 = local_u32_1 | 0x161d3ea;
+	ecx = local_u32_1;
+	state[6] = state[6] + ecx;
+	eax = state[9] + 0xc2e590c;
+	state[9] = (eax + edi);
+	local_u32_1 = edi;
+	local_u32_1 = local_u32_1 ^ 0x125deacd;
+	edi = edi - local_u32_1;
+	edx = state[17];
+	edx = edx ^ 0x10b015bf;
+	state[7] = state[7] & edx;
+	state[17] = 0x1bb396c0;
+	local_u32_3 = local_u32_3 & 0x7a04e3e;
+	state[9] = (state[9] * local_u32_3);
+	ecx = state[16];
+	ecx = ecx | 0x16cf1fa2;
+	edi = edi + ecx;
+	edi = edi * 0x1d5ac40e;
+	edi = edi * state[14];
+	eax = 0xf27819a7 + edi;
+	ebx = ebx ^ eax;
+	state[4] = ebx;
+	return edi;
+}
+
+
+u32 mix_major3 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+
+	edi = extra_state;
+	ebx = edi;
+	ebx = ebx ^ state[16];
+	ebx = ebx ^ state[10];
+	ebx = ebx % 0x0B;
+	local_u32_0 = ebx;
+	edx = state[3];
+	edx = edx & 0x19997dc0;
+	edx = edx * state[12];
+	state[12] = edx;
+	ecx = state[0];
+	ecx = ecx + 0xd31e211;
+	edi = edi | ecx;
+	eax = state[14] + 0x7cfa160;
+	state[14] = (eax - state[0]);
+
+	if (ebx == 10)
+	{
+		eax = call (0x809e938, state, 0x4a3d1e20);
+		eax = call (0xa296f5f - eax, state, 0x29830e2b);
+		eax = call (0x1458a637 - eax, state, 0x8df0232e);
+		eax = call (0x3ddee5bd - eax, state, state[2]);
+	}
+
+	ebx = edi;
+	ebx = ebx + 0xe6;
+	state[13] = (ROR (state[13], ebx));
+	edx = state[12];
+	edx = edx + 0xfd1d773c;
+	edx = edx * state[3];
+	state[3] = edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x807d7f8, state, 0xab4316e);
+		eax = call (0x96e92db - eax, state, 0x35811c20);
+		eax = call (0x2601d425 - eax, state, 0x268ea793);
+		eax = call (0x935b8b7 - eax, state, state[12]);
+	}
+
+	eax = 0xd10c7a44 + edi;
+	edi = edi | eax;
+	eax = state[0];
+	edi = 0xf3754e81 +  eax + edi ;
+	edi = edi ^ 0x21d2a427;
+	ebx = state[16];
+	edi = edi ^ ebx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x807d81c, state, 0xa0726217);
+		eax = call (0x2162f986 - eax, state, 0xebe9adea);
+		eax = call (0x18f33cd2 - eax, state, 0x4aef76e9);
+		eax = call (0x2873cc3a - eax, state, state[11]);
+		ebx = state[16];
+	}
+
+	ebx = ebx | 0x599c0b2;
+	ebx = ebx | state[4];
+	state[16] = ebx;
+	ebx = state[0];
+	ebx = ebx + 0xdd;
+	eax = edi;
+	eax = ROL (eax, ebx);
+	edi = eax;
+	edx = state[6];
+	edx = edx ^ 0x1d86d59a;
+	state[3] = state[3] & edx;
+	ecx = state[0];
+	ecx = ecx ^ 0x22d79e78;
+	ecx = ecx ^ state[10];
+	state[0] = ecx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x808baf4, state, 0xf1ca6995);
+		eax = call (0x41b239e5 - eax, state, 0xc7a7026f);
+		eax = call (0x145fc996 - eax, state, 0x5ac62a91);
+		eax = call (0x6028c940 - eax, state, state[16]);
+	}
+
+	ebx = state[9];
+	ebx = ebx + 0x22;
+	eax = state[15];
+	ecx = ebx;
+	state[15] = ROL (eax, ecx);
+	eax = edi;
+	eax = ROL (eax, 0xd);
+	edi = edi + eax;
+	edx = state[4];
+	edx = edx ^ 0x17568f8b;
+	edi = edi + edx;
+	ecx = state[9];
+	ecx = ecx ^ 0x1b7d211b;
+	state[3] = state[3] - ecx;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x8077f60, state, 0xce485b83);
+		eax = call (0x5af64f89 - eax, state, 0x79bfdc2b);
+		eax = call (0x1bda8dc2 - eax, state, 0x34447906);
+		eax = call (0x1a2cef27 - eax, state, edi);
+	}
+	state[14] = (state[10] ^ 0x25da4024) * state[14];
+	state[3] = state[3] + (state[19] ^ 0x195596e2);
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x807d7f8, state, 0xff14be4);
+		eax = call (0xfae15d5 - eax, state, 0x7449c112);
+		eax = call (0x32962bdf - eax, state, 0x48d82db3);
+		eax = call (0x31bea080 - eax, state, edi);
+	}
+	state[3] = state[3] ^ (ROR (state[4], 0xb));
+	state[19] = state[19] ^ (state[2] & 0x142c74fa);
+	state[7] = 0x3de4cf2b;
+	eax = state[5] * 0x1195dbf3;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x805eaf0, state, 0xd8727bd4);
+		eax = call (0x5077df4c - eax, state, 0x7740dede);
+		eax = call (0x36a92381 - eax, state, 0x261f9532);
+		eax = call (0x29c34520 - eax, state, state[9]);
+	}
+	state[12] = state[12] * 0x25bf72d4 * state[14];
+	eax = state[11];
+	eax = ROL (eax, 0x2);
+	edi = edi + eax;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8069538, state, 0x53d65d3);
+		eax = call (0x26980233 - eax, state, 0x8f8f65ec);
+		eax = call (0x202e3938 - eax, state, 0x25394681);
+		eax = call (0x1d743d1e - eax, state, edi);
+	}
+	state[7] = (state[7] + 0xfbd89057) + edi;
+	state[12] = (state[12] + 0xfec898a3) - edi;
+	eax = 0xe6d9d0ce + edi;
+	edi = edi * eax;
+	state[2] = (state[2] * 0x25d5927e * state[0]);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x80871ec, state, 0x4cd340f8);
+		eax = call (0x46206a89 - eax, state, 0xd7c29b2);
+		eax = call (0x1b8ac6b0 - eax, state, 0x3df99882);
+		eax = call (0xb34c4cb - eax, state, state[3]);
+	}
+
+	eax = edi;
+	eax = eax ^ 0x7951f14a;
+	edi = edi - eax;
+	eax = state[19] ^ 0x159fa550;
+	edi = edi * eax;
+	state[9] = state[9] - (edi * 0x1b0d12a6);
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x805d75c, state, 0xe903bb6d);
+		eax = call (0x1e7eaaf3 - eax, state, 0x7883c4fc);
+		eax = call (0xbf47c0e - eax, state, 0x361be44f);
+		eax = call (0xe7f6c37 - eax, state, edi);
+	}
+
+	edx = state[4];
+	edx = edx | 0xf2ff1db;
+	edx = edx + state[12];
+	state[12] = edx;
+	state[7] = state[7] - (edi * 0x1a41598b);
+	state[17] = (state[14] & 0x36ff2c0) * state[17];
+	eax = state[2] & 0xac8676c;
+	edx = edx ^ eax;
+	state[12] = edx;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808bba8, state, 0x6d5e127e);
+		eax = call (0x1984534f - eax, state, 0x4cb99db);
+		eax = call (0x8fdfc2e - eax, state, 0xa9d77057);
+		eax = call (0x50c3714b - eax, state, state[11]);
+	}
+	state[19] = state[19] ^ (state[11] + 0xe311654d);
+	edx = state[16];
+	state[18] = state[18] ^ (edx * 0x1267cd78);
+	ecx = edi;
+	ecx = ecx ^ 0x1c8b2015;
+	ecx = ecx & edx;
+	eax = ecx;
+	eax = eax | 0xc26f29a;
+	ecx = ecx * eax;
+	state[16] = ecx;
+	state[14] = state[14] & (state[10] + 0xcec46d19);
+	eax = state[0] + 0x32ff9d2f;
+	edi = edi * eax;
+	state[8] = state[8] - (state[8] ^ 0xc03874d);
+	eax = state[13];
+	edi = 0xf9b39aca +  eax + edi ;
+	return edi;
+}
+
+
+u32 mix_major4 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+
+	edi = extra_state;
+	ebx = state[15];
+	local_u32_1 = ebx;
+	eax = state[2];
+	local_u32_1 = local_u32_1 ^ eax;
+	local_u32_1 = local_u32_1 ^ edi;
+	ecx = local_u32_1 % 0x09;
+	local_u32_0 = ecx;
+	eax = state[14] + 0xd3892fe6;
+	state[14] = (eax + ebx);
+	ecx = state[2];
+	ecx = ecx + 0xe600fde6;
+	ecx = ecx - edi;
+	state[2] = ecx;
+	eax = state[4] + 0x385e38e;
+	ebx = ebx ^ eax;
+	state[15] = ebx;
+	ecx = 0xc6189f52 + edi;
+	state[18] = state[18] | ecx;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x80872a0, state, 0x8252e111);
+		eax = call (0x3be0f0a9 - eax, state, 0x15d9d426);
+		eax = call (0x37416b90 - eax, state, 0x2b312900);
+		eax = call (0x1501fab9 - eax, state, state[1]);
+	}
+	eax = state[14] + 0x8f6f81a9;
+	ecx = state[11];
+	eax = eax & ecx;
+	local_u32_1 = eax;
+	state[11] = eax;
+	edx = state[6];
+	ecx = 0xe;
+	edx = ROR (edx, ecx);
+	eax = state[12];
+	state[12] = (ROL (eax, edx));
+	edx = state[8];
+	ecx = 0xe;
+	edx = ROL (edx, ecx);
+	edi = edi - edx;
+	edx = local_u32_1;
+	ecx = 0x1;
+	edx = ROR (edx, ecx);
+	eax = ROR (state[0], edx);
+	edx = eax;
+	local_u32_1 = local_u32_1 ^ 0x43cd4d14;
+	edx = edx + local_u32_1;
+	state[0] = edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x805dd74, state, 0x9c42ffbc);
+		eax = call (0xa58c56b - eax, state, 0xc8aebfe8);
+		eax = call (0x26b10d25 - eax, state, 0x6469b080);
+		eax = call (0x19b0b7e7 - eax, state, state[14]);
+	}
+	state[3] = state[3] - (state[8] ^ 0x155c464);
+	state[16] = (state[16] + 0xf8d647b6) + state[0];
+	eax = state[2] ^ 0x11e3788d;
+	state[2] = (eax ^ state[4]);
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x808bb80, state, 0x1045494f);
+		eax = call (0x1d63af96 - eax, state, 0xedce12aa);
+		eax = call (0x9e93ec5 - eax, state, 0x1c3772b0);
+		eax = call (0x2d444d6f - eax, state, state[10]);
+	}
+
+	eax = edi;
+	eax = ROL (eax, 0xb);
+	edi = edi | eax;
+	eax = edi;
+	state[5] = state[5] & (eax ^ 0x16984b90);
+	eax = edi;
+	state[16] = state[16] + (ROR (eax, 0x1d));
+	eax = state[0] + 0xc3e56f16;
+	state[0] = (eax + state[15]);
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808bb18, state, 0x2a391a7e);
+		eax = call (0x12a2498c - eax, state, 0xc9dcd626);
+		eax = call (0x1a353157 - eax, state, 0xbb1d0460);
+		eax = call (0x6ae42057 - eax, state, state[1]);
+	}
+	state[5] = state[5] & (state[11] + 0xe57356e7);
+	edx = edi;
+	edx = edx ^ 0x23f157f6;
+	ecx = state[18];
+	ecx = ecx - edx;
+	state[18] = ecx;
+	ecx = ecx & 0x155b7cc8;
+	edi = edi - ecx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x809e938, state, 0x12ac20fd);
+		eax = call (0x37f5f6b8 - eax, state, 0x1b423418);
+		eax = call (0x22653795 - eax, state, 0xef8f976a);
+		eax = call (0xc276936 - eax, state, edi);
+	}
+	eax = state[8] | 0x21496d22;
+	state[8] = (eax | state[5]);
+	edi = edi + 0x93b1543f;
+	edi = edi - state[18];
+	ecx = state[14] * 0x1db47609;
+	ecx = ecx * edi;
+	state[14] = ecx;
+	edx = state[10];
+	edx = edx ^ 0x5a;
+	eax = ROR (state[7], edx);
+	edx = eax;
+	state[7] = edx;
+	ecx = state[18];
+	ecx = ecx + 0x7c;
+	edx = ROL (edx, ecx);
+	state[7] = edx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x808bb18, state, 0x2e8d72cd);
+		eax = call (0xf4cbf71 - eax, state, 0x45257d1a);
+		eax = call (0x87981bb - eax, state, 0xe981d59d);
+		eax = call (0x16bc8ac7 - eax, state, edi);
+	}
+
+	eax = state[5];
+	state[8] = state[8] ^ (ROL (eax, 0x3));
+	state[6] = (state[6] ^ 0x2c8ca15) ^ edi;
+	eax = edi;
+	state[13] = state[13] + (ROL (eax, 0xd));
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x8057468, state, 0x45975315);
+		eax = call (0x13346140 - eax, state, 0x76f29932);
+		eax = call (0x59e9b8db - eax, state, 0x444a096f);
+		eax = call (0x24febf7d - eax, state, state[18]);
+	}
+	state[17] = state[17] ^ (state[2] & 0xa0962e5);
+	eax = edi;
+	state[3] = (eax & 0xd505f52) * state[3];
+	eax = state[15] ^ 0x15284f42;
+	edi = edi - eax;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x807d7f8, state, 0xe139a689);
+		eax = call (0x3ee72842 - eax, state, 0xf179d0b9);
+		eax = call (0x209acd6b - eax, state, 0x37f1d8d8);
+		eax = call (0x1affa6c5 - eax, state, state[8]);
+	}
+	state[7] = state[7] & (state[2] + 0xf8df2963);
+	state[6] = state[6] * 0x256b9c9c * edi;
+	state[10] = state[10] + (state[1] | 0xda16d9b);
+	eax = state[5] ^ 0x28b62e0c;
+	state[9] = (eax * state[9]);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x8077f60, state, 0xdcc8f292);
+		eax = call (0x28771678 - eax, state, 0xbc3315f);
+		eax = call (0x497e81d2 - eax, state, 0xf32374a9);
+		eax = call (0x30fdef6e - eax, state, edi);
+	}
+
+	eax = state[5] * 0x23779c9e;
+	ecx = state[12];
+	eax = eax ^ ecx;
+	local_u32_2 = eax;
+	state[12] = eax;
+	ebx = state[19];
+	eax = ebx;
+	eax = ROR (eax, 0x1d);
+	state[10] = (eax * state[10]);
+	edx = state[0];
+	edx = edx ^ 0x38a5f94;
+	edx = edx ^ eax;
+	state[0] = edx;
+	ecx = state[15];
+	edi = 0x1c82e95e +  ecx + edi ;
+	edx = state[5];
+	edx = edx ^ 0xfd;
+	eax = state[9];
+	eax = ROL (eax, edx);
+	edx = eax;
+	state[9] = edx;
+	ecx = local_u32_2;
+	ecx = 0xc0e4fa7d +  edi + ecx ;
+	state[12] = ecx;
+	state[17] = (state[17] ^ 0x141bbf98) ^ state[7];
+	eax = ROR (state[18], 0x6);
+	edx = edx ^ eax;
+	state[9] = edx;
+	ecx = state[13];
+	ecx = ecx & 0x2373fe39;
+	state[4] = state[4] - ecx;
+	eax = edi;
+	eax = ROL (eax, 0xf);
+	ebx = ebx + eax;
+	state[19] = ebx;
+	return edi;
+}
+
+
+u32 mix_major5 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edx = state[18] % 0x0B;
+	local_u32_0 = edx;
+	ecx = state[17] * 0x2e7a089;
+	state[5] = state[5] | ecx;
+	state[3] = state[3] ^ (state[13] + 0x1fef7de0);
+	edx = state[16];
+	edx = edx ^ 0x8338b85;
+	edi = extra_state;
+	edi = edi - edx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x809e8ec, state, 0x27888b0f);
+		eax = call (0x94bcabc - eax, state, 0x2b13a34b);
+		eax = call (0x14dfce14 - eax, state, 0x737f8364);
+		eax = call (0x1256e655 - eax, state, state[11]);
+	}
+
+	edi = edi * 0x1cd19bfb;
+	state[3] = (state[12] + 0x15bdbb56) * state[3];
+	state[11] = state[11] ^ (0x374580a7 + edi);
+	eax = edi;
+	state[10] = state[10] + (eax | 0x86941f3);
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x80756ac, state, 0x7e0a8b27);
+		eax = call (0x1485f302 - eax, state, 0x1c99372);
+		eax = call (0x4dd38e67 - eax, state, 0xf21181dc);
+		eax = call (0x129ee1ac - eax, state, state[18]);
+	}
+	state[6] = state[6] - (state[16] ^ 0x11119dd6);
+	state[13] = (state[13] + 0xcb82c76c) + state[18];
+	state[8] = state[8] - (state[1] ^ 0x3b98ae58);
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x8087280, state, 0x2e6bf52);
+		eax = call (0x845d440 - eax, state, 0x696f0e34);
+		eax = call (0x4714dbf5 - eax, state, 0xed6bd0e6);
+		eax = call (0x16517dd7 - eax, state, state[1]);
+	}
+	state[17] = state[17] ^ (state[17] + 0xcfd5283);
+	state[5] = state[5] & (state[13] + 0x539ef62);
+	state[11] = state[11] & (state[14] ^ 0x639b87fe);
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x805dd74, state, 0x227d0086);
+		eax = call (0xb203aaa - eax, state, 0x88914e5d);
+		eax = call (0x77ae3093 - eax, state, 0x2925fd1d);
+		eax = call (0xa128e22 - eax, state, state[18]);
+	}
+
+	ebx = edi;
+	ebx = ebx | 0x369e02e;
+	ecx = state[12];
+	ecx = ecx - ebx;
+	local_u32_1 = ecx;
+	state[12] = ecx;
+	ecx = ecx + 0xf0544c52;
+	ecx = ecx * state[6];
+	state[6] = ecx;
+	eax = state[5];
+	edi = 0x8dcb06 +  eax + edi ;
+	ebx = edi;
+	ebx = ebx & 0x632ffca;
+	edx = local_u32_1;
+	edx = edx - ebx;
+	state[12] = edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x808bb80, state, 0x1ab2160f);
+		eax = call (0x23d779d2 - eax, state, 0x1414f80d);
+		eax = call (0xe644caa - eax, state, 0x2d87d79a);
+		eax = call (0x1353d76b - eax, state, state[17]);
+	}
+
+	ecx = state[6] * 0x345114ef;
+	state[16] = state[16] - ecx;
+	ebx = state[11] * 0xf6123d0;
+	state[10] = (ROR (state[10], ebx));
+	edx = state[4];
+	edx = edx & 0x18b74e25;
+	state[0] = state[0] + edx;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x808bacc, state, 0x50e04b1f);
+		eax = call (0x569da8c0 - eax, state, 0x515eb4cf);
+		eax = call (0x64ee7407 - eax, state, 0xb8e88545);
+		eax = call (0x4f5f68e2 - eax, state, state[15]);
+	}
+
+	ecx = state[2];
+	ecx = ecx ^ 0x18f1b56;
+	state[2] = state[2] - ecx;
+	ebx = state[13];
+	ebx = ebx + 0x66;
+	eax = state[19];
+	state[19] = (ROL (eax, ebx));
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x80750c0, state, 0x3d2cd180);
+		eax = call (0x1fa0f321 - eax, state, 0xdc7b4010);
+		eax = call (0xbb9a065 - eax, state, 0x489ba0b3);
+		eax = call (0x140d1ed5 - eax, state, edi);
+	}
+
+	ebx = state[7];
+	ebx = ebx + 0x56;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	ebx = state[14];
+	ebx = ebx + 0xf1;
+	eax = ROL (eax, ebx);
+	edi = eax;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x80750c0, state, 0x2dec9dea);
+		eax = call (0xedef96f - eax, state, 0x4b828647);
+		eax = call (0x6414149c - eax, state, 0xec347331);
+		eax = call (0x140d4523 - eax, state, state[7]);
+	}
+
+	edi = edi + 0xd26e6435;
+	eax = state[10];
+	local_u32_1 = eax;
+	edi = edi - eax;
+	ebx = state[13];
+	ebx = ebx ^ 0x95;
+	eax = state[8];
+	state[8] = (ROL (eax, ebx));
+	local_u32_1 = local_u32_1 ^ 0x1da5a5e2;
+	edx = local_u32_1;
+	state[1] = state[1] + edx;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808baf4, state, 0xc82da065);
+		eax = call (0xd5ae29e - eax, state, 0xf4d6723);
+		eax = call (0x1c4ce042 - eax, state, 0xbb1c556c);
+		eax = call (0x8f1fd8d - eax, state, state[10]);
+	}
+	state[7] = state[7] | (edi * 0x1665683f);
+	state[6] = (state[6] + 0xd3198985) + state[17];
+	eax = state[1] * 0xb2490cd;
+	edi = edi & eax;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8060dc0, state, 0xb2147e70);
+		eax = call (0x529eb058 - eax, state, 0x890fd277);
+		eax = call (0x29272df6 - eax, state, 0x1a1dbabb);
+		eax = call (0x47cea136 - eax, state, state[6]);
+	}
+	state[13] = state[13] - (state[3] ^ 0x49caa386);
+	state[5] = (state[5] + 0xca44ad) - state[7];
+	eax = state[14] | 0xce2b27d;
+	edi = edi + eax;
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x8077ecc, state, 0xfe10f4a5);
+		eax = call (0x8cfae96 - eax, state, 0x77550b75);
+		eax = call (0x160e320e - eax, state, 0x47252b3e);
+		eax = call (0x1e4a0fe4 - eax, state, state[11]);
+	}
+
+	ecx = state[15];
+	ecx = ecx + 0x9f72b74b;
+	eax = state[6];
+	ecx = ecx + eax;
+	local_u32_2 = ecx;
+	state[15] = ecx;
+	edx = state[16];
+	edx = edx + 0xaa1914c0;
+	edx = edx - state[3];
+	state[16] = edx;
+	eax = edi;
+	eax = ROL (eax, 0x12);
+	edi = edi - eax;
+	edx = state[14];
+	edx = edx ^ 0x7a9f2d9;
+	edx = edx ^ state[9];
+	state[14] = edx;
+	eax = state[3];
+	state[19] = state[19] & (ROL (eax, 0xa));
+	edi = edi * 0xd49e9d9;
+	edi = edi * local_u32_2;
+	edx = state[2];
+	edx = edx ^ 0xc52d715;
+	ecx = state[4];
+	edx = edx + ecx;
+	local_u32_3 = edx;
+	state[4] = edx;
+	eax = local_u32_2 * 0x300c07b6;
+	state[15] = (eax * state[11]);
+	edx = edi * 0x59c5268;
+	edx = edx ^ local_u32_3;
+	state[4] = edx;
+	ecx = state[7];
+	ecx = ecx + 0xf1ae26ce;
+	ecx = ecx - edi;
+	state[7] = ecx;
+	return edi;
+}
+
+
+u32 mix_major6 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_2;
+
+	edx = state[5];
+	local_u32_0 = edx;
+	ecx = state[3];
+	local_u32_0 = local_u32_0 ^ ecx;
+	edx = state[18];
+	local_u32_0 = local_u32_0 ^ edx;
+	local_u32_0 = local_u32_0 & 0x7;
+	state[7] = (state[7] ^ 0x3610ff4) ^ state[5];
+	eax = state[14];
+	state[18] = (ROL (eax, 0x13)) ^ edx;
+	eax = state[10] + 0x4e;
+	edx = state[15];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[15] = edx;
+	edi = state[1];
+	edi = edi + 0xa89a8207;
+	edi = edi ^ extra_state;
+	edi = edi & 0xecc2fa7d;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x80756d0, state, 0x109742c7);
+		eax = call (0x189b5822 - eax, state, 0x8b7d007b);
+		eax = call (0x16e0c53d - eax, state, 0x688d0504);
+		eax = call (0x340f1a08 - eax, state, edi);
+	}
+
+	ecx = state[0] * 0x19dd786;
+	edx = state[15];
+	ecx = ecx ^ edx;
+	local_u32_2 = ecx;
+	state[15] = ecx;
+	eax = edi;
+	eax = ROL (eax, 0xc);
+	edi = edi * eax;
+	eax = edi;
+	state[17] = state[17] & (eax | 0x1249d1c);
+	eax = state[8] + 0x5e67551f;
+	state[15] = (eax ^ local_u32_2);
+	edx = state[0] * 0x320ea6ec;
+	edi = edi + edx;
+	eax = state[19] + 0xee10c43d;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8060d98, state, 0xf8fa5a1e);
+		eax = call (0x8d42255 - eax, state, 0x27ec9d71);
+		eax = call (0x92e5dca - eax, state, 0x1ab0326e);
+		eax = call (0x17feee33 - eax, state, state[2]);
+	}
+
+	eax = edi;
+	eax = eax ^ 0x67;
+	edx = state[15];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[15] = edx;
+	eax = state[14] * 0x54cc1685;
+	ecx = state[5];
+	ecx = ecx - eax;
+	state[5] = (ecx);
+	edx = state[12];
+	edx = edx + 0xf7d8f2fa;
+	edx = edx - edi;
+	state[12] = edx;
+	state[5] = (state[5] + 0xf95da87e) - state[10];
+	eax = state[8];
+	eax = ROL (eax, 0x12);
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x809e2f8, state, 0x8e0505a3);
+		eax = call (0x5783ac4c - eax, state, 0x10629f3e);
+		eax = call (0xd7ec711 - eax, state, 0x11d6ae05);
+		eax = call (0x4d0a7114 - eax, state, state[16]);
+	}
+
+	edx = state[2];
+	local_u32_2 = edx;
+	eax = edx;
+	state[19] = state[19] + (eax ^ 0x4983faaa);
+	edi = edi & 0x911ab6a;
+	edi = edi & state[6];
+	eax = edx;
+	state[17] = state[17] & (eax + 0xfbb4acd7);
+	state[5] = (state[5] + 0xf96465d3) + state[13];
+	eax = state[2] | 0x99;
+	edx = edi;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	edi = edx;
+	local_u32_2 = local_u32_2 | 0x176f7fa2;
+	ecx = local_u32_2;
+	state[9] = state[9] + ecx;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x809e2f8, state, 0xfd4538d5);
+		eax = call (0x14870cf9 - eax, state, 0xf9f86d39);
+		eax = call (0x13896a3c - eax, state, 0x832df7f9);
+		eax = call (0x12525cd8 - eax, state, edi);
+	}
+
+	eax = edi;
+	eax = eax + 0xd0;
+	edx = state[4];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[4] = edx;
+	eax = state[6] ^ 0x1ae616e0;
+	edi = edi | eax;
+	eax = state[15] << 7;
+	eax = eax - state[15];
+	eax = eax << 7;
+	eax = eax + state[15];
+	ecx = state[15];
+	eax = ecx + 2 * eax;
+	eax = ecx + 4 * eax;
+	eax = eax << 2;
+	edi = edi ^ eax;
+	eax = state[2] + 0x83;
+	edx = state[14];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[14] = edx;
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x808bb58, state, 0xb49ff199);
+		eax = call (0x26b2eb20 - eax, state, 0x4397eea6);
+		eax = call (0x4e5745eb - eax, state, 0x95bdeb6f);
+		eax = call (0x642a0397 - eax, state, edi);
+	}
+	state[12] = state[12] - (state[10] & 0x1311b0aa);
+	state[14] = state[14] ^ (0xf5736e40 + edi);
+	state[17] = state[17] + (ROR (state[18], 0xf));
+	eax = state[11] + 0x25e8d98c;
+	edi = edi ^ eax;
+	eax = state[14] | 0x28;
+	edx = state[0];
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[0] = edx;
+	state[13] = state[13] - (state[3] ^ 0x2a68c40c);
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x807fe6c, state, 0x23bf1d0a);
+		eax = call (0x1f33e098 - eax, state, 0x4df565cd);
+		eax = call (0xf8fc628 - eax, state, 0x6162ad12);
+		eax = call (0x435987f7 - eax, state, state[3]);
+	}
+
+	eax = edi;
+	state[12] = state[12] + (ROR (eax, 0xc));
+	eax = state[6] & 0x29;
+	edx = state[7];
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[7] = edx;
+	eax = edi * 0x64f01864;
+	edx = edi;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	eax = state[16] ^ 0x24;
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	edi = edx;
+	eax = state[1];
+	eax = ROL (eax, 0xb);
+	edx = state[6];
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[6] = edx;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x806c424, state, 0x915f2d12);
+		eax = call (0x1f36ec64 - eax, state, 0xa0ce9f8f);
+		eax = call (0xd883c86 - eax, state, 0xcc0af9dd);
+		eax = call (0x1a03f388 - eax, state, state[13]);
+	}
+
+	edx = state[14];
+	eax = edx;
+	eax = ROR (eax, 0x9);
+	edx = edx + eax;
+	state[14] = edx;
+	state[3] = (state[13] & 0x24b1abab) * state[3];
+	eax = state[3] + 0x10decc67;
+	state[3] = (eax - state[12]);
+	ebx = state[15];
+	eax = ebx;
+	eax = eax ^ 0x194903b4;
+	edi = edi * eax;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x8077ecc, state, 0x2a8a643e);
+		eax = call (0x354d29f3 - eax, state, 0xd325b48f);
+		eax = call (0x712002b1 - eax, state, 0xcd35e004);
+		eax = call (0x3f5d8d57 - eax, state, state[14]);
+		ebx = state[15];
+	}
+	state[15] = (ebx * 0x2ed0158e) * edi;
+	state[14] = (state[14] + 0xc4d28c7c) + state[3];
+	state[11] = state[11] - (state[18] ^ 0x3e1bda7e);
+	eax = state[13];
+	state[2] = (ROL (eax, 0x18)) * state[2];
+	return edi;
+}
+
+
+u32 mix_major7 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	eax = state[6] ^ state[3];
+	eax = eax ^ edi;
+	local_u32_2 = eax;
+	edx = local_u32_2 % 0x0B;
+	local_u32_0 = edx;
+	ecx = edi * 0x25d21c70;
+	state[8] = state[8] + ecx;
+	eax = ROR (state[13], 0x1a);
+	edi = edi + eax;
+	state[15] = state[15] + (ROR (state[0], 0x12));
+
+	if (edx == 1)
+	{
+		eax = call (0x808baf4, state, 0x4800fd26);
+		eax = call (0x903c452 - eax, state, 0xc947c99);
+		eax = call (0x596cfbcc - eax, state, 0xa3f86a33);
+		eax = call (0x30111962 - eax, state, state[9]);
+	}
+
+	edx = state[4];
+	edx = edx ^ 0x214bbbb;
+	edi = edi + edx;
+	ebx = edi * 0xffffff9d;
+	eax = state[5];
+	state[5] = (ROL (eax, ebx));
+	edx = state[18];
+	edx = edx | 0x1102e01a;
+	state[17] = state[17] - edx;
+	ecx = state[19];
+	ecx = ecx + 0xf1e0cc5a;
+	ecx = ecx + state[12];
+	state[19] = ecx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x80871c4, state, 0xadec496e);
+		eax = call (0x348650e4 - eax, state, 0x40133a42);
+		eax = call (0x4f005cf8 - eax, state, 0x97398d49);
+		eax = call (0x4ec6a455 - eax, state, state[13]);
+	}
+	state[8] = state[8] | (edi * 0x33ff2ce9);
+	state[4] = (0x2fe45acf + edi) * state[4];
+	eax = edi;
+	state[3] = state[3] ^ (ROR (eax, 0xd));
+	eax = state[12] & 0x2e2ac892;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x807d83c, state, 0xeee462ea);
+		eax = call (0x11dfb27a - eax, state, 0x98d9073d);
+		eax = call (0x17ba61e5 - eax, state, 0x1b928bb0);
+		eax = call (0x16de004d - eax, state, state[15]);
+	}
+
+	eax = state[14];
+	eax = ROL (eax, 0x1);
+	edi = edi * eax;
+	eax = 0x7a3b4f0e + edi;
+	edi = edi ^ eax;
+	state[5] = state[5] + (state[11] ^ 0x5f050ce6);
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808bb18, state, 0x121beaad);
+		eax = call (0x3ac14255 - eax, state, 0x89995d2f);
+		eax = call (0x3bd53f06 - eax, state, 0x3c456f4e);
+		eax = call (0x98cab54 - eax, state, state[17]);
+	}
+
+	eax = state[17];
+	local_u32_1 = eax;
+	eax = ROR (eax, 0x12);
+	local_u32_3 = eax;
+	state[9] = state[9] - (state[11] & 0x524788df);
+	edx = local_u32_3;
+	edi = 0x17b2d86 +  edx + edi ;
+	edi = edi + state[3];
+	local_u32_1 = local_u32_1 ^ 0xd2348b5;
+	ecx = local_u32_1;
+	state[12] = state[12] | ecx;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x808bba8, state, 0x66042b48);
+		eax = call (0x2058ce99 - eax, state, 0x71b8deb1);
+		eax = call (0x3b96b1b4 - eax, state, 0x54d097e1);
+		eax = call (0x399f44c4 - eax, state, edi);
+	}
+	state[4] = state[4] + (state[0] ^ 0x3ca6760a);
+	ebx = state[12];
+	ebx = ebx & 0x3e;
+	state[10] = (ROR (state[10], ebx));
+	ebx = edi;
+	ebx = ebx ^ 0x32b59495;
+	state[12] = state[12] - ebx;
+	edx = state[7];
+	edx = edx ^ 0xcc6cef3;
+	state[11] = state[11] - edx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x805eaf0, state, 0x21a395ed);
+		eax = call (0x621963df - eax, state, 0x9b3e3072);
+		eax = call (0xbc48ba0 - eax, state, 0x29a09789);
+		eax = call (0x1438d105 - eax, state, state[6]);
+	}
+
+	eax = edi;
+	state[18] = state[18] - (eax ^ 0x42ce4263);
+	state[8] = state[8] ^ (state[15] + 0xfc1ccf0a);
+	eax = state[2] + 0xdc6ebf0;
+	state[4] = (eax * state[4]);
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x8077eec, state, 0x54a43ad9);
+		eax = call (0x345b5487 - eax, state, 0x48c51eea);
+		eax = call (0x53857ac7 - eax, state, 0xee37aacc);
+		eax = call (0x3ad48fa6 - eax, state, state[19]);
+	}
+	state[14] = state[14] ^ (state[17] + 0x29e0bfe6);
+	state[2] = state[2] ^ (state[0] + 0xc0a98770);
+	eax = state[11];
+	state[6] = state[6] + (ROL (eax, 0xf));
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x80872a0, state, 0xa5b0fd36);
+		eax = call (0x2040ee60 - eax, state, 0xcdef4618);
+		eax = call (0x21f7bcdc - eax, state, 0x42452ecf);
+		eax = call (0xd5a5e18 - eax, state, edi);
+	}
+
+	eax = state[18];
+	edi = 0xff5138a0 +  eax + edi ;
+	edi = edi - state[5];
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x8060d98, state, 0xf2b7a1ae);
+		eax = call (0x1296c785 - eax, state, 0x4aabda25);
+		eax = call (0x101be630 - eax, state, 0xaf5623);
+		eax = call (0x54e9d56a - eax, state, edi);
+	}
+
+	ecx = state[17];
+	ecx = ecx & 0x4a;
+	edx = state[3];
+	edx = ROR (edx, ecx);
+	state[3] = edx;
+	eax = state[7] * 0x36e7ec8;
+	edx = edx ^ eax;
+	state[3] = edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x80871ec, state, 0x58fd7244);
+		eax = call (0x5a399d7d - eax, state, 0x3677750a);
+		eax = call (0x19cf2d26 - eax, state, 0x44993f85);
+		eax = call (0x29e84d68 - eax, state, edi);
+	}
+
+	ebx = state[19] * 0x23b9e79;
+	state[10] = (ROR (state[10], ebx));
+	edx = state[12];
+	edx = edx + 0xd914afe4;
+	edx = edx * state[14];
+	state[14] = edx;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x805dd74, state, 0x4f5f0444);
+		eax = call (0xede8de4 - eax, state, 0x61d0eb96);
+		eax = call (0x104b666b - eax, state, 0xdb0018de);
+		eax = call (0x218c1732 - eax, state, state[18]);
+	}
+
+	edi = edi + 0xfe572373;
+	edi = edi - state[8];
+	ecx = state[2];
+	ecx = ecx ^ 0x2fe3c8;
+	edi = edi | ecx;
+	eax = state[18] + 0x522baa5a;
+	edi = edi ^ eax;
+	edx = state[7];
+	edx = edx ^ 0x1609874e;
+	ecx = state[8];
+	ecx = ecx - edx;
+	state[8] = ecx;
+	eax = state[4] | 0x1e171635;
+	edx = state[10];
+	state[10] = eax ^ edx;
+	eax = state[10] + 0xe985f44f;
+	edi = edi ^ eax;
+	ecx = state[1];
+	ecx = ecx + 0xd304451b;
+	edi = edi ^ ecx;
+	eax = state[6] + 0x19b93371;
+	state[6] = (eax - state[16]);
+	ebx = state[10];
+	ebx = ebx & 0x6d;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	return eax;
+}
+
+
+u32 mix_major8 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_5;
+
+	eax = state[5];
+	local_u32_5 = eax;
+	ecx = state[9];
+	local_u32_5 = local_u32_5 ^ ecx;
+	eax = state[19];
+	local_u32_5 = local_u32_5 ^ eax;
+	ecx = local_u32_5 % 0x05;
+	local_u32_0 = ecx;
+	edx = state[12];
+	local_u32_5 = edx;
+	local_u32_5 = local_u32_5 ^ 0xb6b4743;
+	eax = local_u32_5;
+	eax = eax + state[5];
+	local_u32_1 = eax;
+	state[5] = eax;
+	edi = 0x221bed03 + edx;
+	edi = edi * extra_state;
+	ecx = state[11];
+	ecx = ecx ^ 0x2663a394;
+	ecx = ecx * state[3];
+	state[3] = ecx;
+	eax = state[4] ^ 0x4f1894;
+	edi = edi | eax;
+	ecx = local_u32_1;
+	ecx = ecx & 0xad85e5da;
+	state[5] = ecx;
+	state[17] = state[17] & (0xd191e790 + edi);
+	ecx = state[1] * 0x1c634b75;
+	edi = edi + ecx;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x8077eec, state, 0x636e7b01);
+		eax = call (0xc20217b - eax, state, 0xe74a1adc);
+		eax = call (0x399c1595 - eax, state, 0xd37638);
+		eax = call (0x11a1be7d - eax, state, state[1]);
+	}
+
+	edx = state[6];
+	local_u32_5 = edx;
+	local_u32_5 = local_u32_5 ^ 0x1fdc8171;
+	state[3] = state[3] - (local_u32_5);
+	ecx = state[14] * 0xdc63a30;
+	eax = state[15];
+	ecx = ecx ^ eax;
+	local_u32_2 = ecx;
+	state[15] = ecx;
+	ebx = edi;
+	ebx = ebx + 0x28;
+	eax = state[7];
+	state[7] = (ROL (eax, ebx));
+	ebx = state[8];
+	ecx = 0xe4fb2084 + ebx;
+	edi = edi ^ ecx;
+	edx = edx + 0xb6a8bfd8;
+	edx = edx - edi;
+	state[6] = edx;
+	ecx = 0x1;
+	edx = ROR (edx, ecx);
+	edi = edi * edx;
+	ecx = 0x1f;
+	ebx = ROR (ebx, ecx);
+	ebx = ebx * state[13];
+	state[13] = ebx;
+	eax = local_u32_2;
+	state[18] = state[18] ^ (eax + 0xa969bc16);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8060d78, state, 0x1453cf27);
+		eax = call (0xca6a632 - eax, state, 0x4a75112a);
+		eax = call (0x1527f58b - eax, state, 0x4d8025ff);
+		eax = call (0x1539962f - eax, state, state[2]);
+	}
+
+	edx = state[1];
+	edx = edx & 0x6;
+	eax = edi;
+	eax = ROR (eax, edx);
+	edi = eax;
+	ecx = state[8];
+	ecx = ecx + 0xeba05ea0;
+	ecx = ecx - state[17];
+	state[8] = ecx;
+	eax = state[16] + 0xe8427306;
+	ecx = state[19];
+	state[16] = (eax + ecx);
+	edx = state[7];
+	edx = edx + 0x35f9fb28;
+	edx = edx ^ state[16];
+	state[16] = edx;
+	edx = edi;
+	edx = edx & 0x16076281;
+	state[13] = state[13] + edx;
+	eax = 0xe43a6120 + edi;
+	edi = edi * eax;
+	ecx = state[1];
+	ecx = ecx + 0xd94074d;
+	ecx = ecx - state[3];
+	state[1] = ecx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x80871c4, state, 0x170b22b9);
+		eax = call (0x5e936df9 - eax, state, 0x7ff31123);
+		eax = call (0x1f3e6e77 - eax, state, 0x940beda);
+		eax = call (0x9ac941f - eax, state, state[17]);
+	}
+
+	edx = state[18];
+	edx = edx + 0xc5;
+	eax = edi;
+	eax = ROR (eax, edx);
+	edi = eax;
+	ecx = state[6];
+	ecx = ecx + 0x126c7192;
+	ecx = ecx + edi;
+	state[6] = ecx;
+	state[4] = state[4] & (state[9] ^ 0xe4c97d9);
+	ecx = 0x5246092 + edi;
+	edi = edi ^ ecx;
+	eax = state[14] + 0x12466f7c;
+	state[14] = (eax + state[3]);
+	ecx = state[7];
+	ecx = ecx + 0xe724e487;
+	ecx = ecx - state[19];
+	state[7] = ecx;
+	edi = edi + 0xfffcc68a;
+	edx = state[2];
+	edi = edi - edx;
+	eax = state[12] * 0xf8b6e25;
+	edx = edx - eax;
+	state[2] = edx;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x807d7d4, state, 0xcc2d355b);
+		eax = call (0xd4e5869 - eax, state, 0x3daf9351);
+		eax = call (0x221547e1 - eax, state, 0x74973164);
+		eax = call (0x28b16a13 - eax, state, state[12]);
+	}
+
+	edx = state[6];
+	edx = edx ^ 0x91;
+	eax = state[3];
+	state[3] = (ROL (eax, edx));
+	edx = edi;
+	edx = edx & 0x3dd7da06;
+	state[4] = state[4] + edx;
+	edx = state[8];
+	ecx = 0xb6484f2a + edx;
+	ecx = ecx * state[11];
+	state[11] = ecx;
+	edx = edx & 0x274e05b8;
+	edi = edi ^ edx;
+	state[18] = state[18] ^ (state[5] + 0x263032a4);
+	ecx = 0x1a70ff38 + edi;
+	state[16] = state[16] ^ ecx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x807d7f8, state, 0x133ea08e);
+		eax = call (0x10dde2ef - eax, state, 0xaeffff1d);
+		eax = call (0x9b8a9e4 - eax, state, 0x62fd21a5);
+		eax = call (0x67498e67 - eax, state, state[10]);
+	}
+	eax = state[4] + 0x4a83a932;
+	eax = eax + edi;
+	local_u32_5 = eax;
+	state[4] = eax;
+	edx = edi;
+	edx = edx ^ 0x1bb7cdc3;
+	ebx = state[2];
+	ebx = ebx + 0xd0;
+	eax = state[19];
+	state[19] = (ROL (eax, ebx));
+	ebx = state[19];
+	ebx = ebx ^ 0xa0;
+	eax = state[0];
+	state[0] = (ROL (eax, ebx));
+	edi = 0xf1efd9b1 +  edx + edi ;
+	edi = edi - local_u32_5;
+	edx = state[1];
+	local_u32_5 = edx;
+	local_u32_5 = local_u32_5 | 0x64a30a;
+	ecx = local_u32_5;
+	state[11] = state[11] ^ ecx;
+	edx = edx + 0x4cd3708;
+	edx = edx - state[8];
+	state[1] = edx;
+	state[0] = (0xf6d388b6 +  edi + eax );
+	ecx = state[8];
+	ecx = ecx + 0x4b8444f;
+	ecx = ecx - edx;
+	state[8] = ecx;
+	edx = edi;
+	ecx = 0x9;
+	edx = ROL (edx, ecx);
+	eax = state[7];
+	state[7] = (ROL (eax, edx));
+	edx = state[10];
+	edx = edx + 0x9c;
+	state[17] = ROR (state[17], edx);
+	return edi;
+}
+
+
+u32 mix_major9 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	eax = state[15] ^ state[1];
+	edx = state[19];
+	eax = eax ^ edx;
+	local_u32_2 = eax;
+	edx = local_u32_2 % 0x0B;
+	local_u32_0 = edx;
+	ecx = state[18];
+	ecx = ecx + 0xe56713bc;
+	state[19] = (state[19] | ecx);
+	edx = state[8];
+	edx = edx + 0xefc639fe;
+	state[12] = state[12] | edx;
+	edi = extra_state;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x807fe6c, state, 0x5d65f9e8);
+		eax = call (0x3c086fbb - eax, state, 0xf923e763);
+		eax = call (0x2717d83f - eax, state, 0x3ce5b281);
+		eax = call (0x11b2790a - eax, state, edi);
+	}
+
+	ecx = state[18];
+	ecx = ecx + 0xf20ff41d;
+	state[4] = state[4] ^ ecx;
+	ebx = edi;
+	ebx = ebx + 0xcb;
+	eax = edi;
+	eax = ROL (eax, ebx);
+	edi = eax;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x8069538, state, 0xf9d18714);
+		eax = call (0x1d16548a - eax, state, 0x56a18cd);
+		eax = call (0x2398a78f - eax, state, 0xedd4970c);
+		eax = call (0x1db39ca3 - eax, state, edi);
+	}
+
+	eax = edi;
+	state[2] = state[2] ^ (ROR (eax, 0x1));
+	eax = 0x3842b736 + edi;
+	state[10] = (eax * state[10]);
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x805d738, state, 0xdaf55a42);
+		eax = call (0x3bf7979f - eax, state, 0xd1dbb223);
+		eax = call (0x557953b3 - eax, state, 0x6a542aec);
+		eax = call (0x30b11634 - eax, state, state[13]);
+	}
+	state[5] = (state[5] ^ 0x224deca3) ^ state[4];
+	state[9] = state[9] + (state[15] & 0xe43bfd6);
+	state[12] = state[12] + (state[18] | 0x24e2f424);
+	edi = 0xefc5f81f;
+
+	if (local_u32_0 == 1) 
+	{
+		eax = call (0x80872a0, state, 0x8d4cafe4);
+		eax = call (0x48d5b5c6 - eax, state, 0x107e6e17);
+		eax = call (0x4daf021a - eax, state, 0x48a3b120);
+		eax = call (0x99aa597 - eax, state, state[0]);
+	}
+	eax = state[10] + 0xf0b1e409;
+	state[11] = (eax * state[11]);
+	edx = state[5];
+	local_u32_1 = edx;
+	edx = edx + 0x2961fc0;
+	state[5] = edx;
+	ecx = local_u32_1;
+	ecx = ecx + 0x13bcdf0b;
+	ecx = ecx * state[9];
+	state[9] = ecx;
+	eax = state[11] + 0xe91b219c;
+	state[6] = (eax * state[6]);
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x806c3b8, state, 0x226d8967);
+		eax = call (0x3bf9b52c - eax, state, 0x5e9d4724);
+		eax = call (0x53d9860d - eax, state, 0x7787020);
+		eax = call (0x8dc2a3e - eax, state, edi);
+	}
+	state[1] = (state[1] + 0xff4abdb4) * state[1];
+	eax = 0xefc5f81f;
+	eax = ROL (eax, 0x1a);
+	edi = 0xefc5f81f + eax;
+	eax = state[10];
+	edx = eax;
+	ecx = 0x1b;
+	edx = ROR (edx, ecx);
+	state[13] = state[13] + edx;
+	eax = eax + state[3];
+	state[10] = (eax + 0xea05fa03);
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x805ee44, state, 0xf92e8b97);
+		eax = call (0x54a18ff9 - eax, state, 0x21976225);
+		eax = call (0x25daec9f - eax, state, 0xa27b88f5);
+		eax = call (0x3390d1c4 - eax, state, edi);
+	}
+	state[19] = (state[19] + 0xe8b6d37d) - state[2];
+	eax = state[12] * 0xa95c314;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x8077f3c, state, 0x4b686b49);
+		eax = call (0x2916e03c - eax, state, 0x848682c);
+		eax = call (0x57f6b78b - eax, state, 0x2a7e192f);
+		eax = call (0x2e044b3e - eax, state, state[11]);
+	}
+	eax = state[11] & 0x346472bf;
+	edi = edi + eax;
+	eax = state[15] * 0xbeb977c;
+	edi = edi & eax;
+	eax = state[2] ^ 0x33dd726a;
+	edi = edi + eax;
+	eax = edi;
+	state[19] = state[19] & (eax ^ 0x13220e);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x806c398, state, 0xf012aa11);
+		eax = call (0x106dcb18 - eax, state, 0x2dc38d);
+		eax = call (0x834d7b4 - eax, state, 0x82dd9c35);
+		eax = call (0x3b640f9d - eax, state, state[2]);
+	}
+
+	eax = 0x13a371f7 + edi;
+	edi = edi * eax;
+	ebx = edi * 0xffffffa2;
+	eax = state[0];
+	state[0] = (ROL (eax, ebx));
+	ebx = state[15] * 0x344294f;
+	eax = edi;
+	eax = ROL (eax, ebx);
+	edi = eax;
+	edx = state[11];
+	edx = edx | 0x15477725;
+	state[12] = state[12] + edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x806c3dc, state, 0x6828082);
+		eax = call (0xe9ee4e5 - eax, state, 0x65dea5bd);
+		eax = call (0x377c1e0c - eax, state, 0xe67b2d1);
+		eax = call (0x1b731084 - eax, state, state[9]);
+	}
+
+	ecx = state[16];
+	ecx = ecx + 0xb2878320;
+	ecx = ecx + state[8];
+	state[16] = ecx;
+	state[0] = state[0] + (state[11] * 0x128142d3);
+	ebx = edi;
+	ebx = ebx + 0x49;
+	state[13] = (ROR (state[13], ebx));
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8077ecc, state, 0x3299ff38);
+		eax = call (0x3d5b96ed - eax, state, 0x1eba214d);
+		eax = call (0xb7d7a74 - eax, state, 0xc20441d6);
+		eax = call (0x397dc216 - eax, state, state[17]);
+	}
+
+	ebx = state[4];
+	ebx = ebx + 0x3a;
+	state[13] = (ROR (state[13], ebx));
+	edx = 0xb401ddcd + edi;
+	edi = edi | edx;
+	ebx = state[16];
+	ebx = ebx + 0x77;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	edx = state[11];
+	edx = edx ^ 0x14302fce;
+	edi = edi + edx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x806c400, state, 0x7adf3317);
+		eax = call (0xfd596c8 - eax, state, 0x1f45c04e);
+		eax = call (0x1ff5acb6 - eax, state, 0xa60ad5b0);
+		eax = call (0x6444281e - eax, state, state[17]);
+	}
+
+	ecx = state[2];
+	ecx = ecx & 0x2104615d;
+	state[7] = state[7] + ecx;
+	eax = state[4];
+	state[6] = state[6] | (ROL (eax, 0x15));
+	edx = edi * 0x144af0fa;
+	ecx = state[16];
+	ecx = ecx - edx;
+	local_u32_2 = ecx;
+	state[16] = ecx;
+	eax = state[9] * 0x1d7178c2;
+	edi = edi ^ eax;
+	edi = edi * 0x3564b1fd;
+	eax = edi;
+	eax = ROR (eax, 0xb);
+	edx = local_u32_2;
+	edx = edx - eax;
+	state[16] = edx;
+	ecx = state[19] * 0x383ae479;
+	state[8] = state[8] ^ ecx;
+	state[11] = (state[11] + 0xc4759a85) + edi;
+	eax = state[11] + 0x35e01882;
+	state[9] = (eax ^ state[9]);
+	edx = state[0];
+	edx = edx ^ 0x105d6dd1;
+	state[10] = state[10] & edx;
+	return edi;
+}
+
+
+u32 mix_major10 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	edx = state[5] % 0x0B;
+	local_u32_0 = edx;
+	ecx = 0x2277a712 + edi;
+	state[17] = state[17] ^ ecx;
+	eax = state[8] + 0xe6c6654e;
+	state[19] = (eax * state[19]);
+	ebx = state[1];
+	ebx = ebx ^ 0x5b;
+	state[6] = (ROR (state[6], ebx));
+
+	if (edx == 3)
+	{
+		eax = call (0x8087234, state, 0x31a0be43);
+		eax = call (0x2c4fa122 - eax, state, 0xf1fb17d);
+		eax = call (0x2a4c1510 - eax, state, 0xa93e5fab);
+		eax = call (0x24c59607 - eax, state, state[1]);
+	}
+	state[0] = (0x22e5f53d + edi) * state[0];
+	eax = state[6] + 0xf7f0c308;
+	state[6] = (eax - state[14]);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x8077f14, state, 0x83400b93);
+		eax = call (0x28e5a688 - eax, state, 0x42e1981);
+		eax = call (0xeed8b36 - eax, state, 0xce93c93);
+		eax = call (0xe6f7d03 - eax, state, state[2]);
+	}
+
+	eax = state[9];
+	edi = 0xafa2e81 +  eax + edi ;
+	state[15] = (state[17] + 0xfd2839c0) * state[15];
+	state[14] = (state[14] + 0x30bd8dc6) - state[6];
+	state[2] = state[2] + (state[7] ^ 0x1edb75c4);
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x80871a4, state, 0xc4b89afe);
+		eax = call (0x48c9b95d - eax, state, 0x1d8eda55);
+		eax = call (0x1490ce19 - eax, state, 0x48478e22);
+		eax = call (0x61cfb6c1 - eax, state, edi);
+	}
+
+	local_u32_1 = 0x2cfa7327;
+	edx = local_u32_1;
+	state[2] = edx;
+	ecx = state[7];
+	ecx = ecx + 0xf2bf5a7;
+	ecx = ecx - state[8];
+	state[7] = ecx;
+	ebx = state[6];
+	ebx = ebx | 0x95;
+	state[11] = ROR (state[11], ebx);
+	eax = state[10];
+	eax = ROL (eax, 0x18);
+	edx = edx ^ eax;
+	state[2] = edx;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x8060d98, state, 0x92600aeb);
+		eax = call (0x71295806 - eax, state, 0x35fb5ef2);
+		eax = call (0x2d379e17 - eax, state, 0xbc830612);
+		eax = call (0x1ca24534 - eax, state, edi);
+	}
+
+	eax = state[5];
+	state[16] = state[16] ^ (ROL (eax, 0x1d));
+	edx = state[8];
+	eax = edx;
+	eax = ROL (eax, 0x13);
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[8] = edx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8087234, state, 0x514492f6);
+		eax = call (0xcf44c3d - eax, state, 0x4eb7f6f0);
+		eax = call (0x89185d9 - eax, state, 0x420f2116);
+		eax = call (0x1acb56e1 - eax, state, edi);
+	}
+
+	ebx = edi;
+	ebx = ebx & 0x9aee05b;
+	ebx = ebx * state[13];
+	state[13] = ebx;
+	ebx = state[0];
+	ebx = ebx + 0x29;
+	eax = state[18];
+	state[18] = (ROL (eax, ebx));
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x807d7f8, state, 0x173d7ef4);
+		eax = call (0x14dfe1c5 - eax, state, 0x45382ff9);
+		eax = call (0x36db8ef1 - eax, state, 0x194b24c);
+		eax = call (0x246e6736 - eax, state, state[5]);
+	}
+	state[16] = (state[16] + 0x15c7f2a) + edi;
+	state[0] = state[0] + (state[8] | 0xc568bd);
+	ebx = state[11];
+	eax = ebx;
+	eax = ROR (eax, 0x19);
+	edi = edi + eax;
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x806c3b8, state, 0xde2e328);
+		eax = call (0x1e7425bb - eax, state, 0x31f4e46c);
+		eax = call (0x11e2c1dd - eax, state, 0x65d6d81a);
+		eax = call (0x35e4d51d - eax, state, edi);
+		ebx = state[11];
+	}
+	eax = state[0] | 0x3c992378;
+	ebx = ebx & eax;
+	state[11] = ebx;
+	edi = edi ^ 0x1ebdf827;
+	eax = state[2];
+	edi = edi ^ eax;
+	edx = state[16];
+	edx = edx & 0x1a8092b;
+	edi = edi ^ edx;
+	state[4] = state[4] ^ (eax + 0xf6a7c14d);
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x809e8ec, state, 0x52f66ce7);
+		eax = call (0x1e462354 - eax, state, 0x27c30f6a);
+		eax = call (0x9123123 - eax, state, 0x32688671);
+		eax = call (0xf5144ec - eax, state, state[5]);
+	}
+	eax = state[1] + 0xbd4eb37a;
+	edi = edi | eax;
+	eax = state[15] ^ 0xe476c17;
+	edi = edi * eax;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x80871ec, state, 0x1e3f295b);
+		eax = call (0x147d5f40 - eax, state, 0x8b07010);
+		eax = call (0x2aa6178d - eax, state, 0x32a3d5ee);
+		eax = call (0x100bc99b - eax, state, state[19]);
+	}
+	eax = state[4] & 0x55d63dde;
+	edx = state[0];
+	edx = edx - eax;
+	state[0] = edx;
+	ecx = state[14];
+	ecx = ecx + 0xfa050d42;
+	ecx = ecx + state[19];
+	state[14] = ecx;
+	edx = edx + 0x9ff4339;
+	eax = state[12];
+	edx = edx & eax;
+	state[12] = edx;
+	edx = edx + 0xccdc186;
+	state[15] = state[15] ^ edx;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x8060d78, state, 0x8aabd57);
+		eax = call (0x1b7bb8d6 - eax, state, 0x98b81e75);
+		eax = call (0x3d64fbcc - eax, state, 0x591c3cf9);
+		eax = call (0x14a6b9a5 - eax, state, state[12]);
+	}
+
+	ebx = state[11];
+	ebx = ebx + 0xfb;
+	state[10] = (ROR (state[10], ebx));
+	edx = state[15];
+	edx = edx + 0x130fea4;
+	state[5] = state[5] ^ edx;
+	ecx = state[19];
+	ecx = ecx + 0xdf1438e7;
+	edi = edi ^ ecx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8054bc8, state, 0x7cd72ef9);
+		eax = call (0x10f4d907 - eax, state, 0x142b4efb);
+		eax = call (0x1c2e59a2 - eax, state, 0xfa8ece76);
+		eax = call (0x16bd9748 - eax, state, edi);
+	}
+	state[11] = state[11] + (state[3] ^ 0x30f43d2);
+	edx = state[16];
+	local_u32_3 = edx;
+	ecx = edx * 0x485950f;
+	eax = state[13] - ecx;
+	local_u32_2 = eax;
+	state[13] = eax;
+	edx = state[1];
+	edx = edx + 0xa295d0d;
+	edx = edx * state[15];
+	state[15] = edx;
+	ecx = state[0] * 0x68f4b257;
+	edi = edi ^ ecx;
+	state[12] = state[12] & (state[8] + 0xe49d7359);
+	edx = state[2] * 0x16a7a0b6;
+	state[7] = state[7] - edx;
+	ecx = local_u32_2;
+	ecx = ecx + 0x18727e9f;
+	edi = edi & ecx;
+	eax = edi;
+	state[14] = state[14] & (ROL (eax, 0x3));
+	edx = state[6];
+	edx = edx ^ 0x13892cf5;
+	state[19] = state[19] - edx;
+	ecx = local_u32_3 * 0x2fad5f96;
+	edi = edi - ecx;
+	return edi;
+}
+
+
+u32 mix_major11 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_5;
+	u32	local_u32_6;
+	u32	local_u32_7;
+	u32	local_u32_8;
+	u32	local_u32_10;
+	eax = state[11] ^ state[3];
+	ecx = state[17];
+	eax = eax ^ ecx;
+	local_u32_1 = eax;
+	ecx = local_u32_1 % 0x0A;
+	local_u32_0 = ecx;
+	eax = state[0] & 0x201c33b4;
+	ecx = state[15];
+	ecx = ecx - eax;
+	state[15] = ecx;
+	state[9] = state[9] & (state[4] ^ 0x4b5700f);
+	ecx = ecx | 0x1f564f3c;
+	edi = extra_state;
+	edi = edi - ecx;
+	edi = edi + 0xfe30d470;
+	edi = edi * state[14];
+	state[14] = edi;
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x805d75c, state, 0xe99287d4);
+		eax = call (0x71f65774 - eax, state, 0xac34cb2);
+		eax = call (0x35e88ffe - eax, state, 0x81b8d9c7);
+		eax = call (0x24fcc448 - eax, state, state[1]);
+	}
+
+	eax = state[7];
+	state[3] = state[3] ^ (ROL (eax, 0x1c));
+	edi = 0xb2363254;
+	state[17] = state[17] + 0x503fc4de;
+	state[18] = state[18] + (state[1] * 0xf14c9c);
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x805d738, state, 0xf698f515);
+		eax = call (0x1f9c2ee8 - eax, state, 0x27feb7df);
+		eax = call (0x2b5b3b37 - eax, state, 0xdd91fb3);
+		eax = call (0x1561599e - eax, state, state[5]);
+	}
+	eax = state[0] + 0xaf4b1f37;
+	eax = eax * state[3];
+	local_u32_10 = eax;
+	state[3] = eax;
+	ecx = state[11];
+	ecx = ecx + 0x1d1cbc4e;
+	ecx = ecx * state[11];
+	state[11] = ecx;
+	state[13] = state[13] ^ (state[1] + 0xf6c6f628);
+	ecx = local_u32_10;
+	ecx = ecx + 0x7f863fa;
+	state[17] = state[17] ^ ecx;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x8087178, state, 0x9573ad30);
+		eax = call (0x114007c7 - eax, state, 0xad2eb6f5);
+		eax = call (0x10754686 - eax, state, 0xdbe4b2f1);
+		eax = call (0x17b3a57e - eax, state, edi);
+	}
+	eax = state[4] | 0x3b62a700;
+	ecx = state[11];
+	eax = eax + ecx;
+	local_u32_5 = eax;
+	state[11] = eax;
+	state[19] = state[19] ^ 0xf3c3d3f0;
+	edx = state[10];
+	edx = edx + 0xee;
+	eax = 0xb2363254;
+	eax = ROR (eax, edx);
+	edi = eax;
+	eax = ROR (state[16], 0xa);
+	state[16] = (eax | state[16]);
+	ecx = state[7] * 0x5053948;
+	ecx = ecx * local_u32_5;
+	state[7] = ecx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x805d75c, state, 0xf27bb381);
+		eax = call (0x68f75e93 - eax, state, 0x2e860b98);
+		eax = call (0x1237827d - eax, state, 0x9f5a4b63);
+		eax = call (0x8be3799 - eax, state, state[4]);
+	}
+	state[1] = state[1] & (edi * 0x377e5649);
+	state[18] = state[18] + (state[2] | 0x57a0b91);
+	edx = edi;
+	edx = edx + 0x87;
+	eax = state[7];
+	state[7] = (ROL (eax, edx));
+	state[4] = state[4] - (ROL (state[7], 0x2));
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8077f14, state, 0x77c54c67);
+		eax = call (0x3dea325a - eax, state, 0x4faf0f81);
+		eax = call (0xa4ba223 - eax, state, 0x1269df3d);
+		eax = call (0x1ac6ffbc - eax, state, state[18]);
+	}
+
+	eax = 0xfea6f980 + edi;
+	edi = edi * eax;
+	ecx = state[2] * 0x33aaef75;
+	state[18] = state[18] + ecx;
+	eax = state[12] + 0xda4bd31e;
+	state[2] = (eax ^ state[2]);
+	ecx = state[6];
+	ecx = ecx | 0x107e370;
+	edi = edi - ecx;
+	eax = state[17] + 0x191504c;
+	state[17] = (eax - edi);
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x809e938, state, 0x1eac1ff2);
+		eax = call (0x2744bb63 - eax, state, 0xcabc5012);
+		eax = call (0x51f18344 - eax, state, 0x3c6c4607);
+		eax = call (0x36c913e0 - eax, state, state[14]);
+	}
+
+	eax = state[15];
+	eax = ROL (eax, 0x7);
+	ecx = state[3];
+	eax = eax + ecx;
+	local_u32_6 = eax;
+	state[3] = eax;
+	eax = state[12] + 0x18afd3db;
+	ecx = state[10];
+	eax = eax - ecx;
+	local_u32_7 = eax;
+	state[12] = eax;
+	eax = state[5] + 0x1392be9b;
+	eax = eax + local_u32_7;
+	local_u32_6 = local_u32_6 ^ 0xfd205d5;
+	state[5] = (eax - local_u32_6);
+	ecx = state[8];
+	ecx = ecx ^ 0x9000ce9;
+	ecx = ecx ^ edi;
+	state[8] = ecx;
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x805eaf0, state, 0x5a3e601c);
+		eax = call (0xebc5abc - eax, state, 0x3350de75);
+		eax = call (0x12c6d39f - eax, state, 0x6f852028);
+		eax = call (0x1a65095c - eax, state, state[19]);
+	}
+
+	edx = edi;
+	edx = edx + 0x59;
+	eax = ROR (state[19], edx);
+	local_u32_8 = eax;
+	state[19] = eax;
+	ebx = eax * 0x1962fc70;
+	state[11] = (ROR (state[11], ebx));
+	edi = edi ^ 0x534576d7;
+	edi = edi ^ state[12];
+	ecx = state[1];
+	ecx = ecx ^ 0xb5;
+	state[11] = ROL (state[11], ecx);
+	state[19] = (state[9] * 0x12af9c5 + local_u32_8);
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x806bfb0, state, 0x34046fd8);
+		eax = call (0x1b992eb9 - eax, state, 0x9703c6cb);
+		eax = call (0x254e8a41 - eax, state, 0x2121c997);
+		eax = call (0x5d401b56 - eax, state, state[0]);
+	}
+
+	edx = edi * 0x3533614;
+	eax = state[10];
+	ecx = edx;
+	state[10] = ROL (eax, ecx);
+	eax = state[14];
+	state[1] = state[1] - (ROL (eax, 0x13));
+	ecx = state[16];
+	ecx = ecx + 0xed222733;
+	edi = edi | ecx;
+	state[16] = (state[3] * 0x532f53a & state[16]);
+	ecx = state[11] * 0x14718f9a;
+	edi = edi ^ ecx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x80778f8, state, 0x2365f8b7);
+		eax = call (0x2e27ec1b - eax, state, 0xd06aae75);
+		eax = call (0x266f0c54 - eax, state, 0xf17ef298);
+		eax = call (0x2480bb8c - eax, state, state[13]);
+	}
+
+	eax = edi;
+	state[3] = (eax | 0x1739a522) * state[3];
+	eax = state[1] | 0x4b09e3e;
+	edi = edi * eax;
+	eax = state[7] ^ 0x2a4ea48a;
+	state[7] = (eax ^ state[12]);
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x8077f60, state, 0xcc87cc91);
+		eax = call (0x58c6c39b - eax, state, 0xd484f14b);
+		eax = call (0x30c61335 - eax, state, 0xd566f896);
+		eax = call (0x1b7712a6 - eax, state, edi);
+	}
+	state[19] = (state[19] + 0x1dc54aa) - edi;
+	return edi;
+}
+
+
+u32 mix_major12 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+
+	edi = extra_state;
+	ebx = edi;
+	ebx = ebx ^ state[7];
+	ebx = ebx ^ state[16];
+	ebx = ebx % 0x06;
+	local_u32_0 = ebx;
+	ecx = state[18];
+	ecx = ecx & 0x104394c4;
+	edx = state[6];
+	ecx = ecx & edx;
+	state[18] = ecx;
+	eax = 0xe92519e2 + edi;
+	edi = edi * eax;
+	ecx = state[4];
+	ecx = ecx + 0x46d5ad23;
+	ecx = ecx + state[19];
+	state[4] = ecx;
+	edx = edx + state[1];
+	edx = edx + 0x3fd0884;
+	state[6] = edx;
+	edi = edi + 0xc46fe68;
+	edi = edi * state[9];
+	state[9] = edi;
+	ebx = state[13];
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x8087234, state, 0x55da4384);
+		eax = call (0x80b66cb - eax, state, 0x3cb08f38);
+		eax = call (0xcc589bf - eax, state, 0xbb73ac5);
+		eax = call (0x11925158 - eax, state, state[4]);
+		ebx = state[13];
+	}
+	eax = state[11] ^ 0x4453b1d7;
+	edx = state[7];
+	state[11] = eax ^ edx;
+	state[4] = state[4] ^ (state[12] + 0x187596ce);
+	state[14] = state[14] + (state[19] ^ 0x1ecd4347);
+	state[17] = state[17] & (state[6] + 0xaa504a66);
+	eax = 0x2482f7ba + ebx;
+	state[13] = (eax - edx);
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x8087258, state, 0xc3898ffa);
+		eax = call (0x1083e5c3 - eax, state, 0x38e82473);
+		eax = call (0x82a5ad4 - eax, state, 0xd79d054);
+		eax = call (0xa25a651 - eax, state, state[18]);
+	}
+
+	edx = state[17];
+	edx = edx | 0x14128b1f;
+	edx = edx * state[5];
+	state[5] = edx;
+	state[5] = (state[9] | 0x8ae69ec) & edx;
+	eax = state[5] | 0x25dcee2a;
+	edi = eax * 0xf7abca44;
+	edx = state[10];
+	state[12] = state[12] + (edx * 0x2b5c108a);
+	eax = state[19] + 0x45d1e08;
+	state[19] = (eax - edx);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8057468, state, 0x3ded2d48);
+		eax = call (0xb1d4f29 - eax, state, 0x27f9409b);
+		eax = call (0x93be110 - eax, state, 0x2bcf3aae);
+		eax = call (0x12559492 - eax, state, state[7]);
+	}
+	eax = state[5] + 0x17a9626b;
+	state[5] = (eax - state[3]);
+	ecx = state[8];
+	edi = 0x55003f14 +  ecx + edi ;
+	eax = state[6];
+	state[9] = state[9] + (ROL (eax, 0x1f));
+	edx = state[19];
+	ecx = 0xd;
+	edx = ROL (edx, ecx);
+	state[2] = state[2] | edx;
+	eax = state[19] ^ 0xfbf02d6;
+	ecx = state[15];
+	state[19] = (eax ^ ecx);
+	edx = state[18] * 0x279ed38c;
+	edx = edx | state[3];
+	state[3] = edx;
+	eax = eax ^ 0x234a2088;
+	edi = edi & eax;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8087280, state, 0x22f3cb4e);
+		eax = call (0x15530bf0 - eax, state, 0x9406e46c);
+		eax = call (0x2044022d - eax, state, 0xa520b878);
+		eax = call (0x76355cf7 - eax, state, state[14]);
+	}
+
+	edx = state[4];
+	edx = edx + 0xd5555942;
+	edx = edx + state[9];
+	state[4] = edx;
+	state[6] = (state[6] + 0xf6a829d0) + state[0];
+	state[2] = state[2] + (state[17] * 0x6877a2b6);
+	eax = state[11] + 0x4f92882e;
+	edi = edi | eax;
+	eax = 0x2a0e1a7a + edi;
+	edx = edx ^ eax;
+	state[4] = edx;
+	eax = edi * 0xba88b94;
+	edi = edi * eax;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x8084cb4, state, 0x10a0821a);
+		eax = call (0x3294f0c3 - eax, state, 0x12f626b0);
+		eax = call (0x16d16ff7 - eax, state, 0x10d0c58f);
+		eax = call (0x1b926ed4 - eax, state, edi);
+	}
+	state[8] = state[8] - (state[19] ^ 0x88fae5c);
+	eax = edi;
+	eax = eax ^ 0x6171e1a;
+	edi = edi - eax;
+	eax = state[0] & 0x6369ab7c;
+	edi = edi * eax;
+	state[2] = state[2] ^ (state[12] & 0x36b79ddb);
+	eax = 0xff3ba490 + edi;
+	edi = edi ^ eax;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x8087280, state, 0x9ee6d639);
+		eax = call (0x85d1ae0 - eax, state, 0x5bbacf6c);
+		eax = call (0xe7e5302 - eax, state, 0x42775467);
+		eax = call (0x1fa6b102 - eax, state, state[2]);
+	}
+
+	edx = state[9];
+	eax = edx * 0x2a0582f6;
+	edi = edi ^ eax;
+	eax = state[10] + 0xf71f2197;
+	edx = edx ^ eax;
+	state[9] = edx;
+	state[17] = state[17] | (0x417b0639 + edi);
+	eax = edi;
+	state[6] = state[6] ^ (ROR (eax, 0x11));
+	state[15] = (state[15] + 0x1935355) - state[3];
+	eax = state[15] ^ 0x232ddb67;
+	edi = edi - eax;
+	eax = edi;
+	eax = ROR (eax, 0x5);
+	edi = edi ^ eax;
+	state[13] = (state[13] + 0x25393a1) + state[5];
+	return edi;
+}
+
+
+u32 mix_major13 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	eax = state[1] ^ state[18];
+	edx = state[12];
+	eax = eax ^ edx;
+	local_u32_2 = eax;
+	edx = local_u32_2 % 0x0B;
+	local_u32_0 = edx;
+	ecx = 0xfd2296dd + edi;
+	ecx = ecx * state[7];
+	state[7] = ecx;
+	eax = state[9] + 0x10ce1e6b;
+	edi = edi * eax;
+	edx = state[14];
+	edx = edx & 0xe7aa887;
+	state[13] = state[13] | edx;
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x8057468, state, 0x7e09a7f0);
+		eax = call (0x4bc0c591 - eax, state, 0x57f23dd8);
+		eax = call (0x19400a71 - eax, state, 0x5f161e78);
+		eax = call (0x3fc74508 - eax, state, state[15]);
+	}
+	eax = state[19] + 0x44864e65;
+	edx = state[17];
+	state[19] = eax + edx;
+	eax = state[2] + 0x456501d3;
+	state[2] = (eax - state[10]);
+	edx = edx + 0xe91158ed;
+	state[11] = state[11] ^ edx;
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x80871ec, state, 0x1fa49c4e);
+		eax = call (0x13138297 - eax, state, 0x232ac1d8);
+		eax = call (0x9b045e2 - eax, state, 0xf3117cd);
+		eax = call (0x7a23c229 - eax, state, state[8]);
+	}
+	state[13] = (state[13] + 0xffeafe84) - edi;
+	state[3] = state[3] ^ (state[10] & 0x5898bbff);
+	eax = state[17] ^ 0xb4b5ddd;
+	edi = edi - eax;
+	state[5] = state[5] & (0xf2a69347 + edi);
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x8087210, state, 0x1f9b5706);
+		eax = call (0x3b35def6 - eax, state, 0x459d2894);
+		eax = call (0x559c045b - eax, state, 0x201209ea);
+		eax = call (0xaa1e6e9 - eax, state, state[19]);
+	}
+	state[8] = (state[8] + 0x35a3f082) + state[11];
+	state[15] = state[15] & (0xf0918e1c + edi);
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x808bacc, state, 0x8bd80373);
+		eax = call (0x148bc40e - eax, state, 0xd9974fd1);
+		eax = call (0x2541882a - eax, state, 0x75b8e9a8);
+		eax = call (0x15fad807 - eax, state, edi);
+	}
+
+	edi = edi + 0x1e87b29e;
+	edi = edi - state[12];
+	eax = state[0] + 0x9b993250;
+	edi = edi ^ eax;
+	state[13] = state[13] ^ (state[17] * 0xb083b2b);
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x808d330, state, 0x26543385);
+		eax = call (0x1b3d5b2c - eax, state, 0xe94e46f9);
+		eax = call (0x1e2913f3 - eax, state, 0x5a87491f);
+		eax = call (0x373366db - eax, state, state[14]);
+	}
+
+	ebx = state[0];
+	ebx = ebx ^ 0xfa;
+	eax = state[1];
+	state[1] = (ROL (eax, ebx));
+	edx = state[11] * 0x17321349;
+	state[5] = state[5] ^ edx;
+	ecx = state[3];
+	ecx = ecx + 0xffce689b;
+	edi = edi ^ ecx;
+	eax = 0x2570be6e + edi;
+	state[4] = (eax * state[4]);
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x808bb58, state, 0xc0e125f2);
+		eax = call (0x60242a4d - eax, state, 0xb0589fc5);
+		eax = call (0x5fbfcb5e - eax, state, 0xd1e831cb);
+		eax = call (0x6dd0763d - eax, state, state[6]);
+	}
+	state[15] = state[15] * 0x2d42b937;
+	state[4] = (0xf544478e + edi) * state[4];
+	eax = state[9] ^ 0x4dc36a;
+	eax = eax + state[0];
+	eax = eax + 0x10bb4f25;
+	state[0] = (eax - edi);
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x807de40, state, 0x3c79ee8);
+		eax = call (0x187149a3 - eax, state, 0xe7de0565);
+		eax = call (0x1726fb8c - eax, state, 0x43816fc4);
+		eax = call (0x18cac331 - eax, state, state[15]);
+	}
+	state[19] = state[19] & (ROR (state[3], 0xe));
+	state[17] = state[17] * 0x18575b09 * edi;
+	state[1] = state[1] | (edi * 0x50ebe77);
+	eax = state[6] | 0x4d24003d;
+	edi = edi + eax;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x808bb58, state, 0x49d6a047);
+		eax = call (0xb4b7c79 - eax, state, 0x3f12d53c);
+		eax = call (0x30a1cc8f - eax, state, 0x1103fedb);
+		eax = call (0x974ca10 - eax, state, state[9]);
+	}
+
+	eax = state[0];
+	edx = 0xf770857b + eax;
+	state[15] = state[15] & edx;
+	edx = edi * 0xffffffed;
+	state[0] = ROR (eax, edx);
+	eax = edi;
+	eax = eax | 0x2576a843;
+	edi = edi - eax;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x80778f8, state, 0x5d3f9c2);
+		eax = call (0xcbf9bc4 - eax, state, 0x261400df);
+		eax = call (0x1c6413fc - eax, state, 0x4a39e439);
+		eax = call (0x35f7e08e - eax, state, state[8]);
+	}
+	state[1] = state[1] + (edi * 0x2994c8c);
+	edx = state[6];
+	edx = edx + 0xfe25a480;
+	state[16] = state[16] ^ edx;
+	ecx = state[3] * 0x1e333f7b;
+	ecx = ecx * state[11];
+	state[3] = ecx;
+	ebx = state[17];
+	ebx = ebx ^ 0xda;
+	state[7] = (ROR (state[7], ebx));
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x805eaf0, state, 0xd62dffe0);
+		eax = call (0x8b92eff - eax, state, 0xc6acc5fa);
+		eax = call (0x186c4cc6 - eax, state, 0x1f4370a1);
+		eax = call (0x1a13c311 - eax, state, state[1]);
+	}
+	state[13] = state[13] ^ (state[18] + 0x149e5b40);
+	eax = state[0] + 0x541a494;
+	state[0] = (eax + state[19]);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x807d81c, state, 0x16a6c65a);
+		eax = call (0x429bee24 - eax, state, 0xbc669be);
+		eax = call (0xf21b844 - eax, state, 0xec378400);
+		eax = call (0x8be815c - eax, state, edi);
+	}
+
+	ebx = state[2];
+	ebx = ebx + 0x16deeae;
+	ebx = ebx - edi;
+	state[2] = ebx;
+	edx = state[0];
+	edx = edx ^ 0x1120ce2d;
+	ecx = state[9];
+	ecx = ecx - edx;
+	state[9] = ecx;
+	eax = state[13] ^ 0x2a74ac2a;
+	edx = state[7];
+	eax = eax ^ edx;
+	local_u32_3 = eax;
+	state[13] = eax;
+	ecx = ecx + 0xdab80c67;
+	state[12] = state[12] & ecx;
+	ecx = edi * 0x2776477;
+	state[14] = state[14] - ecx;
+	state[4] = state[4] - (state[19] * 0x2f2e21d0);
+	edx = state[19];
+	edx = edx + 0xe78ae13d;
+	edx = edx - state[3];
+	state[19] = edx;
+	local_u32_2 = edi;
+	local_u32_2 = local_u32_2 ^ 0x434c0d3a;
+	edi = edi - local_u32_2;
+	edi = edi + 0x11f70706;
+	edi = edi - ebx;
+	ebx = state[16];
+	ebx = ebx + 0xa9;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	edx = edi * 0x2a0d21c3;
+	ecx = local_u32_3;
+	ecx = ecx + edx;
+	state[13] = ecx;
+	return eax;
+}
+
+
+u32 mix_major14 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_0;
+	u32	local_u32_2;
+	u32	local_u32_3;
+
+	edi = extra_state;
+	eax = state[6] ^ state[8];
+	edx = state[15];
+	eax = eax ^ edx;
+	local_u32_2 = eax;
+	edx = local_u32_2 % 0x0B;
+	local_u32_0 = edx;
+	ebx = edi;
+	ebx = ebx ^ 0x1c0b5143;
+	state[14] = state[14] & ebx;
+	ecx = state[5];
+	ecx = ecx + 0x4ef38b53;
+	ecx = ecx * state[17];
+	state[17] = ecx;
+	eax = ROR (state[16], 0x8);
+	edx = state[15];
+	edx = edx ^ eax;
+	state[15] = edx;
+
+	if (local_u32_0 == 4)
+	{
+		eax = call (0x806c02c, state, 0x8018c7d6);
+		eax = call (0x6fe1d683 - eax, state, 0x1e59fb72);
+		eax = call (0x472a7554 - eax, state, 0x389a9392);
+		eax = call (0x32354cff - eax, state, state[10]);
+	}
+
+	ecx = state[17];
+	ecx = ecx & 0x3b118c17;
+	edi = edi ^ ecx;
+	ebx = state[7] * 0xb755cab;
+	eax = edi;
+	eax = ROR (eax, ebx);
+	edi = eax;
+	state[5] = state[5] - (ROR (state[12], 0x5));
+
+	if (local_u32_0 == 10)
+	{
+		eax = call (0x808bb58, state, 0x89c9204a);
+		eax = call (0xba12ab1 - eax, state, 0x84049032);
+		eax = call (0x4a03a834 - eax, state, 0x75f250e0);
+		eax = call (0x3b410335 - eax, state, edi);
+	}
+	eax = state[10] + 0xe81a232b;
+	edi = edi ^ eax;
+	state[18] = state[18] | (state[2] + 0xef9e8d77);
+	eax = state[3] + 0xce3d3234;
+	state[3] = (eax + state[4]);
+
+	if (local_u32_0 == 5)
+	{
+		eax = call (0x8069514, state, 0x32dff049);
+		eax = call (0x28fb5aa0 - eax, state, 0xa26e4bf7);
+		eax = call (0x11608876 - eax, state, 0x71b10f8b);
+		eax = call (0xe16838d - eax, state, state[0]);
+	}
+
+	eax = edi;
+	eax = ROR (eax, 0xf);
+	edi = edi * eax;
+	eax = state[7] + 0x358107b;
+	edi = edi & eax;
+	eax = state[3];
+	state[12] = state[12] + (ROL (eax, 0x14));
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x8054bc8, state, 0x85b2703b);
+		eax = call (0x1a1793fd - eax, state, 0x14ef3da3);
+		eax = call (0x3b55263f - eax, state, 0x5aef9557);
+		eax = call (0x234312bc - eax, state, edi);
+	}
+
+	edi = 0xddcb6fb3 +  edi + edi ;
+	eax = state[4];
+	edx = eax * 0x2a5c35ea;
+	edi = edi ^ edx;
+	state[4] = (eax + 0x3b4034a1) - state[3];
+	state[11] = state[11] & (state[19] | 0x2856103);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x805d738, state, 0xd1bc3e1f);
+		eax = call (0x32c0f296 - eax, state, 0xb9b5e313);
+		eax = call (0x83901c8e - eax, state, 0xe5a8a731);
+		eax = call (0x3e52815c - eax, state, state[16]);
+	}
+	state[7] = state[7] | (0x2d3d686 + edi);
+	edi = edi & 0x316de5b2;
+	edi = edi & state[15];
+
+	if (local_u32_0 == 7)
+	{
+		eax = call (0x8054bc8, state, 0x745b1705);
+		eax = call (0x880f7bf - eax, state, 0x1b46a1af);
+		eax = call (0x2604f26c - eax, state, 0x1d71d16c);
+		eax = call (0x400b87df - eax, state, state[15]);
+	}
+
+	edi = edi ^ 0x3e8999a9;
+	edi = edi ^ state[17];
+	edi = 0x4d77c09e +  edi + edi ;
+	state[6] = (state[10] + 0xd1650ad7) * state[6];
+	eax = state[3] & 0xade0835;
+	state[7] = (eax * state[7]);
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x80694f4, state, 0xfac9a580);
+		eax = call (0x10108a81 - eax, state, 0x11883d98);
+		eax = call (0x12ce1052 - eax, state, 0xcb5e054f);
+		eax = call (0x426d3606 - eax, state, state[3]);
+	}
+	eax = state[15] ^ 0x32bd1767;
+	ecx = state[9];
+	ecx = ecx - eax;
+	state[9] = ecx;
+	eax = state[3] + 0x74289e8a;
+	state[12] = (eax ^ state[12]);
+	edx = state[5];
+	edx = edx + 0xd55d1b86;
+	ecx = ecx ^ edx;
+	state[9] = ecx;
+	eax = eax * 0x13b7b134;
+	edi = edi & eax;
+
+	if (local_u32_0 == 8)
+	{
+		eax = call (0x8077f60, state, 0xf85a7826);
+		eax = call (0x14e8fcac - eax, state, 0xd87f8252);
+		eax = call (0x124b6021 - eax, state, 0xecfa4ab0);
+		eax = call (0x9fcef9d - eax, state, state[2]);
+	}
+
+	edi = 0xda1b9ad7 +  edi + edi ;
+	state[6] = state[6] - (state[18] * 0x452ad09);
+	eax = edi;
+	state[4] = state[4] + (eax ^ 0x4895c9e2);
+
+	if (local_u32_0 == 9)
+	{
+		eax = call (0x80778f8, state, 0x46d5ff5c);
+		eax = call (0x49b8a062 - eax, state, 0x7e0da31e);
+		eax = call (0x71122e44 - eax, state, 0x47d92940);
+		eax = call (0x6681a0a2 - eax, state, state[16]);
+	}
+
+	eax = 0xf8ecf928 + edi;
+	edi = edi ^ eax;
+	ebx = state[5];
+	ebx = ebx + 0xad;
+	state[18] = (ROR (state[18], ebx));
+
+	if (local_u32_0 == 6)
+	{
+		eax = call (0x809e914, state, 0x3de045ea);
+		eax = call (0xdf84a69 - eax, state, 0x8fc579af);
+		eax = call (0x29918481 - eax, state, 0xf71d5ad3);
+		eax = call (0x16abef26 - eax, state, state[8]);
+	}
+
+	edi = edi * 0x34b70af0;
+	eax = state[19];
+	state[5] = state[5] - (ROL (eax, 0x17));
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808bb18, state, 0x2ac07a2c);
+		eax = call (0x139cdfae - eax, state, 0x39fb10b8);
+		eax = call (0x2098837f - eax, state, 0x13d373);
+		eax = call (0x2c4227ef - eax, state, state[18]);
+	}
+	eax = ROR (state[5], 0x2);
+	eax = eax * state[8];
+	local_u32_2 = eax;
+	state[8] = eax;
+	local_u32_3 = eax;
+	local_u32_3 = local_u32_3 & 0x15595f;
+	edx = state[17];
+	local_u32_3 = local_u32_3 + edx;
+	ecx = local_u32_3;
+	state[17] = ecx;
+	ebx = state[7];
+	ebx = ebx + 0x41;
+	state[19] = (ROR (state[19], ebx));
+	edx = edi * 0x539f549;
+	state[9] = state[9] - edx;
+	ecx = local_u32_2;
+	ecx = ecx ^ 0x10549d01;
+	ecx = ecx * state[0];
+	local_u32_2 = ecx;
+	state[0] = ecx;
+	state[11] = state[11] - (state[4] ^ 0x1cd38676);
+	eax = edi;
+	state[12] = state[12] + (ROR (eax, 0x10));
+	ebx = state[16];
+	ecx = 0x1b;
+	ebx = ROL (ebx, ecx);
+	eax = edi;
+	eax = ROL (eax, ebx);
+	edi = eax;
+	edx = state[15];
+	edx = edx + 0x266b587;
+	local_u32_3 = local_u32_3 ^ edx;
+	eax = local_u32_2;
+	eax = ROR (eax, 0x1d);
+	edx = local_u32_3;
+	edx = edx - eax;
+	state[17] = edx;
+	ecx = state[3];
+	ecx = ecx + 0x2669d0a1;
+	ecx = ecx - state[13];
+	state[3] = ecx;
+	return edi;
+}
+
+
+u32 mix_major15 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_3;
+	u32	local_u32_5;
+
+	edx = state[15];
+	local_u32_1 = edx;
+	ecx = extra_state;
+	local_u32_0 = ecx;
+	local_u32_0 = local_u32_0 ^ edx;
+	edx = state[12];
+	local_u32_0 = local_u32_0 ^ edx;
+	local_u32_0 = local_u32_0 & 0x3;
+	eax = state[3] ^ 0x94;
+	edx = state[6];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[6] = (edx);
+	ebx = extra_state;
+	ebx = ebx ^ 0x9a94557;
+	ebx = ebx + state[12];
+	state[12] = ebx;
+	ebx = state[11] * 0xfffffff9;
+	edx = extra_state;
+	ecx = ebx;
+	edx = ROL (edx, ecx);
+	state[15] = (state[6] ^ 0x2c63c7d7) * local_u32_1;
+	eax = state[9] * 0x3471499e;
+	edx = edx - eax;
+	eax = state[4] + 0x1565237b;
+	state[4] = (eax - state[17]);
+	edx = edx ^ 0x34293622;
+	ecx = state[3];
+	edx = edx ^ ecx;
+	extra_state = edx;
+	ecx = state[11];
+	ecx = 0xbab1970a +  edx + ecx ;
+	state[11] = ecx;
+	state[7] = state[7] | (state[18] & 0x2e7cbf50);
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x8069538, state, 0x27ea8ce3);
+		eax = call (0x2b71b273 - eax, state, 0x5041e568);
+		eax = call (0x6079bfd3 - eax, state, 0x51614109);
+		eax = call (0xc8ede28 - eax, state, state[11]);
+	}
+
+	ebx = state[12];
+	esi = 0xc178e538 + ebx;
+	esi = esi & state[16];
+	state[16] = esi;
+	edx = state[6] * 0xf7a199;
+	ecx = state[14];
+	edx = edx | ecx;
+	local_u32_5 = edx;
+	state[14] = edx;
+	edx = state[9];
+	edx = edx + 0x598a281;
+	edx = edx + extra_state;
+	local_u32_3 = edx;
+	state[9] = edx;
+	eax = state[0] + 0xf6c67dcd;
+	extra_state = extra_state ^ eax;
+	ebx = ebx * 0x2a688905;
+	ebx = ebx + local_u32_5;
+	state[14] = ebx;
+	eax = extra_state;
+	eax = eax | 0x29;
+	edx = esi;
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[16] = edx;
+	eax = extra_state;
+	state[10] = state[10] + (eax | 0x4d8cb855);
+	state[19] = (state[19] + 0x32b94292) - local_u32_3;
+	eax = local_u32_3 * 0x1c873f09;
+	edx = extra_state;
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	eax = state[4] * 0x1643c5e0;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	extra_state = edx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8077f14, state, 0xed396fb0);
+		eax = call (0xe755d43 - eax, state, 0x9bac9a5a);
+		eax = call (0x7539af42 - eax, state, 0x861ab0ce);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x13e11494;
+		edx = extra_state;
+		eax = call (ebx, state, edx);
+	}
+
+	eax = state[10];
+	state[6] = state[6] & (ROL (eax, 0x1c));
+	ebx = extra_state;
+	ebx = ebx ^ 0x5aafcd4a;
+	ebx = ebx + state[16];
+	state[16] = ebx;
+	eax = extra_state;
+	state[12] = state[12] & (eax ^ 0x1c22a3b7);
+	eax = state[17] ^ 0x2e;
+	edx = extra_state;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	eax = state[4] * 0x358b021d;
+	ecx = state[18];
+	ecx = ecx - eax;
+	local_u32_5 = ecx;
+	state[18] = ecx;
+	eax = state[13] + 0xac30f7a;
+	ebx = ebx ^ eax;
+	state[16] = ebx;
+	eax = state[1] + 0xc2;
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	extra_state = edx;
+	edx = local_u32_5;
+	edx = edx + 0xee6e38da;
+	edx = edx - extra_state;
+	state[18] = edx;
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x806c424, state, 0x3ebe9185);
+		eax = call (0xbc54210 - eax, state, 0x4fe7d66);
+		eax = call (0x941115c - eax, state, 0x2c1aad5f);
+		eax = call (0xdba0a7f - eax, state, state[9]);
+	}
+	state[2] = state[2] + (state[16] | 0x5cbeb00);
+	eax = extra_state;
+	eax = ROR (eax, 0x16);
+	esi = state[7];
+	esi = esi - eax;
+	state[7] = esi;
+	eax = extra_state;
+	state[4] = state[4] ^ (eax + 0x1580fb54);
+	ebx = state[12];
+	eax = ebx;
+	eax = ROL (eax, 0x19);
+	edx = state[17];
+	edx = edx - eax;
+	local_u32_5 = edx;
+	state[17] = edx;
+	state[16] = (state[8] ^ 0x1b3ea2) + state[16];
+	state[5] = (state[5] + 0x193cf230) - extra_state;
+	eax = extra_state;
+	eax = eax + 0x72;
+	edx = state[18];
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[18] = edx;
+	eax = local_u32_5;
+	eax = eax & 0x66e0e812;
+	extra_state = extra_state - eax;
+	eax = esi;
+	eax = ROL (eax, 0x12);
+	ebx = ebx ^ eax;
+	state[12] = ebx;
+	edx = local_u32_5;
+	edx = edx + 0xb70d1a;
+	edx = edx - state[13];
+	state[17] = edx;
+
+	if (local_u32_0 == 3)
+	{
+		eax = call (0x808bb18, state, 0x13a2c225);
+		eax = call (0x3a392dfd - eax, state, 0x537936c7);
+		eax = call (0xd90e540 - eax, state, 0x339ba318);
+		eax = call (0x12f073aa - eax, state, state[17]);
+	}
+	state[6] = (state[6] + 0xdfef3914) + state[1];
+	eax = state[5];
+	eax = ROL (eax, 0x1d);
+	extra_state = extra_state + eax;
+	state[18] = state[18] - (state[8] | 0x456bd4b);
+	eax = state[13];
+	edx = 0x123e07ad + eax;
+	extra_state = extra_state & edx;
+	ecx = extra_state * 0x22af60a0;
+	state[0] = state[0] ^ ecx;
+	eax = eax + 0xf69f7aa2;
+	state[13] = (eax - state[12]);
+	ebx = extra_state;
+	ebx = ebx ^ 0xfc;
+	edx = state[17];
+	ecx = ebx;
+	edx = ROR (edx, ecx);
+	state[17] = edx;
+	ecx = state[5] * 0x248bf14b;
+	state[13] += ecx;
+	eax = extra_state;
+	state[2] = state[2] ^ (ROR (eax, 0xc));
+	return extra_state;
+}
+
+
+u32 mix_major16 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+	u32	local_u32_4;
+	u32	local_u32_5;
+
+	esi = extra_state;
+	ecx = state[12] % 0x03;
+	local_u32_0 = ecx;
+	state[7] = state[7] ^ (state[7] + 0x1256f342);
+	eax = state[14];
+	state[9] = state[9] ^ (ROL (eax, 0x9));
+	ecx = state[13];
+	local_u32_4 = ecx;
+	local_u32_4 = local_u32_4 ^ 0x4a20925;
+	state[0] = state[0] + (local_u32_4);
+	ecx = esi;
+	ecx = ecx | 0xab;
+	state[13] = (ROR (state[13], ecx));
+	esi = esi + 0x2cd8307e;
+	ecx = state[10];
+	local_u32_1 = ecx;
+	esi = esi - ecx;
+	ebx = state[17] * 0x5979375;
+	eax = esi;
+	eax = ROR (eax, ebx);
+	esi = eax;
+	ecx = state[15];
+	ecx = ecx | 0x11570bca;
+	state[8] = state[8] + ecx;
+	eax = state[3] ^ 0x4c404c71;
+	esi = esi & eax;
+	local_u32_1 = local_u32_1 ^ 0x85d82e;
+	esi = esi + local_u32_1;
+	ecx = state[6];
+	ecx = ecx & 0xf076b8f;
+	ecx = ecx * state[11];
+	state[11] = (0x26d0f98c +  esi + ecx );
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x806c3b8, state, 0x3d9e7fb0);
+		eax = call (0x2e262bc7 - eax, state, 0x1dcab3d);
+		eax = call (0x22e1d224 - eax, state, 0xb736039);
+		eax = call (0x1632b7a2 - eax, state, state[7]);
+	}
+
+	eax = esi;
+	state[1] = state[1] ^ (ROR (eax, 0x17));
+	ecx = state[9];
+	ecx = ecx + 0xf24cc80b;
+	ecx = ecx + esi;
+	state[9] = ecx;
+	edx = state[14] * 0x6223b3d;
+	eax = state[3];
+	state[3] = (ROL (eax, edx));
+	ecx = state[19];
+	ecx = ecx + 0x64922cc;
+	ecx = ecx + esi;
+	state[19] = ecx;
+	esi = esi + 0x1e0944e3;
+	esi = esi - state[0];
+	edx = esi * 0xffffffdc;
+	eax = esi;
+	eax = ROR (eax, edx);
+	esi = eax;
+	ecx = state[15];
+	ecx = ecx + 0x8d90c5a3;
+	esi = esi * ecx;
+	ebx = esi;
+	ebx = ebx & 0xdd9bf1a;
+	ebx = ebx ^ state[17];
+	state[17] = ebx;
+	eax = state[4] + 0xd5bd8bc1;
+	state[4] = (eax - state[6]);
+	esi = 0x1226f462 +  esi + esi ;
+	eax = state[13];
+	eax = ROL (eax, 0x5);
+	ebx = ebx ^ eax;
+	state[17] = ebx;
+	ecx = esi;
+	ecx = ecx & 0x12;
+	state[13] = (ROL (state[13], ecx));
+
+	if (local_u32_0 == 2)
+	{
+		eax = call (0x808baf4, state, 0xd9ef397d);
+		eax = call (0x450a5550 - eax, state, 0x3407a08);
+		eax = call (0xfdfe561 - eax, state, 0xf1979b41);
+		eax = call (0x14646414 - eax, state, esi);
+	}
+
+	esi = esi | 0x10b9b57a;
+	esi = esi | state[9];
+	ecx = state[0];
+	ecx = ecx + 0x477a65c2;
+	eax = state[10];
+	ecx = ecx + eax;
+	local_u32_2 = ecx;
+	state[0] = ecx;
+	ecx = state[7];
+	local_u32_4 = ecx;
+	local_u32_4 = local_u32_4 ^ 0x1b348ba1;
+	state[8] = state[8] | (local_u32_4);
+	ebx = state[1];
+	ecx = 0x8;
+	ebx = ROL (ebx, ecx);
+	eax = state[16];
+	state[16] = (ROL (eax, ebx));
+	ebx = state[19];
+	ecx = ebx * 0xfa375c5;
+	esi = esi ^ ecx;
+	eax = ROR (state[5], 0xd);
+	local_u32_4 = eax;
+	state[11] = (ROR (state[11], local_u32_4));
+	ecx = 0x64bd3f85 + ebx;
+	ecx = ecx ^ state[7];
+	state[7] = ecx;
+	eax = esi;
+	eax = ROR (eax, 0x19);
+	eax = eax * state[6];
+	local_u32_3 = eax;
+	state[6] = eax;
+	ecx = state[5];
+	ecx = 0xaeeb67de +  esi + ecx ;
+	local_u32_5 = ecx;
+	state[5] = ecx;
+	eax = ecx;
+	eax = ROR (eax, 0x16);
+	ebx = ebx | eax;
+	state[19] = ebx;
+	ecx = local_u32_2;
+	eax = local_u32_3;
+	ecx = 0xe1f2872 +  eax + ecx ;
+	state[0] = ecx;
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x809e2f8, state, 0x4b192186);
+		eax = call (0x4bd4d32b - eax, state, 0x5af38d8a);
+		eax = call (0x3c981448 - eax, state, 0xd6e998c5);
+		eax = call (0x13822b7e - eax, state, esi);
+	}
+
+	esi = esi | 0x40c95dca;
+	esi = esi | state[6];
+	ebx = state[12];
+	ebx = ebx ^ 0xe1;
+	eax = esi;
+	eax = ROL (eax, ebx);
+	esi = eax;
+	ecx = state[8];
+	ecx = ecx + 0xed5ca98b;
+	state[3] = state[3] & ecx;
+	state[4] = (state[4] + 0x92abec6e) + esi;
+	eax = ROR (state[13], 0x16);
+	esi = esi & eax;
+	ecx = state[15] * 0xff635ec;
+	state[2] = state[2] + ecx;
+	eax = 0x37343841 + esi;
+	state[6] = (eax ^ state[6]);
+	ecx = state[9];
+	ecx = ecx + 0xf8e12c69;
+	ecx = ecx + state[14];
+	state[9] = ecx;
+	eax = state[10];
+	eax = ROL (eax, 0x14);
+	ecx = state[14];
+	ecx = ecx - eax;
+	state[14] = ecx;
+	return esi;
+}
+
+
+u32 mix_major17 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+	u32	local_u32_5;
+	u32	local_u32_6;
+	u32	local_u32_7;
+	u32	local_u32_8;
+
+	esi = extra_state;
+	local_u32_0 = esi;
+	local_u32_0 = local_u32_0 & 0x1;
+	edx = state[5];
+	edx = edx + 0x34b87873;
+	edx = edx - state[18];
+	state[5] = edx;
+	ecx = state[17];
+	ecx = ecx + 0x2051ec4;
+	ebx = state[1];
+	local_u32_1 = ebx;
+	ecx = ecx - ebx;
+	local_u32_2 = ecx;
+	state[17] = ecx;
+	ecx = state[6];
+	ecx = ecx ^ 0x5c80bc7;
+	ebx = state[16];
+	local_u32_8 = ebx;
+	ecx = ecx ^ ebx;
+	local_u32_3 = ecx;
+	state[6] = ecx;
+	eax = esi;
+	eax = ROR (eax, 0x1a);
+	esi = esi - eax;
+	eax = ebx;
+	state[5] = (eax | 0x154e9813) * edx;
+	state[0] = state[0] | (state[5] + 0xbac2a47e);
+	eax = state[9] ^ 0xbf263a6;
+	state[13] = (eax * state[13]);
+	edx = state[11];
+	ecx = 0x17;
+	edx = ROL (edx, ecx);
+	edx = edx | state[9];
+	state[9] = edx;
+	local_u32_1 = local_u32_1 & 0x1c28de84;
+	ebx = ebx * local_u32_1;
+	state[16] = ebx;
+	state[6] = (ROR (state[2], 0xb)) ^ local_u32_3;
+	eax = edx;
+	eax = ROR (eax, 0x18);
+	state[12] = (eax ^ state[12]);
+	esi = 0x2c5a0200 +  esi + esi ;
+	state[19] = state[19] | (state[12] + 0xa104f7f6);
+	ebx = state[11];
+	ebx = ebx + 0xf51e9043;
+	ebx = ebx ^ local_u32_2;
+	state[17] = ebx;
+	eax = state[15] + 0x37f1bc89;
+	state[15] = (eax + esi);
+
+	if (local_u32_0 == 0)
+	{
+		eax = call (0x8087178, state, 0x1ab3f2a6);
+		eax = call (0x229df58f - eax, state, 0xdd3520d7);
+		eax = call (0xcbadb94 - eax, state, 0x14421a21);
+		eax = call (0x70789b6e - eax, state, state[4]);
+	}
+	eax = state[5] | 0x79ba9a48;
+	esi = esi + eax;
+	eax = state[2] ^ 0x1ecdadba;
+	ecx = state[4];
+	ecx = ecx - eax;
+	state[4] = ecx;
+	eax = state[10] + 0xf01ca4cf;
+	esi = esi ^ eax;
+	eax = state[8] + 0xf58222aa;
+	esi = esi ^ eax;
+	edx = state[7];
+	state[8] = (edx * 0x59c62257) | state[8];
+	eax = edx;
+	eax = eax | 0x2d2750f0;
+	edx = edx ^ eax;
+	state[7] = edx;
+	eax = state[17] | 0x1719d4f;
+	esi = esi + eax;
+	ecx = ecx + 0xcec35bec;
+	ecx = ecx * state[19];
+	state[19] = ecx;
+	state[18] = state[18] ^ (state[2] + 0xdc17a237);
+	ebx = state[5];
+	ebx = 0xca0f8bc5 +  ebx + ecx ;
+	state[19] = ebx;
+	esi = 0xff282d98 +  esi + esi ;
+	eax = state[0] + 0x2a09f2a5;
+	state[0] = (eax + esi);
+	ecx = state[2];
+	ecx = ecx + 0x30e437d6;
+	state[11] = state[11] ^ ecx;
+	state[12] = state[12] | (0xee36df26 + esi);
+	state[15] = state[15] & (0xc95e1442 + esi);
+
+	if (local_u32_0 == 1)
+	{
+		eax = call (0x8069514, state, 0x90fb3a37);
+		eax = call (0x4444c17e - eax, state, 0xd54c23bc);
+		eax = call (0x14a145fd - eax, state, 0xdb72a68e);
+		eax = call (0xf0042e7 - eax, state, state[14]);
+	}
+
+	edx = state[17];
+	eax = edx;
+	eax = eax ^ 0x72eeed7;
+	ebx = state[7];
+	ebx = ebx - eax;
+	state[7] = (ebx);
+	edx = edx * 0x162a030d;
+	ecx = state[15];
+	local_u32_5 = ecx;
+	edx = edx * ecx;
+	state[17] = edx;
+	edx = state[14];
+	edx = edx + 0xf0dd3ef3;
+	edx = edx & eax;
+	state[7] = edx;
+	ebx = state[1];
+	local_u32_7 = ebx;
+	eax = ebx;
+	eax = ROL (eax, ecx ^ ecx);
+	esi = esi + eax;
+	eax = state[2] ^ 0x2d9ceb17;
+	state[2] = (eax ^ state[13]);
+	local_u32_6 = esi;
+	local_u32_6 = local_u32_6 ^ 0x176b1b8e;
+	local_u32_6 = local_u32_6 & edx;
+	ebx = local_u32_6;
+	state[7] = ebx;
+	state[8] = state[8] | (0xdab13e76 + esi);
+	edx = state[16];
+	edx = edx + 0x2a74b8d4;
+	edx = edx - state[12];
+	state[16] = edx;
+	esi = esi + 0xcc1039a3;
+	esi = esi - state[4];
+	eax = state[5] * 0x1239378b;
+	esi = esi - eax;
+	eax = state[0] ^ 0xd9a5ac4;
+	state[0] = (eax ^ esi);
+	local_u32_7 = local_u32_7 ^ 0x346ff630;
+	state[10] = (state[10] - local_u32_7);
+	esi = esi & 0x5638016d;
+	esi = esi & state[4];
+	eax = state[10] + 0xa4c7df2;
+	esi = esi & eax;
+	local_u32_5 = local_u32_5 ^ 0x2f99340b;
+	ecx = state[14];
+	ecx = ecx + local_u32_5;
+	state[14] = ecx;
+	eax = local_u32_6;
+	state[11] = state[11] | (eax + 0xd5881b85);
+	eax = edx * 0x474eb79;
+	ebx = state[9];
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	state[9] = ebx;
+	return esi;
+}
+
+
+u32 mix_major18 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_3;
+	eax = state[17] ^ state[16];
+	edx = state[13];
+	eax = eax ^ edx;
+	local_u32_1 = eax;
+	esi = local_u32_1 % 0x07;
+	ecx = state[2];
+	ecx = ecx + 0xe7e9ac84;
+	ecx = ecx - state[9];
+	state[2] = ecx;
+	eax = extra_state;
+	eax = eax + 0xd5e47036;
+	edx = state[7];
+	state[7] = eax & edx;
+	eax = state[7] ^ 0x5d5e7006;
+	state[7] = (eax ^ state[18]);
+	ecx = state[6];
+	ecx = ecx ^ 0x16afd25f;
+	extra_state = extra_state + ecx;
+	ebx = state[18];
+	ebx = ebx | 0x7b;
+	state[0] = (ROR (state[0], ebx));
+
+	if (esi == 4)
+	{
+		eax = call (0x8077ecc, state, 0x62cbb3b);
+		eax = call (0x10ee0a10 - eax, state, 0xc4eceecd);
+		eax = call (0x1124f940 - eax, state, 0xebfb8088);
+		eax = call (0x326c2e23 - eax, state, state[17]);
+	}
+	state[1] = (state[1] * 0x927384a * state[0]);
+	ebx = state[6];
+	eax = ebx * 0x2ac0b63c;
+	extra_state = extra_state ^ eax;
+	eax = state[5] * 0xef44412;
+	extra_state = extra_state ^ eax;
+	eax = state[18];
+	eax = ROL (eax, 0x16);
+	extra_state = extra_state - eax;
+
+	if (esi == 1)
+	{
+		ebx = 0x519fd660;
+		ebx = ebx + 0xb6680198;
+		eax = call (ebx, state, 0x17300251);
+		eax = call (0x14f0c17e - eax, state, 0xa78ae46);
+		eax = call (0x170799d1 - eax, state, 0xfb09d5f3);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x163a2f6d;
+		eax = extra_state;
+		eax = call (ebx, state, eax);
+		ebx = state[6];
+	}
+
+	edx = extra_state;
+	edx = edx + 0x4d05da6a;
+	edx = edx & ebx;
+	local_u32_0 = edx;
+	state[6] = edx;
+	ecx = state[18];
+	ecx = ecx ^ 0xe2ba11c;
+	ecx = ecx * state[13];
+	state[13] = ecx;
+	extra_state = extra_state ^ 0x2e3d328f;
+	eax = state[2];
+	extra_state = extra_state ^ eax;
+	edx = state[1];
+	edx = edx | 0x110c8a1;
+	edx = edx * extra_state;
+	extra_state = edx;
+	ebx = local_u32_0;
+	ecx = 0x1b;
+	ebx = ROR (ebx, ecx);
+	eax = state[4];
+	state[4] = (ROL (eax, ebx));
+
+	if (esi == 0)
+	{
+		ebx = 0x2a26800c;
+		ebx = ebx + 0xdde1f16c;
+		eax = call (ebx, state, 0xc38b9c69);
+		eax = call (0xd1177f5 - eax, state, 0x14b81240);
+		eax = call (0x3f130e33 - eax, state, 0x48654651);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x17363e9a;
+		edx = extra_state;
+		eax = call (ebx, state, edx);
+	}
+
+	eax = extra_state;
+	state[19] = (ROR (eax, 0x8)) & state[19];
+	eax = ROR (state[19], 0xc);
+	extra_state = extra_state | eax;
+	eax = state[14] * 0x2d8924b3;
+	extra_state = extra_state + eax;
+	state[10] = state[10] ^ (state[15] + 0xdcba6126);
+	eax = state[16] & 0xf72e29a;
+	extra_state = extra_state + eax;
+	state[3] = state[3] - (state[18] | 0x7614cfb);
+
+	if (esi == 6)
+	{
+		eax = call (0x808bba8, state, 0x18c653bc);
+		eax = call (0x461b7329 - eax, state, 0x395f45a4);
+		eax = call (0x1b8d8c45 - eax, state, 0x534a55df);
+		eax = call (0x5e09f2b0 - eax, state, state[9]);
+	}
+
+	edx = state[4];
+	state[19] = state[19] & (0xfe6ea18f + edx);
+	eax = state[7] & 0x226185b2;
+	state[6] = (eax * state[6]);
+	edx = edx ^ 0x35388017;
+	state[0] = state[0] + edx;
+	eax = state[14] * 0x268d6eae;
+	extra_state = extra_state ^ eax;
+
+	if (esi == 3)
+	{
+		eax = call (0x8084cb4, state, 0x285b4910);
+		eax = call (0xb909f91 - eax, state, 0x552ba7b1);
+		eax = call (0x8da6f58 - eax, state, 0xc846609e);
+		eax = call (0x29012dff - eax, state, state[0]);
+	}
+
+	eax = extra_state;
+	local_u32_0 = eax;
+	local_u32_0 = local_u32_0 ^ 0xbf3b8c0;
+	edx = local_u32_0;
+	state[15] = state[15] + edx;
+	ebx = state[18];
+	ecx = 0x19;
+	ebx = ROR (ebx, ecx);
+	state[10] = (ROR (state[10], ebx));
+	edx = extra_state;
+	local_u32_0 = edx;
+	local_u32_0 = local_u32_0 ^ 0x61d2180;
+	ecx = state[19];
+	local_u32_0 = local_u32_0 | ecx;
+	state[19] = local_u32_0;
+	state[4] = state[4] & (state[19] + 0x588d79a3);
+
+	if (esi == 5)
+	{
+		eax = call (0x8087210, state, 0xbdf382e1);
+		eax = call (0x164003e9 - eax, state, 0xccb8542b);
+		eax = call (0x1d35c128 - eax, state, 0x82e42b57);
+		eax = call (0x43d2d955 - eax, state, state[8]);
+	}
+
+	edx = state[0];
+	edx = edx + 0x19039f88;
+	edx = edx + extra_state;
+	state[0] = edx;
+	ebx = state[7];
+	ecx = 0xe;
+	ebx = ROR (ebx, ecx);
+	eax = extra_state;
+	eax = ROL (eax, ebx);
+	extra_state = eax;
+	edx = state[8];
+	edx = edx ^ 0x1f3dce4;
+	ecx = state[6];
+	edx = edx + ecx;
+	local_u32_1 = edx;
+	state[6] = edx;
+	eax = state[18] + 0x4f2cb877;
+	state[17] = (eax * state[17]);
+	edx = state[15] * 0x177f5d63;
+	ecx = local_u32_1;
+	ecx = ecx & edx;
+	state[6] = ecx;
+	ebx = state[16];
+	ecx = 0x1;
+	ebx = ROL (ebx, ecx);
+	eax = state[12];
+	state[12] = (ROL (eax, ebx));
+
+	if (esi == 2)
+	{
+		eax = call (0x805ddc0, state, 0xd14f3dcf);
+		eax = call (0x4c6201aa - eax, state, 0xc921ff3a);
+		eax = call (0x3f18b656 - eax, state, 0xc2793931);
+		eax = call (0x27f5be4e - eax, state, state[18]);
+	}
+
+	esi = state[19];
+	esi = esi + 0xbe9fd027;
+	ebx = state[12];
+	esi = esi + ebx;
+	state[19] = esi;
+	edx = state[2] * 0x3ec8c5cb;
+	extra_state = extra_state & edx;
+	ecx = state[4];
+	local_u32_0 = ecx;
+	local_u32_0 = local_u32_0 & 0x48357b75;
+	state[8] = state[8] + (local_u32_0);
+	edx = state[6];
+	edx = edx + 0xf4;
+	eax = state[1];
+	state[1] = (ROL (eax, edx));
+	edx = state[11];
+	edx = edx + 0x13c7dc0f;
+	ecx = state[14];
+	edx = edx ^ ecx;
+	local_u32_3 = edx;
+	state[14] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x13);
+	state[4] = (eax + state[4]);
+	ebx = ebx + 0x15ea2e80;
+	ebx = ebx - state[2];
+	state[12] = ebx;
+	edx = state[11];
+	esi = 0xaff84c32 +  esi + edx ;
+	state[11] = esi;
+	ebx = extra_state;
+	ebx = ebx ^ 0x58dd1776;
+	ebx = ebx ^ state[7];
+	ecx = state[5] * 0x278991a8;
+	eax = state[2];
+	ecx = ecx ^ eax;
+	state[2] = ecx;
+	edx = local_u32_3;
+	edx = 0xf431b0d4 +  ecx + edx ;
+	state[14] = edx;
+	return ebx;
+}
+
+
+u32 mix_major19 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_2;
+	u32	local_u32_3;
+	u32	local_u32_4;
+	u32	local_u32_5;
+	u32	local_u32_6;
+	u32	local_u32_7;
+	u32	local_u32_8;
+	u32	local_u32_9;
+	u32	local_u32_10;
+	u32	local_u32_11;
+	u32	local_u32_12;
+	u32	local_u32_13;
+	u32	local_u32_14;
+	u32	local_u32_15;
+	u32	local_u32_16;
+	u32	local_u32_17;
+	u32	local_u32_18;
+	u32	local_u32_19;
+	u32	local_u32_20;
+	u32	local_u32_21;
+	u32	local_u32_22;
+	u32	local_u32_23;
+	u32	local_u32_24;
+	u32	local_u32_25;
+	u32	local_u32_26;
+	u32	local_u32_28;
+
+	edi = extra_state;
+	ecx = 0xd2670e69 + edi;
+	ebx = state[3];
+	ecx = ecx ^ ebx;
+	local_u32_0 = ecx;
+	state[3] = ecx;
+	ecx = state[2];
+	local_u32_21 = ecx;
+	eax = ecx;
+	eax = eax & 0x3bd91a6d;
+	edi = edi ^ eax;
+	esi = state[12];
+	edi = 0xe162a863 +  esi + edi ;
+	ebx = local_u32_0;
+	ebx = ebx + 0x2f72a89a;
+	ebx = ebx - edi;
+	state[3] = ebx;
+	ebx = ebx & 0x4053f57a;
+	ecx = state[11];
+	ebx = ebx ^ ecx;
+	local_u32_2 = ebx;
+	state[11] = ebx;
+	eax = 0xfe64a9df + esi;
+	edi = edi * eax;
+	ebx = state[6];
+	ebx = ebx ^ 0x6c235a3;
+	ecx = state[14];
+	local_u32_22 = ecx;
+	ebx = ebx ^ ecx;
+	local_u32_3 = ebx;
+	state[6] = ebx;
+	eax = state[7] + 0x7b;
+	ebx = local_u32_2;
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	local_u32_4 = ebx;
+	state[11] = ebx;
+	ebx = state[8];
+	local_u32_23 = ebx;
+	ebx = ebx + 0xdf869976;
+	ecx = state[13];
+	ebx = ebx ^ ecx;
+	local_u32_5 = ebx;
+	state[13] = ebx;
+	eax = state[12] + 0x41;
+	ebx = state[4];
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	local_u32_6 = ebx;
+	state[4] = ebx;
+	ebx = local_u32_5;
+	local_u32_7 = ebx;
+	local_u32_7 = local_u32_7 ^ 0x3d475dc2;
+	ecx = state[9];
+	local_u32_7 = local_u32_7 + ecx;
+	ebx = local_u32_7;
+	state[9] = ebx;
+	eax = edi;
+	eax = ROR (eax, 0x19);
+	eax = eax + local_u32_22;
+	local_u32_8 = eax;
+	state[14] = eax;
+	local_u32_9 = edi;
+	local_u32_9 = local_u32_9 ^ 0x222fef6f;
+	ecx = state[10];
+	local_u32_9 = local_u32_9 + ecx;
+	ecx = local_u32_9;
+	state[10] = ecx;
+	ebx = state[19];
+	local_u32_24 = ebx;
+	ecx = 0x9;
+	ebx = ROR (ebx, ecx);
+	ebx = ebx ^ esi;
+	local_u32_10 = ebx;
+	state[12] = ebx;
+	ebx = local_u32_6;
+	ecx = local_u32_23;
+	ebx = 0x56d964ed +  ecx + ebx ;
+	local_u32_11 = ebx;
+	state[4] = ebx;
+	ebx = state[18];
+	ebx = ebx + 0x132444b;
+	ecx = state[7];
+	local_u32_25 = ecx;
+	ebx = ebx - ecx;
+	local_u32_12 = ebx;
+	state[18] = ebx;
+	state[0] = 0xd35add1b;
+	eax = local_u32_3 * 0x6fe2b2f;
+	edi = edi + eax;
+	ebx = state[1];
+	local_u32_26 = ebx;
+	ebx = ebx + 0xacf6925;
+	ecx = local_u32_8;
+	ecx = ecx * ebx;
+	local_u32_13 = ecx;
+	state[14] = ecx;
+	ebx = edi;
+	ecx = 0x13;
+	ebx = ROR (ebx, ecx);
+	ecx = state[15];
+	ebx = ebx ^ ecx;
+	local_u32_14 = ebx;
+	state[15] = ebx;
+	esi = 0xc0c8f110;
+	esi = esi - ebx;
+	state[0] = esi;
+	eax = edi;
+	eax = eax | 0x2a57ebeb;
+	edi = edi ^ eax;
+	eax = edi;
+	eax = ROL (eax, 0xd);
+	edx = local_u32_10;
+	edx = edx - eax;
+	state[12] = edx;
+	eax = local_u32_5;
+	eax = eax & 0x15a66bda;
+	edi = edi | eax;
+	ecx = local_u32_12;
+	edi = 0x235ac102 +  ecx + edi ;
+	eax = edi;
+	eax = eax + 0x2d;
+	ebx = local_u32_23;
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	state[8] = ebx;
+	edx = edx + 0x3bbb70fe;
+	ebx = state[5];
+	edx = edx ^ ebx;
+	local_u32_15 = edx;
+	state[5] = edx;
+	eax = local_u32_26;
+	eax = eax + 0xec51134a;
+	edi = edi & eax;
+	ecx = local_u32_4 * 0x87095a6;
+	ebx = local_u32_24;
+	ecx = ecx ^ ebx;
+	local_u32_16 = ecx;
+	state[19] = ecx;
+	eax = edx;
+	eax = eax & 0xf43f6fb;
+	esi = esi - eax;
+	state[0] = esi;
+	ecx = local_u32_14;
+	ebx = local_u32_11;
+	ecx = 0xea66f8dc +  ebx + ecx ;
+	state[15] = ecx;
+	ecx = local_u32_16;
+	ecx = ecx + 0xd049cfd6;
+	ebx = local_u32_25;
+	ecx = ecx - ebx;
+	local_u32_17 = ecx;
+	state[19] = ecx;
+	eax = esi;
+	eax = eax ^ 0x253c86f9;
+	ecx = local_u32_5;
+	ecx = ecx - eax;
+	state[13] = ecx;
+	ebx = state[16];
+	local_u32_28 = ebx;
+	eax = ebx;
+	eax = eax | 0x520e84ba;
+	edi = edi + eax;
+	eax = local_u32_12;
+	eax = ROL (eax, 0x17);
+	ebx = local_u32_9;
+	ebx = ebx - eax;
+	local_u32_18 = ebx;
+	state[10] = ebx;
+	eax = edi * 0x2ee5918a;
+	eax = eax + local_u32_12;
+	local_u32_19 = eax;
+	state[18] = eax;
+	eax = local_u32_4;
+	state[7] = (eax ^ 0xf0a32bc) & local_u32_25;
+	eax = edi;
+	eax = eax ^ 0xfa89177;
+	esi = esi - eax;
+	state[0] = esi;
+	eax = local_u32_7;
+	eax = ROL (eax, 0x18);
+	state[2] = (eax | local_u32_21);
+	ecx = local_u32_13 * 0x1cb1574a;
+	state[14] = ecx;
+	ebx = edi;
+	ebx = ebx + 0x8d;
+	esi = ebx;
+	ebx = local_u32_18;
+	ecx = esi;
+	ebx = ROR (ebx, ecx);
+	local_u32_20 = ebx;
+	state[10] = ebx;
+	esi = local_u32_4;
+	esi = esi + 0xef291170;
+	esi = esi & local_u32_26;
+	state[1] = esi;
+	local_u32_17 = local_u32_17 & 0x259a6745;
+	ebx = local_u32_3;
+	ebx = ebx + local_u32_17;
+	state[6] = ebx;
+	eax = state[2] ^ 0x10467b8;
+	edi = edi - eax;
+	eax = local_u32_7;
+	state[18] = (eax + 0xdbff9c2b) * local_u32_19;
+	eax = edi;
+	state[16] = (eax ^ 0x8d4c279) + local_u32_28;
+	eax = local_u32_20;
+	eax = ROR (eax, 0x18);
+	ecx = local_u32_15;
+	ecx = ecx - eax;
+	state[5] = ecx;
+	return edi;
+}
+
+
+u32 mix_major20 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	u32	local_u32_3;
+	u32	local_u32_4;
+	u32	local_u32_5;
+	u32	local_u32_6;
+	u32	local_u32_7;
+	u32	local_u32_8;
+	u32	local_u32_9;
+	u32	local_u32_10;
+	u32	local_u32_11;
+	u32	local_u32_12;
+	u32	local_u32_13;
+
+	eax = extra_state;
+	eax = eax & 0xce;
+	edx = state[14];
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	local_u32_13 = edx;
+	state[14] = edx;
+	edx = state[15];
+	local_u32_9 = edx;
+	eax = edx;
+	eax = eax ^ 0xbf446ce;
+	extra_state = extra_state + eax;
+	ecx = extra_state;
+	ecx = 0xe227ea76 +  ecx + ecx ;
+	extra_state = ecx;
+	state[19] = (state[19] * 0x50ee813 * local_u32_9);
+	ebx = state[10];
+	ebx = ebx + 0x9e;
+	eax = ROR (state[19], ebx);
+	edi = eax;
+	state[19] = edi;
+	eax = extra_state;
+	eax = eax & 0x372035b;
+	ecx = state[16];
+	ecx = ecx - eax;
+	local_u32_0 = ecx;
+	state[16] = ecx;
+	ebx = state[5];
+	edx = 0xd9d1da08 + ebx;
+	ecx = state[18];
+	edx = edx | ecx;
+	local_u32_1 = edx;
+	state[18] = edx;
+	edx = state[11];
+	local_u32_2 = edx;
+	eax = edx;
+	eax = ROL (eax, 0x9);
+	ebx = ebx + eax;
+	local_u32_3 = ebx;
+	state[5] = ebx;
+	ecx = state[0];
+	local_u32_10 = ecx;
+	eax = ecx * 0xffffffc3;
+	ecx = edx;
+	edx = state[8];
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	local_u32_4 = edx;
+	state[8] = edx;
+	eax = local_u32_10;
+	eax = eax ^ 0x46d0b40;
+	extra_state = extra_state + eax;
+	edx = state[1];
+	local_u32_11 = edx;
+	ebx = edx;
+	ebx = ebx + 0xe8684fc;
+	ebx = ebx ^ local_u32_13;
+	state[14] = ebx;
+	eax = ebx * 0x28f80128;
+	extra_state = extra_state - eax;
+	eax = edx;
+	eax = ROR (eax, 0xa);
+	extra_state = extra_state ^ eax;
+	edx = local_u32_0;
+	edx = edx + 0xa0397f;
+	edi = edi * edx;
+	local_u32_13 = edi;
+	state[19] = edi;
+	edx = extra_state;
+	ecx = 0x11;
+	edx = ROL (edx, ecx);
+	esi = edx;
+	esi = esi + state[13];
+	state[13] = esi;
+	edx = state[4];
+	edx = edx + 0x95670090;
+	ecx = state[6];
+	local_u32_12 = ecx;
+	edx = edx - ecx;
+	local_u32_5 = edx;
+	state[4] = edx;
+	extra_state = 0xf2eafbc6;
+	eax = extra_state;
+	eax = eax + 0x32;
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	local_u32_6 = ebx;
+	state[14] = ebx;
+	edi = extra_state;
+	edi = edi + 0xf3369e63;
+	edi = edi * local_u32_10;
+	state[0] = edi;
+	eax = state[3] + 0xfa61efff;
+	eax = eax + local_u32_2;
+	local_u32_7 = eax;
+	state[3] = eax;
+	eax = state[12] ^ 0x75;
+	edx = extra_state;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	eax = local_u32_4;
+	eax = eax + 0xda64c153;
+	state[8] = (eax - state[10]);
+	ebx = state[9];
+	ebx = ebx + 0x22a4da90;
+	ebx = ebx - state[8];
+	state[9] = ebx;
+	eax = local_u32_13;
+	eax = eax | 0x2cd48d0d;
+	edx = edx ^ eax;
+	ecx = local_u32_13;
+	edx = 0xc6a5343a +  ecx + edx ;
+	extra_state = edx;
+	eax = 0xc3172899 + esi;
+	state[13] = (eax - edx);
+	edx = local_u32_5;
+	ecx = 0xb;
+	edx = ROL (edx, ecx);
+	ecx = local_u32_6;
+	edx = edx ^ ecx;
+	local_u32_8 = edx;
+	state[14] = edx;
+	edx = local_u32_13;
+	edx = edx ^ 0x274bf2e7;
+	ecx = local_u32_8;
+	edx = edx ^ ecx;
+	state[19] = edx;
+	ebx = ebx ^ 0x1448b87d;
+	ebx = ebx + local_u32_0;
+	state[16] = ebx;
+	edx = edx ^ 0x7c5e8091;
+	extra_state = extra_state & edx;
+	edx = local_u32_9;
+	edx = edx + 0x2de973cc;
+	ecx = extra_state;
+	edx = edx - ecx;
+	local_u32_13 = edx;
+	state[15] = edx;
+	edx = extra_state;
+	ecx = local_u32_3;
+	edx = 0xd0a90eaf +  ecx + edx ;
+	extra_state = edx;
+	edi = edi + 0x5cd4018;
+	edi = edi * state[17];
+	state[17] = edi;
+	eax = extra_state;
+	eax = ROR (eax, 0x6);
+	ebx = extra_state;
+	ebx = ebx - eax;
+	state[15] = (state[7] ^ 0x1c718ec4) * local_u32_13;
+	eax = local_u32_8;
+	eax = ROL (eax, 0x1f);
+	edx = local_u32_5;
+	ecx = eax;
+	edx = ROR (edx, ecx);
+	state[4] = edx;
+	eax = local_u32_11 * 0x11e6e4aa;
+	edx = local_u32_12;
+	edx = edx - eax;
+	state[6] = edx;
+	eax = local_u32_7;
+	eax = eax + 0x20a45ef;
+	state[3] = (eax - local_u32_8);
+	local_u32_2 = local_u32_2 ^ 0x79362e5;
+	edx = local_u32_8;
+	edx = edx & local_u32_2;
+	state[14] = edx;
+	ebx = ebx ^ 0x434171f9;
+	ebx = ebx ^ local_u32_1;
+	return ebx;
+}
+
+
+u32 mix_major21 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+	eax = state[11] ^ state[2];
+	edx = state[15];
+	eax = eax ^ edx;
+	local_u32_1 = eax;
+	esi = local_u32_1 % 0x0B;
+	ebx = extra_state;
+	ebx = ebx | 0xde;
+	state[13] = (ROR (state[13], ebx));
+	extra_state = extra_state + 0x67e07c3f;
+	ebx = state[6];
+	extra_state = extra_state - ebx;
+	edx = extra_state * 0x157052aa;
+	extra_state = extra_state ^ edx;
+
+	if (esi == 1)
+	{
+		ebx = 0x30da4335;
+		ebx = ebx + 0xd72b9a3f;
+		eax = call (ebx, state, 0x6c3800da);
+		eax = call (0xb736ba1 - eax, state, 0xc7ba581f);
+		eax = call (0x235db53e - eax, state, 0xb44b4b69);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x1e954851;
+		ecx = extra_state;
+		eax = call (ebx, state, ecx);
+		ebx = state[6];
+	}
+
+	eax = ebx;
+	eax = ROR (eax, 0xb);
+	ecx = eax;
+	ebx = ROL (ebx, ecx);
+	state[6] = ebx;
+	state[19] = state[19] + (extra_state * 0x2437b7c7);
+
+	if (esi == 6)
+	{
+		eax = call (0x8067ac8, state, 0x5247491);
+		eax = call (0x264dde6d - eax, state, 0xe8e4c45);
+		eax = call (0x11cc4375 - eax, state, 0xe6e8c2b7);
+		eax = call (0x34539713 - eax, state, state[2]);
+	}
+	state[3] = (state[3] + 0xf9430940) + state[12];
+	state[11] = state[11] - (ROR (state[6], ecx ^ ecx));
+
+	if (esi == 5)
+	{
+		eax = call (0x807fe6c, state, 0xc58218a4);
+		eax = call (0x70185c11 - eax, state, 0x339cbdf5);
+		eax = call (0x2ed96606 - eax, state, 0x806160db);
+		eax = call (0xa0fd5b6 - eax, state, state[8]);
+	}
+	state[0] = state[0] + (state[14] | 0x27c78ea);
+	ebx = extra_state;
+	ebx = ebx & 0x6b2cc678;
+	state[18] = state[18] - ebx;
+	ebx = state[11];
+	ebx = ebx & 0xca;
+	state[15] = (ROR (state[15], ebx));
+
+	if (esi == 4)
+	{
+		ebx = 0x6435daf9;
+		ebx = ebx + 0xa3d296ab;
+		eax = call (ebx, state, 0xd85fa165);
+		eax = call (0x356fdb00 - eax, state, 0xf6b8e3c7);
+		eax = call (0x42376dfb - eax, state, 0xb66f3f3f);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x5f5707b6;
+		edx = extra_state;
+		eax = call (ebx, state, edx);
+	}
+	eax = ROR (state[18], 0x2);
+	extra_state = extra_state ^ eax;
+	state[10] = state[10] + (state[15] * 0x42515298);
+	state[19] = state[19] + (state[2] ^ 0x2a15668a);
+
+	if (esi == 7)
+	{
+		eax = call (0x8060d98, state, 0xdb66bc4d);
+		eax = call (0x2a451bb8 - eax, state, 0xfe02c0e6);
+		eax = call (0x2c400172 - eax, state, 0xcb1f30eb);
+		eax = call (0x1058fe01 - eax, state, state[11]);
+	}
+	state[6] = (state[6] + 0xe28d6e07) - extra_state;
+	state[1] = state[1] & (state[3] + 0x8a7848d);
+	eax = state[17] + 0xf76061aa;
+	state[10] = (eax * state[10]);
+
+	if (esi == 0)
+	{
+		eax = call (0x806c3b8, state, 0x36a66c96);
+		eax = call (0x272f25b9 - eax, state, 0x209ec3db);
+		eax = call (0x4746d883 - eax, state, 0x636f8afc);
+		eax = call (0x1b728cd9 - eax, state, state[12]);
+	}
+
+	eax = state[1];
+	edx = eax;
+	ecx = 0x8;
+	edx = ROR (edx, ecx);
+	state[6] = state[6] + edx;
+	edx = state[2];
+	edx = edx | 0x16a41bdf;
+	state[1] = (eax * edx);
+
+	if (esi == 8)
+	{
+		eax = call (0x808d330, state, 0xa8e9c2c);
+		eax = call (0x37f92cc5 - eax, state, 0xb7817f0f);
+		eax = call (0x72eb1b00 - eax, state, 0x5a1bbab6);
+		eax = call (0x2c9bd847 - eax, state, state[3]);
+	}
+	state[0] = (state[0] + 0x21889c31) - state[4];
+	eax = extra_state;
+	eax = eax ^ 0x14a9f943;
+	eax = eax * extra_state;
+	extra_state = eax;
+	state[5] = state[5] | (state[13] + 0x5c58f04e);
+	state[19] = state[19] ^ (state[14] + 0x49437c23);
+
+	if (esi == 2)
+	{
+		eax = call (0x805dd74, state, 0xc952035f);
+		eax = call (0xdf8cd43 - eax, state, 0x2105a21e);
+		eax = call (0x434aa6e6 - eax, state, 0x10d28c9e);
+		eax = call (0x96396a5 - eax, state, state[13]);
+	}
+	state[9] = state[9] | (state[6] ^ 0x360a1ff0);
+	edx = state[14];
+	local_u32_0 = edx;
+	local_u32_0 = local_u32_0 << 7;
+	ecx = local_u32_0;
+	ecx = ecx + edx;
+	ecx = ecx << 11;
+	ecx = ecx + edx;
+	eax = edx + 4 * ecx;
+	eax = eax << 5;
+	eax = eax - edx;
+	eax = eax << 2;
+	state[13] = state[13] & (eax - edx);
+	edx = extra_state;
+	edx = 0x3053624 +  edx + edx ;
+	extra_state = edx;
+
+	if (esi == 3)
+	{
+		eax = call (0x8054bc8, state, 0x9fa8d97f);
+		eax = call (0x300f02d5 - eax, state, 0x86c39014);
+		eax = call (0x1fd3fc65 - eax, state, 0x8c273c75);
+		eax = call (0x704727fa - eax, state, state[17]);
+	}
+
+	extra_state = extra_state + 0xc7af02f5;
+	ecx = state[1];
+	extra_state = extra_state - ecx;
+	extra_state = extra_state & 0xc11a9b11;
+	state[6] = state[6] ^ (state[12] + 0xac2e6058);
+	edx = state[17];
+	edx = edx + 0xd87e9f50;
+	ecx = state[12];
+	ecx = ecx ^ edx;
+	state[12] = ecx;
+
+	if (esi == 10)
+	{
+		eax = call (0x807d7f8, state, 0xc7b49f8);
+		eax = call (0xb261fb9 - eax, state, 0x131c4743);
+		eax = call (0xca94180 - eax, state, 0x310e85ab);
+		eax = call (0xa485a1e - eax, state, state[6]);
+	}
+
+	ebx = state[7];
+	ebx = ebx ^ 0xe1;
+	eax = state[9];
+	state[9] = (ROL (eax, ebx));
+	edx = state[14];
+	edx = edx ^ 0xff63c7c;
+	extra_state = extra_state + edx;
+
+	if (esi == 9)
+	{
+		eax = call (0x8057440, state, 0x4a7d7f69);
+		eax = call (0xb164938 - eax, state, 0x639b2836);
+		eax = call (0x32d0a1f8 - eax, state, 0xf816391f);
+		eax = call (0x96116fa - eax, state, state[5]);
+	}
+
+	esi = state[9];
+	esi = esi ^ 0x132ee304;
+	ebx = state[6];
+	esi = esi ^ ebx;
+	state[9] = esi;
+	ecx = state[14];
+	ecx = ecx + 0x11e0a175;
+	ecx = ecx * state[12];
+	state[12] = ecx;
+	eax = extra_state;
+	local_u32_1 = eax;
+	local_u32_1 = local_u32_1 ^ 0x267e2568;
+	edx = state[14];
+	edx = edx - local_u32_1;
+	local_u32_2 = edx;
+	state[14] = edx;
+	eax = state[3];
+	eax = ROL (eax, 0xb);
+	local_u32_1 = eax;
+	eax = state[0];
+	state[0] = (ROL (eax, local_u32_1));
+	edx = state[8];
+	edx = edx ^ 0xe173238;
+	edx = edx ^ ebx;
+	state[8] = edx;
+	ebx = ebx + 0xee9e5b6a;
+	ebx = ebx * eax;
+	state[0] = ebx;
+	ebx = state[15];
+	ecx = ebx * 0x1fe0f470;
+	esi = esi | ecx;
+	state[9] = esi;
+	eax = state[2] + 0x69;
+	esi = eax;
+	eax = state[2];
+	state[2] = (ROL (eax, esi));
+	edx = local_u32_2 * 0x1b4bf87b;
+	ecx = state[16];
+	edx = edx ^ ecx;
+	state[16] = edx;
+	eax = state[10] + 0x2383020a;
+	eax = eax & edx;
+	local_u32_1 = eax;
+	state[16] = eax;
+	edx = state[7];
+	ebx = 0xeb32d6f9 +  edx + ebx ;
+	eax = ROL (eax, 0x11);
+	ebx = ebx ^ eax;
+	state[15] = ebx;
+	ebx = extra_state;
+	ebx = ebx | 0x20914367;
+	ebx = ebx + local_u32_1;
+	state[16] = ebx;
+	return extra_state;
+}
+
+
+u32 mix_major22 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_2;
+
+	ebx = extra_state;
+	esi = ebx % 0x0B;
+	ebx = ebx ^ 0xc3115e;
+	state[12] = state[12] + ebx;
+	eax = state[19] + 0x4f9d3712;
+	state[19] = (eax - extra_state);
+	edx = state[11] * 0x37e68d12;
+	state[16] = state[16] & edx;
+
+	if (esi == 1)
+	{
+		eax = call (0x806bfb0, state, 0x1e03d70a);
+		eax = call (0x419fc1e3 - eax, state, 0x8b9fc88e);
+		eax = call (0x2688408f - eax, state, 0xa966b21d);
+		eax = call (0x4a24c19f - eax, state, state[7]);
+	}
+
+	edx = state[18];
+	eax = edx;
+	eax = eax ^ 0x4ea934da;
+	extra_state = extra_state - eax;
+	edx = edx ^ 0x18a1ba1a;
+	state[1] = state[1] & edx;
+
+	if (esi == 0)
+	{
+		ebx = 0x30e0a1fa;
+		ebx = ebx + 0xd72946f2;
+		eax = call (ebx, state, 0x2f3d2bc4);
+		eax = call (0x10fff3bd - eax, state, 0x36d5c53e);
+		eax = call (0x2b85d7e9 - eax, state, 0x963dc5d);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x263f9a3e;
+		ecx = extra_state;
+		eax = call (ebx, state, ecx);
+	}
+	state[18] = state[18] + (state[17] * 0x3bf23dc7);
+	edx = state[5];
+	eax = edx;
+	state[12] = state[12] + (eax ^ 0x3537eae2);
+	state[9] = (state[9] + 0xf4d4e1ee) + edx;
+	eax = state[16];
+	state[11] = state[11] - (ROL (eax, 0x16));
+
+	if (esi == 2)
+	{
+		eax = call (0x80871a4, state, 0x400fb62);
+		eax = call (0x99351ad - eax, state, 0xcaaec0f4);
+		eax = call (0x42dffe77 - eax, state, 0xfdc34e52);
+		eax = call (0x1a5d42d3 - eax, state, state[16]);
+	}
+
+	ebx = state[1];
+	ebx = ebx ^ 0x80;
+	eax = state[17];
+	ecx = ebx;
+	state[17] = ROL (eax, ecx);
+	eax = ROR (state[5], 0x1);
+	extra_state = extra_state | eax;
+	edx = state[11];
+	edx = edx + 0xf0871714;
+	edx = edx + extra_state;
+	state[11] = edx;
+
+	if (esi == 3)
+	{
+		eax = call (0x8077f60, state, 0xed238c8b);
+		eax = call (0x3be0f255 - eax, state, 0xa7549ca);
+		eax = call (0x47ee842e - eax, state, 0x1b430ac9);
+		eax = call (0x6fe170a9 - eax, state, state[18]);
+	}
+
+	extra_state = extra_state & 0x1b54f10;
+	state[15] = (state[15] + 0xe9b29695) + state[1];
+	state[9] = state[9] ^ (state[19] + 0xf9850900);
+
+	if (esi == 8)
+	{
+		eax = call (0x806bfb0, state, 0x2b0ca8e6);
+		eax = call (0x329166ef - eax, state, 0xecb73833);
+		eax = call (0xfdc70ea - eax, state, 0x7e9a5820);
+		eax = call (0x4c30e61d - eax, state, state[11]);
+	}
+	state[0] = (state[0] + 0x224785) + state[6];
+	state[1] = state[1] - (state[9] * 0x602a9ff);
+
+	if (esi == 4)
+	{
+		eax = call (0x809e2f8, state, 0xcd96ea47);
+		eax = call (0x55cf4a09 - eax, state, 0x2975b593);
+		eax = call (0x16c5a830 - eax, state, 0x474baee1);
+		eax = call (0x5b0b3b81 - eax, state, state[10]);
+	}
+
+	eax = state[5];
+	state[14] = state[14] + (ROL (eax, 0x1e));
+	state[8] = state[8] - (state[12] * 0x223c8eff);
+	state[3] = state[3] + (state[11] * 0xc99e9b5);
+
+	if (esi == 7)
+	{
+		eax = call (0x807fe94, state, 0x7fb35893);
+		eax = call (0x1aacf9b4 - eax, state, 0x30afb834);
+		eax = call (0x1d1b6cad - eax, state, 0x3facef1);
+		eax = call (0xea6f41d - eax, state, state[13]);
+	}
+	eax = state[3] ^ 0xf8e252d;
+	eax = eax * extra_state;
+	extra_state = eax;
+	state[12] = state[12] + (eax & 0xa58c765);
+
+	if (esi == 10)
+	{
+		eax = call (0x807de40, state, 0x9eafe104);
+		eax = call (0x3f361f94 - eax, state, 0x4e98d8f0);
+		eax = call (0xeb18693 - eax, state, 0x74a127c5);
+		eax = call (0x4267cf74 - eax, state, state[13]);
+	}
+	state[11] = state[11] - (state[3] ^ 0x59507436);
+	eax = state[10] ^ 0x1082cbd7;
+	state[10] = (eax ^ extra_state);
+
+	if (esi == 9)
+	{
+		eax = call (0x8060dc0, state, 0xd9aa991c);
+		eax = call (0x1a0d82d0 - eax, state, 0x7d828c2b);
+		eax = call (0x157aa85b - eax, state, 0x3430b0d1);
+		eax = call (0x1b6b7b1e - eax, state, state[3]);
+	}
+
+	ebx = state[2] * 0x22b21be0;
+	state[3] = (ROR (state[3], ebx));
+	ebx = extra_state;
+	ebx = ebx + 0xc1;
+	state[8] = (ROR (state[8], ebx));
+	edx = state[15] * 0x1627a9f4;
+	state[17] = state[17] ^ edx;
+
+	if (esi == 6)
+	{
+		ebx = 0x2a676f96;
+		ebx = ebx + 0xdd9e6e02;
+		eax = call (ebx, state, 0x7725a142);
+		eax = call (0x456f03c3 - eax, state, 0x3c2476da);
+		eax = call (0x39f235f3 - eax, state, 0x11c27e33);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x112d35d0;
+		ecx = extra_state;
+		eax = call (ebx, state, ecx);
+	}
+
+	eax = state[11];
+	edx = eax;
+	ecx = 0x15;
+	edx = ROL (edx, ecx);
+	edx = edx * extra_state;
+	extra_state = edx;
+	eax = eax + 0x27d2e810;
+	state[3] = (eax ^ state[3]);
+	edx = state[16] * 0x2bb9259f;
+	state[3] += edx;
+
+	if (esi == 5)
+	{
+		ebx = 0x5b1d95ac;
+		ebx = ebx + 0xacea68c0;
+		eax = call (ebx, state, 0x7f4eb374);
+		eax = call (0x4cfcfb25 - eax, state, 0x88ae07f);
+		eax = call (0x2e7983f6 - eax, state, 0x62b4120a);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x30530b43;
+		eax = extra_state;
+		eax = call (ebx, state, eax);
+	}
+
+	edx = state[19];
+	edx = edx ^ 0x2b7f6e80;
+	ecx = state[17];
+	edx = edx ^ ecx;
+	local_u32_1 = edx;
+	state[19] = edx;
+	ebx = state[0];
+	ecx = 0x18;
+	ebx = ROL (ebx, ecx);
+	ebx = ebx ^ state[7];
+	state[7] = ebx;
+	esi = extra_state;
+	esi = esi | 0x334e9536;
+	esi = esi ^ state[4];
+	state[4] = esi;
+	eax = extra_state;
+	eax = ROL (eax, 0x13);
+	edx = state[11];
+	edx = edx - eax;
+	state[11] = edx;
+	ecx = extra_state;
+	ecx = ecx + 0xf8e5b64c;
+	eax = state[12];
+	ecx = ecx ^ eax;
+	local_u32_2 = ecx;
+	state[12] = ecx;
+	esi = 0x661bc871 +  esi + edx ;
+	state[11] = esi;
+	edx = state[0];
+	edx = edx & 0xc9;
+	eax = local_u32_1;
+	eax = ROR (eax, edx);
+	local_u32_1 = eax;
+	state[19] = eax;
+	edx = extra_state;
+	local_u32_0 = edx;
+	local_u32_0 = local_u32_0 & 0x7b85306;
+	ecx = local_u32_0;
+	state[15] = state[15] + ecx;
+	ebx = ebx + 0x1394a239;
+	ebx = ebx - local_u32_2;
+	state[7] = ebx;
+	eax = state[3] + 0x4d2d2d3c;
+	state[17] = (eax ^ state[17]);
+	ebx = state[6];
+	local_u32_0 = ebx;
+	local_u32_0 = local_u32_0 & 0x312a10;
+	edx = local_u32_2;
+	edx = edx - local_u32_0;
+	local_u32_2 = edx;
+	state[12] = edx;
+	ecx = local_u32_1;
+	ecx = ecx + 0xba345c89;
+	eax = state[13];
+	ecx = ecx | eax;
+	edx = extra_state;
+	edx = edx + 0x2098c7b4;
+	ecx = ecx * edx;
+	state[13] = ecx;
+	eax = state[10];
+	eax = ROL (eax, 0x16);
+	ebx = ebx & eax;
+	local_u32_2 = local_u32_2 & 0x13175e3d;
+	ebx = ebx - local_u32_2;
+	state[6] = ebx;
+	return extra_state;
+}
+
+
+u32 mix_major23 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_1;
+	u32	local_u32_3;
+
+	u8	local_u8_17;
+
+	ebx = extra_state;
+	esi = ebx % 0x0B;
+	eax = state[5];
+	eax = ROL (eax, 0xb);
+	extra_state = extra_state & eax;
+	eax = extra_state;
+	state[18] = state[18] - (ROR (eax, 0x17));
+	edx = state[19];
+	edx = edx + 0xb42a2f00;
+	edx = edx + extra_state;
+	state[19] = edx;
+
+	if (esi == 5)
+	{
+		eax = call (0x806c008, state, 0x3299ed82);
+		eax = call (0x152bf5ea - eax, state, 0x5fb25c93);
+		eax = call (0xa6e607b - eax, state, 0x656b56c1);
+		eax = call (0x702c0b9a - eax, state, state[2]);
+	}
+
+	ecx = state[0];
+	ecx = ecx + 0x71507fd7;
+	ecx = ecx + state[12];
+	state[0] = ecx;
+	eax = extra_state;
+	edx = state[19];
+	eax = 0x9a68096 +  edx + eax ;
+	extra_state = eax;
+
+	if (esi == 6)
+	{
+		eax = call (0x8077f3c, state, 0x322e0cfc);
+		eax = call (0x2057f051 - eax, state, 0xa6cc505f);
+		eax = call (0x1efe293f - eax, state, 0xf24ba18a);
+		eax = call (0x394280dd - eax, state, state[10]);
+	}
+
+	edx = state[0];
+	edx = edx + 0x238788d8;
+	edx = edx + state[2];
+	state[0] = edx;
+	ebx = state[15];
+	ebx = ebx + 0xd6;
+	state[3] = (ROR (state[3], ebx));
+	edx = state[10];
+	edx = edx + 0xdf1e2fab;
+	edx = edx - state[9];
+	state[10] = edx;
+
+	if (esi == 3)
+	{
+		ebx = 0xe4a75d2;
+		ebx = ebx + 0xf9bb97ee;
+		eax = call (ebx, state, 0xec209445);
+		eax = call (0x8905b5f - eax, state, 0x3d280587);
+		eax = call (0x3f4ee89b - eax, state, 0xb5128462);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x4b7a3a86;
+		ecx = extra_state;
+		eax = call (ebx, state, ecx);
+	}
+
+	eax = extra_state;
+	eax = ROL (eax, 0x1b);
+	extra_state = extra_state ^ eax;
+	eax = ROR (state[11], 0x17);
+	extra_state = extra_state - eax;
+
+	if (esi == 7)
+	{
+		eax = call (0x809e938, state, 0xcd2a804a);
+		eax = call (0x2ccece0e - eax, state, 0xcf5e15d2);
+		eax = call (0xa1a4542 - eax, state, 0xadfc7bd);
+		eax = call (0x17e64416 - eax, state, state[15]);
+	}
+	eax = state[18] + 0x13ba6066;
+	edx = state[10];
+	state[18] = eax + edx;
+	state[11] = (state[11] + 0xd44a337d) - edx;
+	state[17] = state[17] & (state[3] + 0xad722336);
+
+	if (esi == 4)
+	{
+		eax = call (0x80750c0, state, 0x46a58b1);
+		eax = call (0x2864e382 - eax, state, 0xa734eeb5);
+		eax = call (0x74416108 - eax, state, 0x2fa0a3e5);
+		eax = call (0xc557dad - eax, state, state[8]);
+	}
+
+	eax = extra_state;
+	eax = ROL (eax, 0xf);
+	edx = state[7];
+	edx = edx - eax;
+	state[7] = edx;
+	eax = state[6] + 0x45d2e311;
+	extra_state = extra_state | eax;
+	eax = 0xd196f18f + edx;
+	extra_state = extra_state ^ eax;
+	eax = extra_state;
+	eax = eax ^ 0x48;
+	ecx = eax;
+	edx = ROL (edx, ecx);
+	state[7] = edx;
+
+	if (esi == 8)
+	{
+		eax = call (0x809e914, state, 0x6b73b12);
+		eax = call (0x12c598f5 - eax, state, 0x96165b93);
+		eax = call (0x7c601946 - eax, state, 0x76fb5502);
+		eax = call (0x3a38ace7 - eax, state, state[13]);
+	}
+	state[6] = state[6] + (state[18] * 0x413db8c1);
+	state[0] = state[0] ^ (state[19] + 0x2be41642);
+	eax = ROR (state[9], 0x12);
+	state[4] = (eax * state[4]);
+
+	if (esi == 10)
+	{
+		ebx = 0xe88e3f4;
+		ebx = ebx + 0xf97db100;
+		eax = call (ebx, state, 0x76fc0fc3);
+		eax = call (0x621f7db0 - eax, state, 0x99abb31b);
+		eax = call (0x2abc77f5 - eax, state, 0xecd9600b);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x13e31049;
+		eax = extra_state;
+		eax = call (ebx, state, eax);
+	}
+
+	ebx = state[6] * 0x20d47013;
+	eax = extra_state;
+	eax = ROL (eax, ebx);
+	extra_state = eax;
+	edx = state[3];
+	edx = edx & 0x9262077;
+	edx = edx * state[17];
+	state[17] = edx;
+	ecx = state[14];
+	ecx = ecx + 0xfa8ae5a0;
+	state[13] = state[13] ^ ecx;
+
+	if (esi == 1)
+	{
+		eax = call (0x805ee24, state, 0xcf2aff70);
+		eax = call (0x5ac4b739 - eax, state, 0xd8ed9a57);
+		eax = call (0x3dcf30b6 - eax, state, 0x3c340720);
+		eax = call (0x99773f6 - eax, state, state[13]);
+	}
+
+	ebx = state[2];
+	ecx = 0x11;
+	ebx = ROL (ebx, ecx);
+	eax = extra_state;
+	eax = ROR (eax, ebx);
+	extra_state = eax;
+	edx = state[13];
+	edx = edx + 0xffd58fe8;
+	edx = edx - state[8];
+	state[13] = edx;
+	ecx = state[6];
+	ecx = ecx ^ 0x1d606322;
+	state[8] = (state[8] + ecx);
+
+	if (esi == 9)
+	{
+		eax = call (0x8067aa8, state, 0x69ef8893);
+		eax = call (0x4a0d98ab - eax, state, 0xe33b026c);
+		eax = call (0x3f7323c8 - eax, state, 0x26ca48f6);
+		eax = call (0xa0816bf - eax, state, state[10]);
+	}
+	state[16] = (state[16] + 0xe3a240f7) + state[19];
+	eax = ROR (state[14], 0x3);
+	extra_state = extra_state ^ eax;
+
+	if (esi == 0)
+	{
+		eax = call (0x80872a0, state, 0x4cb39f95);
+		eax = call (0x942a559 - eax, state, 0xc2043573);
+		eax = call (0x334fec60 - eax, state, 0x9d6390ca);
+		eax = call (0x6baef283 - eax, state, state[4]);
+	}
+	state[18] = (state[7] | 0x196e1a4c) ^ state[18];
+	eax = state[18] ^ 0xffcac8f;
+	extra_state = extra_state + eax;
+	eax = state[1] ^ 0xb09adec;
+	state[1] = (eax ^ state[0]);
+
+	if (esi == 2)
+	{
+		eax = call (0x809e2f8, state, 0x7849b1e);
+		eax = call (0x3d8402b6 - eax, state, 0x1c2fd0b9);
+		eax = call (0x5f9918df - eax, state, 0x4be7977);
+		eax = call (0x8ce694a - eax, state, state[11]);
+	}
+	eax = state[2] + 0x328852b1;
+	eax = eax * state[14];
+	local_u32_0 = eax;
+	state[14] = eax;
+	edx = state[15];
+	edx = edx & 0x1e0a37a;
+	ecx = state[8];
+	edx = edx ^ ecx;
+	local_u32_3 = edx;
+	state[8] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0xd);
+	esi = eax;
+	esi = esi * state[3];
+	state[3] = esi;
+	edx = state[18];
+	edx = edx + 0xc9c48b38;
+	state[6] = state[6] ^ edx;
+	ecx = state[14];
+	ecx = ecx + 0x7d;
+	local_u8_17 = ecx;
+	ebx = state[2];
+	ebx = ROL (ebx, ecx);
+	state[2] = ebx;
+	eax = state[10];
+	local_u32_1 = eax;
+	eax = ROR (eax, 0xd);
+	extra_state = extra_state ^ eax;
+	local_u8_17 = local_u8_17 + 0x86;
+	eax = extra_state;
+	eax = ROR (eax, local_u8_17);
+	edx = local_u32_3;
+	edx = edx + 0xef774f5b;
+	state[12] = state[12] ^ edx;
+	local_u32_3 = eax;
+	local_u32_3 = local_u32_3 ^ 0x58f00a07;
+	ecx = local_u32_3;
+	eax = eax + ecx;
+	extra_state = eax;
+	eax = state[9] ^ 0x5483deb2;
+	state[9] = (eax ^ extra_state);
+	edx = state[0] * 0x2c63f116;
+	edx = edx | local_u32_0;
+	state[14] = edx;
+	local_u32_1 = local_u32_1 ^ 0xa051af;
+	esi = esi + local_u32_1;
+	state[3] = esi;
+	extra_state = extra_state + 0xfdb247f0;
+	ecx = state[0];
+	extra_state = extra_state - ecx;
+	ebx = ebx + 0xf9432db1;
+	ebx = ebx - extra_state;
+	state[2] = ebx;
+	return extra_state;
+}
+
+
+u32 mix_major24 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_0;
+	u32	local_u32_2;
+	u32	local_u32_3;
+	eax = state[17] ^ state[8];
+	edx = state[10];
+	eax = eax ^ edx;
+	local_u32_2 = eax;
+	esi = local_u32_2 % 0x0B;
+	eax = state[7];
+	eax = ROL (eax, ecx ^ ecx);
+	eax = eax * extra_state;
+	eax = eax ^ 0x13a77c41;
+	edx = state[0];
+	eax = eax ^ edx;
+	local_u32_0 = eax;
+	ebx = state[3];
+	ebx = ebx + 0x10;
+	eax = state[2];
+	state[2] = (ROL (eax, ebx));
+
+	if (esi == 1)
+	{
+		eax = call (0x8069514, state, 0x30ff7e08);
+		eax = call (0x488919be - eax, state, 0xc7d3347e);
+		eax = call (0x28e9e772 - eax, state, 0x2de21bf8);
+		eax = call (0x2693299b - eax, state, state[12]);
+	}
+
+	edx = local_u32_0;
+	edx = edx + 0xf4135aef;
+	local_u32_0 = local_u32_0 ^ edx;
+	ebx = state[6];
+	ebx = ebx + 0x9;
+	eax = local_u32_0;
+	eax = ROL (eax, ebx);
+	local_u32_0 = eax;
+	eax = state[13];
+	state[14] = state[14] + (ROL (eax, 0x19));
+	edx = state[8];
+	edx = edx + 0x19454e81;
+	state[16] = state[16] ^ edx;
+
+	if (esi == 10)
+	{
+		eax = call (0x806c398, state, 0xe80f6749);
+		eax = call (0xf9d18f2 - eax, state, 0xc1ae7aad);
+		eax = call (0x21073e69 - eax, state, 0x197cf7f5);
+		eax = call (0x1309a52e - eax, state, state[8]);
+	}
+
+	ecx = local_u32_0;
+	ecx = ecx + 0xcb4ea17e;
+	ecx = ecx * state[3];
+	state[3] = ecx;
+	ebx = state[17];
+	ebx = ebx ^ 0x34;
+	eax = state[17];
+	state[17] = (ROL (eax, ebx));
+	edx = state[11] * 0x2c0fd99b;
+	local_u32_0 = local_u32_0 - edx;
+
+	if (esi == 3)
+	{
+		ebx = 0x288bfc73;
+		ebx = ebx + 0xdf7c0221;
+		eax = call (ebx, state, 0x85377b45);
+		eax = call (0x352edeae - eax, state, 0x5027e457);
+		eax = call (0x15bb1318 - eax, state, 0xea83899c);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x3ab49695;
+		ecx = local_u32_0;
+		eax = call (ebx, state, ecx);
+	}
+	state[12] = (state[12] + 0x7e55995) + state[19];
+	state[14] = state[14] - (state[13] * 0x3dd1a491);
+	edx = state[8];
+	eax = edx;
+	state[4] = state[4] | (eax & 0x162b97ec);
+	edx = edx + state[3];
+	edx = edx + 0xc3000fb6;
+	state[8] = edx;
+
+	if (esi == 6)
+	{
+		eax = call (0x809e938, state, 0xd4f24071);
+		eax = call (0x2f41d1ce - eax, state, 0x425840fc);
+		eax = call (0x2007afe3 - eax, state, 0x2fd37052);
+		eax = call (0x805684f - eax, state, state[9]);
+	}
+	state[13] = state[13] + (state[8] ^ 0x2a161224);
+	state[10] = state[1] * 0xc693c6b + state[10];
+	eax = state[10] + 0xecde6b96;
+	state[4] = (eax * state[4]);
+
+	if (esi == 9)
+	{
+		eax = call (0x807fe6c, state, 0x18e7a164);
+		eax = call (0x19c96e35 - eax, state, 0x3f94809c);
+		eax = call (0xe08ac69 - eax, state, 0x66e81e44);
+		eax = call (0x40ccd00d - eax, state, state[13]);
+	}
+	state[8] = (ROR (state[13], 0x19)) * state[8];
+	state[17] = state[17] ^ (ROR (state[14], 0x18));
+	eax = state[4] + 0x1c938114;
+	local_u32_0 = local_u32_0 & eax;
+
+	if (esi == 2)
+	{
+		ebx = 0x28e39724;
+		ebx = ebx + 0xdf232908;
+		eax = call (ebx, state, 0xc053579b);
+		eax = call (0x13d3c13d - eax, state, 0x66f9a34e);
+		eax = call (0x1b28e67c - eax, state, 0xeadbae6d);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x24b8f828;
+		eax = local_u32_0;
+		eax = call (ebx, state, eax);
+	}
+
+	eax = local_u32_0;
+	state[0] = (eax + 0xc328858) * state[0];
+	eax = state[15] | 0x137d6d8;
+	local_u32_0 = local_u32_0 + eax;
+	eax = state[3] + 0xae4f0ae;
+	state[3] = (eax - state[9]);
+
+	if (esi == 0)
+	{
+		eax = call (0x808baf4, state, 0xa1fa0018);
+		eax = call (0x47aae46b - eax, state, 0x1dd709e1);
+		eax = call (0x2f3b330f - eax, state, 0x4e3fd7db);
+		eax = call (0x2639d4d4 - eax, state, state[3]);
+	}
+
+	edx = state[10];
+	edx = edx + 0xe55615;
+	edx = edx * local_u32_0;
+	ecx = state[15];
+	ecx = ecx | 0x120d32e3;
+	ecx = ecx | edx;
+	state[15] = ecx;
+	ebx = state[15];
+	ebx = ebx ^ 0x2c;
+	ecx = ebx;
+	edx = ROL (edx, ecx);
+	local_u32_0 = edx;
+	ebx = state[7];
+	ecx = ecx ^ ecx;
+	ebx = ROR (ebx, ecx);
+	state[6] = (ROR (state[6], ebx));
+
+	if (esi == 7)
+	{
+		eax = call (0x805ddc0, state, 0xeacbc54);
+		eax = call (0xb442a97 - eax, state, 0x6fbd10d4);
+		eax = call (0xaa7ef99 - eax, state, 0x39f736fe);
+		eax = call (0x12033c0d - eax, state, state[17]);
+	}
+
+	edx = state[4];
+	eax = edx;
+	state[3] = state[3] - (eax | 0x2587388f);
+	state[2] = (state[2] + 0xffda87c9) + edx;
+	eax = ROR (state[2], 0x11);
+	local_u32_0 = local_u32_0 - eax;
+	state[1] = state[1] + (state[6] * 0x34aabe3a);
+
+	if (esi == 4)
+	{
+		eax = call (0x806c400, state, 0xf7024f3e);
+		eax = call (0x28b5a4f6 - eax, state, 0x3ba2eb20);
+		eax = call (0x2239847a - eax, state, 0x6f94795b);
+		eax = call (0xa8e3990 - eax, state, state[16]);
+	}
+	state[17] = (state[17] ^ 0x3d17e55a) ^ state[13];
+	eax = state[14] + 0xdaf5121;
+	state[15] = (eax * state[15]);
+
+	if (esi == 5)
+	{
+		ebx = 0x1506bb07;
+		ebx = ebx + 0xf301438d;
+		eax = call (ebx, state, 0x7f5ebb7d);
+		eax = call (0x1ac91686 - eax, state, 0x533af768);
+		eax = call (0xb263305 - eax, state, 0x473d981e);
+		ebx = eax;
+		ebx = 0 - ebx;
+		ebx = ebx + 0x14cad1ef;
+		eax = local_u32_0;
+		eax = call (ebx, state, eax);
+	}
+
+	ecx = state[17] * 0x1c8e3df4;
+	edx = state[6];
+	edx = ROL (edx, ecx);
+	state[6] = edx;
+	eax = state[15] ^ 0x14819516;
+	edx = edx + eax;
+	state[6] = edx;
+
+	if (esi == 8)
+	{
+		eax = call (0x8067ac8, state, 0x463d99a3);
+		eax = call (0x1a270bbc - eax, state, 0xec4bdf78);
+		eax = call (0x8a91858 - eax, state, 0x2c290c4);
+		eax = call (0xa6261b3 - eax, state, state[5]);
+	}
+
+	edx = state[14];
+	edx = edx + 0xc735f228;
+	state[8] = state[8] | edx;
+	ebx = state[17];
+	ebx = ebx + 0x7e;
+	eax = ROR (state[7], ebx);
+	esi = eax;
+	state[7] = esi;
+	edx = local_u32_0 * 0x340d3ff2;
+	edx = edx * state[10];
+	local_u32_0 = edx;
+	ecx = state[14];
+	ecx = ecx + 0x57a8d4b3;
+	ecx = ecx * state[16];
+	state[16] = ecx;
+	eax = state[6] + 0x534be48e;
+	state[6] = (eax - state[1]);
+	ebx = state[9] * 0xd695251;
+	ebx = ebx ^ state[2];
+	state[2] = ebx;
+	eax = esi;
+	state[12] = state[12] ^ (ROR (eax, ecx ^ ecx));
+	edx = state[17];
+	local_u32_3 = edx;
+	ecx = state[1];
+	ecx = 0xf022cb99 +  edx + ecx ;
+	state[1] = ecx;
+	eax = local_u32_0;
+	local_u32_2 = eax;
+	local_u32_2 = local_u32_2 | 0x2954ac20;
+	edx = local_u32_2;
+	state[4] = state[4] + edx;
+	local_u32_2 = eax;
+	local_u32_2 = local_u32_2 ^ 0x1b904466;
+	esi = esi * local_u32_2;
+	state[7] = esi;
+	ecx = eax * 0x31fef0e1;
+	ebx = ebx - ecx;
+	state[2] = ebx;
+	eax = local_u32_3;
+	eax = eax + 0xf0359c9e;
+	local_u32_0 = local_u32_0 ^ eax;
+	return local_u32_0;
+}
+
+
+u32 mix_minor0 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = state[14] * 0x56be2363;
+	edx = state[12];
+	edx = ROR (edx, ecx);
+	state[12] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x664095b;
+	return eax + 0x8e3a5a95;
+}
+
+
+u32 mix_minor1 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = extra_state;
+	edx = state[14];
+	edx = edx ^ 0x363a614;
+	edx = edx ^ ecx;
+	state[14] = edx;
+	eax = ecx;
+	eax = eax ^ 0x5bd077b0;
+	ecx = 0xf16362eb + eax;
+	return ecx;
+}
+
+
+u32 mix_minor2 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	state[12] = state[12] * 0x4b4f2e1 * state[1];
+	eax = 0x512b59f;
+	eax = eax - extra_state;
+	return eax ^ 0x19ec593a;
+}
+
+
+u32 mix_minor3 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[10];
+	edx = edx + 0xfa1f1e0b;
+	edx = edx * state[2];
+	state[2] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x10);
+	return eax + 0x2923ff1;
+}
+
+
+u32 mix_minor4 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = extra_state;
+	edx = state[0];
+	edx = edx + 0x4c3ef3f1;
+	edx = edx + ecx;
+	state[0] = edx;
+	eax = ecx;
+	eax = eax ^ 0x4895f29;
+	ecx = 0xc9bb4158 + eax;
+	return ecx;
+}
+
+
+u32 mix_minor5 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[19];
+	edx = edx ^ 0x43b6b05;
+	state[19] = state[19] + edx;
+	eax = 0x13b19992;
+	eax = eax - extra_state;
+	return eax ^ 0x638f13d;
+}
+
+
+u32 mix_minor6 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	edx = state[4];
+	ecx = 0x12;
+	edx = ROR (edx, ecx);
+	state[18] = state[18] - edx;
+	eax = 0x51aad8a1;
+	eax = eax - extra_state;
+	return eax ^ 0x14e686df;
+}
+
+
+u32 mix_minor7 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[10];
+	edx = edx + 0xfc9be92d;
+	state[0] = state[0] & edx;
+	eax = 0x228934d9;
+	eax = eax - extra_state;
+	return eax ^ 0xaaa8330;
+}
+
+
+u32 mix_minor8 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+
+	edx = extra_state;
+	ecx = edx;
+	ecx = ecx + 0x8;
+	ebx = state[19];
+	ebx = ROL (ebx, ecx);
+	state[19] = ebx;
+	eax = 0xb3c2ca;
+	eax = eax - edx;
+	return eax ^ 0x77351c5;
+}
+
+
+u32 mix_minor9 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+
+	ebx = extra_state;
+	eax = ebx;
+	state[8] = state[8] - (eax ^ 0x3d1f0efd);
+	eax = ebx;
+	eax = ROL (eax, 0x2);
+	return eax ^ 0xad69b71;
+}
+
+
+u32 mix_minor10 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[3];
+	edx = edx + 0xbe5fec7d;
+	state[9] = state[9] ^ edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x13);
+	return eax ^ 0x240e2304;
+}
+
+
+u32 mix_minor11 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[15];
+	edx = edx | 0x46afede0;
+	edx = edx * state[6];
+	state[6] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x18);
+	return eax + 0x41033952;
+}
+
+
+u32 mix_minor12 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[6] * 0x1b677cc8;
+	state[17] = state[17] - edx;
+	eax = 0x35973850;
+	eax = eax - extra_state;
+	return eax ^ 0x2ecb6416;
+}
+
+
+u32 mix_minor13 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	edx = extra_state;
+	ebx = edx;
+	ecx = 0xd;
+	ebx = ROL (ebx, ecx);
+	esi = ebx;
+	ebx = state[10];
+	ecx = esi;
+	ebx = ROL (ebx, ecx);
+	state[10] = ebx;
+	eax = 0x4e986334;
+	eax = eax - edx;
+	return eax ^ 0x9034f65;
+}
+
+
+u32 mix_minor14 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+
+	ebx = extra_state;
+	eax = ebx;
+	state[17] = state[17] ^ (ROR (eax, 0x17));
+	eax = 0x440a4357;
+	eax = eax - ebx;
+	return eax ^ 0x1c5563a7;
+}
+
+
+u32 mix_minor15 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = extra_state;
+	edx = 0x20c85ea + ebx;
+	state[4] = state[4] ^ edx;
+	eax = ebx;
+	eax = ROR (eax, 0x12);
+	ebx = 0x35e45ea9 + eax;
+	return ebx;
+}
+
+
+u32 mix_minor16 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[15];
+	edx = edx + 0xfc471d2b;
+	state[14] = state[14] & edx;
+	eax = extra_state;
+	eax = eax ^ 0x1487f2a3;
+	return eax + 0xfd06c77c;
+}
+
+
+u32 mix_minor17 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[19];
+	edx = edx + 0x24a7d94d;
+	edx = edx + state[16];
+	state[19] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x15);
+	return eax + 0xe32f226;
+}
+
+
+u32 mix_minor18 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[0];
+	edx = edx ^ 0x48ad05f2;
+	edx = edx * state[15];
+	state[15] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x13);
+	return eax + 0x318dd615;
+}
+
+
+u32 mix_minor19 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+
+	ecx = extra_state;
+	state[9] = (state[9] + 0x14035bf) + ecx;
+	eax = 0x227b94a;
+	eax = eax - ecx;
+	return eax ^ 0x204260ef;
+}
+
+
+u32 mix_minor20 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = extra_state;
+	edx = ecx;
+	edx = edx ^ 0x1aff70c8;
+	edx = edx * state[3];
+	state[3] = edx;
+	eax = ecx;
+	eax = eax ^ 0x21e79f9c;
+	ecx = 0xfacd3341 + eax;
+	return ecx;
+}
+
+
+u32 mix_minor21 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[16];
+	edx = edx + 0xbb834311;
+	edx = edx - state[4];
+	state[16] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x19);
+	return eax ^ 0x42832644;
+}
+
+
+u32 mix_minor22 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	edx = state[4];
+	ecx = 0x1a;
+	edx = ROL (edx, ecx);
+	state[8] = state[8] + edx;
+	eax = extra_state;
+	eax = ROR (eax, ecx ^ ecx);
+	return eax + 0x2b8dc7d;
+}
+
+
+u32 mix_minor23 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[18];
+	edx = edx + 0xac048a2;
+	edx = edx * state[13];
+	state[13] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x2482a937;
+	return eax + 0xbc2d41cd;
+}
+
+
+u32 mix_minor24 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = extra_state;
+	edx = 0xd14ae1a1 + ebx;
+	state[1] = state[1] & edx;
+	eax = ebx;
+	eax = ROR (eax, 0x16);
+	ebx = 0x20afd9af + eax;
+	return ebx;
+}
+
+
+u32 mix_minor25 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[18];
+	edx = edx + 0xe832eb88;
+	state[16] = state[16] & edx;
+	eax = 0x131fe3c7;
+	eax = eax - extra_state;
+	return eax ^ 0x1627530d;
+}
+
+
+u32 mix_minor26 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[4];
+	edx = edx + 0xe6f17893;
+	edx = edx - state[1];
+	state[4] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x7);
+	return eax ^ 0x13dd3587;
+}
+
+
+u32 mix_minor27 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	state[6] = (state[7] | 0x17b60bb5) * state[6];
+	eax = 0x19d8c604;
+	eax = eax - extra_state;
+	return eax ^ 0xe42200d;
+}
+
+
+u32 mix_minor28 (u32 *state, u32 extra_state)
+{
+
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	edx = state[12];
+	ecx = 0x10;
+	edx = ROL (edx, ecx);
+	state[15] = state[15] + edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x9);
+	return eax + 0xd8a0589;
+}
+
+
+u32 mix_minor29 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[10];
+	edx = edx + 0xfd7af7e;
+	state[6] = state[6] & edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x1e);
+	return eax ^ 0x109b5315;
+}
+
+
+u32 mix_minor30 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+
+	ebx = state[18];
+	ebx = ebx & 0x82;
+	edx = state[7];
+	ecx = ebx;
+	edx = ROR (edx, ecx);
+	state[7] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x1);
+	return eax + 0x54eddd3;
+}
+
+
+u32 mix_minor31 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = state[7];
+	ecx = ecx ^ 0x43;
+	edx = state[17];
+	edx = ROR (edx, ecx);
+	state[17] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x79861c0;
+	return eax + 0xf2cdc9f1;
+}
+
+
+u32 mix_minor32 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+
+	ebx = extra_state;
+	eax = ebx;
+	state[11] = state[11] + (eax ^ 0x1f99dc87);
+	eax = ebx;
+	eax = ROL (eax, 0x1b);
+	return eax ^ 0x3d72f5a;
+}
+
+
+u32 mix_minor33 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+
+	ecx = extra_state;
+	state[8] = (state[8] + 0x5a7c4580) + ecx;
+	eax = 0x581851ac;
+	eax = eax - ecx;
+	return eax ^ 0x23f739f;
+}
+
+
+u32 mix_minor34 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[8];
+	edx = edx + 0xeee530d5;
+	state[0] = state[0] ^ edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x18);
+	return eax + 0x197f0302;
+}
+
+
+u32 mix_minor35 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[10];
+	edx = edx + 0xc484cfa2;
+	edx = edx + state[1];
+	state[10] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x238547f5;
+	return eax + 0x92035b81;
+}
+
+
+u32 mix_minor36 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[5];
+	edx = edx ^ 0x19a836dc;
+	state[16] = state[16] + edx;
+	eax = 0x198f4671;
+	eax = eax - extra_state;
+	return eax ^ 0x2709d4d9;
+}
+
+
+u32 mix_minor37 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = extra_state;
+	edx = ebx;
+	edx = edx & 0x21e847a;
+	state[12] = state[12] + edx;
+	eax = ebx;
+	eax = ROR (eax, 0x1a);
+	ebx = 0x1680fdf4 + eax;
+	return ebx;
+}
+
+
+u32 mix_minor38 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[17];
+	edx = edx + 0xd68a11c3;
+	edx = edx + state[7];
+	state[17] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x5);
+	return eax ^ 0xe4f533;
+}
+
+
+u32 mix_minor39 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[7];
+	edx = ROL (edx, 0x13);
+	state[17] = state[17] + edx;
+	eax = extra_state;
+	eax = eax ^ 0x273f3b29;
+	return eax + 0xfd93b5dd;
+}
+
+
+u32 mix_minor40 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+
+	ebx = extra_state;
+	state[14] = (state[14] + 0xe6f27e4) - ebx;
+	eax = ebx;
+	eax = ROL (eax, 0x14);
+	return eax ^ 0x73025ab;
+}
+
+
+u32 mix_minor41 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[6] * 0x368eaf4e;
+	state[18] = state[18] - edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x14);
+	return eax ^ 0x130d0502;
+}
+
+
+u32 mix_minor42 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = state[7];
+	ebx = ebx ^ 0xc3;
+	edx = state[2];
+	edx = ROR (edx, ebx);
+	state[2] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0xc);
+	return eax + 0x201c1076;
+}
+
+
+u32 mix_minor43 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = extra_state;
+	edx = ecx;
+	edx = edx & 0x9706840;
+	state[3] = state[3] + edx;
+	eax = ecx;
+	eax = eax ^ 0x174accb6;
+	ecx = 0xd07f9a17 + eax;
+	return ecx;
+}
+
+
+u32 mix_minor44 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[5];
+	edx = edx + 0xda7c6c8e;
+	state[19] = state[19] | edx;
+	eax = extra_state;
+	eax = eax ^ 0xe34d425;
+	return eax + 0xf8cffbf1;
+}
+
+
+u32 mix_minor45 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	state[6] = (ROR (state[2], 0xc)) * state[6];
+	eax = 0x188c4226;
+	eax = eax - extra_state;
+	return eax ^ 0x2ce236d2;
+}
+
+
+u32 mix_minor46 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[14];
+	edx = edx + 0xf655a040;
+	edx = edx + state[18];
+	state[14] = edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x14);
+	return eax + 0x20b4a6d5;
+}
+
+
+u32 mix_minor47 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+
+	ebx = extra_state;
+	edx = ebx;
+	ecx = 0x1e;
+	edx = ROL (edx, ecx);
+	state[5] = state[5] + edx;
+	eax = ebx;
+	eax = eax ^ 0x706c75b;
+	ebx = 0xfe1a3692 + eax;
+	return ebx;
+}
+
+
+u32 mix_minor48 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[19] * 0x251df1bd;
+	state[11] = state[11] + edx;
+	eax = extra_state;
+	eax = eax ^ 0xacb4dad;
+	return eax + 0xdee23e79;
+}
+
+
+u32 mix_minor49 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = extra_state;
+	edx = state[3];
+	edx = edx + 0x1805a906;
+	edx = edx - ebx;
+	state[3] = edx;
+	eax = ebx;
+	eax = ROR (eax, 0x12);
+	ebx = 0x1ded1e47 + eax;
+	return ebx;
+}
+
+
+u32 mix_minor50 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[0];
+	edx = edx ^ 0x51a859c;
+	state[11] = state[11] - edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x1e);
+	return eax + 0x1769b7fe;
+}
+
+
+u32 mix_minor51 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[18];
+	edx = edx + 0xdcccfc5;
+	edx = edx + state[6];
+	state[18] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x2439fa9;
+	return eax + 0xfdbe08f0;
+}
+
+
+u32 mix_minor52 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[18];
+	edx = edx ^ 0x39848960;
+	state[16] = state[16] - edx;
+	eax = extra_state;
+	eax = eax ^ 0x268cbfd2;
+	return eax + 0xea8294f9;
+}
+
+
+u32 mix_minor53 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[19];
+	edx = edx + 0x1a6f3b29;
+	state[14] = state[14] ^ edx;
+	eax = extra_state;
+	eax = eax ^ 0x23e16e7a;
+	return eax + 0xe13581ad;
+}
+
+
+u32 mix_minor54 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+
+	edx = extra_state;
+	ecx = edx;
+	ecx = ecx ^ 0xe1;
+	ebx = state[16];
+	ebx = ROL (ebx, ecx);
+	state[16] = ebx;
+	eax = 0x18ffcb6f;
+	eax = eax - edx;
+	return eax ^ 0x5d0fc7a2;
+}
+
+
+u32 mix_minor55 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[5];
+	edx = edx + 0x4ef1335a;
+	state[12] = state[12] & edx;
+	eax = extra_state;
+	eax = eax ^ 0xad9bb7a;
+	return eax + 0x9d395ad7;
+}
+
+
+u32 mix_minor56 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	state[14] = (state[13] + 0xdb61abf8) * state[14];
+	eax = 0x297788d0;
+	eax = eax - extra_state;
+	return eax ^ 0x560bd89c;
+}
+
+
+u32 mix_minor57 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[19] * 0x378f67;
+	state[18] = state[18] ^ edx;
+	eax = 0x794c54;
+	eax = eax - extra_state;
+	return eax ^ 0x18421e28;
+}
+
+
+u32 mix_minor58 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[4] * 0x2dd2a2fe;
+	state[18] = state[18] ^ edx;
+	eax = extra_state;
+	eax = eax ^ 0x4bbc1ced;
+	return eax + 0xea99d318;
+}
+
+
+u32 mix_minor59 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	ecx = extra_state;
+	edx = state[14];
+	edx = edx + 0x49fa4a75;
+	edx = edx + ecx;
+	state[14] = edx;
+	eax = ecx;
+	eax = eax ^ 0x25a4da18;
+	ecx = 0xf5889a55 + eax;
+	return ecx;
+}
+
+
+u32 mix_minor60 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[16];
+	edx = edx + 0xe357b476;
+	edx = edx - state[4];
+	state[16] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x5cc667;
+	return eax + 0xc5617b0e;
+}
+
+
+u32 mix_minor61 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[6];
+	eax = 8 * edx;
+	eax = eax - edx;
+	eax = eax << 7;
+	eax = eax + edx;
+	eax = edx + 8 * eax;
+	eax = eax << 8;
+	eax = eax + edx;
+	state[6] = (edx + 2 * eax) * state[16];
+	eax = extra_state;
+	eax = ROL (eax, 0x19);
+	return eax ^ 0x24d98516;
+}
+
+
+u32 mix_minor62 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	edx = state[11];
+	ecx = 0x18;
+	edx = ROR (edx, ecx);
+	state[10] = state[10] | edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x1a);
+	return eax + 0x3bbefcc;
+}
+
+
+u32 mix_minor63 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[5];
+	edx = edx + 0x147c80d5;
+	state[10] = state[10] ^ edx;
+	eax = extra_state;
+	eax = eax ^ 0xcf4b321;
+	return eax + 0xd97347a8;
+}
+
+
+u32 mix_minor64 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[3] * 0x27139980;
+	state[16] = state[16] ^ edx;
+	eax = extra_state;
+	eax = ROR (eax, 0x1e);
+	return eax + 0x1612e23e;
+}
+
+
+u32 mix_minor65 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+
+	ebx = extra_state;
+	state[4] = (0xc5c4d698 + ebx) * state[4];
+	eax = ebx;
+	eax = ROL (eax, 0x15);
+	return eax ^ 0x1ab6a65;
+}
+
+
+u32 mix_minor66 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+
+	ebx = state[17];
+	ebx = ebx & 0x7f;
+	edx = state[15];
+	edx = ROR (edx, ebx);
+	state[15] = edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x2);
+	return eax ^ 0x3829a80;
+}
+
+
+u32 mix_minor67 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+
+	edx = state[19];
+	ecx = 0x6;
+	edx = ROL (edx, ecx);
+	state[14] = state[14] & edx;
+	eax = 0x5a67966;
+	eax = eax - extra_state;
+	return eax ^ 0x2f9e0d;
+}
+
+
+u32 mix_minor68 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[8] * 0x1a4c02dd;
+	edx = edx * state[0];
+	state[8] = edx;
+	eax = extra_state;
+	eax = eax ^ 0x3f40483d;
+	return eax + 0xfa230818;
+}
+
+
+u32 mix_minor69 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	edx;
+
+	edx = state[14];
+	edx = edx + 0xfddb63a2;
+	state[16] = state[16] ^ edx;
+	eax = extra_state;
+	eax = ROL (eax, 0x1);
+	return eax ^ 0x3e03e182;
+}
+
+u32 call (u32 addr, u32 *state, u32 extra_state)
+{
+	switch (addr)
+	{
+		case 0x080846e8:
+			return mix_major0 (state, extra_state);
+			break;
+		case 0x08068ee8:
+			return mix_major1 (state, extra_state);
+			break;
+		case 0x08051de8:
+			return mix_major2 (state, extra_state);
+			break;
+		case 0x080523b0:
+			return mix_major3 (state, extra_state);
+			break;
+		case 0x08054bec:
+			return mix_major4 (state, extra_state);
+			break;
+		case 0x08056e88:
+			return mix_major5 (state, extra_state);
+			break;
+		case 0x08067e18:
+			return mix_major6 (state, extra_state);
+			break;
+		case 0x08071c98:
+			return mix_major7 (state, extra_state);
+			break;
+		case 0x08072228:
+			return mix_major8 (state, extra_state);
+			break;
+		case 0x080750ec:
+			return mix_major9 (state, extra_state);
+			break;
+		case 0x0807791c:
+			return mix_major10 (state, extra_state);
+			break;
+		case 0x0808bbc8:
+			return mix_major11 (state, extra_state);
+			break;
+		case 0x0808dd58:
+			return mix_major12 (state, extra_state);
+			break;
+		case 0x0808e148:
+			return mix_major13 (state, extra_state);
+			break;
+		case 0x0809e318:
+			return mix_major14 (state, extra_state);
+			break;
+		case 0x0808ccc8:
+			return mix_major15 (state, extra_state);
+			break;
+		case 0x0806c054:
+			return mix_major16 (state, extra_state);
+			break;
+		case 0x0805eb14:
+			return mix_major17 (state, extra_state);
+			break;
+		case 0x080872c4:
+			return mix_major18 (state, extra_state);
+			break;
+		case 0x08067aec:
+			return mix_major19 (state, extra_state);
+			break;
+		case 0x0808d094:
+			return mix_major20 (state, extra_state);
+			break;
+		case 0x0807f868:
+			return mix_major21 (state, extra_state);
+			break;
+		case 0x0807d85c:
+			return mix_major22 (state, extra_state);
+			break;
+		case 0x0805d780:
+			return mix_major23 (state, extra_state);
+			break;
+		case 0x08060768:
+			return mix_major24 (state, extra_state);
+			break;
+		case 0x08054bc8:
+			return mix_minor0 (state, extra_state);
+			break;
+		case 0x08057440:
+			return mix_minor1 (state, extra_state);
+			break;
+		case 0x0805d738:
+			return mix_minor2 (state, extra_state);
+			break;
+		case 0x0805dd74:
+			return mix_minor3 (state, extra_state);
+			break;
+		case 0x0805dd98:
+			return mix_minor4 (state, extra_state);
+			break;
+		case 0x0805ddc0:
+			return mix_minor5 (state, extra_state);
+			break;
+		case 0x0805ee44:
+			return mix_minor6 (state, extra_state);
+			break;
+		case 0x08060d78:
+			return mix_minor7 (state, extra_state);
+			break;
+		case 0x08060d98:
+			return mix_minor8 (state, extra_state);
+			break;
+		case 0x08067ac8:
+			return mix_minor9 (state, extra_state);
+			break;
+		case 0x080694f4:
+			return mix_minor10 (state, extra_state);
+			break;
+		case 0x08069514:
+			return mix_minor11 (state, extra_state);
+			break;
+		case 0x08069538:
+			return mix_minor12 (state, extra_state);
+			break;
+		case 0x0806bfb0:
+			return mix_minor13 (state, extra_state);
+			break;
+		case 0x0806c008:
+			return mix_minor14 (state, extra_state);
+			break;
+		case 0x0806c02c:
+			return mix_minor15 (state, extra_state);
+			break;
+		case 0x0806c3b8:
+			return mix_minor16 (state, extra_state);
+			break;
+		case 0x0806c400:
+			return mix_minor17 (state, extra_state);
+			break;
+		case 0x0806c424:
+			return mix_minor18 (state, extra_state);
+			break;
+		case 0x0807509c:
+			return mix_minor19 (state, extra_state);
+			break;
+		case 0x080750c0:
+			return mix_minor20 (state, extra_state);
+			break;
+		case 0x080756ac:
+			return mix_minor21 (state, extra_state);
+			break;
+		case 0x08077ecc:
+			return mix_minor22 (state, extra_state);
+			break;
+		case 0x08077eec:
+			return mix_minor23 (state, extra_state);
+			break;
+		case 0x08077f14:
+			return mix_minor24 (state, extra_state);
+			break;
+		case 0x08077f60:
+			return mix_minor25 (state, extra_state);
+			break;
+		case 0x0807d7d4:
+			return mix_minor26 (state, extra_state);
+			break;
+		case 0x0807d7f8:
+			return mix_minor27 (state, extra_state);
+			break;
+		case 0x0807d81c:
+			return mix_minor28 (state, extra_state);
+			break;
+		case 0x0807de40:
+			return mix_minor29 (state, extra_state);
+			break;
+		case 0x0807fe6c:
+			return mix_minor30 (state, extra_state);
+			break;
+		case 0x080871ec:
+			return mix_minor31 (state, extra_state);
+			break;
+		case 0x08087210:
+			return mix_minor32 (state, extra_state);
+			break;
+		case 0x08087234:
+			return mix_minor33 (state, extra_state);
+			break;
+		case 0x08087280:
+			return mix_minor34 (state, extra_state);
+			break;
+		case 0x080872a0:
+			return mix_minor35 (state, extra_state);
+			break;
+		case 0x0808baa8:
+			return mix_minor36 (state, extra_state);
+			break;
+		case 0x0808bacc:
+			return mix_minor37 (state, extra_state);
+			break;
+		case 0x0808baf4:
+			return mix_minor38 (state, extra_state);
+			break;
+		case 0x0808bb18:
+			return mix_minor39 (state, extra_state);
+			break;
+		case 0x0808bb58:
+			return mix_minor40 (state, extra_state);
+			break;
+		case 0x0809e8cc:
+			return mix_minor41 (state, extra_state);
+			break;
+		case 0x0809e938:
+			return mix_minor42 (state, extra_state);
+			break;
+		case 0x0809e8ec:
+			return mix_minor43 (state, extra_state);
+			break;
+		case 0x080778f8:
+			return mix_minor44 (state, extra_state);
+			break;
+		case 0x08060dc0:
+			return mix_minor45 (state, extra_state);
+			break;
+		case 0x0805eaf0:
+			return mix_minor46 (state, extra_state);
+			break;
+		case 0x0808bb80:
+			return mix_minor47 (state, extra_state);
+			break;
+		case 0x08067aa8:
+			return mix_minor48 (state, extra_state);
+			break;
+		case 0x08087178:
+			return mix_minor49 (state, extra_state);
+			break;
+		case 0x0809e2f8:
+			return mix_minor50 (state, extra_state);
+			break;
+		case 0x080756d0:
+			return mix_minor51 (state, extra_state);
+			break;
+		case 0x0809e914:
+			return mix_minor52 (state, extra_state);
+			break;
+		case 0x0806c3dc:
+			return mix_minor53 (state, extra_state);
+			break;
+		case 0x08087258:
+			return mix_minor54 (state, extra_state);
+			break;
+		case 0x0807fe94:
+			return mix_minor55 (state, extra_state);
+			break;
+		case 0x0805d75c:
+			return mix_minor56 (state, extra_state);
+			break;
+		case 0x0807d83c:
+			return mix_minor57 (state, extra_state);
+			break;
+		case 0x0808bba8:
+			return mix_minor58 (state, extra_state);
+			break;
+		case 0x08084cb4:
+			return mix_minor59 (state, extra_state);
+			break;
+		case 0x08057468:
+			return mix_minor60 (state, extra_state);
+			break;
+		case 0x0806bf78:
+			return mix_minor61 (state, extra_state);
+			break;
+		case 0x0806c398:
+			return mix_minor62 (state, extra_state);
+			break;
+		case 0x08077f3c:
+			return mix_minor63 (state, extra_state);
+			break;
+		case 0x0805ee24:
+			return mix_minor64 (state, extra_state);
+			break;
+		case 0x080871c4:
+			return mix_minor65 (state, extra_state);
+			break;
+		case 0x0806bfe0:
+			return mix_minor66 (state, extra_state);
+			break;
+		case 0x080871a4:
+			return mix_minor67 (state, extra_state);
+			break;
+		case 0x0808d330:
+			return mix_minor68 (state, extra_state);
+			break;
+		case 0x0808bb38:
+			return mix_minor69 (state, extra_state);
+			break;
+	default:
+		abort();
+		}
+		return 0;
+}

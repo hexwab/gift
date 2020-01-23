@@ -1,0 +1,199 @@
+/*
+ * $Id: ft_search.h,v 1.11.2.1 2003/04/23 00:44:57 jasta Exp $
+ *
+ * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#ifndef __FT_SEARCH_H
+#define __FT_SEARCH_H
+
+/*****************************************************************************/
+
+/**
+ * @file ft_search.h
+ *
+ * \todo this
+ */
+
+/*****************************************************************************/
+
+#include "ft_event.h"
+
+/*****************************************************************************/
+
+/**
+ * Define this if you wish to use FT_SEARCH_HIDDEN (documented below)
+ */
+#undef FT_SEARCH_PARANOID
+
+/*****************************************************************************/
+
+/**
+ * Search method/option bitwise OR.
+ */
+typedef enum
+{
+	/**
+	 * @name Methods
+	 */
+	FT_SEARCH_FILENAME = 0x01,         /**< Token query based on share path */
+	FT_SEARCH_MD5      = 0x02,         /**< Single query based on MD5 sum */
+	FT_SEARCH_HOST     = 0x04,         /**< Browsing */
+
+	/**
+	 * @name Options
+	 */
+	FT_SEARCH_LOCAL    = 0x08,         /**< Search locally shared files
+										*   through iteration */
+
+	/**
+	 * Do not send human readable search strings.  In their place, send the
+	 * ::ft_search_tokenize output.  This is not cryptographically secure and
+	 * is only expected to appease the casual privacy nut, sorry.
+	 */
+	FT_SEARCH_HIDDEN   = 0x10
+} FTSearchType;
+
+/**
+ * Structure to manage remote searches.
+ */
+typedef struct
+{
+	FTEvent     *event;                /**< event link */
+	FTSearchType type;                 /**< search flags */
+
+	Dataset     *ref;                  /**< dataset representing all search
+	                                    *   nodes remotely queuried.  this is
+	                                    *   used to determine when the search
+	                                    *   has completely finished */
+
+	char        *query;                /**< human-readable query list */
+	char        *exclude;              /**< human-readable exclusion list */
+	char        *realm;                /**< mime group filtering */
+	uint32_t    *qtokens;              /**< hashed query */
+	uint32_t    *etokens;              /**< hashed exclusion */
+} FTSearch;
+
+/**
+ * Structure to provide lookup data for searches forwarded to other remote
+ * peers intended to transparently go through the node working with this.
+ */
+typedef struct
+{
+	FTEvent  *event;                   /**< link to the OpenFT event created
+	                                    *   for this object */
+	uint32_t  origid;                  /**< originally requested search id */
+	in_addr_t replyto;                 /**< node that requested we perform the
+										*   search, and therefore the node we
+										*   will be replying to */
+	in_addr_t sendto;                  /**< sanity checking: ensure that the
+										*   node replying on the new id (not
+										*   origid) is this host */
+} FTSearchFwd;
+
+/*****************************************************************************/
+
+/**
+ * Create a new OpenFT search object linked with a giFT search event.
+ *
+ * @param event    giFT event to coordinate event replies.
+ * @param type
+ * @param query
+ * @param exclude
+ * @param realm
+ */
+FTSearch *ft_search_new (IFEvent *event, FTSearchType type,
+                         char *query, char *exclude, char *realm);
+
+/**
+ * Add to the list of parents that need to reply before this search can
+ * complete successfully.
+ *
+ * @param search
+ * @param parent
+ */
+void ft_search_need_reply (FTSearch *search, in_addr_t parent);
+
+/**
+ * Reply to interface protocol.  If file is NULL, the call is considered the
+ * end of the search.
+ *
+ * @param search
+ * @param parent  The search results parent node, if one.
+ * @param file    Search result itself.
+ */
+void ft_search_reply (FTSearch *search, TCPC *parent, FileShare *file);
+
+/*****************************************************************************/
+
+/**
+ * Force a reply on all searches from this connection.
+ */
+void ft_search_force_reply (FTSearch *search, in_addr_t parent);
+
+/*****************************************************************************/
+
+/**
+ * Similar to ::ft_search_new except that the object created and linked with
+ * the event is used for blind forwarding of search results, instead of
+ * actually delivering them to the user interface.
+ *
+ * @todo Provide a timeout system either here or generically through FTEvent.
+ * 	     An [annoyance] attack could be launched against nodes that are
+ *       forwarding search queries as they must allocated forward objects and
+ * 	     tie up ids while the users connection is active.
+ *
+ * @param src     Source that requested the search, and the host that results
+ *                should be delivered back to.
+ * @param dst     Node we will be forwarding the query too.
+ * @param origid  Original search id requested by the searchee so that we may
+ *                respond accordingly.
+ *
+ * @return Pointer to a dynamically allocated FTSearchFwd object.  Destroy
+ *         with ::ft_search_fwd_finish.
+ *
+ */
+FTSearchFwd *ft_search_fwd_new (in_addr_t src, in_addr_t dst, uint32_t origid);
+
+/**
+ * Destroy all memory associated with the forward event and cancel the
+ * internally registered event.
+ */
+void ft_search_fwd_finish (FTSearchFwd *sfwd);
+
+/*****************************************************************************/
+
+/**
+ * Handle search.  Please note that \em meta is currently unimplemented.
+ */
+int openft_search (Protocol *p, IFEvent *event, char *query, char *exclude,
+                   char *realm, Dataset *meta);
+
+/**
+ * Handle browse.
+ */
+int openft_browse (Protocol *p, IFEvent *event, char *user, char *node);
+
+/**
+ * Handle locate.
+ */
+int openft_locate (Protocol *p, IFEvent *event, char *hash);
+
+/**
+ * Handle search/browse/locate cancellation.
+ */
+void openft_search_cancel (Protocol *p, IFEvent *event);
+
+/*****************************************************************************/
+
+#endif /* __FT_SEARCH_H */

@@ -1,0 +1,16 @@
+TEST_SOURCES=test.c mother.c
+
+tests:
+
+test_type_2:
+	TYPE=2 make test
+
+test_type_20:
+	TYPE=20 make test
+
+test: $TEST_SOURCES enc_type_${TYPE}.c
+	gcc -Wall -o test_2 test.c mother.c enc_type_2.c -DCRYPT_FUNC=enc_type_${TYPE}
+	./test_${TYPE} |md5sum |cmp - test_${TYPE}.md5 && echo "[$TYPE]\tPASS" || echo "[$TYPE]\tFAIL"
+
+test_2: 
+	gcc -Wall -o test_2 test.c mother.c enc_type_2.c -DCRYPT_FUNC=enc_type_2

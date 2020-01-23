@@ -1,0 +1,211 @@
+..
+.de TQ
+.br
+.ns
+.TP \\$1
+..
+.TH gift.conf 5 "13 April 2003" "giFT version 0.10.0" 
+.SH NAME
+gift.conf \- configuration file for
+.BR giFT (1)
+.SH DESCRIPTION
+.B gift.conf
+uses a very basic configuration file format. It's divided in sections, starting
+with
+.RB [ sectionname "]."
+parameters are set using 
+.RB ` parameter " = " value '.
+Lines starting with 
+.B #
+are comments.
+.SH OPTIONS
+.SS [main]
+Main options
+.TP
+.B setup
+Boolean determining whether or not this file has been reviewed and is
+complete.  giFT will fail to start unless this is non-zero.  This is done
+so that we can make sure you, at the very least, read through this file.
+.IP
+.I "Default: "
+0
+.TP
+.B hosts_allow
+Space separated list of hosts to allow connection to giFT's interface
+protocol (running default on port 1213).  This protocol is used for GUIs
+to communicate with giFT and could be considered a security risk to allow
+external connections.
+.IP
+The following special keywords are supported:
+.IP 
+.RI "- " ALL
+is a synonym for 0.0.0.0/0
+.PD 0
+.IP
+.RI "- " LOCAL
+is a synonym for 127.0.0.0/8 192.168.0.0/16 172.0.0.0/11 10.0.0.0/8
+.PD
+.IP
+Bitwidth fields are optional
+.IP
+.I "Default: "
+LOCAL
+.TP 
+.B client_port
+Port on which to listen for user interface connections.  Unless you have a
+special need to talk to the client on a non-standard port, just accept the
+default.
+.IP
+.IB NOTE:
+If you change this value, you will also need to modify the ui.conf
+configuration for the machine which will be making outgoing connections
+here.
+.IP
+.I "Default: "
+1213
+.TP
+.B follow_symlinks
+Determines whether or not to follow symbolic links.  If this value is set
+non-zero, symlinks will be traversed and a directory inode tracking system
+will be used to ensure that giFT does not descend the same directory
+twice.  If you do not have any symlinks or do not want them traversed, set
+this to 0 for a very minor efficiency gain.
+.IP
+.I "Default: "
+1
+.TP
+.B plugins
+Colon separated list of protocol plugins to load by default.  If dynamic
+library support is enabled, the plugin specified will be stat'd to check if
+it is a loadable path.  If that fails, the fallback method is to attempt to
+construct the fully qualified path based on the configured environment.
+.IP
+.IB NOTE:
+Without dynamic library support, this plugin must have been compiled into
+your giFT binary.
+.IP
+.I "Default: "
+none
+.SS [download]
+Download controls
+.TP
+.B incoming
+Directory to store transfers while they are being operated on.  Temporary
+state files are also kept here.  It is recommended, but not required, that
+the incoming and completed directories are on the same partition (drive).
+.IP
+.I "Default: "
+~/.giFT/incoming
+.TP
+.B completed
+Directory which will contain files after they have successfully finished
+downloading.
+.IP
+.I "Default: "
+~/.giFT/completed
+.SS [sharing]
+Share submission and upload control
+.TP
+.B max_peruser_uploads
+Maximum amount of uploads allowed from the same user at any given time.  It
+is recommended that you keep this at 1 in order to prevent users from
+unfairly queueing your connection.
+.IP
+.I "Default: "
+1
+.TP
+.B hide_dot_files
+Determines whether or not to hide directories which contain a leading dot.
+These directories are commonly meant to be "hidden" and thus should not be
+submitted to the network.  Selecting 0 here will submit all directories.
+.IP
+.I "Default: "
+1
+.TP
+.B root
+Colon separated list of fully qualified paths you wish to share.  These
+directories will be recursed at giFT's startup and the files contained
+within will be subjected to an MD5 hashing.  The results will be cached and
+will only be recalculated on a per share basis when the size or
+modification time in the cache and on disk disagree, or the file name is
+changed.
+.IP
+.BI "Sanity notice:"
+Do NOT share source directories!  Remote nodes will refuse to index your
+shares if you are attempting to submit more than 64000 files.
+.IP
+.BI "Security notice:"
+Do not share directories which may contain sensitive information, such as
+~ ($HOME).  Also note that any directories shared here will be stripped of
+all but the last path element when submitted to other nodes for indexing,
+effectively "hiding" the directory prefix.
+.IP
+.I "Default: "
+none
+.TP
+.B max_uploads
+Maximum amount of simultaneous uploads allowed.  Setting this to -1 will
+cause giFT to not limit outgoing transfers.  0 effectively disables sharing.
+This may also be handled at run time via your GUI of choice.
+.IP
+.I "Default: "
+-1
+.TP
+.B auto_resync_interval
+Controls when giFT periodically rescans your shared directories for any
+changes (new files, missing files, changed files, etc.) and communicates
+those changes to the underlying protocols.  This parameter specifies how
+often (in seconds) you want that to happen.
+.IP
+For your reference:
+.IP 
+.RI "- " 0
+turns off periodic auto-resync
+.PD 0
+.IP
+.RI "- " 3600
+one hour
+.PD 0
+.IP
+.RI "- " 86400
+one day
+.PD 0
+.IP
+.RI "- " 604800
+one week
+.PD
+.IP
+.I "Default: "
+86400
+.TP
+.B share_completed
+Controls whether or not giFT should automatically share files that you have
+finished downloading.  This feature significantly improves the networks
+abudance of files and helps ease the load on those sharing popular files.  It's
+a Good Thing \*(Tm, please leave it on.
+.IP
+.I "Default: "
+1
+.SS [bandwidth]
+User space bandwidth control
+.TP
+.B downstream
+.TQ
+.B upstream 
+Bandwidth throttling allows giFT to have some basic control over your
+bandwidth usage.  This code operates in user space, and as a result can not
+guarantee perfect accuracy.  If you wish to enable use this feature, please
+consider using a more reliable kernel space option first.
+.IP
+The following configuration switches control the maximum number of bytes
+per second allowed for the given stream direction.  A setting of 0 will
+disable throttling for that direction.
+.IP
+.I "Default: "
+0
+.SH AUTHOR
+Josh Guilfoyle <jasta@gotlinux.org>. Made into a manpage by Eelco Lempsink
+<eelco@33lc0.net>
+.SH "SEE ALSO"
+.BR giFT (1),
+http://gift.sourceforge.net/docs.php

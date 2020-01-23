@@ -1,0 +1,18 @@
+--- src/ui_main.c~	2003-11-22 12:21:15.000000000 +0000
++++ src/ui_main.c	2004-12-12 05:07:07.000000000 +0000
+@@ -1014,6 +1014,15 @@
+ 		RETURN_STR(h->href);
+ 	if (!strcmp(key, "availability"))
+ 		RETURN_INT(h->availability);
++	if (!strcmp(key, "net")) {
++		char *colon;
++		if ((colon = strchr(h->href, ':'))) {
++			v->strlen.len = colon - h->href;
++			v->strlen.string = h->href;
++			return ATTR_STRLEN;
++		}
++	}
++
+ 	return hit_getattr(tree_parent(h), key, v);
+ }
+ 

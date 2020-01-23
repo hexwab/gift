@@ -1,0 +1,26 @@
+ * Move ORDER_* into header file, use in ft_search_db.c
+	
+ * Exclusion sets.
+
+ * Quoted searching for exclusion sets.
+
+ * Keep count of tokens, add to token record, and filter before
+   lookup. (Allows searching on multiple identical tokens to work
+   as usefully as with phrases, and prevents '"mp3 mp3"' from being
+   so insanely expensive.)
+
+ * Remove null terminator from token lists, at least when stored in
+   the db. (Easy ~10% space saving for individual share indices.)
+
+ * Remove search_local, move local shares into db. Simplify. (Improves
+   consistency, efficiency, obviates large chunks of code.)
+
+ * Use callback instead of returning an Array of results. (Efficiency.)
+
+ * Replace md5 with 4(?)-byte id in tokenidx_data and sharedata_key.
+   Add md5 to sharedata_data and id to md5idx_data. (Large overall
+   size efficiency increase.)
+
+ * Search by meta field. Currently only 6 (maybe 7, if path is
+   separated from filename) strings are tokenized, which would be
+   storable in a bitfield for one extra byte per token.

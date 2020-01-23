@@ -1,0 +1,83 @@
+# $Id: Makefile.msvc,v 1.16 2003/05/04 20:53:50 rossta Exp $
+# Microsoft Visual C++ 6.0 makefile
+# see README.msvc for usage
+
+MAKEOPTS=-nologo -C
+
+all:
+	cd win32
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\plugin
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+!if defined(dynamic) || defined(DYNAMIC)
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\Gnutella
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	@cd ..
+!else # !(defined(dynamic) || defined(DYNAMIC))
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\Gnutella
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	@cd ..
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+install: win32-dist
+	cd lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\plugin
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+!if defined(dynamic) || defined(DYNAMIC)
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\Gnutella
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+!else # !(defined(dynamic) || defined(DYNAMIC))
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\Gnutella
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+!endif # defined(dynamic) || defined(DYNAMIC)
+	cd ..\data
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	cd ..\etc
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc install
+	@cd ..
+
+
+clean:
+	cd lib
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\plugin
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\src
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\OpenFT
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\Gnutella
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..\win32
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	@cd ..
+  
+clean-dist:
+	@del /f win32-dist
+
+win32-dist:
+	@-md win32-dist
+	@-md win32-dist\data
+	@-md win32-dist\data\OpenFT
+	@-md win32-dist\data\Gnutella
+	@-md win32-dist\OpenFT
+	@-md win32-dist\Gnutella

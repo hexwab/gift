@@ -1,0 +1,49 @@
+# For building the first time...
+
+# install dependencies
+sudo apt-get install wget
+sudo apt-get install automake
+sudo apt-get install autoconf25
+sudo apt-get install libtool14
+
+# more dependencies for giFTcurs
+wget http://debian.jones.dk/atreju/sw/fink/dists/stable/main/binary-darwin-powerpc/libs/libpoll_1.1-3_darwin-powerpc.deb
+wget http://debian.jones.dk/atreju/sw/fink/dists/stable/main/binary-darwin-powerpc/libs/libpoll-shlibs_1.1-3_darwin-powerpc.deb
+dpkg -i libpoll_1.1-3_darwin-powerpc.deb
+dpkg -i libpoll-shlibs_1.1-3_darwin-powerpc.deb
+
+# install libraries and things from danchr's nightly binaries
+wget http://homepage.mac.com/danchr/.cv/danchr/Public/giFT%2Dnightly.tgz-binhex.hqx
+# extract using stuffit expander, you'll see a /1 folder created
+cd :1/usr/local/
+sudo cp -R * /usr/local/
+cd ..
+rm -r :1/ giFT-nightly.*
+
+# pull down from cvs
+cvs -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift login
+cvs -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift co giFT
+cd giFT
+
+# os x specific stuff to fix build errors (for me, at least)
+mkdir OpenFT/.libs
+./autogen.macosx.sh
+
+# compile and install
+make
+sudo make install
+
+# For subsequent updates...
+
+# update cvs
+cd path/to/giFT/
+cvs update -Pd
+
+# compile and install
+make
+sudo make install
+
+# If you needed to do other/more/less stuff to build giFT for Mac OS X please
+# come to our irc channel (#giFT on irc.openprojects.net) and tell us.
+
+# Thanks to Matt Felsen (matt) for these instructions.

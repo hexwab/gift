@@ -1,0 +1,23 @@
+# gift.conf
+
+[main]
+setup = 1
+hosts_allow = LOCAL
+plugins = 
+
+client_port = 21213
+
+[download]
+incoming = test/incoming
+completed = /home/HEx/.giFT/completed
+
+[sharing]
+max_peruser_uploads = 1
+hide_dot_files = 1
+root = /mnt/media/usenet/metart/Danielle
+max_uploads = 0
+share_completed=0
+
+[bandwidth]
+#downstream = 1000
+#upstream = 5000

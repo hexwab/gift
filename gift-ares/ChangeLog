@@ -1,0 +1,33 @@
+ $Id: ChangeLog,v 1.9 2006/01/30 15:54:53 mkern Exp $
+
+gift-ares 0.3.0:
+
+	* Fixed bug which prevented downloading from other gift-ares nodes.
+
+    * Added support for new handshake used with open source Ares.
+
+	* Added support for binary downloads.
+
+	* Added support for binary uploads.
+
+gift-ares 0.2.2:
+
+	* Fixed missing album meta data in search results.
+
+	* Fixed crash on duplicate hash search.
+
+	* Fixed assertion failure when download chunk was of size 1.
+
+gift-ares 0.2.1:
+
+	* Adjusted to protocol changes introduced in Ares build 2951.
+	
+	* Fixed path conversion bug leading to failing uploads in windows.
+
+	* Fixed unhandled download completion case leading to abort.
+
+	* Fixed metadata parser.
+	
+gift-ares 0.2:
+
+	* Automagic build system

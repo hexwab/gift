@@ -1,0 +1,13 @@
+#!/usr/bin/perl -w
+
+my @nodes;
+
+#read map
+while (<>) {
+
+    my ($node,$class,$ver)=~/([\d\.]+:\d+)\(0x(\d+):0x(\d+)\)/
+	or die "Parse error";
+    
+    $_=hex for ($class,$ver);
+    print "node:$node class:$class ver:$ver\n";
+}

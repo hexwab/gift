@@ -1,0 +1,11 @@
+# -*- makefile -*-
+
+all:
+
+install:
+	copy /y *.css ..\..\win32-dist\data\OpenFT
+	copy /y *.jpg ..\..\win32-dist\data\OpenFT
+	copy /y *.gif ..\..\win32-dist\data\OpenFT
+	copy nodes    ..\..\win32-dist\data\OpenFT
+
+clean:

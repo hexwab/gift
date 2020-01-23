@@ -1,0 +1,108 @@
+
+                            The giFTcurs README
+
+                    Christian Häggström <chm@c00.info>
+                Göran Weinholt <weinholt@dtek.chalmers.se>
+
+
+INTRODUCTION
+------------
+
+giFTcurs  is  a  curses  based interface to the giFT daemon, a file sharing
+system. It allows  you  to  perform  searches  and  control  transfers  and
+uploads.  It  supports  multiple  simultaneous searches, filtering, viewing
+meta data, customized ordering of search results and transfers,  customized
+listing of search results and transfers, and much more.
+
+The  current version number can be found in the NEWS file. giFTcurs is Free
+Software and is licensed under the GNU GPL. See the file  COPYING  for  the
+exact copying conditions.
+
+INSTALLATION
+------------
+
+See the file INSTALL for installation instructions.
+
+If  things  go  well  you should be able to run giFTcurs and connect to the
+giFT daemon. If you don't have giFT, look at http://giftproject.org/.
+
+The latest giFTcurs release should always work with the latest  release  of
+giFT.  Newer versions of giFT might have changes in the interface protocol.
+If things don't work then  you  might  need  to  get  a  newer  version  of
+giFTcurs, visit http://www.nongnu.org/giftcurs/.
+
+CONTACTING THE DEVELOPERS / GETTING SUPPORT
+-------------------------------------------
+
+You  can  find us in #giFTcurs on irc.freenode.net. These mailing lists are
+available:
+
+     giFTcurs-user     discussion between users
+
+     giFTcurs-devel    discussion between developers
+
+     giFTcurs-commits  changes to the CVS
+
+Go to http://savannah.nongnu.org/mail/?group=giftcurs to subscribe  or  see
+the  list  archives.  See the AUTHORS file if you want to contact one of us
+personally.
+
+CONTRIBUTING
+------------
+
+If you wish to contribute to giFTcurs, you should build it from CVS, follow
+the giFTcurs-commits mailing list, and at least subscribe to giFTcurs-devel
+(the list isn't very active yet). The IRC channel is  also  a  place  where
+it's  nice  to  be, since you can talk to other developers much easier, and
+get instant notification of commits to the CVS.
+
+Patches should preferably be in unified  context  format.  For  indentation
+rules, please refer to src/.indent.pro and indent. Updates to the .po files
+should preferably be sent not as patches, but as  whole  files.  Send  your
+contributions to the giFTcurs-devel list.
+
+BUILDING FROM CVS
+-----------------
+
+When reporting a bug, please try to make sure that it is present in the CVS
+version of giFTcurs. Run this to get the CVS source:
+
+     export CVS_RSH=ssh
+     cvs -d:ext:anoncvs@savannah.gnu.org:/cvsroot/giftcurs co giFTcurs
+
+Then whenever you want to update the source, just run "cvs -z3 up  -Pd"  in
+the  giFTcurs directory. To compile giFTcurs from CVS you must have the GNU
+autotools (automake, autoconf), the ncurses headers, gettext and GLib 2.  A
+fairly  recent (think 0.10.40) version of gettext is required, since we use
+ngettext. With some operating systems you'll need the package gettext-devel
+as well. To compile type this:
+
+     ./autogen.sh
+     make
+     su
+     make install
+
+A  common problem is parse errors in the po/ directory, if this happens you
+should try to run "cvs up -C" first. If this  doesn't  help,  you  probably
+have a broken gettext installation.
+
+PORTABILITY
+-----------
+
+giFTcurs is known to work on the following systems:
+
+     AmigaOS  3.0,  Cygwin, Debian GNU/Linux, FreeBSD 5.1, Mac OS X, NetBSD
+     1.6.1, and Solaris.
+
+Versions prior to giFTcurs 0.6.0 worked with at least these systems:
+
+     AIX, BeOS, Debian GNU/Hurd, Debian  GNU/Linux  bo  hamm  slink  potato
+     woody,  FreeBSD  4.4,  Mac  OS  X,  NetBSD  1.5.2, OpenBSD 3.0, SunOS,
+     Solaris, Tru64 (OSF1 V4.0), and cygwin.
+
+Patches/suggestions which fix portability issues are highly appreciated.
+
+SEE ALSO
+--------
+
+giFTcurs(1), giFTcurs.conf(5).

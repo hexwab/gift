@@ -1,0 +1,14 @@
+*.la
+*.lo
+.deps
+.libs
+Makefile
+Makefile.in
+
+*.idb
+*.obj
+*.pdb
+libmeta*.dll
+libmeta*.exp
+libmeta*.ilk
+libmeta*.lib

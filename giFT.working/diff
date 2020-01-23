@@ -1,0 +1,381 @@
+? FastTrack-old
+? aa
+? bench.diff_
+? ft_search_exec.diff
+? gift-setup
+? http_start.diff
+? interface.diff
+? share.diff
+? share2.diff
+? stamp-h1
+? upload
+? upload.diff
+? upload2.diff
+? data/Gnutella/Makefile
+? data/Gnutella/Makefile.in
+? data/OpenFT/Makefile
+? data/OpenFT/Makefile.in
+? etc/Gnutella/Makefile
+? etc/Gnutella/Makefile.in
+? etc/OpenFT/Makefile
+? etc/OpenFT/Makefile.in
+? lib/conf.diff
+? lib/example
+? lib/itest
+? src/diff
+? src/dl.diff
+? src/giFT
+? src/transfer.diff
+? src/upload.c.foo
+? src/meta/image.diff
+? win32/giFTsetup/watermark.jpeg
+? win32/giFTsetup/watermark.png
+? win32/giFTsetup/watermark2.png
+Index: lib/conf.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/conf.c,v
+retrieving revision 1.32
+diff -u -r1.32 conf.c
+--- lib/conf.c	31 Oct 2003 13:14:22 -0000	1.32
++++ lib/conf.c	13 Jan 2004 18:49:32 -0000
+@@ -213,14 +213,33 @@
+ 
+ int config_get_int (Config *conf, char *keypath)
+ {
+-	char *value;
++	char *strvalue, *endptr;
++	long value;
+ 
+-	value = config_get_str (conf, keypath);
++	strvalue = config_get_str (conf, keypath);
+ 
+-	if (!value)
++	if (!strvalue)
+ 		return 0;
+ 
+-	return atoi (value);
++	value = strtol (strvalue, &endptr, 0);
++
++	switch (*endptr) {
++	case 'k':
++	case 'K':
++		value <<= 10;
++		break;
++	case 'm':
++	case 'M':
++		value <<= 20;
++		break;
++	case 'g':
++	case 'G':
++		value <<= 30;
++		break;
++		/* for stuff beyond this we'd need a long long */
++	}
++
++	return value;
+ }
+ 
+ /*****************************************************************************/
+Index: lib/log.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/log.c,v
+retrieving revision 1.48
+diff -u -r1.48 log.c
+--- lib/log.c	11 Jul 2003 08:13:01 -0000	1.48
++++ lib/log.c	13 Jan 2004 18:49:32 -0000
+@@ -145,7 +145,7 @@
+ 	t  = time (NULL);
+ 	lt = localtime (&t);
+ 
+-	if (strftime (buf, sizeof (buf), "[%H:%M]", lt) > 0)
++	if (strftime (buf, sizeof (buf), "[%H:%M:%S]", lt) > 0)
+ 		fprintf (f, "%s ", buf);
+ }
+ 
+Index: plugin/share.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/plugin/share.c,v
+retrieving revision 1.7
+diff -u -r1.7 share.c
+--- plugin/share.c	23 Jul 2003 23:51:59 -0000	1.7
++++ plugin/share.c	13 Jan 2004 18:49:32 -0000
+@@ -78,9 +78,8 @@
+ }
+ 
+ /* legacy interface, please do not use... */
+-Share *share_new_ex (Protocol *p, const char *root, size_t root_len,
+-                     const char *path, const char *mime, off_t size,
+-                     time_t mtime)
++Share *share_new_ex (Protocol *p, const char *path, const char *mime,
++		     off_t size, time_t mtime)
+ {
+ 	Share *share;
+ 
+@@ -88,7 +87,6 @@
+ 		return NULL;
+ 
+ 	/* high-level memory managing API... */
+-	share_set_root (share, root, root_len);
+ 	share_set_mime (share, mime);
+ 
+ 	/* raw access... */
+Index: plugin/share.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/plugin/share.h,v
+retrieving revision 1.6
+diff -u -r1.6 share.h
+--- plugin/share.h	16 Oct 2003 18:50:55 -0000	1.6
++++ plugin/share.h	13 Jan 2004 18:49:32 -0000
+@@ -144,9 +144,8 @@
+  * hopefully be phased out with time.
+  */
+ LIBGIFTPROTO_EXPORT
+-  Share *share_new_ex (struct protocol *p, const char *root, size_t root_len,
+-                       const char *path, const char *mime, off_t size,
+-                       time_t mtime);
++  Share *share_new_ex (struct protocol *p, const char *path, const char *mime,
++                     off_t size, time_t mtime);
+ 
+ /**
+  * Destroy an allocated Share object and all its internally managed members
+Index: src/download.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/download.c,v
+retrieving revision 1.264
+diff -u -r1.264 download.c
+--- src/download.c	23 Dec 2003 21:57:01 -0000	1.264
++++ src/download.c	13 Jan 2004 18:49:33 -0000
+@@ -1338,6 +1338,12 @@
+ 		return -1;
+ 	}
+ 
++	if ((fflush (transfer->f)) != 0)
++	{
++		GIFT_ERROR (("fflush: %s", GIFT_STRERROR()));
++		return -1;
++	}		
++
+ 	chunk->transmit    += len; /* this chunk */
+ 	chunk->tmp_recv    += len; /* temporary transmit recording */
+ 	transfer->transmit += len; /* total transfer stats */
+@@ -1385,9 +1391,11 @@
+ 		GIFT_TRACE (("pausing %s: %s", transfer->filename,
+ 		             GIFT_STRERROR ()));
+ 
++#if 0
+ 		/* there is no fallback solution to this problem, so die rather than
+ 		 * corrupt data */
+ 		abort();
++#endif
+ 
+ 		download_pause (transfer);
+ 		return;
+Index: src/giftd.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/giftd.c,v
+retrieving revision 1.24
+diff -u -r1.24 giftd.c
+--- src/giftd.c	16 Oct 2003 18:50:55 -0000	1.24
++++ src/giftd.c	13 Jan 2004 18:49:34 -0000
+@@ -469,6 +469,8 @@
+ 	 */
+ 	event_init ();
+ 
++	mime_init ();
++
+ 	/*
+ 	 * Initialize the dynamic library loader if necessary.
+ 	 */
+Index: src/share_cache.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/share_cache.c,v
+retrieving revision 1.64
+diff -u -r1.64 share_cache.c
+--- src/share_cache.c	31 Oct 2003 13:14:48 -0000	1.64
++++ src/share_cache.c	13 Jan 2004 18:49:35 -0000
+@@ -239,8 +239,9 @@
+ 		return NULL;
+ 	}
+ 
+-	file = share_new_ex (NULL, unix_root, share_root_len (unix_root),
+-	                     unix_path, NULL, st.st_size, st.st_mtime);
++	file = share_new_ex (NULL, unix_path, NULL, st.st_size, st.st_mtime);
++
++	share_set_root (file, unix_root, share_root_len (unix_root));
+ 
+ 	free (unix_root);
+ 	free (unix_path);
+Index: src/share_db.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/share_db.c,v
+retrieving revision 1.31
+diff -u -r1.31 share_db.c
+--- src/share_db.c	10 Jul 2003 15:32:05 -0000	1.31
++++ src/share_db.c	13 Jan 2004 18:49:35 -0000
+@@ -392,7 +392,8 @@
+ 	rec_readstr (&rec, &root);
+ 	rec_readstr (&rec, &path);
+ 
+-	file = share_new_ex (NULL, root, STRLEN(root), path, mime, size, mtime);
++	file = share_new_ex (NULL, path, mime, size, mtime);
++	share_set_root (file, root, STRLEN(root));
+ 
+ 	if (file)
+ 	{
+Index: src/meta/meta_image.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/meta/meta_image.c,v
+retrieving revision 1.3
+diff -u -r1.3 meta_image.c
+--- src/meta/meta_image.c	28 Jun 2003 08:42:01 -0000	1.3
++++ src/meta/meta_image.c	13 Jan 2004 18:49:35 -0000
+@@ -60,6 +60,140 @@
+ }
+ #endif /* USE_IMAGEMAGIC */
+ 
++/************************************************************/
++
++#define BYTE(var) { int byte=fgetc(fh); if (byte==EOF) return 0; var=byte; }
++#define WORD(var) { int j,k; BYTE(j); BYTE(k); var=(j<<8)+k; }
++
++/*
++ * JPEG markers consist of one or more 0xFF bytes, followed by a marker
++ * code byte (which is not an FF).  Here are the marker codes of interest
++ * in this program.  (See jdmarker.c for a more complete list.)
++ */
++
++#define M_SOF0  0xC0		/* Start Of Frame N */
++#define M_SOF1  0xC1		/* N indicates which compression process */
++#define M_SOF2  0xC2		/* Only SOF0-SOF2 are now in common use */
++#define M_SOF3  0xC3
++#define M_SOF5  0xC5		/* NB: codes C4 and CC are NOT SOF markers */
++#define M_SOF6  0xC6
++#define M_SOF7  0xC7
++#define M_SOF9  0xC9
++#define M_SOF10 0xCA
++#define M_SOF11 0xCB
++#define M_SOF13 0xCD
++#define M_SOF14 0xCE
++#define M_SOF15 0xCF
++#define M_SOI   0xD8		/* Start Of Image (beginning of datastream) */
++#define M_EOI   0xD9		/* End Of Image (end of datastream) */
++#define M_SOS   0xDA		/* Start Of Scan (begins compressed data) */
++
++
++static BOOL
++skip_variable (FILE *fh)
++/* Skip over an unknown or uninteresting variable-length marker */
++{
++	unsigned int length;
++
++	/* Get the marker parameter length count */
++	WORD (length);
++
++	/* Length includes itself, so must be at least 2 */
++	if (length < 2)
++		return 0;
++
++	length -= 2;
++
++	/* Skip over the remaining bytes */
++	if (fseek (fh, length, SEEK_CUR))
++		return FALSE;
++
++	return TRUE;
++}
++
++/*
++ * Process a SOFn marker.
++ * This code is only needed if you want to know the image dimensions...
++ */
++
++static BOOL
++process_SOFn (FILE *fh, Share *file)
++{
++	unsigned int length;
++	unsigned int height, width;
++	int data_precision, num_components;
++
++	WORD (length);	/* usual parameter length count */
++
++	BYTE (data_precision);
++	WORD (height);
++	WORD (width);
++	BYTE (num_components);
++
++	if (length != (unsigned int) (8 + num_components * 3))
++		return FALSE;
++
++	share_set_meta (file, "width",  stringf ("%u", width));
++	share_set_meta (file, "height", stringf ("%u", height));
++
++	return TRUE;
++}
++
++static BOOL
++get_jpeg_info (Share *share, const char *path)
++{
++	FILE *fh = fopen (path, "rb");
++
++	if (!fh)
++		return FALSE;
++
++	if (fgetc (fh) != 0xff)
++		return FALSE;
++
++	if (fgetc (fh) != M_SOI)
++		return FALSE;
++
++	/* Scan miscellaneous markers until we reach SOS. */
++	for (;;)
++	{
++		int c;
++
++		/* Find 0xFF byte; count and skip any non-FFs. */
++		BYTE(c);
++		while (c != 0xFF) {
++			BYTE(c);
++		}
++
++		/* Get marker code byte, swallowing any duplicate FF bytes.  Extra FFs
++		 * are legal as pad bytes, so don't count them in discarded_bytes.
++		 */
++		do {
++			BYTE(c);
++		} while (c == 0xFF);
++    
++		switch (c)
++		{
++		case M_SOF0: case M_SOF1: case M_SOF2:
++		case M_SOF3: case M_SOF5: case M_SOF6:
++		case M_SOF7: case M_SOF9: case M_SOF10:
++		case M_SOF11:case M_SOF13:case M_SOF14:
++		case M_SOF15:
++			return process_SOFn (fh, share);
++			break;
++
++		case M_SOS:
++		case M_EOI:
++			return TRUE;
++			break;
++
++		default:
++			if (!skip_variable (fh))
++				return FALSE;
++			break;
++		}
++	}
++}
++
+ BOOL meta_image_run (Share *share, const char *path)
+ {
+ #ifdef USE_IMAGEMAGICK
+@@ -75,6 +209,8 @@
+ 	/* clean up */
+ 	DestroyExceptionInfo (&excp);
+ 	DestroyMagick ();
++#else
++	get_jpeg_info (share, path);
+ #endif /* USE_IMAGEMAGICK */
+ 
+ 	return TRUE;

@@ -1,0 +1,142 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.97
+diff -u -r1.97 ft_search_db.c
+--- ft_search_db.c	22 Dec 2003 18:50:48 -0000	1.97
++++ ft_search_db.c	23 Dec 2003 00:30:28 -0000
+@@ -100,6 +100,13 @@
+ /*****************************************************************************/
+ 
+ /*
++ * Split per-share token lists out into separate files - a Good Idea
++ * because libdb's subdatabase handling seems rather space-inefficient.
++ */
++
++#define SEARCH_DB_SEPARATE_INDICES
++
++/*
+  * All of the globally opened environment and database handlers go here.
+  * Keep in mind that the actual share record data goes in a separate database
+  * per user sharing the files, but all databases are opened within the same
+@@ -443,6 +450,12 @@
+ 		ERR_DB_PATH("DB->set_h_hash", ret, path, dbname);
+ #endif /* SEARCH_DB_DIRHASH */
+ 
++	if ((ret = dbp->set_pagesize (dbp, 1024)))
++		ERR_DB_PATH("DB->set_pagesize", ret, path, dbname);
++
++	if ((ret = dbp->set_h_ffactor (dbp, 15)))
++		ERR_DB_PATH("DB->set_h_ffactor", ret, path, dbname);
++
+ 	return ret;
+ }
+ 
+@@ -480,11 +493,24 @@
+ 	 */
+ 	if (!sdb->share_idx_name)
+ 	{
++#ifdef SEARCH_DB_SEPARATE_INDICES
++		/* prefix filenames so they're easily identifiable later */ 
++		sdb->share_idx_name =
++		    stringf_dup ("share-%s:%u", net_ip_str (sdb->node->ninfo.host),
++		                 (unsigned int)(time(NULL)));
++#else
+ 		sdb->share_idx_name =
+ 		    stringf_dup ("%s:%u", net_ip_str (sdb->node->ninfo.host),
+ 		                 (unsigned int)(time(NULL)));
++#endif
+ 	}
+ 
++#ifdef SEARCH_DB_SEPARATE_INDICES
++	if (dbname)
++		*dbname = NULL;
++
++	return sdb->share_idx_name;
++#else
+ 	/*
+ 	 * We are actually opening multiple databases within one file here so we
+ 	 * need to specify a unique database name to assist libdb in figuring out
+@@ -494,6 +520,7 @@
+ 		*dbname = sdb->share_idx_name;
+ 
+ 	return "share.index";
++#endif
+ }
+ 
+ static DB *open_db_shareidx (FTSearchDB *sdb)
+@@ -624,8 +651,10 @@
+  * symlink for this directory and we dont want to damage it */
+ static void clean_db_path (const char *path)
+ {
+-	/* not a clue what this is, but it looks like slop that needs to be
+-	 * dealt with */
++	DIR *dir;
++	struct dirent *d;
++
++	/* shared db environment files (only if env_priv=0) */
+ 	file_unlink (stringf ("%s/__db.001", path));
+ 	file_unlink (stringf ("%s/__db.002", path));
+ 
+@@ -635,6 +664,20 @@
+ 	file_unlink (stringf ("%s/md5.index", path));
+ 	file_unlink (stringf ("%s/tokens.index", path));
+ 
++	/* all the individual share indices, if we had that enabled */
++	if ((dir = file_opendir (path)))
++	{
++		while ((d = file_readdir (dir)))
++		{
++			if (!strncmp (d->d_name, "share-", 6))
++			{
++				file_unlink (stringf ("%s/%s", path, d->d_name));
++			}
++		}
++		
++		file_closedir (dir);
++	}
++ 
+ 	/* removed legacy databases */
+ 	file_unlink (stringf ("%s/children.data", path));
+ }
+@@ -911,7 +954,9 @@
+ 	 * this key */
+ 	if ((ret = dbp->put (dbp, NULL, &key, &data, DB_NOOVERWRITE)))
+ 	{
++		assert (ret == DB_KEYEXIST);
+ 		ERR_DB_SDB("DB->put", ret, sdb);
++		FT->DBGFN (FT, "duplicate MD5 %s (%s)", md5_fmt (keyrec.md5), sdb->share_idx_name);
+ 		return FALSE;
+ 	}
+ 
+@@ -1459,8 +1504,8 @@
+ #else /* SEARCH_DB_BENCHMARK */
+ 	/*
+ 	 * Block while each share is removed in an effort to get a better
+-	 * performance guage.  There is little noise from the event loop involved
+-	 * in the benchmark code and this helps us guage minor performance
++	 * performance gauge.  There is little noise from the event loop involved
++	 * in the benchmark code and this helps us gauge minor performance
+ 	 * differences.
+ 	 */
+ 	while (db_remove_host_timer (sdb) == TRUE);
+@@ -1493,6 +1538,7 @@
+ 	else
+ 	{
+ 		/* all done */
++		FT->DBGFN (FT, "remove queue empty");
+ 		remove_active = FALSE;
+ 	}
+ #endif /* !SEARCH_DB_BENCHMARK */
+@@ -2375,7 +2421,11 @@
+ 
+ 	/* open the only database that is likely to be closed */
+ 	if (!(db_shareidx (FT_SEARCH_DB(node), TRUE)))
++#if 0
+ 		db_abort (FT_SEARCH_DB(node));
++#else
++		return FALSE;
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return TRUE;

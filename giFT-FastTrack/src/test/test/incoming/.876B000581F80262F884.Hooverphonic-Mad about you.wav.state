@@ -1,0 +1,11 @@
+[transfer]
+uniq = 876B000581F80262F884.Hooverphonic-Mad about you.wav
+filename = Hooverphonic-Mad about you.wav
+hash = FTH:=BrlYe27ekAcRbQuNm52jFhdwwQQ=
+path = test/incoming/876B000581F80262F884.Hooverphonic-Mad about you.wav
+transmit = 7941120
+total = 40040580
+max_seek = 7941120
+paused = 0
+chunks = 7941120-40040580 
+

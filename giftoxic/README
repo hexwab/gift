@@ -1,0 +1,38 @@
+giFToxic, a GPL'ed GTK2 based GUI for giFT
+Copyright (C) 2002, 2003 giFToxic team (see AUTHORS)
+
+If you want to comment on giFToxic, you're welcome to send an e-mail to <tsauerbeck@users.sourceforge.net>
+Questions/comments/whatever regarding development of giFToxic can also be sent to our mailing list <giftoxic-devel@lists.sourceforge.net>
+
+
+Installation
+------------
+
+See INSTALL.
+
+giFToxic needs GTK+ 2.0 or GTK+ 2.2 and libgiFT (ships with giFT).
+
+If it doesn't compile, first try to update giFT before mailing us.
+
+
+How to use it
+-------------
+
+When giFToxic is started without the --server parameter, it tries to
+read ~/.giFT/ui/ui.conf to get the server and port where the giFT
+daemon it should connect to is running.
+If giFToxic is told to connect to the local machine and that connection
+attempt fails, the giFT daemon will be spawned.
+
+Searching: nothing special. When using "-" as the first character of your
+search token, hits that contain that token will be ignored.
+Downloading: Right-click a file to download.
+
+You can cancel a download by right-clicking and choosing "cancel". Pause/resume works the same way.
+
+"Browse user's files" and user search doesn't work yet - it's a bug in giFT,
+not in giFToxic!
+
+If something doesn't work, please have a look at the FAQ before mailing
+the developers.
+

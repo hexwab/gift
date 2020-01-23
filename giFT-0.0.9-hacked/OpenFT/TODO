@@ -1,0 +1,18 @@
+Probably quite a lot more left to do that isn't listed here.  If you wish to
+implement any of these please contact the authors for advice on how to
+proceed.
+
+Design:
+
+  * automatic node promotion
+  * new transfer protocol, considering using BitTorrent...
+  * notify search nodes when unusual download problems occur, encourage search
+    node to re-evaluate port information.
+  * new stats management system
+  * separate ft_search_request into token query and md5 query
+
+Code:
+
+  * add bandwidth tracking diagnostic systems to gauge bw scalability
+  * remove ft_utils.c
+  * remove ft_shost.c and replace with direct FTNode links in ft_search_db.c

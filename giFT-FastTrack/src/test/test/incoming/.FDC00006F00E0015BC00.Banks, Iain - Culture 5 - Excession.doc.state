@@ -1,0 +1,11 @@
+[transfer]
+uniq = FDC00006F00E0015BC00.Banks, Iain - Culture 5 - Excession.doc
+filename = Banks, Iain - Culture 5 - Excession.doc
+hash = FTH:=6xdZEJ09DbCcsPnfjgbBbUUIUs8=
+path = test/incoming/FDC00006F00E0015BC00.Banks, Iain - Culture 5 - Excession.doc
+transmit = 154138
+total = 1424384
+max_seek = 154138
+paused = 0
+chunks = 154138-1424384 
+

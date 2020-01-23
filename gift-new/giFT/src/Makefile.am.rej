@@ -1,0 +1,60 @@
+***************
+*** 9,37 ****
+  giFT_SOURCES = \
+  	conf.h          conf.c \
+  	connection.h    connection.c \
+  	daemon.h        daemon.c \
+- 	dataset.h       dataset.c \
+  	download.h      download.c \
+  	event.h         event.c \
+  	file.h          file.c \
+- 	gift.h          main.c \
+  	hash.h          hash.c \
+- 	if_event.h      if_event.c \
+- 	interface.h     interface.c \
+  	list.h          list.c \
+- 	md5.h           md5.c \
+- 	mime.h          mime.c \
+  	nb.h            nb.c \
+  	network.h       network.c \
+  	parse.h         parse.c \
+  	platform.h      platform.c \
+- 	protocol.h      protocol.c \
+- 	queue.h         queue.c \
+- 	sharing.h       sharing.c \
+- 	transfer.h      transfer.c \
+- 	upload.h        upload.c \
+- 	watch.h         watch.c \
+- 	zip.h		zip.c
+  
+  giFT_LDADD = $(GIFT_LIBS)
+  giFT_LDFLAGS = $(GIFT_LDFLAGS) -export-dynamic
+--- 9,36 ----
+  giFT_SOURCES = \
+  	conf.h          conf.c \
+  	connection.h    connection.c \
++ 	interface.h     interface.c \
++ 	if_event.h      if_event.c \
+  	daemon.h        daemon.c \
++ 	watch.h         watch.c \
++ 	queue.h         queue.c \
++ 	transfer.h      transfer.c \
+  	download.h      download.c \
++ 	upload.h        upload.c \
++ 	sharing.h       sharing.c \
++ 	md5.h           md5.c \
+  	event.h         event.c \
+  	file.h          file.c \
++ 	mime.h          mime.c \
+  	hash.h          hash.c \
++ 	dataset.h       dataset.c \
+  	list.h          list.c \
+  	nb.h            nb.c \
+  	network.h       network.c \
+  	parse.h         parse.c \
++ 	protocol.h      protocol.c \
+  	platform.h      platform.c \
++ 	gift.h          main.c
+  
+  giFT_LDADD = $(GIFT_LIBS)
+  giFT_LDFLAGS = $(GIFT_LDFLAGS) -export-dynamic

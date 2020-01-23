@@ -1,0 +1,38 @@
+package giFT::Stats;
+
+my $stats_obj;
+
+sub new {
+    return $stats_obj if $stats_obj;
+    
+    my $daemon=shift;
+
+    my $self=bless {
+	daemon=>$daemon,
+	stats=>{},
+	total=>{},
+	shared=>{},
+	cb1=>shift,
+	cb2=>shift,
+    };
+
+    my $cb=sub {
+	my (undef,$m)=%{(shift)};
+	
+    };
+
+    $self->set_handler('STATS',$cb);
+
+    $self;
+}
+
+sub proto_stats {
+    my $self=shift;
+    my $proto=shift;
+    return ($self->{stats}{$proto}{users,files,size}) if ($proto);
+    return $self->{total}{users,files,size};
+}
+
+sub shared_stats {
+    return %{$self->{shared}}{files,size};
+}

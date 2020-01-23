@@ -1,0 +1,116 @@
+Index: log.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/log.c,v
+retrieving revision 1.50
+retrieving revision 1.49
+diff -u -r1.50 -r1.49
+--- log.c	30 Jan 2006 18:23:44 -0000	1.50
++++ log.c	14 Jan 2004 10:00:24 -0000	1.49
+@@ -1,5 +1,5 @@
+ /*
+- * $Id: log.c,v 1.50 2006/01/30 18:23:44 mkern Exp $
++ * $Id: log.c,v 1.49 2004/01/14 10:00:24 hipnod Exp $
+  *
+  * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+  *
+@@ -23,14 +23,6 @@
+ 
+ /*****************************************************************************/
+ 
+-/* Maximum size the log file is allowed to become. If we reach this size the
+- * file is truncated and we start over. This should really be a parameter to
+- * log_init but I don't want to break the libgift interface.
+- */
+-#define MAX_LOG_FILE_SIZE (1024*1024*100) /* 100 MB */
+-
+-/*****************************************************************************/
+-
+ /* reduces code duplication in each log function */
+ #define LOG_FORMAT(pfx,fmt)                                           \
+ 	char    buf[4096];                                                \
+@@ -58,11 +50,6 @@
+ static Array       *log_fds     = NULL;
+ static FILE        *log_file_fd = NULL;
+ 
+-/* Number of characters we have written since last reset of the log file.
+- * Used to enforce maximum size of log file.
+- */
+-static unsigned int logged_chars = 0; 
+-
+ /* horribly non-threadsafe macro abuse
+  * TODO: plugin/protocol.h has a better approach, but im too lazy to clean
+  * this up */
+@@ -118,7 +105,6 @@
+ 			return FALSE;
+ 		}
+ 
+-		logged_chars = 0;
+ 		array_push (&log_fds, log_file_fd);
+ 	}
+ 
+@@ -149,31 +135,24 @@
+ 
+ /*****************************************************************************/
+ 
+-static int print_timestamp (FILE *f)
++static void print_timestamp (FILE *f)
+ {
+ 	time_t     t;
+ 	struct tm *lt;
+ 	char       buf[16];
+-	int        written = 0;
+ 
+ 	/* hi rossta :) */
+ 	t  = time (NULL);
+ 	lt = localtime (&t);
+ 
+ 	if (strftime (buf, sizeof (buf), "[%H:%M:%S]", lt) > 0)
+-		written = fprintf (f, "%s ", buf);
+-
+-	return (written < 0 ? 0 : written);
++		fprintf (f, "%s ", buf);
+ }
+ 
+-static int print_fd (FILE *f, char *message)
++static void print_fd (FILE *f, char *message)
+ {
+-	int written;
+-
+-	written = fprintf (f, "%s\n", message);
++	fprintf (f, "%s\n", message);
+ 	fflush (f);
+-
+-	return (written < 0 ? 0 : written);
+ }
+ 
+ /* TODO -- if not initialized, log_fd should be emulated as stderr here */
+@@ -192,27 +171,8 @@
+ 		if (f == stdout || f == stderr)
+ 			err_or_out = TRUE;
+ 
+-		if (f == log_file_fd)
+-		{
+-			logged_chars += print_timestamp (f);
+-			logged_chars += print_fd (f, message);
+-
+-			/* Truncate log file if it has become too large */
+-			if (logged_chars > MAX_LOG_FILE_SIZE)
+-			{
+-				file_truncate (f, 0);
+-				logged_chars = 0;
+-
+-				logged_chars += print_timestamp (f);
+-				logged_chars += print_fd (f, "*** Restarted log because "
+-				                          "it became too large ***");
+-			}
+-		}
+-		else
+-		{
+-			print_timestamp (f);
+-			print_fd (f, message);
+-		}
++		print_timestamp (f);
++		print_fd (f, message);
+ 	}
+ 
+ 	/* if the priority is as or more severe than critical, ensure that we

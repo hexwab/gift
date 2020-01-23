@@ -1,0 +1,2 @@
+# nmap 3.50 scan initiated Mon Apr  5 20:21:12 2004 as: nmap -oG -P0 -O -p50,80,113,3030 81.51.117.112 
+# Nmap run completed at Mon Apr  5 20:21:24 2004 -- 1 IP address (0 hosts up) scanned in 12.100 seconds

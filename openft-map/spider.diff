@@ -1,0 +1,21 @@
+Index: spider.pl
+===================================================================
+RCS file: /cvsroot/gift/openft-map/spider.pl,v
+retrieving revision 1.24
+diff -u -r1.24 spider.pl
+--- spider.pl	12 Apr 2004 07:17:18 -0000	1.24
++++ spider.pl	14 Apr 2004 21:52:59 -0000
+@@ -324,11 +324,12 @@
+ 
+ 	my $timestamp = $nobj->{'timestamp'} || time;
+ 	my $uptime    = $nobj->{'uptime'}    || 1;
++	my $class     = $nobj->{'klass'} & 0x7;
+ 
+ 	# implicitly return the formatted buffer
+ 	sprintf ("%d %d %s %hu %hu %d %d",
+ 	         $timestamp, $uptime,
+-	         @$nobj{qw/host port http_port klass version/});
++	         @$nobj{qw/host port http_port/}, $class, $nobj->{version});
+ }
+ 
+ ###############################################################################

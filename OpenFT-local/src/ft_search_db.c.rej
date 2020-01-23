@@ -1,0 +1,36 @@
+***************
+*** 674,681 ****
+  
+  	if (ret)
+  		return ret;
+- 
+- 	return a_rec->id - b_rec->id;
+  }
+  
+  static DB *db_md5idx (void)
+--- 674,681 ----
+  
+  	if (ret)
+  		return ret;
++ 	
++ 	return memcmp (&a_rec->id, &b_rec->id, sizeof (a_rec->id));
+  }
+  
+  static DB *db_md5idx (void)
+***************
+*** 700,706 ****
+  	assert (b->size == a->size);
+  
+  	/* first compare id */
+- 	if ((ret = a_rec->id - b_rec->id))
+  		return ret;
+  
+  	/*
+--- 700,706 ----
+  	assert (b->size == a->size);
+  
+  	/* first compare id */
++ 	if ((ret = memcmp (&a_rec->id, &b_rec->id, sizeof (a_rec->id))))
+  		return ret;
+  
+  	/*

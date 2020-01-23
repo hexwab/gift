@@ -1,0 +1,16 @@
+digraph G {
+    node [label=user, fontname="Helvetica"]
+    a [label="central server", shape=box];
+    b -> a;
+    c -> a;
+    d -> a;
+    e -> a;
+    f -> a;
+    g -> a;
+    h -> a;
+    i -> a;
+    j -> a;
+    k -> a;
+    l -> a;
+    m -> a;    
+}

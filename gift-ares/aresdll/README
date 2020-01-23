@@ -1,0 +1,11 @@
+$Id: README,v 1.3 2005/12/18 17:09:30 mkern Exp $
+
+This is a windows DLL wrapper around the platform independent ares library.
+
+For the DLL interface and theory of operation please see aresdll.h.
+
+To build the DLL follow the instructions in README.win32 at the root of this
+repository.
+
+The \test subdirectory contains a simple application written in Delphi for
+testing the DLL.

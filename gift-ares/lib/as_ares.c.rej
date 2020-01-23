@@ -1,0 +1,46 @@
+***************
+*** 56,67 ****
+  
+  /* Config value defaults. */
+  
+- static const ASConfVal default_conf[] =
+  {
+  	/* id, name, type, data, callback, udata */
+  	{ AS_LISTEN_PORT,                 "main/port",      AS_CONF_INT, {59049},
+  	                                  port_change_cb,   NULL },
+- 	{ AS_USER_NAME,                   "main/username",  AS_CONF_STR, {"antares"},
+  	                                  NULL,             NULL },
+  	{ AS_DOWNLOAD_MAX_ACTIVE,         NULL,             AS_CONF_INT, {6},
+  	                                  NULL,             NULL },
+--- 56,68 ----
+  
+  /* Config value defaults. */
+  
++ static ASConfVal default_conf[] =
+  {
+  	/* id, name, type, data, callback, udata */
+  	{ AS_LISTEN_PORT,                 "main/port",      AS_CONF_INT, {59049},
+  	                                  port_change_cb,   NULL },
++ 	/* warning: this is changed below to avoid problems with union initialization */
++ 	{ AS_USER_NAME,                   "main/username",  AS_CONF_STR, {0},
+  	                                  NULL,             NULL },
+  	{ AS_DOWNLOAD_MAX_ACTIVE,         NULL,             AS_CONF_INT, {6},
+  	                                  NULL,             NULL },
+***************
+*** 112,117 ****
+  		as_cleanup ();
+  		return FALSE;
+  	}
+  
+  	/* Add default values */
+  	if (!as_config_add_values (AS->config, default_conf,
+--- 113,121 ----
+  		as_cleanup ();
+  		return FALSE;
+  	}
++ 	
++ 	/* HACK: avoid union initialization problems */
++ 	default_conf[1].data.s = "antares";
+  
+  	/* Add default values */
+  	if (!as_config_add_values (AS->config, default_conf,

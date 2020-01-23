@@ -1,0 +1,206 @@
+% $Id: install.tex,v 1.9 2002/04/30 07:52:41 eelcol Exp $
+% Copyright (c) 2001-2002, The giFT Project
+% written by Eelco Lempsink (eelco@wideview.33lc0.net)
+
+\documentclass[10pt]{article}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+\textsf{\textbf{\Huge{giFT}\\ \huge{Installation Guide}\\
+\normalsize{Last update: \today}}}
+\end{center}
+
+\tableofcontents
+
+\setlength{\parskip}{1.4ex}
+
+\section{Introduction}
+A small notice to begin with. Lots (and I mean lots) of people are coming to
+our channel and ask about things covered in this document. Please note that
+every line, every word and every letter in this document actually matters. If
+you haven't read these instructions completely, and start asking dumb things,
+you will be shot.
+
+\section{Getting it}
+
+Because giFT/OpenFT has not been released, you must retrieve the sources via 
+CVS in order to use the program.
+
+Go to the directory you want to download the sources and type (the \$ is used 
+to indicate this is a shell command):
+
+\begin{verbatim}
+  $ cvs -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift login
+\end{verbatim}
+
+Just press enter when prompted for a password. You'll only have to do this
+once, after that cvs will read your password information from \~{}/.cvspass.
+Now type:
+
+\begin{verbatim}
+  $ cvs -z3 -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift co giFT
+\end{verbatim}
+
+This will download everything you need...
+
+\subsection{Updating}
+To update giFT to include the latest updates from CVS, type:
+
+\begin{verbatim}
+  $ cd giFT
+  $ cvs update -Pd
+\end{verbatim}
+
+It is important that you update regularly, as giFT is still in development, 
+and is being updated frequently.
+
+\subsection{Configuring the Build Environment}
+
+To configure the build scripts, type:
+
+\begin{verbatim}
+  $ cd giFT
+  $ ./autogen.sh
+\end{verbatim}
+
+This will generate and execute '\verb|./configure|'.
+
+If you receive the any errors (you can ignore all warnings), like 
+"\texttt{'AM-PATH-GTK' not found in library}", "\texttt{'syntax error near
+unexpected token `AM\_INIT\_AUTOMAKE(giFT,'}", or "\texttt{Syntax error: word
+unexpected (expecting ")")}" you either need to install the GTK development
+files (libgtk-dev on debian, gtk-devel on rpmfind.net) or move the needed GTK
+macros manually with:
+
+\begin{verbatim}
+  $ mv m4/support/gtk.m4 m4/
+\end{verbatim}
+
+and run '\texttt{./autogen.sh}' again.
+
+\subsection{Enabling the GTK client}
+Currently, the GTK client (giFT-fe) is disabled by default. If you really want
+to try it (it works, but not nearly as well as giFTcurs) run autogen.sh with
+the --enable-gtk-client option:
+
+\begin{verbatim}
+  $ ./autogen.sh --enable-gtk-client
+\end{verbatim}
+
+\subsection{Compiling}
+
+To compile giFT and OpenFT, type:
+
+\begin{verbatim}
+  $ make
+\end{verbatim}
+
+\subsection{Installing}
+
+To install giFT, giFT-setup, the OpenFT library, the GTK GUI giFT-fe and the
+giFT-shell, type:
+
+\begin{verbatim}
+  $ su -c 'make install'
+\end{verbatim}
+
+\subsection{Configuring giFT}
+
+Before you can use giFT, you need to configure it by typing:
+
+\begin{verbatim}
+  $ giFT-setup
+\end{verbatim}
+
+\texttt{giFT-setup} will ask you several questions, and create the configuration 
+files based on your answers.  
+These files will be created in the directory \texttt{\~{}/.giFT}.
+
+
+\section{Running giFT}
+Running giFT is easy:
+
+\begin{verbatim}
+  $ giFT
+\end{verbatim}
+
+That'll start the daemon and load all protocols (currently only OpenFT).
+The daemon will report all kind of status things, but you'll probably only
+need them when giFT crashes. :-)
+
+You can also check out some info about the nodes you're connected to and files
+you share with your browser at localhost:1216, or another port you configured
+to be your nodepage. To find out what your http port is, look for the line
+containing \verb|http_start: http_port = [port]| just after starting giFT.
+
+\subsection{GUI's}
+To search for and download files you need a graphical user interface (GUI).  At
+the moment, there are a few available. Please see
+\url{http://gift.sourceforge.net/dev/clients.php} for a more complete list. If
+you want to write your own, please check the
+\href{http://gift.sourceforge.net/docs/?document=interface.html}{Interface
+Protocol Documentation}.
+
+\subsubsection{giFTcurs}
+giFTcurs is an ncurses interface to giFT, written by weinholt and chnix. 
+It is currently the suggested client, since it supports most functions and 
+just looks damn nice. For more information, please see
+\url{http://giftcurs.sourceforge.net/}. 
+
+To build giFTcurs, type:
+
+\begin{verbatim}
+  $ cvs -d:pserver:anonymous@cvs.giftcurs.sf.net:/cvsroot/giftcurs \
+    co giFTcurs
+  $ cd giFTcurs
+  $ ./autogen.sh
+  $ make
+\end{verbatim}
+
+\subsubsection{giFT-fe}
+giFT-fe, is the official GUI. 
+It's GTK based and you already have it installed if you installed giFT.
+Run giFT-setup to configure it.
+
+\subsubsection{kift}
+kift is a KDE-GUI.
+For more information, please see \url{http://kift.sourceforge.net/}.
+
+\subsubsection{giFT-shell}
+giFT-shell, is malverians perl client, previously called gift-perl or 'TooT'
+(for some mysterious reason :-). Its interface is gnut like, and it's an
+excellent client for all command line junkies.  This client is installed by
+default too.
+ 
+\subsection{nodes file}
+Ah yes, the ever popular 'nodes' file... Since a lot of questions in our IRC 
+channel were asked because of this file, it gets a special section here.
+
+Information about OpenFT nodes will be saved in the file
+\texttt{\~{}/.giFT/OpenFT/nodes}. This information is vital if you want to
+connect to the network, so a default nodes file is provided. That file is
+installed in \texttt{/usr/local/share/giFT/OpenFT/nodes}.
+
+If you have problems connecting to OpenFT, please try to remove your nodes file
+(stop giFT first!) and restart giFT. The default file will be copied to your
+home directory. If your nodes file is empty, giFT will do nothing.
+
+
+\section{Miscellaneous}
+A section for all things I don't know where to fit :-)
+
+\subsection{Stats}
+Since OpenFT works with HTTP, it also generates an Apache style 
+'\texttt{access.log}'. 
+With some tweaking you can make beautiful overviews and graphs with your 
+favorite log analyser / statistics generator. 
+You can find the file in the directory
+\texttt{\~{}/.giFT/access.log}.
+
+\end{document}

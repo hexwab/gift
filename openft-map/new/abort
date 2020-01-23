@@ -1,0 +1,1 @@
+perl -ne '/host:(.*?) .*http_port:(.*?) / or die "l$_";$a="$1:$2";use IO::Socket::INET;my $sock = IO::Socket::INET->new ('PeerAddr' => $a, 'Timeout' => 15); if ($sock) {print $sock "GET your OpenFT version is too old. Please upgrade.\r\n\r\n";print "$a: done\n";}'

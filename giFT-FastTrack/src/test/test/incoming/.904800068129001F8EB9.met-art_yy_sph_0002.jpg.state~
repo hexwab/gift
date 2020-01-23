@@ -1,0 +1,14 @@
+[transfer]
+uniq = 904800068129001F8EB9.met-art_yy_sph_0002.jpg
+filename = met-art_yy_sph_0002.jpg
+hash = FTH:=GEjDX801fS5nj25bmw7iSUyO1ew=
+transmit = 0
+total = 2068153
+max_seek = 0
+paused = 0
+chunks = 0-2068153 
+
+[source0]
+user = KazaaLiteK++@213.46.31.18
+url = FastTrack:?ip=213.46.31.18&port=3671&sip=80.56.50.180&sport=3388&pip=80.220.224.42&user=KazaaLiteK++
+

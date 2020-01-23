@@ -1,0 +1,469 @@
+/*
+ * $Id: upload.c,v 1.77 2003/05/01 16:21:46 hipnod Exp $
+ *
+ * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gift.h"
+
+#include "event.h"
+#include "file.h"
+
+#include "share_cache.h"
+
+#include "upload.h"
+
+#include "if_transfer.h"
+
+/*****************************************************************************/
+
+extern Config *gift_conf;
+
+/*****************************************************************************/
+
+static input_id  upload_timer = 0;
+static List     *uploads      = NULL;
+
+/*****************************************************************************/
+
+/* 0  == no uploads
+ *  * -1 == unlimited */
+static int max_uploads = -1;
+static int disabled    = FALSE;
+
+#define MAX_PERUSER_UPLOADS \
+	    config_get_int (gift_conf, "sharing/max_peruser_uploads=1")
+
+/*****************************************************************************/
+
+#ifdef THROTTLE_ENABLE
+
+static unsigned int max_upstream = 0;
+
+#define MAX_UPLOAD_BW max_upstream
+
+static int            throttle_resume_timer        = 0;
+static unsigned long  upload_credits               = 0;
+
+#endif /* THROTTLE_ENABLE */
+
+/*****************************************************************************/
+
+static int upload_report_progress (Transfer *transfer, void *udata)
+{
+	if (!transfer->display)
+	{
+		TRACE (("son of a bitch"));
+		return TRUE;
+	}
+
+	if_transfer_change (transfer->event, FALSE);
+
+#ifdef THROTTLE_ENABLE
+	transfer_calc_bw (transfer);
+#endif
+
+	return TRUE;
+}
+
+static int upload_report (void *udata)
+{
+	list_foreach (uploads, (ListForeachFunc) upload_report_progress, NULL);
+	return TRUE;
+}
+
+size_t upload_throttle (Chunk *chunk, size_t len)
+{
+#ifdef THROTTLE_ENABLE
+	return chunk_throttle (chunk, MAX_UPLOAD_BW, len, upload_credits);
+#else
+	return len;
+#endif /* THROTTLE_ENABLE */
+}
+
+/*****************************************************************************/
+
+List *upload_list ()
+{
+	return uploads;
+}
+
+#ifdef THROTTLE_ENABLE
+static void throttle_resume (void *arg)
+{
+	transfers_resume (uploads, MAX_UPLOAD_BW, &upload_credits);
+}
+#endif /* THROTTLE_ENABLE */
+
+/*****************************************************************************/
+
+/* display is a boolean used to register this data structure but NOT report
+ * it to the user interface yet.  this is useful for firewalled push
+ * (http_push_file) */
+Transfer *upload_new (Protocol *p, char *user, char *hash, char *filename,
+                      char *path, off_t start, off_t stop,
+                      int display, int shared)
+{
+	Transfer *transfer;
+	Chunk    *chunk;
+	Source   *source;
+
+	/* create the transfer object */
+	if (!(transfer = transfer_new (TRANSFER_UPLOAD, filename, hash, stop)))
+		return NULL;
+
+	transfer->transmit = start;
+	transfer->transmit_change = start;
+
+	transfer->path     = STRDUP (path);
+	transfer->display  = display;
+	transfer->shared   = shared;
+
+	/* add source */
+	source = source_new (user, hash,
+	                     stringf ("%s://%s%s", p->name, user, path));
+	transfer->sources = list_prepend (transfer->sources, source);
+
+	/* add chunk
+	 * NOTE: chunk_new sets up the circular reference */
+	chunk = chunk_new (transfer, source, start, stop);
+
+#ifdef THROTTLE_ENABLE
+	max_upstream = config_get_int (gift_conf, "bandwidth/upstream=0");
+
+	if(!uploads && MAX_UPLOAD_BW > 0)
+	{
+		throttle_resume_timer =
+		    timer_add (THROTTLE_TIME, (TimerCallback) throttle_resume, NULL);
+
+		/* set the initial upload credits */
+		upload_credits = max_upstream * THROTTLE_TIME / SECONDS;
+	}
+#endif /* THROTTLE_ENABLE */
+
+	/* register the transfer object */
+	uploads = list_prepend (uploads, transfer);
+
+	/* ensure that we have some kind of status reporting */
+	if (!upload_timer)
+	{
+		upload_timer = timer_add (1 * SECONDS, (TimerCallback) upload_report,
+		                          NULL);
+	}
+
+	if (display)
+	{
+		source->status = SOURCE_WAITING;
+		source->p->upload_avail (source->p, upload_availability ());
+	}
+
+	/* add the if_event */
+	if (!(transfer->event = if_transfer_new (NULL, 0, transfer)))
+	{
+		transfer_free (transfer);
+		return NULL;
+	}
+
+	return transfer;
+}
+
+static void upload_free (Transfer *upload)
+{
+	Chunk  *chunk;
+	Source *source;
+
+	assert (upload != NULL);
+
+	/* unregister this event.  this should also dump the last known status
+	 * to the ui for reporting */
+	if_transfer_finish (upload->event);
+	upload->event = NULL;
+
+	uploads = list_remove (uploads, upload);
+
+	/* let the protocol know this happened */
+	if (upload->chunks)
+	{
+		chunk  = upload->chunks->data;
+		source = chunk->source;
+
+		source->p->upload_avail (source->p, upload_availability ());
+		source->p->upload_stop (source->p, upload, chunk, source);
+	}
+
+	transfer_free (upload);
+
+	/* unload the timer, no reason to call it anymore */
+	if (!uploads)
+	{
+		timer_remove (upload_timer);
+		upload_timer = 0;
+
+#ifdef THROTTLE_ENABLE
+		timer_remove (throttle_resume_timer);
+		throttle_resume_timer = 0;
+#endif /* THROTTLE_ENABLE */
+	}
+}
+
+/*****************************************************************************/
+
+void upload_stop (Transfer *upload, int cancel)
+{
+	Chunk  *chunk;
+	Source *source;
+
+	assert (upload);
+
+	chunk  = upload->chunks->data;
+	source = chunk->source;
+
+	if (chunk->start + chunk->transmit >= chunk->stop)
+		source->status = SOURCE_COMPLETE;
+
+#if 0
+	/* give the protocol a heads up */
+	if (source->p->upload)
+		(*source->p->upload) (chunk, PROTOCOL_TRANSFER_CANCEL, NULL);
+#endif
+
+#if 0
+	chunk->source = NULL;
+	source->chunk = NULL;
+#endif
+
+	upload_free (upload);
+}
+
+/*****************************************************************************/
+
+void upload_write (Chunk *chunk, unsigned char *segment, size_t len)
+{
+	unsigned long remainder;
+
+	assert (chunk);
+	assert (chunk->transfer);
+
+	if (!segment || len == 0)
+	{
+		upload_stop (chunk->transfer, TRUE);
+		return;
+	}
+
+	remainder = chunk->transfer->total - chunk->transfer->transmit;
+
+	if (len > remainder)
+		len = remainder;
+
+	chunk->transmit           += len;
+	chunk->transfer->transmit += len;
+
+	chunk->source->status = SOURCE_ACTIVE;
+
+#ifdef THROTTLE_ENABLE
+	if (MAX_UPLOAD_BW > 0)
+		upload_credits -= len;
+#endif /* THROTTLE_ENABLE */
+
+	/* upload completed, tell the protocol to clean itself up */
+	if (remainder - len <= 0)
+		upload_stop (chunk->transfer, TRUE);
+}
+
+/*****************************************************************************/
+
+int upload_length (char *user)
+{
+	return transfer_length (uploads, user, FALSE);
+}
+
+/*****************************************************************************/
+
+/*
+ * each time a queued upload request is made we "hit" the users status to
+ * keep them alive in the fair position-based upload queue.  this queue
+ * method is used to guarantee that no one can alter their timers to get a
+ * better "chance" at slipping into a queue slot.  its inefficient as shit
+ * but its implemented here so that other protocols may take advantage of the
+ * feature (even if the protocol has no such support)
+ *
+ * the fair upload queue effectively tracks all failed requests and will wait
+ * for the next person in line to request a file when the queue has an
+ * available slot.  if any user does not "hit" their upload in a given amount
+ * of time a timer will be raised which removes them from the queue and they
+ * must start over again.  this is done because most common implementations
+ * will use a basic 60 second timer for re-requesting and we can rely on a
+ * lacking request in x amount of time means the transfer was cancelled on
+ * their client side.
+ */
+static void queue_hit (char *user)
+{
+	/* TODO */
+}
+
+/*****************************************************************************/
+
+/* silly helper function.  hinders readability for sure ;) */
+static FileShare *auth_reason (AuthReason *mem, AuthReason value)
+{
+	if (mem)
+		*mem = value;
+
+	return NULL;
+}
+
+/* checks to see if the perl support has any "hint" as to which action we
+ * should perform */
+static int get_hook_hint (char *user, char *path, char *mime, off_t size)
+{
+#if 0
+	HookVar *hv;
+	int      hint;
+
+	hv = hook_event ("upload_auth", TRUE,
+			 HOOK_VAR_STR, user,
+	                 HOOK_VAR_STR, path,
+			 HOOK_VAR_STR, mime,
+			 HOOK_VAR_INT, (int) size,
+			 HOOK_VAR_INT, upload_length (NULL),
+	                 HOOK_VAR_NUL, NULL);
+
+	if (!hv)
+		return -1;
+
+	hint = P_INT (hook_var_value (hv));
+	hook_var_free (hv);
+
+	return hint;
+#endif
+
+	return -1;
+}
+
+/*
+ * this function will accept file paths in the form:
+ *
+ * /usr/local/share/giFT/OpenFT/nodepage.html
+ *
+ * -OR -
+ *
+ * /file.txt (root path exclusion)
+ *
+ * return:
+ *   FileShare pointer into the shares list.  This should be considered
+ *   read-only and private to giFT.
+ *
+ *   if a storage location is specified for reason it will be set
+ *   appropriately.
+ */
+FileShare *upload_auth (char *user, char *path, AuthReason *reason)
+{
+	FileShare *file;
+	char      *s_path;
+	int        hv_hint;
+
+	/* reconstructs the path w/o '.' or '..' elements
+	 * TODO -- I think Windows accepts '...', but ironically that's a valid
+	 * path on ext2 at least...rossta?
+	 * '...' and '....' are not valid filenames in Windoze -rasa
+	 */
+	if (!(s_path = file_secure_path (path)))
+		return auth_reason (reason, AUTH_INVALID);
+
+	/* check to make sure we will actually share this file */
+	file = share_find_file (s_path);
+	free (s_path);
+
+	if (!file || !SHARE_DATA(file) || !SHARE_DATA(file)->path)
+		return auth_reason (reason, AUTH_INVALID);
+
+	/* if the hook didn't suggest an action, go through the usual suspects */
+	hv_hint = get_hook_hint (user, path, file->mime, file->size);
+	switch (hv_hint)
+	{
+	case 1: /* always accept */
+		TRACE (("hook accepted %s",path));
+		break;
+	case -2: /* always reject - no queuing */
+		TRACE (("hook rejected %s",path));
+		return auth_reason (reason, AUTH_MAX);
+		break;
+	case -1: /* default */
+		/* this user has reached his limit ... force his client to queue the
+		 * extra files */
+		if (MAX_PERUSER_UPLOADS > 0 &&
+		    upload_length (user) >= MAX_PERUSER_UPLOADS)
+		{
+			return auth_reason (reason, AUTH_MAX_PERUSER);
+		}
+
+		/* before we authorize a legitimate file share, check total upload
+		 * count */
+		if (!upload_availability ())
+		{
+			queue_hit (user);
+			return auth_reason (reason, AUTH_MAX);
+		}
+		break;
+	}
+
+	/* check if this entry is stale */
+	if (share_update_entry (file))
+		return auth_reason (reason, AUTH_STALE);
+
+	auth_reason (reason, AUTH_ACCEPTED);
+	return file;
+}
+
+/*****************************************************************************/
+
+void upload_disable ()
+{
+	disabled = TRUE;
+	max_uploads = upload_status ();
+}
+
+void upload_enable ()
+{
+	disabled = FALSE;
+	max_uploads = upload_status ();
+}
+
+int upload_status ()
+{
+	if (disabled)
+		return 0;
+
+	/* sync with config */
+	max_uploads = config_get_int (gift_conf, "sharing/max_uploads=-1");
+
+	return max_uploads;
+}
+
+unsigned long upload_availability ()
+{
+	unsigned long av = 0;
+	int           status;
+
+	status = upload_status ();
+
+	if (status == 0)
+		return av;
+
+	if (status < 0)
+		av = 1;
+	else
+		av = MAX (0, status - upload_length (NULL));
+
+	return av;
+}

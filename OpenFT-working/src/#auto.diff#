@@ -1,0 +1,364 @@
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	4 Jan 2004 04:31:01 -0000
+@@ -44,12 +44,19 @@
+ #define FT_CFG_SEARCH_MINPEERS    ft_cfg_get_int("search/minpeers=8")
+ #define FT_CFG_SEARCH_MAXPEERS    ft_cfg_get_int("search/peers=12")
+ #define FT_CFG_SEARCH_TTL         ft_cfg_get_int("search/default_ttl=2")
++#define FT_CFG_LOCATE_TTL         ft_cfg_get_int("search/locate_ttl=3")
+ #define FT_CFG_SEARCH_RESULTS     ft_cfg_get_int("search/max_results=800")
+ #define FT_CFG_SEARCH_RESULTS_REQ ft_cfg_get_int("search/max_results_req=800")
+-#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=2")
++#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=3")
+ #define FT_CFG_MAX_RESULTS        FT_CFG_SEARCH_RESULTS
+-#define FT_CFG_MAX_CHILDREN       ft_cfg_get_int("search/children=85")
++#define FT_CFG_MAX_CHILDREN       ft_cfg_get_int("search/children=100")
++#define FT_CFG_MIN_CHILDREN       ft_cfg_get_int("search/min_children=30")
+ #define FT_CFG_MAX_CONNECTIONS    (30)
++#define FT_CFG_MAX_ACTIVE         ft_cfg_get_int("connections/max_active=-1")
++
++#define FT_CFG_PROMOTE_CHANCE     (0.1)
++#define FT_CFG_DEMOTE_CHANCE      (0.002)
++
+ #define FT_CFG_MAX_ACTIVE         ft_cfg_get_int("connections/max_active=-1")
+ 
+ #define FT_CFG_SEARCH_ENV_PATH    ft_cfg_get_path("search/env_path", "OpenFT/db")
+Index: ft_conn.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conn.c,v
+retrieving revision 1.54
+diff -u -r1.54 ft_conn.c
+--- ft_conn.c	23 Dec 2003 04:56:16 -0000	1.54
++++ ft_conn.c	4 Jan 2004 04:31:01 -0000
+@@ -20,6 +20,8 @@
+ #include "ft_node_cache.h"
+ #include "ft_conn.h"
+ 
++#include "ft_search_db.h"              /* automatic node promotion */
++
+ #ifdef HAVE_SYS_TIME_H
+ # include <sys/time.h>
+ #endif /* HAVE_SYS_TIME_H */
+@@ -54,6 +56,22 @@
+  */
+ static int max_active = -1;
+ 
++/**
++  * The number of 2 minute blocks we can go without a parent before we
++  * begin automatic search node promotion tests.
++  */
++#define IMPOVERISH_MIN (4)
++
++/**
++  * Ditto, but for seeing if our services as a search node are no longer
++  * required.
++  */
++#define SURPLUS_MIN (6)
++
++static unsigned int poverty_count = 0;
++
++static unsigned int surplus_count = 0;
++
+ /*****************************************************************************/
+ 
+ static BOOL drop_notalive (FTNode *node, void *udata)
+@@ -320,6 +338,125 @@
+ 
+ /*****************************************************************************/
+ 
++static BOOL check_promote (void)
++{
++	float diceroll;
++	int ret;
++	
++	assert (!(openft->ninfo.klass & FT_NODE_SEARCH));
++	if (!(openft->klass_max & FT_NODE_SEARCH))
++		return FALSE;
++
++	diceroll = ((float)rand() / (RAND_MAX + 1.0));
++	
++	if (diceroll > FT_CFG_PROMOTE_CHANCE)
++		return FALSE;
++
++	/* if you're hap^H^H^Hfirewalled and you know it... */
++	if (openft->ninfo.port_openft == 0)
++		return FALSE;
++
++	/* insert other	tests here */
++
++	FT->warn (FT, "Automatically promoting to FT_NODE_SEARCH status");
++
++	if ((ret = ft_search_db_init (FT_CFG_SEARCH_ENV_PATH, FT_CFG_SEARCH_ENV_CACHE)))
++		openft->ninfo.klass |= FT_NODE_SEARCH;
++	else
++		FT->DBGFN (FT, "search db startup failed");
++	
++	surplus_count = 0;
++
++	return ret;
++}
++
++static BOOL drop_after_demotion (FTNode *node, void *udata)
++{
++	if (!node->ninfo.klass & FT_NODE_PARENT)
++		ft_session_stop (FT_CONN(node));
++	return TRUE;
++}
++
++static BOOL drop_children (FTNode *node, void *udata)
++{
++	ft_node_remove_class (node, FT_NODE_CHILD);
++	return TRUE;
++}
++
++static BOOL check_demote (void)
++{
++	int n, min;
++	float chance, diceroll;
++
++	assert (openft->ninfo.klass & FT_NODE_SEARCH);
++
++	/* Don't demote unless we automatically promoted earlier */
++	if (openft->klass_min & FT_NODE_SEARCH)
++		return FALSE;
++
++	n = ft_netorg_length (FT_NODE_CHILD, FT_NODE_CONNECTED);
++	min = FT_CFG_MIN_CHILDREN;
++
++	if (n >= min)
++	{
++		surplus_count = 0;
++		return FALSE;
++	}
++
++	/* wait a while for child acquisition */
++	if (++surplus_count < SURPLUS_MIN)
++		return FALSE;
++
++	/* 
++	 * This needs to be random so that newly-orphaned children
++	 * have time to locate a new parent before said parent demotes
++	 * itself too.
++	 *
++	 * This should become less critical as network size increases.
++	 */
++	chance = FT_CFG_DEMOTE_CHANCE;
++	chance *= ((float)min / (n + 1)); /* few children == more chance to demote */
++
++	/*
++	 * we haven't had any incoming connections yet; we might be
++         * firewalled but unaware of the fact...
++	 */
++	if (openft->ninfo.indirect)
++		chance *= 5; 
++
++	diceroll = ((float)rand() / (RAND_MAX + 1.0));
++
++	if (diceroll > chance)
++		return FALSE;
++	
++	/* OK, do it */
++	FT->DBGFN (FT, "demoting: firewalled=%d, children=%d, min=%d, surplus_count=%d",
++		   openft->ninfo.indirect, n, min, surplus_count);
++
++	openft->ninfo.klass &= ~FT_NODE_SEARCH;
++	ft_search_db_destroy ();
++	
++	/*
++	 * Drop all non-PARENT connections first.  FIXME: this might
++	 * not be necessary, and is yet another place where network
++	 * topology is hardcoded, but I'm trying it anyway in an
++	 * effort to remove demoted nodes as quickly as possible.
++	 */
++	ft_netorg_foreach (FT_NODE_USER, FT_NODE_CONNECTED, 0,
++			   FT_NETORG_FOREACH(drop_after_demotion), NULL);
++
++	/*
++	 * Remove CHILD status from any remaining connections.  Note
++	 * that this does *not* tell the remote node that we've done
++	 * so, thus causing problems if our PARENT is also our
++	 * CHILD...
++	 */
++	ft_netorg_foreach (FT_NODE_CHILD, FT_NODE_CONNECTED, 0,
++			       FT_NETORG_FOREACH(drop_children), NULL);
++	
++	return TRUE;
++}
++
+ static int acquire_new_stuff (void)
+ {
+ 	BOOL need_parents;
+@@ -333,6 +470,35 @@
+ 	need_peers   = ft_conn_need_peers();
+ 	need_index   = ft_conn_need_index();
+ 
++	/* 
++	 * 4 possibilities here:
++	 * search orphan action
++	 * no     no     stable, do nothing
++	 * no     yes    try autopromotion
++	 * yes    no     check if we're no longer needed
++	 * yes    yes    wait for a parent (don't demote without one)
++	 *
++	 * In particular, this last case means that the minimum child
++	 * count is inapplicable on tiny networks with only one search
++	 * node.  
++	 */
++
++	if (openft->ninfo.klass & FT_NODE_SEARCH)
++	{
++		poverty_count = 0;
++
++		if (!need_parents)
++			check_demote ();
++	}
++	else 
++	{
++		if (!need_parents)
++			poverty_count = 0;
++		else
++			if (++poverty_count >= IMPOVERISH_MIN)
++				check_promote ();
++	}
++
+ 	/* nothing is needed, get out of here */
+ 	if (!need_parents && !need_peers && !need_index)
+ 		return 0;
+@@ -563,7 +729,6 @@
+ 			return limit;
+ 		}
+ 
+-
+ 		limit = (int)rlim.rlim_cur;
+ 	}
+ #endif /* HAVE_SYS_RESOURCE_H */
+@@ -579,15 +744,15 @@
+ 	/* the default (-1) asks us to make an educated guess */
+ 	if ((nconns = FT_CFG_MAX_ACTIVE) == -1)
+ 	{
+-		if (!(openft->ninfo.klass & FT_NODE_SEARCH))
+-			nconns = 600;
+-		else
++		if (openft->klass_max & FT_NODE_SEARCH)
+ 		{
+ 			int nchildren = FT_CFG_MAX_CHILDREN;
+ 
+ 			/* 2n * (n / 3) */
+ 			nconns = (7 * nchildren) / 3;
+ 		}
++		if (nconns < 400)
++			nconns = 400;
+ 
+ 		FT->warn (FT, "guessing max_active=%d", nconns);
+ 	}
+Index: ft_node.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_node.c,v
+retrieving revision 1.54
+diff -u -r1.54 ft_node.c
+--- ft_node.c	23 Dec 2003 05:44:25 -0000	1.54
++++ ft_node.c	4 Jan 2004 04:31:02 -0000
+@@ -57,7 +57,7 @@
+ 	/* this will destroy all the necessary associations for us */
+ 	if (node->session)
+ 	{
+-		if (node->session->search_db)
++		if (node->session->search_db && !openft->shutdown)
+ 			FT->warn (FT, "removing node with an active search database!");
+ 
+ 		ft_session_stop (FT_CONN(node));
+@@ -557,6 +557,10 @@
+ 
+ 	/* nothing happened */
+ 	if (!loss && !gain)
++		return;
++
++	/* shutting down */
++	if (openft->shutdown)
+ 		return;
+ 
+ 	/* the API tells us we need to register class changes, although the
+Index: ft_openft.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_openft.c
+--- ft_openft.c	27 Dec 2003 01:57:26 -0000	1.58
++++ ft_openft.c	4 Jan 2004 04:31:02 -0000
+@@ -156,7 +156,7 @@
+ 		}
+ 
+ 		/* lets not make a big fuss out of this setting */
+-		openft->klass_alw &= ~FT_NODE_SEARCH;
++		openft->klass_max &= ~FT_NODE_SEARCH;
+ 	}
+ 
+ #ifndef USE_LIBDB
+@@ -209,10 +209,11 @@
+ 	openft->ninfo.alias       =      STRDUP(FT_CFG_NODE_ALIAS);
+ 	openft->ninfo.port_openft =  (in_port_t)FT_CFG_NODE_PORT;
+ 	openft->ninfo.port_http   =  (in_port_t)FT_CFG_NODE_HTTP_PORT;
+-	openft->klass_alw         = (ft_class_t)FT_CFG_NODE_CLASS_ALLOW;
++	openft->klass_min         = (ft_class_t)FT_CFG_NODE_CLASS;
++	openft->klass_max         = (ft_class_t)FT_CFG_NODE_CLASS_ALLOW;
+ 
+-	/* hmm, maybe ninfo.indirect is a bad idea? */
+-	openft->ninfo.indirect = BOOL_EXPR (openft->ninfo.port_openft == 0);
++	/* nope, ninfo.indirect is not a bad idea */
++	openft->ninfo.indirect = 1;
+ 
+ 	/* make sure that the parameters supplied above dont conflict in some way */
+ 	if (!(clamp_openft_params (p, openft)))
+@@ -302,6 +303,8 @@
+ 
+ 	/* disconnect everyone for cleanliness */
+ 	ft_netorg_clear (FT_NETORG_FOREACH(cleanup_conn), NULL);
++
++	ft_search_db_destroy ();
+ 
+ 	/* cleanup */
+ 	config_free (openft->cfg);
+Index: ft_openft.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.h,v
+retrieving revision 1.48
+diff -u -r1.48 ft_openft.h
+--- ft_openft.h	23 Dec 2003 04:22:35 -0000	1.48
++++ ft_openft.h	4 Jan 2004 04:31:02 -0000
+@@ -100,7 +100,8 @@
+ 	TCPC            *bind_openft;      /**< Listen on the OpenFT port */
+ 	TCPC            *bind_http;        /**< Listen on the OpenFT HTTP port */
+ 
+-	ft_class_t       klass_alw;        /**< Class mask for auto-promotion */
++	ft_class_t       klass_min;        /**< Automatic class management */
++	ft_class_t       klass_max;
+ 
+ 	unsigned int     avail;            /**< Cached upload availability */
+ 
+@@ -110,6 +111,7 @@
+ 	BOOL             shutdown;         /**< Try to hackishly eliminate a race
+ 	                                    *   condition when our plugin is
+ 	                                    *   unloading */
+ };
+ 
+ /*
+Index: ft_session.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_session.c,v
+retrieving revision 1.89
+diff -u -r1.89 ft_session.c
+--- ft_session.c	23 Dec 2003 21:29:39 -0000	1.89
++++ ft_session.c	4 Jan 2004 04:31:05 -0000
+@@ -648,6 +648,8 @@
+ 	FTNode     *node;
+ 	FTSession  *session;
+ 
++	openft->ninfo.indirect = 0;
++
+ 	if (!(c = tcp_accept (listen, FALSE)))
+ 	{
+ 		FT->err (FT, "accept: %s", GIFT_NETERROR());

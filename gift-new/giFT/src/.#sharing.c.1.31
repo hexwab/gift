@@ -1,0 +1,606 @@
+/*
+ * sharing.c
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include <errno.h>
+
+#include "gift.h"
+
+#include "hash.h"
+
+#include "parse.h"
+#include "conf.h"
+
+#include "file.h"
+#include "mime.h"
+#include "md5.h"
+
+#include "sharing.h"
+
+#include "upload.h"
+
+/*****************************************************************************/
+
+/**/extern Config *gift_conf;
+static Dataset    *local_shares = NULL;
+static List       *sroot        = NULL;
+
+/* cache the size of local_shares so that it doesn't need to be calculated
+ * everytime OpenFT wants it */
+static unsigned long local_files = 0;
+static double        local_size  = 0.0; /* as MB */
+
+/*****************************************************************************/
+
+/* 0  == no uploads
+ * -1 == unlimited */
+static int max_uploads = -1;
+
+#define MAX_PERUSER_UPLOADS \
+	config_get_int (gift_conf, "sharing/max_peruser_uploads=1")
+
+/*****************************************************************************/
+
+/* hide files with a leading . (UNIX hidden files) */
+#define HIDE_DOT_FILES \
+	config_get_int (gift_conf, "sharing/hide_dot_files=1")
+
+/*****************************************************************************/
+
+/* number of bytes to read from the file to calculate the MD5 (0 means entire
+ * file) */
+#define MD5SUM_READ 307200
+
+/*****************************************************************************/
+
+static void destroy_sroot ()
+{
+	list_foreach_remove (sroot, NULL, NULL);
+	sroot = NULL;
+}
+
+static void build_sroot ()
+{
+	char *sharing_root, *sharing_root0;
+	char *root;
+
+	destroy_sroot ();
+
+	if (!(sharing_root = config_get_str (gift_conf, "sharing/root")))
+	{
+		TRACE (("no sharing root found!!  please run giFT-setup!"));
+		return;
+	}
+
+	sharing_root0 = sharing_root = STRDUP (sharing_root);
+
+	while ((root = string_sep (&sharing_root, PATH_SEP_STR)))
+	{
+		char *ptr;
+
+		/* make sure there are no leading /'s */
+		for (ptr = root + strlen (root) - 1;
+		     ptr >= root && *ptr == '/'; ptr--);
+
+		/* if no / was found, ptr[1] will equal 0 anyway */
+		ptr[1] = 0;
+
+		sroot = list_append (sroot, STRDUP (root));
+	}
+
+	free (sharing_root0);
+}
+
+static char *calculate_root (char *filename)
+{
+	List *ptr;
+
+	if (!filename)
+		return NULL;
+
+	build_sroot ();
+
+	for (ptr = sroot; ptr; ptr = list_next (ptr))
+	{
+		/* found root */
+		if (!strncmp (filename, ptr->data, strlen (ptr->data)))
+			return ptr->data;
+	}
+
+	return NULL;
+}
+
+/*****************************************************************************/
+
+static char *calculate_hpath (char *root, size_t root_len, char *filename)
+{
+	/* no root means we dont need an hpath */
+	if (!root)
+		return NULL;
+
+	/* "" will trigger this, but its not exactly iteration so who cares */
+	if (!root_len)
+		root_len = strlen (root);
+
+	return (filename + root_len);
+}
+
+static char *calculate_ext (char *path)
+{
+	char *ext;
+
+	if (!path)
+		return NULL;
+
+	if ((ext = strrchr (path, '.')))
+		ext++;
+
+	return ext;
+}
+
+FileShare *share_new (char *root, size_t root_len, char *path, char *md5,
+                      unsigned long size, time_t mtime)
+{
+	FileShare *file;
+
+	file = malloc (sizeof (FileShare));
+
+	/* i should probably have root handled as just a length into path, oh
+	 * well */
+	file->root  = STRDUP_N (root, root_len);
+	file->path  = STRDUP (path);
+	file->hpath = calculate_hpath (file->root, root_len, file->path);
+
+	/* use hpath if available -- less iteration */
+	file->ext   = calculate_ext (file->hpath ? file->hpath : file->path);
+	file->type  = mime_type     (file->path, file->ext);
+
+	file->md5   = STRDUP (md5);
+	file->size  = size;
+	file->mtime = mtime;
+
+	file->local = FALSE;
+	file->data  = NULL;
+
+	return file;
+}
+
+void share_free (FileShare *file)
+{
+	assert (file);
+
+	if (file->local)
+		dataset_clear (file->data);
+
+	free (file->root);
+	free (file->path);
+	free (file->md5);
+	free (file);
+}
+
+/*****************************************************************************/
+/* conventions used for the protocol to lookup it's specific data */
+
+void *share_lookup_data (FileShare *file, char *protocol)
+{
+	if (!file || !protocol)
+		return NULL;
+
+	/* if this is locally shared, lookup the data in a Dataset */
+	if (file->local)
+		return dataset_lookup (file->data, protocol);
+
+	/* otherwise, to conserve memory it's actually the data itself */
+	return file->data;
+}
+
+void share_insert_data (FileShare *file, char *protocol, void *data)
+{
+	if (!file || !protocol)
+		return;
+
+	if (file->local)
+	{
+		dataset_insert (file->data, protocol, data);
+		return;
+	}
+
+	/* see above for more info on why i do it this way */
+	file->data = data;
+}
+
+void share_remove_data (FileShare *file, char *protocol)
+{
+	if (!file || !protocol)
+		return;
+
+	if (file->local)
+	{
+		dataset_remove (file->data, protocol);
+		return;
+	}
+
+	file->data = NULL;
+}
+
+/*****************************************************************************/
+
+static int share_lookup_entry (char *md5, FileShare *file, char *path)
+{
+	if (!strcmp (file->path, path))
+		return TRUE;
+
+	return FALSE;
+}
+
+FileShare *share_lookup (char *path)
+{
+	FileShare *file;
+
+	if (!path)
+		return NULL;
+
+	file = hash_table_find (local_shares, (HashFunc) share_lookup_entry, path);
+
+	return file;
+}
+
+/*****************************************************************************/
+
+int share_add (char *root, char *path, char *md5,
+               unsigned long size, time_t mtime)
+{
+	FileShare *file;
+	char      *ptr;
+
+	if (!local_shares)
+		local_shares = dataset_new ();
+
+	/* check to make sure its not already there */
+	if ((file = dataset_lookup (local_shares, md5)))
+	{
+		TRACE(("%s == %s?",file->path, path));
+		if (!strcmp(file->path,path))
+			share_free (file);
+	}
+
+	/* root of /data/mp3s should share as /mp3s/file.mp3 */
+	ptr  = ((root) ? strrchr (root, '/') : NULL);
+	file = share_new (root, ptr - root, path, md5, size, mtime);
+
+	file->local = TRUE;
+	dataset_insert (local_shares, md5, file);
+
+	local_size += ((float) size / 1024.0 / 1024.0);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+static int share_clear_entry (char *md5, FileShare *file, void *udata)
+{
+	share_free (file);
+
+	return TRUE;
+}
+
+void share_clear ()
+{
+	hash_table_foreach_remove (local_shares, (HashFunc) share_clear_entry,
+	                           NULL);
+	hash_table_destroy (local_shares);
+	local_shares = NULL;
+	local_files  = 0;
+	local_size   = 0.0;
+}
+
+/*****************************************************************************/
+
+static int add_share (FILE *f, char *root, char *path,
+                      unsigned long size, time_t mtime)
+{
+	FileShare *share;
+	char      *md5 = NULL;
+
+	share = share_lookup (path);
+
+	if (share && share->mtime == mtime)
+		md5 = share->md5;
+
+	if (!md5)
+	{
+	  TRACE(("calculating md5 %s",path));
+		/* calculate md5 */
+		if (!(md5 = md5_checksum (path, MD5SUM_READ)))
+			return FALSE;
+
+		share_add (root, path, md5, size, mtime);
+	}
+
+	fprintf (f, "%lu %s %lu %s\n", mtime, md5, size, path);
+
+	return TRUE;
+}
+
+static int path_traverse (FILE *f, char *root, char *path)
+{
+	DIR           *dir;
+	struct dirent *d;
+	struct stat    st;
+	size_t         path_len = 0;
+	int            total    = 0;
+
+	if (!path)
+		return FALSE;
+
+	/* calculate the length here for optimization purposes */
+	path_len = strlen (path);
+
+	dir = file_opendir (path);
+	if (!dir)
+	{
+		GIFT_WARN (("cannot open dir %s", path));
+		return FALSE;
+	}
+
+	while ((d = file_readdir (dir)))
+	{
+		char *newpath;
+
+		if (!d->d_name || !d->d_name[0])
+			continue;
+
+		if (HIDE_DOT_FILES)
+		{
+			if (d->d_name[0] == '.')
+				continue;
+		}
+
+		/* ignore '.' and '..' */
+		if (!strcmp (d->d_name, ".") || !strcmp (d->d_name, ".."))
+			continue;
+
+		newpath = malloc (path_len + strlen (d->d_name) + 2);
+		sprintf (newpath, "%s/%s", path, d->d_name);
+
+		/*
+		 * Might want to use lstat() instead of stat() or opendir(),
+		 * because otherwise a symbolic link can cause a loop
+		 * in directory structure.  Unfortunately, no symlinks in
+		 * shares-dir then :-(
+		 *
+		 * NOTE <jasta> - there is a way to use lstat and stat, gnapster does
+		 * it...but i cant remember how
+		 */
+		if (stat (newpath, &st) == -1)
+		{
+			TRACE (("cannot open %s: %s", newpath, strerror (errno)));
+			free (newpath);
+			continue;
+		}
+
+		if (S_ISDIR (st.st_mode))
+			total += path_traverse (f, root, newpath);
+		else if (S_ISREG (st.st_mode))
+			total += add_share (f, root, newpath, st.st_size, st.st_mtime);
+
+		free (newpath);
+	}
+
+	file_closedir (dir);
+
+	return total;
+}
+
+static Dataset *share_build_index ()
+{
+	FILE *f;
+	char *buf = NULL;
+
+	TRACE_FUNC ();
+
+	if (!(f = fopen (gift_conf_path ("shares"), "r")))
+	{
+		TRACE (("*** creating new shares file"));
+		return NULL;
+	}
+
+	share_clear ();
+
+	while (file_read_line (f, &buf))
+	{
+		char *pos = buf;
+		char *md5, *filename;
+		unsigned long size;
+		time_t        mtime;
+
+		trim_whitespace (pos);
+
+		mtime    = ATOUL (string_sep (&pos, " "));
+		md5      =        string_sep (&pos, " ");
+		size     = ATOUL (string_sep (&pos, " "));
+		filename = pos;
+
+		if (!filename)
+			continue;
+
+		share_add (calculate_root (filename), filename, md5, size, mtime);
+	}
+
+	fclose (f);
+
+	return local_shares;
+}
+
+/*****************************************************************************/
+
+Dataset *share_update_index ()
+{
+	FILE *f;
+	List *ptr;
+	int   total = 0;
+
+	TRACE_FUNC ();
+
+	build_sroot ();
+	share_build_index ();
+
+	f = fopen (gift_conf_path ("shares"), "w");
+
+	for (ptr = sroot; ptr; ptr = list_next (ptr))
+	{
+		char *root = ptr->data;
+
+		TRACE (("descending %s...", root));
+		total += path_traverse (f, root, root);
+	}
+
+	fclose (f);
+
+	local_files = total;
+	TRACE (("total shares: %i (%.02fMB)", total, local_size));
+
+	return local_shares;
+}
+
+void share_clear_index ()
+{
+	share_clear ();
+}
+
+/*****************************************************************************/
+
+Dataset *share_index (unsigned long *files, double *size)
+{
+	if (files)
+		*files = local_files;
+	if (size)
+		*size = local_size;
+
+	return local_shares;
+}
+
+/*****************************************************************************/
+
+static int index_sort_cmp (FileShare *a, FileShare *b)
+{
+	return strcmp (a->path, b->path);
+}
+
+/* WARNING!  This is slow as hell! */
+List *share_index_sorted ()
+{
+	List *index;
+
+	index = list_sort (hash_flatten (local_shares),
+	                   (CompareFunc) index_sort_cmp);
+
+	return index;
+}
+
+/*****************************************************************************/
+
+void share_foreach (HashFunc foreach_func, void *data)
+{
+	if (!local_shares)
+		return;
+
+	hash_table_foreach (local_shares, foreach_func, data);
+}
+
+/*****************************************************************************/
+
+static int find_file (unsigned long key, FileShare *file, char *filename)
+{
+	if (!filename || !file->hpath)
+		return FALSE;
+
+	return (strcmp (filename, file->hpath) == 0);
+}
+
+/* this function accepts a hidden path (/file.mp3) and returns the full
+ * FileShare structure for it (the below function may be more appropriate for
+ * you) */
+FileShare *share_find_file (char *filename)
+{
+	FileShare *file;
+
+	if (!filename)
+		return NULL;
+
+	file = hash_table_find (share_index (NULL, NULL),
+							(HashFunc) find_file, filename);
+
+	return file;
+}
+
+/* this function will accept file paths in the form:
+ *
+ * /usr/local/share/giFT/OpenFT/nodepage.html
+ *
+ * -OR -
+ *
+ * /file.txt (root path exclusion)
+ *
+ * return:
+ *   on success, the fully qualified local pathname is returned.  NULL is
+ *   returned if this file is not authorized for upload
+ */
+char *share_auth_upload (char *user, char *filename)
+{
+	FileShare *file;
+
+	if (!filename)
+		return NULL;
+
+	/* anything requested in the data dir is ok */
+	if (!strncmp (filename, platform_data_dir (),
+	              strlen (platform_data_dir ())))
+	{
+		return filename;
+	}
+
+	/* this user has reached his limit ... force his client to queue the
+	 * extra files */
+	if (MAX_PERUSER_UPLOADS > 0 && upload_length (user) >= MAX_PERUSER_UPLOADS)
+		return FALSE;
+
+	/* before we authorize a legitimate file share, check total upload count */
+	if (max_uploads != -1 && upload_length (NULL) >= max_uploads)
+		return FALSE;
+
+	/* check to make sure we will actually share this file */
+	file = share_find_file (filename);
+
+	return (file ? file->path : NULL);
+}
+
+/*****************************************************************************/
+
+void share_disable ()
+{
+	max_uploads = 0;
+}
+
+void share_enable ()
+{
+	max_uploads = -1;
+}
+
+int share_status ()
+{
+	return max_uploads;
+}

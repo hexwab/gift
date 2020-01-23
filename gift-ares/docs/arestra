@@ -1,0 +1,94 @@
+
+
+The ___ARESTRA___ file format
+-----------------------------
+
+Growing media file with special appendix.
+
+By default appendix starts 4096 bytes from file end, rest padded with zeroes.
+File is not initially full sized so appendix moves as file increases.
+
+Appendix starts with magic "___ARESTRA__2".  Looks like the '2' was changed
+later modifying the original format's magic "___ARESTRA___".
+
+All fields little endian unless noted otherwise.
+
+Appendix layout:
+
+offset  length  data
+---------------------
+0       13      "___ARESTRA__2"
+13      4       file size
+17      4       total size of completed chunks
+27      8*n     n start/end pairs. Chunks up to current file size which have
+                not yet been completely finished. During downloading these
+                chunks may be half full but on exit they are split so only 
+                completely empty ranges are saved. Start/end are inclusive.
+
+x       8       0x00/0x00 pair, hardcoded, chunk list terminator
+x + 8   1       0x01 ?
+x + 9   1       paused flag (0x01 == paused, 0x00 == active)
+x + 10  4       0x00000080 ?
+x + 14  4       0x00000000 ?
+x + 18  4       0x000000F8 ?
+x + 22  2       t_len, remaining data after this field
+x + 24  t_len   sequence of TLVs. It seems all types are always present even
+                if they are empty.
+
+
+TLV:
+0       1       type
+1       2       size of following data
+3       size    data
+
+
+TLV types (hex):
+
+01  string, keywords
+02  string, title
+03  string, artist
+04  string, album 
+05  string, genre
+06  string, year
+08  unknown, zero length?
+09  string, comment? url? 
+0A  string, comment?
+0D  sequence of 17 byte source data
+0F  hash, 20 bytes
+13  unknown, zero length?
+
+
+Source data:
+
+0   4   user's outside ip (big endian)
+4   2   user's port
+6   4   supernode ip (big endian)
+10  2   supernode port
+12  4   user's inside ip  (reserved space, zero or outside ip) (big endian)
+16  1   0x00, hardcoded
+
+
+------
+
+chunking samples:
+
+(during download)
+file size: 3969024
+appendix start: 1048576
+total downloaded: 457728
+chunk: 786432 - 1048575
+chunk: 524288 - 786431
+chunk: 195584 - 262143
+
+(after incomplete exit)
+file size: 3969024
+appendix start: 1835008
+total downloaded: 1055010
+chunk: 1674752 - 1835007
+chunk: 1318576 - 1572863
+chunk: 1147904 - 1310719
+chunk: 951922 - 1048575
+chunk: 680448 - 786431
+
+-------
+

@@ -1,0 +1,28 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.105
+diff -u -r1.105 ft_search_db.c
+--- ft_search_db.c	27 Dec 2003 18:37:51 -0000	1.105
++++ ft_search_db.c	4 Jan 2004 04:31:04 -0000
+@@ -2313,6 +2311,8 @@
+ 		env_search_path = NULL;
+ 	}
+ #endif /* USE_LIBDB */
++
++	db_initialized = FALSE;
+ }
+ 
+ /*****************************************************************************/
+@@ -2380,6 +2380,11 @@
+ 
+ 	if (!sdb)
+ 		return TRUE;
++
++#ifndef SEARCH_DB_BENCHMARK
++	if (openft->shutdown)
++		return TRUE;
++#endif
+ 
+ 	/*
+ 	 * Schedule the removal and leave.  We cannot block for the entire

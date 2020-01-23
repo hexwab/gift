@@ -1,0 +1,20 @@
+Index: ft_conn.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conn.c,v
+retrieving revision 1.49
+diff -u -r1.49 ft_conn.c
+--- ft_conn.c	18 Nov 2003 16:48:22 -0000	1.49
++++ ft_conn.c	11 Dec 2003 20:44:54 -0000
+@@ -597,9 +597,10 @@
+ 
+ 	/* try to set the new rlimit as high as we are allowed, within reason of
+ 	 * course */
+-	rlim.rlim_cur = MAX (rlim.rlim_max, 4096);
++	if (limit < 4096)
++		rlim.rlim_cur = MAX (rlim.rlim_max, 4096);
+ 
+-	if ((ret = getrlimit (RLIMIT_OFILE, &rlim)) != 0)
++	if ((ret = setrlimit (RLIMIT_OFILE, &rlim)) != 0)
+ 	{
+ 		FT->err (FT, "setrlimit: %s", GIFT_STRERROR());
+ 		return limit;

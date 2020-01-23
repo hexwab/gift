@@ -1,0 +1,133 @@
+#!/usr/bin/perl
+
+# Config Path
+my $cpath	= "$ENV{HOME}/.giFT";
+
+# These are for testing purposes
+#	my $tpath	= "$ENV{HOME}/cvs/giFT/etc";
+#	my $cpath	= ".";
+
+my @gift_conf = <<'GIFT_CONF_EOF' =~ m/(.*\n)/g;
+@gift_conf_file@
+GIFT_CONF_EOF
+
+my @openft_conf = <<'OPENFT_CONF_EOF' =~ m/(.*\n)/g;
+@openft_conf_file@
+OPENFT_CONF_EOF
+
+my @ui_conf = <<'UI_CONF_EOF' =~ m/(.*\n)/g;
+@ui_conf_file@
+UI_CONF_EOF
+
+
+my $randport, $randhttp;
+my @invalid_ports = ( 1214, 1213 );
+
+do { $randport = int (rand 1800) + 1200; }
+	while (invalid_port ($randport));
+	push @invalid_ports, $randport;
+
+do { $randhttp = int (rand 1800) + 1200; }
+	while (invalid_port ($randhttp));
+
+
+sub invalid_port
+{
+	my $port = shift;
+
+	foreach my $cmp (@invalid_ports) { return 1 if ($cmp == $port); }
+
+	0;
+}
+
+
+
+process_conf ("gift.conf", @gift_conf);
+process_conf ("OpenFT/OpenFT.conf", @openft_conf);
+process_conf ("ui/ui.conf", @ui_conf);
+
+sub process_conf
+{
+	my $conf_filename = $_[0];
+
+	create_path ("$cpath/$conf_filename");
+	open (OUTC, ">$cpath/$conf_filename") ||
+	die "Couldn't create $cpath/$conf_filename: $!\n";
+
+	my $line = 0;
+
+	foreach (@_)
+	{
+		if (/^#(.*\n)/)
+		{
+			print OUTC;
+			print STDOUT $1;
+		}
+		elsif (/^\s*(.*?)\s*=\s*(.*?)\n/)
+		{
+			my ($keyname, $default) = ($1, $2);
+
+			# Exceptions for default
+
+			if ($conf_filename eq 'OpenFT/OpenFT.conf')
+			{
+				if ($keyname eq 'port')      { $default = $randport; }
+				if ($keyname eq 'http_port') { $default = $randhttp; }
+			}
+
+			ASK:
+
+			print STDOUT "[$default] ";
+			my $answer = <STDIN>;
+			chomp $answer;
+
+			if ($answer eq '')
+			{
+				if ($default eq '')
+				{
+					goto ASK;
+				}
+				else
+				{
+					print OUTC "$keyname = $default\n";
+				}
+			}
+			else
+			{
+				print OUTC "$keyname = $answer\n";
+			}
+		}
+		elsif ($line)
+		{
+			print OUTC;
+		}
+
+		$line++;
+	}
+}
+
+sub create_path
+{
+	$_[0] =~ /(.+)\/.+/;
+
+	$" = "/";
+	my @dir = split(/\//,$1);
+
+	my @tree = ();
+
+	foreach my $dir (@dir)
+	{
+		push(@tree,$dir);
+		next unless @tree > 1;
+
+		if (opendir(CHECK,"@tree"))
+		{
+			closedir(CHECK);
+		}
+		else
+		{
+			if (!opendir(CHECK,"@tree")) { mkdir("@tree", 0755) or die "Couldn't mkdir @tree: $!\n"; }
+			else						 { closedir(CHECK); }
+		}
+	}
+}

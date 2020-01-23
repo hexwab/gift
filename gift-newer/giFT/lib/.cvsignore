@@ -1,0 +1,17 @@
+*.la
+*.lo
+*.o
+*core*
+.deps
+.libs
+Makefile
+Makefile.in
+
+*.obj
+libgiFT*.dll
+libgiFT*.exp
+libgiFT*.ilk
+libgiFT*.lib
+libgiFT*.pdb
+libgiFTstatic*.exp
+libgiFTstatic*.lib

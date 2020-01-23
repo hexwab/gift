@@ -1,0 +1,3 @@
+enc_type_20.lo : \
+ enc_type_20.c
+enc_type_20.c :

@@ -1,0 +1,13 @@
+Maintainers:
+
+  * Craig Barnes <hipnod@bellsouth.net>
+
+Contributors:
+
+  * Peter 'Luna' Runestig 		
+    - Some important memory leak fixes
+
+  * Tom Hargreaves
+    - First noticed file descriptor leak in 0.0.9 
+
+TODO: some other people have sent patches, should list them here

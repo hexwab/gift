@@ -1,0 +1,153 @@
+..
+.de TQ
+.br
+.ns
+.TP \\$1
+..
+.TH gift.conf 5 "21 June 2002" "giFT version 0.10.0" 
+.SH NAME
+gift.conf \- configuration file for
+.BR giFT (1)
+.SH DESCRIPTION
+.B gift.conf
+uses a very basic configuration file format. It's divided in sections, starting
+with
+.RB [ sectionname "]."
+parameters are set using 
+.RB ` parameter " = " value '.
+Lines starting with 
+.B #
+are comments.
+.SH OPTIONS
+.SS [main]
+Main options
+.TP
+.B setup
+Boolean determining whether or not this file has been reviewed and is
+complete.  giFT will fail to start unless this is non-zero.  This is done
+so that we can make sure you, at the very least, read through this file.
+.IP
+.I "Default: "
+0
+.TP
+.B hosts_allow
+Space separated list of hosts to allow connection to giFT's interface
+protocol (running default on port 1213).  This protocol is used for GUIs
+to communicate with giFT and could be considered a security risk to allow
+external connections.
+.IP
+The following special keywords are supported:
+.IP 
+.RI "- " ALL
+is a synonym for 0.0.0.0/0
+.PD 0
+.IP
+.RI "- " LOCAL
+is a synonym for 127.0.0.0/8 192.168.0.0/16 172.0.0.0/11 10.0.0.0/8
+.PD
+.IP
+Bitwidth fields are optional
+.IP
+.I "Default: "
+LOCAL
+.TP
+.B plugins
+Colon separated list of protocol plugins to load by default.  If the
+absolute path is omitted, giFT will prepend the configured plugin directory,
+which defaults to /usr/local/lib/giFT in *nix, and /C/Program Files/giFT in
+Windows.
+.IP
+*nix users: use the extension '.so', or whatever is appropriate for your OS.
+Windows users: use the extension '.dll'.
+.IP
+.I "Default: "
+none
+.SS [download]
+Download controls
+.TP
+.B incoming
+Directory to store transfers while they are being operated on.  Temporary
+state files are also kept here.  It is recommended, but not required, that
+the incoming and completed directories are on the same partition (drive).
+.IP
+.I "Default: "
+~/.giFT/incoming
+.TP
+.B completed
+Directory which will contain files after they have successfully finished
+downloading.
+.IP
+.I "Default: "
+~/.giFT/completed
+.SS [sharing]
+Share submission and upload control
+.TP
+.B max_peruser_uploads
+Maximum amount of uploads allowed from the same user at any given time.  It
+is recommended that you keep this at 1 in order to prevent users from
+unfairly queueing your connection.
+.I "Default: "
+1
+.TP
+.B hide_dot_files
+Determines whether or not to share directories which contain a leading dot.
+These directories are commonly meant to be "hidden" and thus should not be
+submitted to the network.
+.I "Default: "
+1
+.TP
+.B root
+Colon separated list of fully qualified paths you wish to share.  These
+directories will be recursed at giFT's startup and the files contained within
+will be subjected to an MD5 hashing.  The results will be cached and will only
+be recalculated on a per share basis when the size or modification time in the
+cache and on disk disagree, or the file name is changed.
+.IP
+.BI "Security notice:"
+Do not share directories which may contain sensitive information, such as
+~ ($HOME).  Also note that any directories shared here will be stripped of
+all but the last path element when submitted to other nodes for indexing,
+effectively "hiding" the directory prefix.
+.IP
+.I "Default: "
+none
+.TP
+.B max_uploads
+Maximum amount of simultaneous uploads allowed.  Setting this to -1 will
+cause giFT to not limit outgoing transfers.  0 effectively disables sharing.
+This may also be handled at run time via your GUI of choice.
+.IP
+.I "Default: "
+-1
+.TP
+.B share_completed
+Controls whether or not giFT should automatically share files that you have
+finished downloading.  This feature significantly improves the networks
+abudance of files and helps ease the load on popular files.  It's a Good
+Thing \*(Tm.
+.IP
+.I "Default: "
+1
+.SS [bandwidth]
+User space bandwidth control
+.TP
+.B downstream
+.TQ
+.B upstream 
+Bandwidth throttling allows giFT to have some basic control over your
+bandwidth usage.  This code operates in user space, and as a result can not
+guarantee perfect accuracy.  If you wish to enable use this feature, please
+consider using a more reliable kernel space option first.
+.IP
+The following configuration switches control the maximum number of bytes
+per second allowed for the given stream direction.  A setting of 0 will
+disable throttling for that direction.
+.IP
+.I "Default: "
+0
+.SH AUTHOR
+Josh Guilfoyle <jasta@gotlinux.org>. Made into a manpage by Eelco Lempsink
+<eelco@33lc0.net>
+.SH "SEE ALSO"
+.BR giFT (1),
+http://gift.sourceforge.net/docs/

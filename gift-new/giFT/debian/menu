@@ -1,0 +1,2 @@
+?package(gift):needs=X11 section=Apps/Net\
+  title="giFT-fe" command="/usr/bin/giFT-fe"

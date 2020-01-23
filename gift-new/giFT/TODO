@@ -1,0 +1,37 @@
+TODO for giFT:
+
+* update documentation
+* change settings through client (with <opt/> elements?)
+	* shared trees
+	* download directory
+	* max uploads queue
+	* max downloads queue
+* make <event_name id="NN"/> cancel transfers as if action="cancel" is implied
+* search and respond by metadata or file characteristics other than filename
+  (see hex's http://wab.chronosempire.org.uk/HEx/giFT/).
+* improve mime support using mime.magic
+  (see rossta's http://2ebb.com:18080/gift/gift_magic_all.tar.gz).
+* fair upload queue
+
+Win32 specific
+
+* Modify giFTtray to notify a running giFT of configuration 
+  changes via <opt />.
+  <jasta> this should probably be dealt with internally by giFT...it should 
+  emit an <opt conf=/> to all attached connections when it resyncs a conf
+  file.
+* Add code (in win32/) to run giFT as an NT/2000/XP service.
+
+TODO for OpenFT:
+
+* persistent http connections (very important) 
+* automatic node promotion
+* add a search option to filter results matching the hash of files you are
+  sharing...maybe this should be a giFT-fe feature?
+* meta data
+* large search results should optionally compress
+
+TODO for giFT-fe:
+
+* preferences
+* find a new permanent maintainer

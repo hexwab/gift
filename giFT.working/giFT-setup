@@ -1,0 +1,597 @@
+#!/usr/bin/perl
+###############################################################################
+##
+## $Id: giFT-setup.in,v 1.39 2003/07/12 23:22:09 jasta Exp $
+##
+## Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+
+# Config Path
+my $cpath = "$ENV{HOME}/.giFT";
+
+###############################################################################
+
+#
+# These will be populated with the exact contents of the configuration file
+# giFT would install, slurped in here so that we do not need to read from any
+# system-wide installation that would not be used by giFT.  giFT reads only
+# non-system wide configuration.
+#
+my @gift_conf = <<'GIFT_CONF_EOF' =~ m/(.*\n)/g;
+
+# gift.conf
+###############################################################################
+
+###############################################################################
+# MAIN
+
+[main]
+
+#
+# Boolean determining whether or not this file has been reviewed and is
+# complete.  giFT will fail to start unless this is non-zero.  This is done
+# so that we can make sure you, at the very least, read through this file.
+#
+# Default: 0
+#
+setup = 0
+
+#
+# Space separated list of hosts to allow connection to giFT's interface
+# protocol (running default on port 1213).  This protocol is used for GUIs
+# to communicate with giFT and could be considered a security risk to allow
+# external connections.
+#
+# The following special keywords are supported:
+#
+#  ALL       - synonym for 0.0.0.0/0
+#  LOCAL     - synonym for 127.0.0.0/8 192.168.0.0/16 172.0.0.0/11 10.0.0.0/8
+#
+# Bitwidth fields are optional
+#
+# Default: LOCAL
+#
+hosts_allow = LOCAL
+
+#
+# Port on which to listen for user interface connections.  Unless you have a
+# special need to talk to the client on a non-standard port, just accept the
+# default.
+#
+# NOTE:
+#  If you change this value, you will also need to modify the ui.conf
+#  configuration for the machine which will be making outgoing connections
+#  here.
+#
+client_port = 1213
+
+#
+# Determines whether or not to follow symbolic links.  If this value is set
+# non-zero, symlinks will be traversed and a directory inode tracking system
+# will be used to ensure that giFT does not descend the same directory
+# twice.  If you do not have any symlinks or do not want them traversed, set
+# this to 0 for a very minor efficiency gain.
+#
+# Windows users: this setting has no effect.
+#
+# Default: 1
+#
+follow_symlinks = 1
+
+#
+# Colon separated list of protocol plugins to load by default.  If dynamic
+# library support is enabled, the plugin specified will be stat'd to check if
+# it is a loadable path.  If that fails, the fallback method is to attempt to
+# construct the fully qualified path based on the configured environment.
+#
+# NOTES:
+#  Without dynamic library support, this plugin must have been compiled into
+#  your giFT binary.
+#
+#  Do not include the library filename extension.
+#
+#  Protocol names are case sensitive, so use OpenFT, not Openft.
+#
+# For example, to use the OpenFT and Gnutella protocols use:
+#
+#  plugins = OpenFT:Gnutella
+#
+# Default: none
+#
+plugins = OpenFT
+
+###############################################################################
+# DOWNLOAD CONTROLS
+
+[download]
+
+#
+# Directory to store transfers while they are being operated on.  Temporary
+# state files are also kept here.  It is recommended, but not required, that
+# the incoming and completed directories are on the same partition (drive).
+#
+# Windows users: please use the following path specification:
+#
+# incoming=/[drive]/dir1/dir2
+#
+# For example, to refer to C:\Program Files\giFT\incoming, use:
+#
+# incoming=/C/Program Files/giFT/incoming
+#
+# Default (*nix):    ~/.giFT/incoming
+# Default (Windows): /C/Program Files/giFT/incoming
+#
+incoming = ~/.giFT/incoming
+#
+# Directory which will contain files after they have successfully finished
+# downloading.
+#
+# Default (*nix):    ~/.giFT/completed
+# Default (Windows): /C/Program Files/giFT/completed
+#
+completed = ~/.giFT/completed
+
+###############################################################################
+# SHARE SUBMISSION AND UPLOAD CONTROL
+
+[sharing]
+
+#
+# Maximum amount of uploads allowed from the same user at any given time.  It
+# is recommended that you keep this at 1 in order to prevent users from
+# unfairly queueing your connection.
+#
+# Default: 1
+#
+max_peruser_uploads = 1
+
+#
+# Determines whether or not to hide directories which contain a leading dot.
+# These directories are commonly meant to be "hidden" and thus should not be
+# submitted to the network.  Selecting 0 here will submit all directories.
+#
+# Default: 1
+#
+hide_dot_files = 1
+
+#
+# Colon separated list of fully qualified paths you wish to share.  These
+# directories will be recursed at giFT's startup and the files contained
+# within will be subjected to an MD5 hashing.  The results will be cached and
+# will only be recalculated on a per share basis when the size or
+# modification time in the cache and on disk disagree, or the file name is
+# changed.
+#
+# Sanity notice:
+#  Do NOT share source directories!  Remote nodes will refuse to index your
+#  shares if you are attempting to submit more than 64000 files.
+#
+# Security notice:
+#  Do not share directories which may contain sensitive information, such as
+#  ~ ($HOME).  Also note that any directories shared here will be stripped of
+#  all but the last path element when submitted to other nodes for indexing,
+#  effectively "hiding" the directory prefix.
+#
+# Windows users: please use the following path specification:
+#
+# /[drive]/dir1/dir2:/[drive]/dir3/dir4 ...
+#
+# For example, to refer to C:\Program Files\giFT\shares and D:\shares, use:
+#
+# /C/Program Files/giFT/shares:/D/shares
+#
+# Default: none
+#
+root =
+
+#
+# Maximum amount of simultaneous uploads allowed.  Setting this to -1 will
+# cause giFT to not limit outgoing transfers.  0 effectively disables sharing.
+# This may also be handled at run time via your GUI of choice.
+#
+# Default: -1
+#
+max_uploads = -1
+
+#
+# Controls when giFT periodically rescans your shared directories for any
+# changes (new files, missing files, changed files, etc.) and communicates
+# those changes to the underlying protocols.  This parameter specifies how
+# often (in seconds) you want that to happen.
+#
+# For your reference
+# ==================
+# 0        turns off periodic auto-resync
+# 3600     one hour
+# 86400    one day
+# 604800   one week
+#
+# Default: 86400
+#
+auto_resync_interval = 86400
+
+#
+# Controls whether or not giFT should automatically share files that you have
+# finished downloading.  This feature significantly improves the network's
+# abundance of files and helps ease the load on those sharing popular files.
+# It's a Good Thing (TM), please leave it on.
+#
+# Avoid setting your completed directories through sharing/root, as that
+# setting will duplicate recursion of the completed directory and cause
+# generally undesirable results.
+#
+# Default: 1
+#
+share_completed = 1
+
+###############################################################################
+# USER SPACE BANDWIDTH CONTROL
+
+[bandwidth]
+
+#
+# Bandwidth throttling allows giFT to have some basic control over your
+# bandwidth usage.  This code operates in user space, and as a result can not
+# guarantee perfect accuracy.  If you wish to use this feature, please
+# consider using a more reliable kernel space option first.  As always, google
+# should be able to assist you there.
+#
+# The following configuration switches control the maximum number of bytes
+# per second allowed for the given stream direction.  A setting of 0 will
+# disable throttling for that direction.
+#
+# Default: 0
+#
+
+# Downstream
+downstream = 0
+
+# Upstream
+upstream = 0
+GIFT_CONF_EOF
+
+my @openft_conf = <<'OPENFT_CONF_EOF' =~ m/(.*\n)/g;
+
+# OpenFT/OpenFT.conf
+###############################################################################
+
+###############################################################################
+# MAIN
+
+[main]
+
+#
+# Node classification.  This value is very important and will determine your
+# potential role on the network.  The following settings are allowed:
+#
+# 1  (USER)
+#
+#  Basic class that all nodes implicitly belong to.  This node will maintain
+#  very few TCP connections on the network and perform almost no tasks other
+#  than to upload to other users.  Users who do not have direct Internet
+#  connections will be forced into this class.
+#
+# 3  (SEARCH)
+#
+#  Responsible for manging indexes of a large group of directly connected
+#  children (run-time modifier for the USER class), responding to and
+#  forwarding search requests from peers, as well as directing push requests
+#  so that indirectly connected users may still share files.
+#
+#  Please note that this class will require a much greater amount of both
+#  local and network resources.  If you select this, pay very close attention
+#  to the database environment settings several configuration options down.
+#  For reference, there are several fully functioning search nodes on
+#  "average" broadband connections, such as 768/128kbit (my node *sigh*).
+#
+#  Keeping your node up-to-date is absolutely essential for this node class.
+#  Please consider updating at least once a week.
+#
+# 5  (INDEX)
+#
+#  Meta node used in favor of user nodes when attempting new connections to
+#  the network.  This node class is also responsible for managing statistics
+#  information for the virtual clusters created by SEARCH nodes.  Reliability
+#  is the largest requirement here.
+#
+# If you're unsure it is highly recommended that you select 1 (the default).
+# A setting of 7 will select both a SEARCH and INDEX node.
+#
+class = 1
+
+#
+# Core listening port.  OpenFT uses a compacted binary protocol for the core
+# communication with other nodes.  If this machine is unable to provide both
+# port and http_port to the outside directly (blocked by either by a firewall
+# or a NAT setup) you should select 0 here.
+#
+# NOTE:
+#  If you are unable to route this port (along with the HTTP port) you will be
+#  unable to download from other users with that same inability.  You will,
+#  however, maintain the ability to upload to other non-firewalled users.
+#  Selecting non-zero when the port is not available to the outside will cause
+#  very broken behaviour, namely search results will be extremely unreliable.
+#
+port = 1215
+
+#
+# HTTP server port.  OpenFT's implementation also makes use of HTTP for all
+# file transfers.  See above for more details.  Please provide a valid port
+# here regardless of your firewall state.
+#
+http_port = 1216
+
+#
+# Arbitrary name you'd like to associate with your node.  This field is
+# optional and it is NOT to be trusted.  The name is not unique to the
+# network.  Please do not choose useless aliases.
+#
+alias =
+
+###############################################################################
+# SEARCH NODE SETTINGS
+
+[search]
+
+#
+# Maximum number of "child" nodes you are able to support.  You should not
+# touch this unless you know what you're doing.
+#
+# NOTE:
+#  This option has no effect unless you configure as a SEARCH node.
+#
+children = 500
+
+#
+# Absolute path where the search database environment should be stored.  Make
+# sure to provide a path with plenty of hard disk space (~100-300MB) and on a
+# device with efficient hard drive access to improve access time when
+# swapping cannot be avoided.
+#
+# NOTE:
+#  As always, this path is in UNIX format, so Windows users will need to
+#  hack around this accordingly.  If you aren't sure what I mean by this, you
+#  need to go back and read gift.conf documentation.
+#
+env_path = ~/.giFT/OpenFT/db
+
+#
+# Total cache size for the entire search database environment.  The idea is
+# to find a perfect balance here between disk access and memory usage, which
+# we are still widely experimenting with.  If you have a lot of RAM to
+# dedicate to your search node, by all means increase this number accordingly
+# as it will improve overall performance.
+#
+# WARNING:
+#  Specifications less than 500MB (and we expect you will specify less than
+#  that) are subject to a 20% inflation due to some libdb implementation
+#  detail.
+#
+# NOTE:
+#  Units are specified in bytes, and as such you will not be allowed to
+#  specify 1GB or higher.  While libdb supports this, the API is more obscure
+#  than this simple configuration option, hopefully the configuration will
+#  be extended at some point to support this.
+#
+env_cache = 83886080
+
+#
+# Controls whether or not the database environment is private.  If the
+# database environment is private, you will be unable to use the database
+# tools provided by the libdb util package.  Most users will want this turned
+# on as there is no need to debug the active environment.
+#
+env_priv = 1
+
+###############################################################################
+# LAN MODE FACILITIES
+
+[local]
+
+#
+# OpenFT offers a special configuration for users who wish to operate a
+# network from within a local area network (LAN).  This mode causes giFT to
+# reject authorization from any non-local address as well as advertising it's
+# presence via the local UDP broadcast.  If this switch is non-zero you will
+# not be able to contact the main network.
+#
+lan_mode = 0
+
+#
+# When LAN mode is enabled, this configuration switch is used to verify
+# which hosts are allowed connection to the core OpenFT port.  It is
+# highly recommended that you just don't touch this, regardless of what
+# lan_mode's value is.
+#
+# NOTE:
+#  This switch provides a very crude loophole that could allow you to create
+#  a "private" OpenFT network between a list of known nodes.  Using this
+#  "feature" is going to be quite cumbersome as it is intended to be used
+#  by developers only.  You have been warned.
+#
+#hosts_allow = LOCAL
+OPENFT_CONF_EOF
+
+my @ui_conf = <<'UI_CONF_EOF' =~ m/(.*\n)/g;
+
+# ui/ui.conf
+###############################################################################
+
+###############################################################################
+# DAEMON CONNECTION
+
+[daemon]
+
+#
+# Host of the giFT daemon that is listening for interface connections.  If 
+# unsure, use the default.
+#
+# NOTE:
+#  This currently does not support hostname lookup
+#
+host = 127.0.0.1
+
+#
+# Interface port which the [possibly] remote giFT daemon is listening on.  You
+# should only need to change this if you have the daemon running on a special
+# port.
+#
+port = 1213
+UI_CONF_EOF
+
+###############################################################################
+
+my ($randport, $randhttp) = get_openft_ports (1200, 3000, [ 1213, 1214 ]);
+
+###############################################################################
+
+#
+# TODO:
+# This system needs to be extended to take into account that other
+# plugins may be installed third party and may still need some kind of
+# configuration.  We should probably rewrite this whole thing at some
+# point...
+#
+process_conf ("gift.conf", \@gift_conf);
+process_conf ("OpenFT/OpenFT.conf", \@openft_conf);
+process_conf ("ui/ui.conf", \@ui_conf);
+
+###############################################################################
+
+sub process_conf
+{
+	my $in_conf = shift;
+	my $in_conflines = shift;
+
+	my $out_conf    = "$cpath/$in_conf";
+	my $out_conftmp = "$out_conf.tmp";
+
+	# open the temporary path for output, move back once the process
+	# completes successfully
+	create_path ($out_conftmp);
+	open (OUTC, ">$out_conftmp") or
+	  die "Couldn't create $out_conftmp: $!\n";
+
+	# cant use $. because we arent exactly reading from a file, but we could
+	# be if the implementation notes were different above
+	my $linenum = 0;
+
+	# read from the pre-slurped list of lines
+	foreach my $line (@$in_conflines)
+	{
+		if ($line =~ /^#(.*\n)/)
+		{
+			print OUTC $line;
+			print STDOUT $1;
+		}
+		elsif ($line =~ /^\s*(.*?)\s*=\s*(.*?)\n/)
+		{
+			my ($keyname, $default) = ($1, $2);
+
+			# Exceptions for default
+			if ($in_conf eq 'OpenFT/OpenFT.conf')
+			{
+				if ($keyname eq 'port')      { $default = $randport; }
+				if ($keyname eq 'http_port') { $default = $randhttp; }
+			}
+
+		   ASK:
+
+			print STDOUT "[$default] ";
+			my $answer = <STDIN>;
+			chomp $answer;
+
+			if ($answer eq '')
+			{
+				print OUTC "$keyname = $default\n";
+			}
+			else
+			{
+				print OUTC "$keyname = $answer\n";
+			}
+
+			print "\n", "#" x 78, "\n";
+		}
+		elsif ($linenum > 0)
+		{
+			print OUTC $line;
+		}
+
+		$linenum++;
+	}
+
+	# switch the time file over...
+	rename ($out_conftmp, $out_conf);
+}
+
+sub create_path
+{
+	$_[0] =~ /(.+)\/.+/;
+
+	$" = "/";
+	my @dir = split(/\//,$1);
+
+	my @tree = ();
+
+	foreach my $dir (@dir)
+	{
+		push(@tree,$dir);
+		next unless @tree > 1;
+
+		if (opendir(CHECK,"@tree"))
+		{
+			closedir(CHECK);
+		}
+		else
+		{
+			if (!opendir(CHECK,"@tree")) { mkdir("@tree", 0755) or die "Couldn't mkdir @tree: $!\n"; }
+			else						 { closedir(CHECK); }
+		}
+	}
+}
+
+###############################################################################
+
+sub get_openft_ports ($$\@)
+{
+	my @blind_opts = (shift, shift);
+	my @rsrv = @{shift};               # reserved ports
+
+	my $openft = get_random_port (@blind_opts, @rsrv); push @rsrv, $openft;
+	my $http   = get_random_port (@blind_opts, @rsrv);
+
+	return ($openft, $http);
+}
+
+sub get_random_port ($$\@)
+{
+	my $min_range = shift;
+	my $max_range = shift;
+	my %reserved  = map { $_ => 1 } @{shift};
+
+	# get a random port from $min_range to $max_range excluding anything
+	# in the reserved map
+	for (;;)
+	{
+		# generate a random value
+		$port = int (rand ($max_range - $min_range) + $min_range);
+
+		# continue the loop if the port we generated exists in the reserved
+		# list, otherwise bail out and return $port
+		last unless exists ($reserved{$port});
+	}
+
+	return $port;
+}
+

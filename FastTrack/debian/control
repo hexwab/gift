@@ -1,0 +1,19 @@
+Source: gift-fasttrack
+Section: net
+Priority: optional
+Maintainer: Markus Kern <mkern@users.berlios.de>
+Build-Depends: debhelper (>= 4.1.0), cdbs, autotools-dev,
+ libgiftproto-dev (>= 0.11.6), libgiftproto-dev (<< 0.12)
+Standards-Version: 3.6.0
+
+Package: libfasttrack-gift
+Architecture: any
+Depends: ${shlibs:Depends}
+Recommends: giftd
+Provides: gift-plugin
+Description: giFT plugin for the peer to peer network FastTrack
+ A plugin for giFT that connects to the FastTrack network. FastTrack is a
+ peer to peer network used by programs such as Kazaa, and at any given time
+ it contains at least 5.8PB shared by about 400,000 users.
+ .
+  Homepage: http://developer.berlios.de/projects/gift-fasttrack

@@ -1,0 +1,61 @@
+Specific examples:
+
+gish transfer --direction down list | gish locate | gish download
+gish search --protocol=OpenFT Memento video | gish download
+gish download OpenFT://x.x.x.x/X OxDEADBEEF 1337
+gish shares hide
+
+
+Usage:
+
+gish [gish options] <command> [context options] [<arg1> [<arg2> [...]]]
+
+[gish options]
+
+--printf <format>       format output
+--print0                output null-separated list
+--dry-run               don't really perform actions
+--help                  this screen
+
+
+Commands:
+
+::search::
+    gish search [--protocol=<protocol> --exclude=<exclude>] <query> [<realm>]
+
+    --protocol <protocol>       giFT protocol to search on
+    --exclude <exclude>         specific terms to exclude from search
+
+    <query>                     What to search format
+    <realm>                     What realm to search (audio, video, ...)
+    
+    
+::locate::
+
+    gish locate <query>
+    
+    <query>                     HASH_TYPE:HASH (MD5:...)
+    
+    
+::shares::
+
+    gish shares <action>
+    
+    <action>                    Share action (list, sync, hide, show)
+    
+
+::transfer::
+
+    gish transfer [--direction=<direction>] <action> [<id>]
+    
+    --direction <direction>     Only valid when <action> is "list"
+                                Choose direction to perform action on
+
+    <action>                    Transfer action (cancel, list, pause, resume)
+    <id>                        Required for cancel, pause, and resume
+
+::stats::
+
+    gish [--protocol=<protocol>] stats
+    
+    --protocol <protocol>       Protocol to retrieve statistics for

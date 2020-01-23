@@ -1,0 +1,11 @@
+#!/bin/sh
+
+test -f src/giftcurs.h || {
+	echo "You are not in the giFTcurs source dir!";
+	exit 1;
+}
+
+echo ":pserver:anoncvs@subversions.gnu.org:/cvsroot/giftcurs" > CVS/Root 
+find . -name Root -exec cp CVS/Root {} \; 2>/dev/null
+cvs up -PAd
+cvs up -C autogen.sh

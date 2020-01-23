@@ -1,0 +1,48 @@
+$Id: ChangeLog,v 1.5 2003/07/14 17:51:23 hipnod Exp $
+
+Gnutella 0.0.2:
+    
+    * 0.0.1 would access the gwebcaches excessively due to an oversight
+      that the nodes retrieved from them aren't stored because they
+      have a vitality of 0. So, this increase in the release number should 
+      help identifying problem behaviour between releases. 
+      
+      Unfortunately, this adds a new problem in that a completely stale nodes
+      file will keep us from connecting. This needs a redesign to access the
+      caches if we've exhausted all other options.
+
+    * Much improved search timeout system that will detect when
+      no more results for a search are likely to come back. Still need to
+      check if any results are dropped, though
+
+    * Fix leak of TCPC objects for persistent connections
+
+    * Temporarily disabled locate requests because they need some kind
+      of global queue to limit the rate at which they are produced
+      
+Gnutella 0.0.1:
+
+    * Persistent HTTP support
+
+    * Eliminated most races between download_stop and push downloads.
+      There is still the possiblity of the remote end aborting the connection
+      before we giFT reissues a download_start request, but that can't be
+      fixed without protocol-initiated downloads.
+
+    * Submit query-routing table of local shares to ultrapeers
+
+    * Support for using an http proxy to access the gwebcaches (set 
+      "http/proxy" key in ~/.giFT/Gnutella/Gnutella.conf)
+
+    * Testable, but unstable Ultrapeer mode
+
+    * Forgot to report 'Connecting' status when initiating a download
+
+    * Added ChangeLog
+
+    * Use a trie for storing the local shares database to improve
+      lookup time. Memory usage still needs investigation
+
+Gnutella 0.0.0:
+
+    * Basic support for searching, downloading, and uploading

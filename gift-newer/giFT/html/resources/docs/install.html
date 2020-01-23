@@ -1,0 +1,328 @@
+<!-- Installation Guide: Instructions for installing giFT/OpenFT, a must read. -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Linux/x86 (vers 1st March 2002), see www.w3.org" />
+    <meta name="GENERATOR" content="TtH 3.08" />
+<style type="text/css">
+/*<![CDATA[*/
+<!-- div.p { margin-top: 7pt;}-->
+/*]]>*/
+</style>
+<style type="text/css">
+/*<![CDATA[*/
+<!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} -->
+/*]]>*/
+</style>
+
+    
+
+    <title>giFT</title>
+  </head>
+
+  <body>
+    <center>
+      <b><font face="helvetica" size="+3">giFT<br />
+      Installation Guide<br />
+      </font>Last update: Apr 30, 2002</b> 
+    </center>
+
+    <div class="p">
+      <h1>Contents</h1>
+      <a href="#tth_sEc1">1&nbsp; Introduction</a><br />
+      <a href="#tth_sEc2">2&nbsp; Getting it</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.1">2.1&nbsp; Updating</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.2">2.2&nbsp; Configuring the Build
+      Environment</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.3">2.3&nbsp; Enabling the GTK client</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.4">2.4&nbsp; Compiling</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.5">2.5&nbsp; Installing</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc2.6">2.6&nbsp; Configuring giFT</a><br />
+      <a href="#tth_sEc3">3&nbsp; Running giFT</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1">3.1&nbsp; GUI&#39;s</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1.1">3.1.1&nbsp;
+      giFTcurs</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1.2">3.1.2&nbsp;
+      giFT-fe</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1.3">3.1.3&nbsp;
+      kift</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1.4">3.1.4&nbsp;
+      giFT-shell</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.2">3.2&nbsp; nodes file</a><br />
+      <a href="#tth_sEc4">4&nbsp; Miscellaneous</a><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc4.1">4.1&nbsp; Stats</a><br />
+    </div>
+
+    <div class="p">
+      <hr /><h2><a name="tth_sEc1">1</a>&nbsp;&nbsp;Introduction</h2>
+      A small notice to begin with. Lots (and I mean lots) of people are coming to our channel and
+      ask about things covered in this document. Please note that every line, every word and every
+      letter in this document actually matters. If you haven&#39;t read these instructions
+      completely, and start asking dumb things, you will be shot.
+    </div>
+
+    <div class="p">
+      <hr /><h2><a name="tth_sEc2">2</a>&nbsp;&nbsp;Getting it</h2>
+    </div>
+
+    <div class="p">
+      Because giFT/OpenFT has not been released, you must retrieve the sources via CVS in order to
+      use the program.
+    </div>
+
+    <div class="p">
+      Go to the directory you want to download the sources and type (the $ is used to indicate this
+      is a shell command):
+    </div>
+
+    <div class="p">
+<pre>
+  $ cvs -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift login
+</pre>
+    </div>
+
+    <div class="p">
+      Just press enter when prompted for a password. You&#39;ll only have to do this once, after
+      that cvs will read your password information from ~/.cvspass. Now type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ cvs -z3 -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift co giFT
+</pre>
+    </div>
+
+    <div class="p">
+      This will download everything you need...
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.1">2.1</a>&nbsp;&nbsp;Updating</h3>
+      To update giFT to include the latest updates from CVS, type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ cd giFT
+  $ cvs update -Pd
+</pre>
+    </div>
+
+    <div class="p">
+      It is important that you update regularly, as giFT is still in development, and is being
+      updated frequently.
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.2">2.2</a>&nbsp;&nbsp;Configuring the Build Environment</h3>
+    </div>
+
+    <div class="p">
+      To configure the build scripts, type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ cd giFT
+  $ ./autogen.sh
+</pre>
+    </div>
+
+    <div class="p">
+      This will generate and execute &#39;<tt>./configure</tt>&#39;.
+    </div>
+
+    <div class="p">
+      If you receive the any errors (you can ignore all warnings), like
+      &quot;<tt>&#39;AM-PATH-GTK&#39; not found in library</tt>&quot;, &quot;<tt>&#39;syntax error
+      near unexpected token `AM_INIT_AUTOMAKE(giFT,&#39;</tt>&quot;, or &quot;<tt>Syntax error:
+      word unexpected (expecting &quot;)&quot;)</tt>&quot; you either need to install the GTK
+      development files (libgtk-dev on debian, gtk-devel on rpmfind.net) or move the needed GTK
+      macros manually with:
+    </div>
+
+    <div class="p">
+<pre>
+  $ mv m4/support/gtk.m4 m4/
+</pre>
+    </div>
+
+    <div class="p">
+      and run &#39;<tt>./autogen.sh</tt>&#39; again.
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.3">2.3</a>&nbsp;&nbsp;Enabling the GTK client</h3>
+      Currently, the GTK client (giFT-fe) is disabled by default. If you really want to try it (it
+      works, but not nearly as well as giFTcurs) run autogen.sh with the -enable-gtk-client option:
+    </div>
+
+    <div class="p">
+<pre>
+  $ ./autogen.sh --enable-gtk-client
+</pre>
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.4">2.4</a>&nbsp;&nbsp;Compiling</h3>
+    </div>
+
+    <div class="p">
+      To compile giFT and OpenFT, type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ make
+</pre>
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.5">2.5</a>&nbsp;&nbsp;Installing</h3>
+    </div>
+
+    <div class="p">
+      To install giFT, giFT-setup, the OpenFT library, the GTK GUI giFT-fe and the giFT-shell,
+      type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ su -c &#39;make install&#39;
+</pre>
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc2.6">2.6</a>&nbsp;&nbsp;Configuring giFT</h3>
+    </div>
+
+    <div class="p">
+      Before you can use giFT, you need to configure it by typing:
+    </div>
+
+    <div class="p">
+<pre>
+  $ giFT-setup
+</pre>
+    </div>
+
+    <div class="p">
+      <tt>giFT-setup</tt> will ask you several questions, and create the configuration files based
+      on your answers. These files will be created in the directory <tt>~/.giFT</tt>.
+    </div>
+
+    <div class="p">
+      <hr /><h2><a name="tth_sEc3">3</a>&nbsp;&nbsp;Running giFT</h2>
+      Running giFT is easy:
+    </div>
+
+    <div class="p">
+<pre>
+  $ giFT
+</pre>
+    </div>
+
+    <div class="p">
+      That&#39;ll start the daemon and load all protocols (currently only OpenFT). The daemon will
+      report all kind of status things, but you&#39;ll probably only need them when giFT crashes.
+      :-)
+    </div>
+
+    <div class="p">
+      You can also check out some info about the nodes you&#39;re connected to and files you share
+      with your browser at localhost:1216, or another port you configured to be your nodepage. To
+      find out what your http port is, look for the line containing <tt>http_start: http_port =
+      [port]</tt> just after starting giFT.
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc3.1">3.1</a>&nbsp;&nbsp;GUI&#39;s</h3>
+      To search for and download files you need a graphical user interface (GUI). At the moment,
+      there are a few available. Please see <a href=
+      "http://gift.sourceforge.net/dev/clients.php"><tt>http://gift.sourceforge.net/dev/clients.php</tt></a>
+      for a more complete list. If you want to write your own, please check the <a href= 
+      "http://gift.sourceforge.net/docs/?document=interface.html">Interface Protocol
+      Documentation</a>.
+    </div>
+
+    <div class="p">
+      <h4><a name="tth_sEc3.1.1">3.1.1</a>&nbsp;&nbsp;giFTcurs</h4>
+      giFTcurs is an ncurses interface to giFT, written by weinholt and chnix. It is currently the
+      suggested client, since it supports most functions and just looks damn nice. For more
+      information, please see <a href=
+      "http://giftcurs.sourceforge.net/"><tt>http://giftcurs.sourceforge.net/</tt></a>.
+    </div>
+
+    <div class="p">
+      To build giFTcurs, type:
+    </div>
+
+    <div class="p">
+<pre>
+  $ cvs -d:pserver:anonymous@cvs.giftcurs.sf.net:/cvsroot/giftcurs \
+    co giFTcurs
+  $ cd giFTcurs
+  $ ./autogen.sh
+  $ make
+</pre>
+    </div>
+
+    <div class="p">
+      <h4><a name="tth_sEc3.1.2">3.1.2</a>&nbsp;&nbsp;giFT-fe</h4>
+      giFT-fe, is the official GUI. It&#39;s GTK based and you already have it installed if you
+      installed giFT. Run giFT-setup to configure it.
+    </div>
+
+    <div class="p">
+      <h4><a name="tth_sEc3.1.3">3.1.3</a>&nbsp;&nbsp;kift</h4>
+      kift is a KDE-GUI. For more information, please see <a href=
+      "http://kift.sourceforge.net/"><tt>http://kift.sourceforge.net/</tt></a>.
+    </div>
+
+    <div class="p">
+      <h4><a name="tth_sEc3.1.4">3.1.4</a>&nbsp;&nbsp;giFT-shell</h4>
+      giFT-shell, is malverians perl client, previously called gift-perl or &#39;TooT&#39; (for
+      some mysterious reason :-). Its interface is gnut like, and it&#39;s an excellent client for
+      all command line junkies. This client is installed by default too.
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc3.2">3.2</a>&nbsp;&nbsp;nodes file</h3>
+      Ah yes, the ever popular &#39;nodes&#39; file... Since a lot of questions in our IRC channel
+      were asked because of this file, it gets a special section here.
+    </div>
+
+    <div class="p">
+      Information about OpenFT nodes will be saved in the file <tt>~/.giFT/OpenFT/nodes</tt>. This
+      information is vital if you want to connect to the network, so a default nodes file is
+      provided. That file is installed in <tt>/usr/local/share/giFT/OpenFT/nodes</tt>.
+    </div>
+
+    <div class="p">
+      If you have problems connecting to OpenFT, please try to remove your nodes file (stop giFT
+      first!) and restart giFT. The default file will be copied to your home directory. If your
+      nodes file is empty, giFT will do nothing.
+    </div>
+
+    <div class="p">
+      <hr /><h2><a name="tth_sEc4">4</a>&nbsp;&nbsp;Miscellaneous</h2>
+      A section for all things I don&#39;t know where to fit :-)
+    </div>
+
+    <div class="p">
+      <h3><a name="tth_sEc4.1">4.1</a>&nbsp;&nbsp;Stats</h3>
+      Since OpenFT works with HTTP, it also generates an Apache style
+      &#39;<tt>access.log</tt>&#39;. With some tweaking you can make beautiful overviews and graphs
+      with your favorite log analyser / statistics generator. You can find the file in the
+      directory <tt>~/.giFT/access.log</tt>.
+</div></body></html>

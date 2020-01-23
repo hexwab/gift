@@ -1,0 +1,741 @@
+#!/usr/bin/perl
+
+use IO::Socket::INET;
+use IO::Select;
+
+my $LENGTH_SIZE = "60";
+my $MORE_SIZE = "20";
+
+my $DEBUG = 0;
+my $CLEAR;
+
+my $CURRENT_EVENT;
+my $CURRENT_DOWNLOAD;
+my $SEARCH_NUMBER;
+
+my %SEARCH;
+my %EVENT;
+
+my $stdin;
+my $select;
+my $socket;
+
+my $daemonhost;
+my $daemonport;
+
+my $select = new IO::Select();
+
+$CLEAR = `clear` or $CLEAR = `cls`;
+print_stdout($CLEAR);
+
+my $VERSION = "3.0.0";
+
+show_intro();
+get_args();
+handle_stdin();
+
+$daemonhost = read_config("ui/ui.conf","daemon/host");
+$daemonport = read_config("ui/ui.conf","daemon/port");
+
+$socket = create_socket($daemonhost,$daemonport);
+daemon_attach();
+show_prompt();
+event_loop();
+
+
+###################################
+# Startup functions
+###################################
+
+sub handle_stdin
+{
+   $stdin = new IO::Handle;
+   $stdin->fdopen(fileno(STDIN),"r");
+   my $stdin_fd = $stdin->fileno;
+   print_stdout("** select (Added filehandle: $stdin_fd)\n") if $DEBUG;
+   $stdin->autoflush(1);
+   $select->add($stdin);
+}
+
+sub get_args {
+   if ($ARGV[0] =~ /^-d(ebug)?$/i) {
+      $DEBUG = 1 and shift(@ARGV)
+   }
+
+   if ($ARGV[0] =~ /^-h(elp)?$/i) {
+      usage();
+      exit(1);
+   }
+   elsif ($ARGV[0] =~ /^-s(tats)?$/i) {
+   }
+   elsif ($ARGV[0] =~ /^-b(uildshares)?$/i) {
+      daemon_share();
+      exit(0);
+   }
+   elsif ($ARGV[0] =~ /^-v(ersion)?$/i) {
+      exit(1);
+   }
+}
+
+sub event_loop {
+   while (1) {
+      my @rh_set = $select->can_read();
+
+      # take all readable handles in turn
+      foreach my $rh (@rh_set) {
+
+         # if it is the input handle
+         if ($rh == $stdin) {
+            if (my $stdin_data = <$stdin>) {
+               &parse_stdin($stdin_data);
+            }
+            else {
+               $select->remove($stdin);
+               close($stdin);
+               print_stdout("** select (Removed filehandle: $stdin)\n") if $DEBUG;
+               &parse_stdin("$stdin_data");
+            }
+         }
+
+         else {
+            if (my $socket_data = <$rh>) {
+               parse_socket($socket_data);
+            }
+            else {
+               my $lost = $rh;
+               $select->remove($rh);
+               close($rh);
+               lost_socket($lost);
+            }
+         }
+      }
+   }
+}
+
+
+#################################
+# Output functions
+#################################
+
+sub print_stdout {
+   select(STDOUT); $|=1;
+   print STDOUT "@_";
+}
+
+sub print_socket {
+   print_stdout("** print_socket ($_[0])\n") if $DEBUG;
+   print $socket "$_[0]\n";
+}
+
+
+####################################
+# Socket creation/destruction/loss
+####################################
+
+sub create_socket {
+   my $remotehost = $_[0];
+   my $remoteport = $_[1];
+   my ($newsocket,$socket_fd);
+
+   until ($newsocket) {
+      $newsocket = new IO::Socket::INET (
+                     PeerAddr => "$remotehost",
+                     PeerPort => "$remoteport",
+                     Proto => 'tcp'
+      );
+   }
+
+   $newsocket->autoflush(1);
+   $select->add($newsocket);
+
+   $socket_fd = get_fileno($newsocket);
+   print_stdout("** create_socket ($socket_fd)\n") if $DEBUG;
+
+   return $newsocket;
+}
+
+sub remove_socket {
+   my $remove = $_[0];
+   print_stdout("** remove_socket (" . get_fileno($remove) . ")\n") if $DEBUG;
+   close($remove);
+   #$select->remove($remove);
+   return;
+}
+
+sub lost_socket {
+   my $lost = $_[0];
+   print_stdout("** lost_socket (" . get_fileno($lost) . ")\n") if $DEBUG;
+
+   create_socket($daemonhost,$daemonport);
+   daemon_attach();
+}
+
+sub get_fileno {
+   return $_[0]->fileno;
+}
+
+
+#################################
+# Show functions
+#################################
+
+sub show_prompt {
+   print_stdout("$ENV{USER}\@giFT.net\$ ");
+}
+
+sub show_intro {
+   print_stdout("\n");
+   print_stdout("\t################################\n");
+   print_stdout("\t#    Welcome to TooT v$VERSION    #\n");
+   print_stdout("\t#     Type 'help' for help     #\n");
+   print_stdout("\t################################\n\n");
+}
+
+sub usage {
+   print_stdout("\n\tUsage: $0 [-d] [-shbv]\n");
+   print_stdout("\t-s     -stats        Show current giFT statistics\n");
+   print_stdout("\t-d     -debug        Enter Debug Mode\n");
+   print_stdout("\t-h     -help         Show this screen\n");
+   print_stdout("\t-b     -buildshares  Rebuild shares list\n");
+   print_stdout("\t-v     -version      Show version number\n\n");
+}
+
+sub prompt_help {
+   print_stdout("\n\t[help]\t\tShows this screen\n\n");
+   print_stdout("\t[get]\t\tDownloads specified file\n\n");
+   print_stdout("\t[find]\t\tSearch for specified file\n\n");
+   print_stdout("\t[update]\tFind more sources for file\n\n");
+   print_stdout("\t[ls]\t\tShow info on search result\n\n");
+   print_stdout("\t[netstat]\tShow Toot Stats\n\n");
+   print_stdout("\t[share]\t\tSync daemon with shares file\n\n");
+   print_stdout("\t[clear]\t\tClear the screen\n\n");
+}
+
+
+##################################
+# Escape functions
+##################################
+
+sub html_escape {
+   my $tag = "@_";
+   $tag =~ s/%(..)/pack("c",hex($1))/ge;
+   $tag =~ s/\+/ /g;
+   $tag =~ s/\_/ /g;
+   return "$tag";
+}
+
+sub xml_escape {
+   my $tag = "@_";
+   my (%key_table,$head,$keys);
+
+   if ($tag =~ /^<(.*?)\s+(.*?)\s*\/>/) {
+      $head = $1;
+      $keys = $2;
+   }
+
+   while ($keys =~ /(\S+?)=\"(.*?)\"/g) { $key_table{lc($1)} = $2; }
+   return (lc($head),%key_table);
+}
+
+sub href_escape_all {
+   my $href = "@_";
+   my ($protocol,$host,$path,$file,$save);
+
+   if ($href =~ /^(.*?)\:\/\/(.*?)\/(.*)/) {
+      $protocol = $1;
+      $host = $2;
+      $path = $3;
+
+      if ($path =~ /.*\/(.*)/) {
+         $file = $1;
+      }
+      else {
+         $file = $path;
+      }
+
+      $save = html_escape($file);
+
+      return $save,$host,$protocol;
+   }
+}
+
+sub href_escape {
+   my $href = "@_";
+   my ($path,$file,$save);
+
+   if ($href =~ /^.*?\:\/\/.*?\/(.*)/) {
+      $path = $1;
+
+      if ($path =~ /.*\/(.*)/) {
+         $file = $1;
+      }
+      else {
+         $file = $path;
+      }
+
+      $save = html_escape($file);
+
+      return $save;
+   }
+}
+
+
+###############################
+# Input parsing functions
+###############################
+
+sub parse_socket {
+   my $data = "@_";
+   chop($data);
+   chop($data);
+
+   print_stdout("** parse_socket ($data)\n") if $DEBUG;
+
+   my ($head,%keys) = xml_escape($data);
+   my $args = scalar keys %keys;
+
+   if ($head eq "event") {
+      if ($CURRENT_EVENT eq "DOWNLOAD") {
+         $EVENT{$keys{id}}{ACTION} = $CURRENT_EVENT;
+         print_stdout("** New download: $keys{id}\n") if $DEBUG;
+         daemon_addsource($keys{id},$CURRENT_DOWNLOAD);
+         $CURRENT_EVENT = 0;
+      }
+      return;
+   }
+
+   if ($args == 1 && defined $keys{id}) {
+      if ($head eq "search") {
+      }
+      elsif ($head eq "transfer") {
+         if ($EVENT{$keys{id}}) {
+            if ($EVENT{$keys{id}}{ACTION} eq "DOWNLOAD") {
+               if ($EVENT{$keys{id}}{TOTAL} eq $EVENT{$keys{id}}{TRANSMIT}) {
+                  print_stdout("\nDownload completed: $EVENT{$keys{id}}{SAVE} [$EVENT{$keys{id}}{TOTAL}]\n\n");
+               }
+               else {
+                  print_stdout("\nDownload failed/cancelled: $EVENT{$keys{id}}{SAVE} [$EVENT{$keys{id}}{TRANSMIT}/$EVENT{$keys{id}}{TOTAL}]\n\n");
+               }
+               show_prompt();
+            }
+            delete $EVENT{$keys{id}};
+         }
+      }
+      else {
+         delete $EVENT{$keys{id}};
+      }
+   }
+
+   elsif ($head eq "transfer") {
+      if (defined $keys{action} && defined $keys{id}) {
+         $EVENT{$keys{id}}{ACTION} = uc($keys{action});
+         $EVENT{$keys{id}}{TOTAL} = $keys{size};
+         if ($keys{save}) {
+            $EVENT{$keys{id}}{SAVE} = $keys{save};
+         }
+         else {
+            $EVENT{$keys{id}}{SAVE} = href_escape($keys{href});
+         }
+         $EVENT{$keys{id}}{HASH} = $keys{hash};
+         print_stdout("** Attached old $keys{action}: $EVENT{$keys{id}}{SAVE} ($keys{size})\n") if $DEBUG;
+      }
+      elsif ($keys{id}) {
+         $EVENT{$keys{id}}{TOTAL} = $keys{total};
+         $EVENT{$keys{id}}{LAST} = $EVENT{$keys{id}}{TRANSMIT};
+         $EVENT{$keys{id}}{TRANSMIT} = $keys{transmit};
+         print_stdout("** \L$EVENT{$keys{id}}{ACTION}\E update: $EVENT{$keys{id}}{SAVE} ($keys{transmit}/$keys{total})\n") if $DEBUG;
+         last;
+      }
+   }
+
+   elsif ($head eq "stat") {
+   }
+
+   elsif ($head eq "item") {
+      my $save = href_escape($keys{href});
+      $SEARCH{$save}{SIZE} = $keys{size};
+      $SEARCH{$save}{HASH} = $keys{hash};
+      $SEARCH{$save}{HREFS}{$keys{href}} = defined;
+      if (!$SEARCH{$save}{NUM}) {
+         $SEARCH_NUMBER++;
+         $SEARCH{$save}{NUM} = $SEARCH_NUMBER;
+      }
+   }
+}
+
+sub parse_stdin {
+   chomp(my $command = "@_");
+   print_stdout("** parse_stdin ($command)\n") if $DEBUG;
+
+   if ($command =~ /^$/) {
+   }
+   elsif ($command =~ /^(help|\?)$/i) {
+      &prompt_help;
+   }
+   elsif ($command =~ /^debug$/i) {
+      if ($DEBUG) { $DEBUG = 0; }
+      else { $DEBUG = 1; }
+   }
+   elsif ($command =~ /^get (.*)/i || $command =~ /^download (.*)/i) {
+      $CURRENT_EVENT = "DOWNLOAD";
+      daemon_download("$1");
+   }
+   elsif ($command =~ /^netstat$/i || $command =~ /^stats$/i || $command =~ /^transfer(s)?$/i) {
+      transfer_list();
+   }
+   elsif ($command =~ /^netstat (.*)/i || $command =~ /^stats (.*)/i || $command =~ /^transfer (.*)/i) {
+      transfer_list_one($1);
+   }
+   elsif ($command =~ /^stop (.*)/i || $command =~ /^pause (.*)/i || $command =~ /^halt (.*)/i) {
+      daemon_transfer_stop($1);
+   }
+   elsif ($command =~ /^cancel (.*)/i || $command =~ /^kill (.*)/i || $command =~ /^term (.*)/i) {
+      daemon_transfer_cancel($1);
+   }
+   elsif ($command =~ /^search (.*)/i || $command =~ /^find (.*)/i || $command =~ /^locate (.*)/i) {
+      %SEARCH = ();
+      $SEARCH_NUMBER = undef;
+      $CURRENT_EVENT = "SEARCH";
+      daemon_search("$1");
+      print_stdout("\nDirectory tree downloading in background...\n\n");
+   }
+   elsif ($command =~ /^share$/i) {
+      daemon_share();
+   }
+   elsif ($command =~ /^ls$/i || $command =~ /^dir$/i || $command =~ /^list$/i) {
+      dir_list();
+   }
+   elsif ($command =~ /^ls (.*)$/i || $command =~ /^dir (.*)$/i || $command =~ /^list (.*)$/i) {
+      dir_list($1);
+   }
+   elsif ($command =~ /^clear$/i || $command =~ /^cls$/i) {
+      print_stdout($CLEAR);
+   }
+   elsif ($command =~ /^quit$/i || $command =~ /^logout$/i || $command =~ /^exit$/i) {
+      print_stdout("\nGoodbye!\n\n");
+      exit(1);
+   }
+   else {
+      &prompt_help;
+   }
+   return show_prompt();
+}
+
+
+######################################
+# Daemon command functions
+######################################
+
+sub daemon_share {
+   print_socket("<share action=\"sync\"/>");
+   print_stdout("Daemon synced with ~/.giFT/shares\n\n");
+}
+
+sub daemon_attach {
+   print_socket("<attach client=\"giFT-shell\" version=\"$VERSION\"/>");
+}
+
+sub daemon_search {
+   my $search = $_[0];
+   my ($realm,$query);
+
+   if ($search =~ /(.*?) (.*)/) {
+      $realm = $1;
+      $query = $2;
+   }
+   else {
+      $realm = "everything";
+      $query = $search;
+   }
+   print_socket("<search query=\"$query\"/>");
+   #print_socket("<search realm=\"$realm\" query=\"$query\"/>");
+}
+
+sub daemon_download {
+   my $result = $_[0];
+   my $exists;
+
+   if ($SEARCH{$result}) {
+      print_socket("<transfer action=\"download\" save=\"$result\" size=\"$SEARCH{$result}{SIZE}\" hash=\"$SEARCH{$result}{HASH}\"/>");
+      $CURRENT_DOWNLOAD = $result;
+      $exists = 1;
+   }
+   else {
+      foreach my $name (keys(%SEARCH)) {
+         if ($SEARCH{$name}{NUM} eq $result) {
+            print_socket("<transfer action=\"download\" save=\"$name\" size=\"$SEARCH{$name}{SIZE}\" hash=\"$SEARCH{$name}{HASH}\"/>");
+            $CURRENT_DOWNLOAD = $name;
+            $exists = 1;
+            last;
+         }
+      }
+   }
+
+   if ($exists) {
+      print_stdout("\nDownloading $CURRENT_DOWNLOAD\n\n");
+   }
+   else {
+      print_stdout("\nNo such file or directory\n\n");
+   }
+}
+
+sub daemon_addsource {
+   my $id = $_[0];
+   my $result = $_[1];
+
+   $EVENT{$id}{ACTION} = "DOWNLOAD";
+   $EVENT{$id}{SAVE} = $result;
+   $EVENT{$id}{TOTAL} = $SEARCH{$result}{SIZE};
+   $EVENT{$id}{HASH} = $SEARCH{$result}{HASH};
+   $EVENT{$id}{TRANSMIT} = "0";
+   $EVENT{$id}{LAST} = "0";
+
+   foreach my $source (keys(%{$SEARCH{$result}{HREFS}})) {
+      my($foo,$user,$foo) = href_escape_all($source);      
+      print_socket("<transfer id=\"$id\" addsource=\"$source\" hash=\"$EVENT{$id}{HASH}\" user=\"$user\"/>");
+   }
+}
+
+sub daemon_getsources {
+   my $result = $_[0];
+
+   print_socket("<search type=\"md5\" query=\"$SEARCH{$result}{HASH}\"/>");
+}
+
+sub daemon_transfer_stop {
+   my $transfer = $_[0];
+
+   if ($EVENT{$transfer}) {
+      print_socket("<transfer action=\"stop\" id=\"$transfer\"/>");
+   }
+   else {
+      print_stdout("No such transfer, check `netstat`\n\n");
+   }
+}
+
+sub daemon_transfer_cancel {
+   my $transfer = $_[0];
+
+   if ($EVENT{$transfer}) {
+      print_socket("<transfer action=\"cancel\" id=\"$transfer\"/>");
+   }
+   else {
+      print_stdout("No such transfer, check `netstat`\n\n");
+   }
+}
+
+
+###################################
+# View a search result
+###################################
+
+sub dir_list {
+   my $dir = $_[0];
+   my $exists;
+   my @more;
+
+   if ($dir) {
+      if (defined $SEARCH{$dir}) {
+         print_stdout("\nListing of $dir\n");
+         foreach my $source (keys(%{$SEARCH{$dir}{HREFS}})) {
+            my ($save,$host,$protocol) = href_escape_all($source);
+            push(@more,"[$protocol]\t$host\n");
+         }
+         $exists = 1;
+      }
+      foreach my $name (keys(%SEARCH)) {
+         if ($SEARCH{$name}{NUM} eq $dir) {
+            print_stdout("\nListing of $name\n\n");
+            foreach my $source (keys(%{$SEARCH{$name}{HREFS}})) {
+               my ($save,$host,$protocol) = href_escape_all($source);
+               push(@more,"[$protocol]\t$host\n");
+            }
+            $exists = 1;
+            last;
+         }
+      }
+
+      if (!$exists) {
+         print_stdout("\nNo such file or directory\n\n");
+      }
+      else {
+         format_more("@more");
+      }
+   }
+   else {
+      print_stdout("\nListing of ./\n\n");
+      foreach my $result (keys(%SEARCH)) {
+            push(@more,"[$SEARCH{$result}{NUM}]\t$result\n");
+      }
+      format_more("@more");
+   }
+}
+
+sub transfer_list_one {
+   my $transfer = $_[0];
+
+   if ($EVENT{$transfer}{SAVE}) {
+      my $total = $EVENT{$transfer}{TOTAL};
+      my $transmit = $EVENT{$transfer}{TRANSMIT};
+      my $elapsed = $transmit - $EVENT{$transfer}{LAST};
+      my $save = $EVENT{$transfer}{SAVE};
+      my $type = $EVENT{$transfer}{ACTION};
+      my $speed = int ($elapsed / 1024);
+      my $progress; my $time; my $otime;
+
+      if ($transmit && $total) { $progress = int($transmit / $total * 100); }
+      else { $progress = "0"; }
+
+      if ($elapsed > 0) {
+         $otime = int(($total - $transmit) / $elapsed);
+         $time .= int($otime / 3600) . "h";
+         $otime = $otime % 3600;
+         $time .= int($otime / 60) . "m";
+         $otime = $otime % 60;
+         $time .= $otime . "s";
+      }
+      else {
+         $time = "   ?";
+      }
+
+      print_stdout(format_length("[\L$type\E]",12) .  format_length(" $save",45) . format_length(" ($transmit/$total)",25) . format_length(" $progress%",8) .  " $speed\KB/s\t$time\n");
+   }
+   else {
+      print_stdout("No such transfer ($transfer) in progress, check `netstat`\n\n");
+   }
+}
+
+sub transfer_list {
+   print_stdout("\nDownloads\n\n");
+   foreach my $download (keys(%EVENT)) {
+      if ($EVENT{$download}{ACTION} eq "DOWNLOAD") {
+         my $total = $EVENT{$download}{TOTAL};
+         my $transmit = $EVENT{$download}{TRANSMIT};
+         my $elapsed = $transmit - $EVENT{$download}{LAST};
+         my $save = $EVENT{$download}{SAVE};
+         my $speed = int ($elapsed / 1024);
+         my $progress; my $time; my $otime;
+
+         if ($transmit && $total) { $progress = int($transmit / $total * 100); }
+         else { $progress = "0"; }
+
+         if ($elapsed > 0) {
+            $otime = int(($total - $transmit) / $elapsed);
+            $time .= int($otime / 3600) . "h";
+            $otime = $otime % 3600;
+            $time .= int($otime / 60) . "m";
+            $otime = $otime % 60;
+            $time .= $otime . "s";
+         }
+         else {
+            $time = "   ?";
+         }
+
+         print_stdout(format_length("[$download]",6) .  format_length(" $save",45) . format_length(" ($transmit/$total)",25) . format_length(" $progress%",8) .  " $speed\KB/s\t$time\n");       }
+   }
+   print_stdout("\nUploads\n\n");
+   foreach my $upload (keys(%EVENT)) {
+      if ($EVENT{$upload}{ACTION} eq "UPLOAD") {
+         my $total = $EVENT{$upload}{TOTAL};
+         my $transmit = $EVENT{$upload}{TRANSMIT};
+         my $elapsed = $transmit - $EVENT{$upload}{LAST};
+         my $save = $EVENT{$upload}{SAVE};
+         my $speed = int ($elapsed / 1024);
+         my $progress; my $time; my $otime;
+
+         if ($transmit && $total) { $progress = int($transmit / $total * 100); }
+         else { $progress = "0"; }
+
+         if ($elapsed > 0) {
+            $otime = int(($total - $transmit) / $elapsed);
+            $time .= int($otime / 3600) . "h";
+            $otime = $otime % 3600;
+            $time .= int($otime / 60) . "m";
+            $otime = $otime % 60;
+            $time .= $otime . "s";
+         }
+         else {
+            $time = "   ?";
+         }
+
+         print_stdout(format_length("[$upload]",6) .  format_length(" $save",45) . format_length(" ($transmit/$total)",25) . format_length(" $progress%",8) .  " $speed\KB/s\t$time\n");
+      }
+   }
+   print_stdout("\n");
+}
+
+
+######################################
+# Formatting functions
+######################################
+
+sub format_length {
+   my $string = $_[0];
+   my $length = $_[1];
+
+   if (!$length) { $length = $LENGTH_SIZE; }
+
+   if (length($string) > $length - 2) {
+      $string = substr($string,0,$length - 5) . "..";
+   }
+   while (length($string) < $length) {
+      $string .= " ";
+   }
+
+   return $string;
+}
+
+sub format_more {
+   my @data = split(/\n/,$_[0]);
+   my $number;
+   my $more = $_[1];
+
+   if (!$more) { $more = $MORE_SIZE; }
+
+   while($number < @data) {
+      $number++;
+      print_stdout("$data[$number]\n");
+
+      if ($number % $more == 0) {
+         print_stdout("\n-- (<return> to continue, Q <return> to quit) -- ");
+         my $continue = <STDIN>;
+         last if ($continue =~ /^q(uit)?$/i);
+         print_stdout("\n");
+      }
+   }
+
+   print_stdout("\n");
+}
+
+
+######################################
+# giFT config reading functions
+######################################
+
+sub read_config {
+   my $file = $_[0];
+   my $option = $_[1];
+   my $section = "main";
+
+   if ($option =~ /(.*?)\/(.*)/) {
+      $section = $1;
+      $option = $2;
+   }
+
+   open(CONF,"<$ENV{HOME}/.giFT/$file") or return 0;
+   while (<CONF>) {
+      next if (/^\s*?#/);
+      if (/^\[(.+)\]$/i) { $savesection = $1; }
+
+      if (/^\Q$option\E = (.+)$/) {
+         if ($savesection eq $section) {
+            close CONF;
+            print_stdout("** Read $section/$option from $file: $1\n") if $DEBUG;
+            return $1;
+         }
+      }
+   }
+   close CONF;
+   return 0;
+
+}

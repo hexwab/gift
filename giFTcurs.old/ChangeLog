@@ -1,0 +1,337 @@
+2003-05-01 12:33  Christian Häggström <chm@c00.info>
+
+	* src/giftcurs.h: HAVE___ATTRIBUTE__ is not worth the autoconf
+	check, use __GNUC__ instead
+
+2003-05-01 12:30  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, giftcurs.h, parse.c, parse.h: Display number of
+	files without suffix up to 9999
+
+2003-05-01 09:42  Christian Häggström <chm@c00.info>
+
+	* src/: Makefile.am, wakeup.c: Make giFTwakeup compile again
+
+2003-05-01 02:40  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Don't build with libgpm support to ensure that all
+	archs have the same deps and such. We can enable libgpm support
+	when we become part of Debian.
+
+2003-05-01 02:14  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* TODO: Document stuff I've been thinking about.
+
+2003-05-01 01:35  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS, debian/changelog: Preparing for 0.5.7.
+
+2003-05-01 01:29  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/: ca.po, da.po, de.po, es.po, fr.po, nl.po, pl.po, pt_BR.po:
+	make update-po
+
+2003-05-01 01:20  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/sv.po: Updated Swedish translation.
+
+2003-04-30 01:41  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: The clean target must be interruptible.
+
+2003-04-21 14:08  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* configure.in: Don't let this commented out thing drift too much.
+
+2003-04-20 03:20  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* acinclude.m4: Make --with-ncurses work if the header is called
+	curses.h instead of ncurses.h.
+
+2003-04-20 02:16  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* giFTcurs.1, giFTcurs.conf.5: Spelling.
+
+2003-04-20 02:10  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* giFTcurs.1: Should be pure ASCII now. Replaced instances of -
+	with \-. Updated parts of the text. Reformatted to have a newline
+	after every sentence, since that makes editing easier.
+
+2003-04-20 01:49  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS: Typos.
+
+2003-04-19 19:22  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* COPYING: Updated COPYING from
+	ftp://ftp.gnu.org/gnu/Licenses/COPYING-2.0
+
+2003-04-17 14:40  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: I wonder why I removed binary-indep from .PHONY.
+
+2003-04-16 15:15  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Support DEB_BUILD_OPTIONS as recommended in policy
+	section 11.1. Test for root in the install target as well.
+
+2003-04-16 14:42  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* autogen.sh: Missed one test -e.
+
+2003-04-16 14:38  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* autogen.sh: 'test -e' doesn't work with Solaris' /bin/sh.
+
+2003-04-14 20:54  Christian Häggström <chm@c00.info>
+
+	* src/: Makefile.am, protocol.c, protocol.h, search.c, transfer.h,
+	ui_main.c: don't strdup the key and value strings when building
+	interface protocol packet
+
+2003-04-09 23:37  Christian Häggström <chm@c00.info>
+
+	* src/ui_main.c: Now result list search with / works again
+
+2003-04-07 21:15  Christian Häggström <chm@c00.info>
+
+	* src/: giftcurs.h, list.c, list.h: The extra argument for sorting
+	is not used anymore
+
+2003-04-06 18:38  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/control: This short description is the one I gave in the
+	ITP.
+
+2003-04-06 18:36  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* acconfig.h: LOCALEDIR isn't used anymore.
+
+2003-04-05 13:25  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/watch: Nobody is going to need this watch file since I'm
+	going to maintain the official .deb.
+
+2003-04-04 21:59  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, get.c, tree.c, ui_transfer.c: The string was read
+	after it was freed. (/me hugs valgrind)
+
+2003-04-04 21:17  Christian Häggström <chm@c00.info>
+
+	* src/list.c: Hope these asserts catch the bug earlier
+
+2003-04-04 00:38  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, transfer.c: Fix assert when a transfer was
+	removed on DELUPLOAD
+
+2003-04-03 22:50  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, format.h, get.c, giftcurs.h, list.c, list.h,
+	main.c, misc.c, poll.c, poll.h, protocol.c, screen.c, search.c,
+	search.h, settings.h, transfer.c, transfer.h, tree.c, tree.h,
+	ui_draw.c, ui_draw.h, ui_help.c, ui_main.c, ui_main.h,
+	ui_transfer.c: Rewrote the tree code so that arbitary sorting
+	hopefully also works with transfers.
+
+2003-04-03 22:07  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* AUTHORS, THANKS: Move THANKS to AUTHORS. Remove the email
+	addresses and make it slightly more brief.
+
+2003-04-03 20:59  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/: docs, rules: Move away dh_installdocs from docs to
+	rules.
+
+2003-03-31 11:39  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/main.c: This allows you to give the server like an IPv6
+	address, if you also give the port, like -s ::1:1213.
+
+2003-03-26 00:49  Christian Häggström <chm@c00.info>
+
+	* src/get.c: Don't ignore all users on source searches
+
+2003-03-23 11:57  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: poll.c, poll.h, screen.c: Rename ugly_hack to got_sigwinch
+	to make saturn stop searching for uglier ways of doing this.
+
+2003-03-21 13:37  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/search.c: Indent.
+
+2003-03-21 13:07  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/: dirs, menu, rules: Understand that we don't need
+	dh_installdirs. Use dh_install to install the icon and call it
+	giFTcurs.xpm instead of icon_giFTcurs.xpm.
+
+2003-03-20 01:03  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Add a newline here. Just to test the commits list
+	and because others have it.
+
+2003-03-18 22:41  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/control: Update to Standards-Version 3.5.9.
+
+2003-03-18 01:36  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/control: A proper description I hope. Should hopefully
+	comply with policy.
+
+2003-03-16 18:24  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Read the README.Debian in autotools-dev
+
+2003-03-16 17:32  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/sv.po: Updated Swedish translation.
+
+2003-03-16 14:29  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/control: This is the standard format.
+
+2003-03-15 18:38  Eelco Lempsink <eelco@33lc0.net>
+
+	* po/nl.po: Updated Dutch translation.
+
+2003-03-14 17:14  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/copyright: GPL could be a symlink to some newer license
+	maybe.. So specify GPL-2
+
+2003-03-13 00:34  Christian Häggström <chm@c00.info>
+
+	* src/ui_main.c: Discovered a typo
+
+2003-03-13 00:23  Christian Häggström <chm@c00.info>
+
+	* src/: misc.c, misc.h, ui_main.c: P switches network to show in
+	stats box
+
+2003-03-12 23:03  Christian Häggström <chm@c00.info>
+
+	* src/ui_draw.c: Finally came up with The Formula
+
+2003-03-12 23:02  Christian Häggström <chm@c00.info>
+
+	* src/format.c: Fix a segfault when running w/o ~/.giFT. Daniel
+	Arnold pointed out this.
+
+2003-03-12 17:09  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/de.po: Updated German translation from Daniel Arnold.
+
+2003-03-12 14:21  Christian Häggström <chm@c00.info>
+
+	* src/ui_draw.c: place the scrollbar diamond right
+
+2003-03-11 22:47  Christian Häggström <chm@c00.info>
+
+	* src/: get.c, list.c, list.h, search.c, search.h, settings.c,
+	ui_help.c, ui_main.c: Press i to ignore hits from the selected user
+
+2003-03-08 15:43  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* AUTHORS, giFTcurs.1, giFTcurs.conf.5, debian/control,
+	debian/copyright, src/ban.c, src/ban.h, src/format.c, src/format.h,
+	src/get.c, src/get.h, src/gift.c, src/gift.h, src/giftcurs.h,
+	src/list.c, src/list.h, src/main.c, src/misc.c, src/misc.h,
+	src/parse.c, src/parse.h, src/poll.c, src/poll.h, src/protocol.c,
+	src/protocol.h, src/screen.c, src/screen.h, src/search.c,
+	src/search.h, src/settings.c, src/settings.h, src/transfer.c,
+	src/transfer.h, src/tree.c, src/tree.h, src/ui.c, src/ui.h,
+	src/ui_draw.c, src/ui_draw.h, src/ui_help.c, src/ui_help.h,
+	src/ui_main.c, src/ui_main.h, src/ui_mouse.c, src/ui_mouse.h,
+	src/ui_settings.c, src/ui_settings.h, src/ui_transfer.c,
+	src/ui_transfer.h, src/xcommon.c, src/xcommon.h:
+	s/weinholt@linux.nu/weinholt@dtek.chalmers.se/g... linux.nu is just
+	down too often, and they're slow.
+
+2003-03-08 03:48  Christian Häggström <chm@c00.info>
+
+	* NEWS, giFTcurs.conf.5: Update
+
+2003-03-07 23:13  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_main.c: Added a format for videos... wow.
+
+2003-03-07 14:21  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, format.h, get.c, giftcurs.h, main.c, parse.c,
+	parse.h, search.c, search.h, transfer.c, transfer.h, tree.c,
+	tree.h, ui_main.c, ui_transfer.c: Implemented user specifiable
+	sorting keys on both hits and transfer. This is _very_ inefficient
+	for the moment.
+
+2003-03-07 14:18  Christian Häggström <chm@c00.info>
+
+	* src/: list.c, list.h: Allow the compare function to take an
+	argument when sorting
+
+2003-03-07 14:17  Christian Häggström <chm@c00.info>
+
+	* src/protocol.c: Display parse errors with a smaller string
+	context
+
+2003-03-07 04:39  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: parse.c, parse.h, ui_main.c: Make -foo in a query tell giFT
+	to exlude foo. Thanks to arnie_.
+
+2003-03-06 01:16  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Yep, I had to put it in the wrong place.
+
+2003-03-05 20:56  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: It's probably wise to have dh_testroot here.
+
+2003-03-04 21:54  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/: compat, control, rules: Update to use debhelper 4. Make
+	debian/rules look better, at least. Still lintian clean.
+
+2003-03-02 22:35  Christian Häggström <chm@c00.info>
+
+	* src/: protocol.c, protocol.h, search.c, ui_main.c: Support
+	listing of your own shares
+
+2003-03-02 14:56  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: parse.c, parse.h, screen.c: Make sure control codes don't
+	reach the logs.
+
+2003-03-01 16:09  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* THANKS: I can't believe we forgot to mention Ross.
+
+2003-03-01 12:39  Eelco Lempsink <eelco@33lc0.net>
+
+	* po/nl.po: Updated Dutch translation. (replaced ^K with \\v
+	(again))
+
+2003-03-01 12:01  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/rules: Remove some comments, use DESTDIR instead of prefix
+	when installing.
+
+2003-02-28 13:21  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* autogen.sh: Paranoid systems don't allow us to run stuff directly
+	under /tmp.
+
+2003-02-28 08:05  Christian Häggström <chm@c00.info>
+
+	* src/format.c: Don't declare a variable in the middle of a scope
+
+2003-02-27 22:35  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, giftcurs.h, main.c: take minimum of incoming and
+	completed when showing disk free
+

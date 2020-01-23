@@ -1,0 +1,16 @@
+#!/usr/bin/perl -w
+my %h;
+
+while (<>) {
+    chomp;
+    my ($time, $host, $node, $load, $last)=split' ';
+
+    $time=hex $time;
+
+    if ($h{$host}{last} != $time) {
+	print "$host: ".($time-$h{$host}{last})."\n";
+	$h{$host}{last} = $time;
+    }
+    
+    $h{$host}{last}=$time;
+}

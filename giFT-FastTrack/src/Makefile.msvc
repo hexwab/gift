@@ -1,0 +1,89 @@
+# $Id: Makefile.msvc,v 1.8 2004/11/10 20:00:57 mkern Exp $
+
+
+!include ../Make.msvc
+
+
+INCLUDES = $(INCLUDES) -I. -Icrypt
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+
+LIBS = $(LIBS) $(LIBGIFT_LIB) $(LIBGIFTPROTO_LIB) $(GIFT_LIB)
+TARGET = $(FASTTRACK_DLL)
+
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+
+LIBS = $(LIBS) $(LIBGIFT_STATIC) $(LIBGIFTPROTO_STATIC)
+TARGET = $(FASTTRACK_STATIC)
+
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+OBJECTS = \
+	fst_download$(O) \
+	fst_upload$(O) \
+	fst_fasttrack$(O) \
+	fst_hash$(O) \
+	fst_http_client$(O) \
+	fst_http_header$(O) \
+	fst_http_server$(O) \
+	fst_ipset$(O) \
+	fst_meta$(O) \
+	fst_node$(O) \
+	fst_peer$(O) \
+	fst_packet$(O) \
+	fst_push$(O) \
+	fst_search$(O) \
+	fst_share$(O) \
+	fst_session$(O) \
+	fst_stats$(O) \
+	fst_utils$(O) \
+	fst_udp_discover$(O) \
+	fst_source$(O) \
+	md5$(O) \
+	crypt\enc_type_1$(O) \
+	crypt\enc_type_2$(O) \
+	crypt\enc_type_20$(O) \
+	crypt\enc_type_80$(O) \
+	crypt\fst_crypt$(O)
+	
+all : $(TARGET)
+
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(FASTTRACK_LIB)
+	@-del /Q /F $(FASTTRACK_DLL)
+	@-del /Q /F $(FASTTRACK_STATIC)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+	@-del /Q /F crypt\*$(O)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+
+$(TARGET) : $(OBJECTS)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) $(LIBS) $(OBJECTS)
+
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

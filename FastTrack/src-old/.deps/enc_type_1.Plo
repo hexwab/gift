@@ -1,0 +1,11 @@
+enc_type_1.lo : \
+ crypt/enc_type_1.c /usr/include/string.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/gnu/stubs.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h
+crypt/enc_type_1.c :
+/usr/include/string.h :
+/usr/include/features.h :
+/usr/include/sys/cdefs.h :
+/usr/include/gnu/stubs.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h :

@@ -1,0 +1,1201 @@
+/*
+ * http.c
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <ctype.h>
+
+#include "openft.h"
+
+#include "http.h"
+#include "nb.h"
+#include "mime.h"
+#include "html.h"
+
+#include "netorg.h"
+
+#include "file.h"
+#include "parse.h"
+
+/*****************************************************************************/
+
+#define HTTP_USER_AGENT platform_version ()
+
+/* temporarily holds all firewalled downloads until they respond */
+static Dataset *indirect_downloads = NULL;
+
+/* log_format_time */
+static const char *month_tab =
+	"Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec ";
+
+/*****************************************************************************/
+
+/* i didnt write this, dont blame me */
+static char *access_log_format_time (time_t log_time)
+{
+	static char  buf[30];
+	char        *p;
+	struct tm   *t;
+	unsigned int a;
+	int          time_offset = 0;
+
+	t = gmtime (&log_time);
+
+	p = buf + 29;
+
+	*p-- = '\0';
+	*p-- = ' ';
+	*p-- = ']';
+	a = abs(time_offset / 60);
+	*p-- = '0' + a % 10;
+	a /= 10;
+	*p-- = '0' + a % 6;
+	a /= 6;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = (time_offset > 0) ? '-' : '+';
+	*p-- = ' ';
+
+	a = t->tm_sec;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = t->tm_min;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = t->tm_hour;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = 1900 + t->tm_year;
+	while (a)
+	{
+		*p-- = '0' + a % 10;
+		a /= 10;
+	}
+	/* p points to an unused spot */
+	*p-- = '/';
+	p -= 2;
+	memcpy(p--, month_tab + 4 * (t->tm_mon), 3);
+	*p-- = '/';
+	a = t->tm_mday;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p = '[';
+
+	/* should be same as returning buf */
+	return p;
+}
+
+/* apache-style access.log */
+static void access_log (FT_Transfer *xfer, int status_code,
+                        size_t content_length)
+{
+	FILE *f;
+	char *referer;
+	char *user_agent;
+	char *request;
+
+	if (!xfer || !xfer->filename)
+		return;
+
+	if (!strncmp (xfer->filename, platform_data_dir (),
+	              strlen (platform_data_dir ())))
+	{
+		return;
+	}
+
+	referer    = dataset_lookup (xfer->header, "Referer");
+	user_agent = dataset_lookup (xfer->header, "User-Agent");
+	request    = (char *) dataset_lookup (xfer->header, "rtype");
+
+	if (!referer)
+		referer = "-";
+
+	if (!user_agent)
+		user_agent = "-";
+
+	if (!request)
+		request = "GET";
+	if (!(f = fopen (gift_conf_path ("access.log"), "a")))
+	{
+		GIFT_ERROR (("failed to open ~/.giFT/access.log"));
+		return;
+	}
+
+	fprintf (f, "%s - - %s\"%s %s HTTP/1.0\" %i %i \"%s\" \"%s\" \n",
+	         net_ip_str (xfer->ip), access_log_format_time (time (NULL)),
+	         request,
+	         xfer->filename, status_code, content_length, referer,
+	         user_agent);
+
+	fclose (f);
+}
+
+/*****************************************************************************/
+
+static void header_free (Dataset *dataset)
+{
+	if (!dataset)
+		return;
+
+	dataset_clear_free (dataset);
+}
+
+/*****************************************************************************/
+
+static void transfer_set_file (FT_Transfer *xfer, char *filename)
+{
+	/* it can happen :)  if theyre requesting a special file (ie /OpenFT/)...
+	 * just trust me */
+	if (xfer->filename == filename)
+		return;
+
+	if (xfer->filename || xfer->encoded)
+	{
+		free (xfer->filename);
+		free (xfer->encoded);
+	}
+
+	xfer->filename = STRDUP (filename);
+	xfer->encoded  = url_encode (filename);
+}
+
+/*****************************************************************************/
+
+FT_Transfer *http_transfer_new (FT_TransferCB cb, unsigned long ip,
+                                unsigned short port, char *filename,
+                                size_t start, size_t stop)
+{
+	FT_Transfer *xfer;
+
+	xfer = malloc (sizeof (FT_Transfer));
+	memset (xfer, 0, sizeof (FT_Transfer));
+
+	xfer->callback = cb;
+
+	xfer->ip       = ip;
+	xfer->port     = port;
+
+	transfer_set_file (xfer, filename);
+
+	xfer->range_start = start;
+	xfer->range_stop  = stop;
+
+#if 0
+	/* assume that this is not a file transfer until later proven to be */
+	xfer->file_transfer = FALSE;
+#endif
+
+#if 0
+	if (!active_chunks)
+		active_chunks = hash_table_new ();
+#endif
+
+	return xfer;
+}
+
+void http_transfer_free (FT_Transfer *xfer)
+{
+#if 0
+	/* this chunk is no longer active */
+	hash_table_remove (active_chunks, (unsigned long) transfer->chunk);
+#endif
+
+	free (xfer->filename);
+	free (xfer->encoded);
+
+	header_free (xfer->header);
+
+	/* for uploads, close the file handle */
+	if (xfer->f)
+		fclose (xfer->f);
+
+	free (xfer);
+}
+
+/*****************************************************************************/
+
+static Connection *submit_uploads (Connection *c, Node *node, int *uploads)
+{
+	ft_packet_send (c, FT_MODSHARE_REQUEST, "%hu%hu",
+	                4 /* SUBMIT UPLOAD REPORT */, *uploads);
+
+	return NULL;
+}
+
+/* notify the search nodes when a new upload begins */
+static void register_upload (Connection *c, Chunk *chunk, FT_Transfer *xfer)
+{
+	int uploads;
+
+	uploads = upload_length (NULL);
+
+	conn_foreach ((ConnForeachFunc) submit_uploads, &uploads,
+	              NODE_PARENT, NODE_CONNECTED, 0);
+}
+
+static void unregister_upload (Connection *c, Chunk *chunk, FT_Transfer *xfer)
+{
+	/* hehe, whatever :P */
+	register_upload (c, chunk, xfer);
+}
+
+/*****************************************************************************/
+
+/* parse a string resembling "Key1: Value\r\nKeyn: Value\r\n" into a dataset */
+static void header_parse (Dataset *dataset, char *http_request)
+{
+	char *token;
+
+	if (!dataset)
+		return;
+
+	while ((token = string_sep_set (&http_request, "\r\n")))
+	{
+		char *key;
+
+		trim_whitespace (token);
+
+		key = string_sep (&token, ": ");
+		if (!key || !token)
+			continue;
+
+		dataset_insert (dataset, key, STRDUP (token));
+	}
+}
+
+/* parse the HTTP request off of the header for http_header_parse */
+static Dataset *request_parse (char *http_request)
+{
+	Dataset *dataset = NULL;
+	char    *request;
+	char    *rtype;
+
+	if (!http_request)
+		return NULL;
+
+	/* data is expected to be in the format:
+	 *
+	 *   {GET|PUT|PUSH|HEAD} /blabla[ crap]\r\n
+	 */
+
+	rtype   = string_sep     (&http_request, " ");     /* GET|PUT|HEAD */
+	request = string_sep_set (&http_request, " \r\n"); /* /blabla */
+
+	if (!request)
+		return NULL;
+
+	/* TODO - verify request */
+
+	request = url_decode (request);
+
+	dataset_insert (dataset, "rtype",    STRDUP (rtype));
+	dataset_insert (dataset, "request",  request);
+
+	header_parse (dataset, http_request);
+
+	return dataset;
+}
+
+/* parse the HTTP reply from the header */
+static Dataset *response_parse (char *http_response)
+{
+	Dataset *dataset = NULL;
+	char    *response;
+
+	TRACE (("%s", http_response));
+	response = string_sep_set (&http_response, " \r\n");
+
+	if (!response)
+		return NULL;
+
+	dataset_insert (dataset, "response", STRDUP (response));
+
+	header_parse (dataset, http_response);
+
+	return dataset;
+}
+
+/*****************************************************************************/
+
+/* parse ?key=value&keyn=value&... into a dataset */
+static Dataset *query_parse (char *request)
+{
+	Dataset *dataset = NULL;
+	char *token;
+
+	while ((token = string_sep (&request, "&")))
+	{
+		char *key;
+
+		key = string_sep (&token, "=");
+		if (!key || !token)
+			continue;
+
+		dataset_insert (dataset, key, STRDUP (token));
+	}
+
+	return dataset;
+}
+
+/* handle cgi queries
+ * NOTE: the following request:
+ *
+ * /?key1=value1&key2=value2&keyn=valuen
+ *
+ * is accepted in the form:
+ *
+ * key1=value1&key2=value2&keyn=valuen
+ */
+char *http_handle_cgiquery (Connection *c, char *request)
+{
+	unsigned short  listen_port;
+	unsigned long   request_host;
+	char           *request_host_str;
+	char           *request_file;
+	Dataset        *dataset;
+
+#if 0
+	TRACE_SOCK (("QUERY: %s", request));
+#endif
+
+	/* parse it -- this should be another func */
+	dataset = query_parse (request);
+
+	/* only thing we currently use this code for is firewalled uploading */
+	listen_port      = ATOI (dataset_lookup (dataset, "listen_port"));
+	request_host_str =       dataset_lookup (dataset, "request_host");
+	request_file     =       dataset_lookup (dataset, "request_file");
+
+	request_host     = (request_host_str ? inet_addr (request_host_str) : 0);
+
+	if (request_host && request_file)
+	{
+		char *decoded = url_decode (request_file);
+
+		ft_packet_send_indirect (request_host, FT_PUSH_REQUEST, "%lu%hu%s",
+		                       (c ? ntohl (inet_addr (net_peer_ip (c->fd))) : 0),
+		                       listen_port, decoded);
+
+		free (decoded);
+	}
+
+	header_free (dataset);
+
+	return html_page_redirect (gift_conf_path ("OpenFT/redirect.html"));
+}
+
+/*****************************************************************************/
+
+/* create the uniq key for indirect_downloads
+ * NOTE: file is url decoded */
+static char *indirect_uniq (char *ip, char *file)
+{
+	char *uniq;
+
+	if (!ip || !file)
+		return NULL;
+
+	uniq = malloc (strlen (ip) + strlen (file) + 2);
+
+	/* this puts two /'s, oh well */
+	sprintf (uniq, "%s/%s", ip, file);
+
+	return uniq;
+}
+
+static void indirect_add (FT_Transfer *xfer, Chunk *chunk)
+{
+	char *uniq;
+	Dataset *query;
+
+	query = query_parse (xfer->filename);
+
+	uniq =
+		indirect_uniq (dataset_lookup (query, "request_host"),
+		               url_decode (dataset_lookup (query, "request_file")));
+
+	dataset_clear_free (query);
+
+	if (!uniq)
+		return;
+
+	dataset_insert (indirect_downloads, uniq, chunk);
+
+	free (uniq);
+}
+
+static void indirect_remove (FT_Transfer *xfer)
+{
+	char *uniq;
+
+	if (!(uniq = indirect_uniq (net_ip_str (xfer->ip), xfer->filename)))
+		return;
+
+	dataset_remove (indirect_downloads, uniq);
+
+	free (uniq);
+}
+
+static Chunk *indirect_lookup (FT_Transfer *xfer)
+{
+	Chunk *chunk;
+	char  *uniq;
+
+	if (!(uniq = indirect_uniq (net_ip_str (xfer->ip), xfer->filename)))
+		return NULL;
+
+	chunk = dataset_lookup (indirect_downloads, uniq);
+
+	free (uniq);
+
+	return chunk;
+}
+
+/*****************************************************************************/
+
+static int http_connection_close (Connection *c, Chunk *chunk,
+                                  FT_Transfer *xfer)
+{
+	if (c)
+	{
+		/* cleanup with the event loop */
+		input_remove (c);
+		net_close (c->fd);
+	}
+
+	if (chunk)
+	{
+		/* log this chunk now that it's done transmitting */
+		if (chunk->transfer->type == TRANSFER_UPLOAD)
+		{
+		    access_log (xfer, 200, chunk->transmit);
+			unregister_upload (c, chunk, xfer);
+		}
+
+		/* this data is not allowed to be used anymore */
+		chunk->data = NULL;
+
+		/* if the transfer is indirect, we will simply nullify the data
+		 * segment on the chunk and use indirect_downloads when the real
+		 * connection comes back */
+		if (!xfer->indirect)
+		{
+			indirect_remove (xfer);
+
+			/* notify the transfer callback that we have terminated this
+			 * connection */
+			if (xfer->callback)
+				(*xfer->callback) (chunk, NULL, 0);
+
+			/* WARNING: chunk is free'd in xfer->callback! */
+		}
+	}
+
+	/* free any data associated */
+	http_transfer_free (xfer);
+
+	connection_destroy (c);
+
+	return FALSE;
+}
+
+/*****************************************************************************/
+
+/* callback to read from the desired file and write to the requesting
+ * client */
+static int connection_deliver (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+	char         buf[RW_BUFFER + 1];
+	size_t       send_len;
+	int          n;
+
+	/* TODO - chunk should be opening files! */
+	send_len = fread (buf, sizeof (char), sizeof (buf) - 1, xfer->f);
+
+	/* If an error occurs, or the end-of-file is reached, the return value
+	 * is a short item count (or zero).  fread (3) ??? */
+	if (send_len > sizeof (buf))
+		send_len = 0;
+
+	if (send_len > (xfer->range_stop - chunk->transmit))
+		send_len = xfer->range_stop - chunk->transmit;
+
+	if (send_len)
+		n = net_send (c->fd, buf, send_len);
+
+	if (send_len == 0 || n <= 0)
+	{
+		http_connection_close (c, chunk, xfer);
+
+		return FALSE;
+	}
+
+	(*xfer->callback) (chunk, buf, send_len);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+/* send the appropriate HTTP reply header
+ * NOTE: this code is used for both push and standard get requests */
+static int send_reply_header (FT_Transfer *xfer, int verify_share,
+                              size_t start, size_t stop, size_t length,
+                              int is_push, int nodepage)
+{
+	char  http[4096];
+	char *range;
+	char *true_path;
+	char *content_type = "";
+	int   http_status_code = 200;
+	int   reason;
+
+	/* check whether the file is among those shared */
+	if (verify_share)
+	{
+		if (!nodepage)
+		{
+			true_path =
+				share_auth_upload (net_ip_str (xfer->ip), xfer->filename, &reason);
+
+			if (!true_path)
+			{
+				switch (reason)
+				{
+				case SHARE_AUTH_NOT_FOUND:
+					http_status_code = 404;
+					break;
+
+				case SHARE_AUTH_NO_SLOTS:
+					http_status_code = 503;
+					break;
+					
+				default:
+					/* can't happen */
+					http_status_code = 404;
+					break;
+				}
+			}
+
+			else
+			{
+				/* TODO - this will be cleaned up in the future */
+				FileShare *file = share_find_file (xfer->filename);
+				xfer->hash      = (file ? STRDUP (file->md5) : NULL);
+
+				transfer_set_file (xfer, true_path);
+			}
+		}
+
+		if (http_status_code >=200 && http_status_code <= 300)
+		{
+			xfer->f = mime_open (xfer->filename, "rb",
+			                     &content_type, &length);
+
+			/* if we can't open file its a 404 */
+			if (!xfer->f)
+			{
+				TRACE(("%s (%s)", xfer->filename, strerror(errno)));
+				http_status_code = 404;
+			}
+		}
+
+	}
+
+	if (http_status_code < 200 || http_status_code >= 300)
+	{
+		/* log this error */
+		access_log (xfer, http_status_code, length);
+
+		switch (http_status_code)
+		{
+		case 404:
+			net_send (xfer->c->fd, "HTTP/1.0 404 Not Found\r\n\r\n", 0);
+			break;
+
+		case 503:
+			net_send (xfer->c->fd, "HTTP/1.0 503 Service Unavailable\r\n\r\n", 0);
+			break;
+		}
+			
+		return FALSE;
+	}
+
+	/* ok, actually construct the reply now ... TODO - this code sucks */
+
+	/* if we aren't pushing the remote host will reliably give us the range
+	 * information that they wish to use */
+	if (!is_push)
+	{
+		char sep_chr;
+
+		/* Content-Range: is used for PUSH request replies... if we
+		 * read it here we can guarantee that the individual function doesn't
+		 * need to handle it...shouldn't break anything either */
+		if (!(range = dataset_lookup (xfer->header, "Range")))
+			range = dataset_lookup (xfer->header, "Content-Range");
+
+		/* this is wrong.  more correct HTTP support is to follow */
+		if (range)
+			sscanf (range, "bytes%c%i-%i", &sep_chr, &start, &stop);
+	}
+
+	if (start || stop)
+	{
+		if (!stop)
+			stop = length;
+
+		/* some very derranged conditions can allow stop to be 0 at this point,
+		 * but that means the remote node fucked up so we will let some other
+		 * subsystem catch the problem */
+
+		sprintf (http,
+		         "HTTP/1.0 206 Partial Content\r\n"
+		         "Content-Range: bytes %i-%i/%i\r\n"
+		         "Content-Length: %i\r\n"
+		         "Content-Type: %s\r\n\r\n",
+				 start, stop, length, stop - start, content_type);
+
+		/* seek to the range start */
+		if (!is_push)
+			fseek (xfer->f, start, SEEK_SET);
+
+		/* this is really redundant for is_push, but oh well */
+		xfer->range_start = start;
+		xfer->range_stop  = stop;
+
+		/* length = stop - start; */
+	}
+	else
+	{
+		sprintf (http,
+		         "HTTP/1.1 200 OK\r\n"
+		         "Content-Length: %i\r\n"
+		         "Content-Type: %s\r\n\r\n",
+		         length, content_type);
+
+		xfer->range_start = 0;
+		xfer->range_stop  = length;
+	}
+
+	net_send (xfer->c->fd, http, 0);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+/* TODO clean this mess up */
+
+static int read_body (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+	char         buf[RW_BUFFER];
+	int          n;
+	int          buf_size;
+
+	/*	buf_size = connection_adjust_buf(c, sizeof (buf) - 1); */
+	buf_size = sizeof(buf) - 1;
+
+	if ((n = recv (c->fd, buf, buf_size, 0)) <= 0)
+	{
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	/* indirect connections should not report data back to the daemon, it's
+	 * probably incorrect ... wait for the connection to become direct */
+	if (!xfer->indirect)
+	{
+		(*xfer->callback) (chunk, buf, n);
+	}
+
+	return TRUE;
+}
+
+/* receive the HTTP reply from the socket */
+static int read_response (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+	NBRead      *nb;
+	int          n;
+
+	nb = nb_active (c->fd);
+
+	n = nb_read (nb, c->fd, 0, "\r\n\r\n");
+	if (n <= 0)
+	{
+		nb_finish (nb);
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	if (!nb->term)
+		return FALSE;
+
+	xfer->header = response_parse (nb->data);
+
+	nb_finish (nb);
+
+	if (!xfer->header)
+	{
+		TRACE_SOCK (("invalid http header"));
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	input_remove (c);
+	input_add (p, c, INPUT_READ, (InputCallback) read_body, FALSE);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+/* handles incoming request processing */
+static int incoming_connection (Protocol *p, Connection *c)
+{
+	Transfer    *transfer;
+	FT_Transfer *xfer = c->data; /* TEMPORARY! */
+	char         buf[RW_BUFFER];
+	char        *nodepage = NULL;
+	char        *rtype;
+	int          n;
+
+	/* clear the read queue */
+	if ((n = recv (c->fd, buf, sizeof (buf) - 1, 0)) <= 0)
+	{
+		http_connection_close (c, NULL, xfer);
+		return FALSE;
+	}
+
+	buf[n] = 0;
+
+	/* parse */
+	if (!(xfer->header = request_parse (buf)))
+	{
+		TRACE_SOCK (("invalid http header"));
+		http_connection_close (c, NULL, xfer);
+		return FALSE;
+	}
+
+	/* associate the file data with the request */
+	transfer_set_file (xfer, dataset_lookup (xfer->header, "request"));
+
+	/* process the request type */
+	rtype = dataset_lookup (xfer->header, "rtype");
+
+	/* ok, this is a non-standard OpenFT HTTP session, send the ack then come
+	 * back to this connection and read the response */
+	if (!strcasecmp (rtype, "PUSH"))
+	{
+		Chunk    *chunk;
+
+		/* locate the saved chunk structure */
+		if (!(chunk = indirect_lookup (xfer)))
+		{
+			TRACE_SOCK (("unrequested file %s...rejecting!", xfer->filename));
+			http_connection_close (c, NULL, xfer);
+			return FALSE;
+		}
+
+		indirect_remove (xfer);
+
+		/* close the original connection, its useless now, and we need to
+		 * borrow its chunk buffer */
+		if (chunk->data)
+		{
+			FT_Transfer *dummy_xfer = FT_TRANSFER (chunk);
+			http_connection_close (dummy_xfer->c, NULL, dummy_xfer);
+		}
+
+		xfer->indirect = FALSE;
+
+		/* wrap the chunk/connection associations for consistency */
+		c->data     = chunk;
+		chunk->data = xfer;
+
+		TRACE_SOCK (("directional change: push -> ft_download (%lu-%lu, %lu)",
+		             chunk->start, chunk->stop, chunk->transmit));
+		chunk->transfer->type = TRANSFER_DOWNLOAD;
+		xfer->callback = ft_download;
+
+		/* this is a bit redundant, i think ... send_reply_header's supposed
+		 * to do this */
+		xfer->range_start = chunk->start;
+		xfer->range_stop  = chunk->stop;
+
+		/* they just notified us that they are going to push the selected file
+		 * to us, we now need to notify them of the range request we want from
+		 * the file */
+		send_reply_header (xfer, FALSE, chunk->start, chunk->stop,
+		                   chunk->stop - chunk->start, TRUE, FALSE);
+
+		input_remove (c);
+		input_add (p, c, INPUT_READ, (InputCallback) read_response, FALSE);
+
+		return TRUE;
+	}
+
+	/* no file was requested, send the nodepage */
+	if (!xfer->filename[1])
+	{
+		nodepage = html_page_index (gift_conf_path ("OpenFT/nodepage.html"));
+		transfer_set_file (xfer, nodepage);
+	}
+	/* nodepage data */
+	else if (!strncmp (xfer->filename, "/OpenFT/", 8))
+	{
+		char *true_path;
+
+		true_path = malloc (strlen (xfer->filename) +
+		                    strlen (platform_data_dir ()) + 10);
+		sprintf (true_path, "%s%s", platform_data_dir (), xfer->filename);
+
+		transfer_set_file (xfer, true_path);
+
+		free (true_path);
+	}
+	/* CGI query */
+	else if (xfer->filename[1] == '?')
+	{
+		nodepage = http_handle_cgiquery (c, xfer->filename + 2);
+
+		/* temp -- disable redirect.html */
+		nodepage = NULL;
+
+		transfer_set_file (xfer, nodepage);
+	}
+
+	/* NOTE: regular file downloads will fall through to this point...share
+	 * verification will occur later */
+
+	/* respond */
+	if (!send_reply_header (xfer, TRUE, 0, 0, 0, FALSE,
+	                        (nodepage ? TRUE : FALSE)))
+	{
+		/* something didn't check out right, set to an invalid file share and
+		 * fail later */
+		transfer_set_file (xfer, NULL);
+	}
+
+	/* no file was meant to be written, die */
+	if (!xfer->filename)
+	{
+		http_connection_close (c, NULL, xfer);
+		return FALSE;
+	}
+
+	/* we now know this is an upload, register it so that we can get the
+	 * necessary structural data */
+	transfer = upload_new (protocol_find ("OpenFT"), net_peer_ip (c->fd),
+	                       xfer->hash,
+	                       file_basename (xfer->filename),
+	                       xfer->filename,
+	                       xfer->range_start, xfer->range_stop, TRUE);
+
+	/* wrap the chunk/connection associations for consistency */
+	c->data = transfer->chunks->data;
+	((Chunk *)c->data)->data = xfer;
+
+	register_upload (c, c->data, xfer);
+
+	/* handle the push'd data */
+	input_remove (c);
+	input_add (p, c, INPUT_WRITE, (InputCallback) connection_deliver, FALSE);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+/* incoming connections callback */
+void http_handle_incoming (Protocol *p, Connection *c)
+{
+	FT_Transfer *xfer;
+	Connection  *new_c;
+	int          fd;
+
+	fd = net_accept (c->fd);
+
+	if (fd < 0)
+		return;
+
+	new_c     = connection_new (p);
+	new_c->fd = fd;
+
+	/* this will be changed as soon as we identify the request.  the default
+	 * chunk encapsulation will occur */
+	xfer = http_transfer_new (ft_upload, inet_addr (net_peer_ip (new_c->fd)),
+	                          0, NULL, 0, 0);
+
+	new_c->data = xfer;
+	xfer->c     = new_c;
+
+	input_add (p, new_c, INPUT_READ,
+	           (InputCallback) incoming_connection, TRUE);
+}
+
+/*****************************************************************************/
+
+/* make an HTTP request */
+static int send_request (int fd, char *rtype, char *request, char *extra)
+{
+	char  *req;
+	size_t req_len = 0;
+	int    ret;
+
+	if (!rtype || !request)
+		return -1;
+
+	/* just to be safe */
+	req = malloc (512 + (extra ? strlen (extra) : 0) + strlen (request));
+
+	/* write the default header */
+	req_len += sprintf (req, "%s %s%s HTTP/1.1\r\nUser-Agent: %s\r\n",
+						rtype, ((*request != '/') ? "/" : ""), request,
+						HTTP_USER_AGENT);
+
+	/* append any arbitrary user data */
+	if (extra)
+		req_len += sprintf (req + req_len, "%s\r\n", extra);
+
+	/* extra \r\n */
+	req_len += sprintf (req + req_len, "\r\n");
+
+	ret = net_send (fd, req, req_len);
+
+	free (req);
+
+	return ret;
+}
+
+/*****************************************************************************/
+
+static int push_ack (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+	char         buf[RW_BUFFER];
+	int          n;
+
+	if ((n = recv (c->fd, buf, sizeof (buf) - 1, 0)) <= 0)
+	{
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	buf[n] = 0;
+
+	if (!(xfer->header = response_parse (buf)))
+	{
+		TRACE_SOCK (("invalid http header"));
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	dataset_insert (xfer->header, "rtype", STRDUP ("PUSH"));
+
+	/* TODO - evaluate response */
+
+	/* write the header, this will also handle setting the range request
+	 * stuff */
+	if (!send_reply_header (xfer, TRUE, 0, 0, 0, FALSE, FALSE))
+	{
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	/* ok -- we had to lie in protocol.c about the actual size of this
+	 * transfer.  fix that here.  */
+	chunk->start = xfer->range_start;
+	chunk->stop  = xfer->range_stop;
+
+	chunk->transfer->total    = xfer->range_stop;
+	chunk->transfer->transmit = xfer->range_start;
+
+	/* notify the interface protocol that it's ok to start displaying info
+	 * regarding this transfer now */
+	upload_display (chunk->transfer);
+	register_upload (c, chunk, xfer);
+
+	input_remove (c);
+	input_add (p, c, INPUT_WRITE, (InputCallback) connection_deliver, FALSE);
+
+	return TRUE;
+}
+
+static int push_verify_source (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+
+	if (net_sock_error (c->fd))
+	{
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	/* send the PUSH / request...this is non-standard, I think... I just made
+	 * it up */
+	send_request (c->fd, "PUSH", xfer->encoded, NULL);
+
+	input_remove (c);
+	input_add (p, c, INPUT_READ, (InputCallback) push_ack, FALSE);
+
+	return TRUE;
+}
+
+/* connect outgoing and "push" the requested file */
+int http_push_file (Chunk *chunk)
+{
+	FT_Transfer *xfer = FT_TRANSFER (chunk);
+	Connection  *c;
+
+#if 0
+	xfer->file_transfer = TRUE;
+#endif
+
+	TRACE (("connecting to %s:%hu",
+	        net_ip_str (xfer->ip), xfer->port));
+
+	/* make the outgoing connection structure */
+	c     = connection_new (openft_proto);
+	c->fd = net_connect (net_ip_str (xfer->ip), xfer->port);
+
+	/* circular lookup again */
+	c->data = chunk;
+	xfer->c = c;
+
+	input_add (openft_proto, c, INPUT_WRITE,
+	           (InputCallback) push_verify_source, TRUE);
+
+#if 0
+	hash_table_insert (active_chunks, (unsigned long) transfer->chunk, c);
+#endif
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+static int pull_verify_source (Protocol *p, Connection *c)
+{
+	Chunk       *chunk = c->data;
+	FT_Transfer *xfer  = FT_TRANSFER (chunk);
+	char        *range = NULL;
+
+	if (net_sock_error (c->fd))
+	{
+		http_connection_close (c, chunk, xfer);
+		return FALSE;
+	}
+
+	/* range_start and stop will both be 0 if we mean to request the entire
+	 * file */
+	if (xfer->range_stop)
+	{
+		range = malloc (128);
+		sprintf (range, "Range: bytes=%lu-%lu\r\n",
+				 xfer->range_start, xfer->range_stop);
+	}
+
+	/* send the GET / request */
+	send_request (c->fd, "GET", xfer->encoded, range);
+
+	free (range);
+
+	/* recycle this input */
+	input_remove (c);
+	input_add (p, c, INPUT_READ, (InputCallback) read_response, FALSE);
+
+	return TRUE;
+}
+
+int http_pull_file (Chunk *chunk, char *source, int indirect)
+{
+	FT_Transfer *xfer = FT_TRANSFER (chunk);
+	Connection *c;
+
+#if 0
+	xfer->file_transfer = TRUE;
+#endif
+
+	if (indirect)
+	{
+		xfer->indirect = TRUE;
+
+		indirect_add (xfer, chunk);
+	}
+
+	TRACE (("connecting to %s:%hu",
+	        net_ip_str (xfer->ip), xfer->port));
+
+	/* dont try to deliver this request to yourself via HTTP, just do it
+	 * directly */
+	if (xfer->indirect && !xfer->ip)
+	{
+		char *query = STRDUP (source + 2); /* source + 2 is safe, don't worry
+											* about it ;) */
+
+		http_handle_cgiquery (NULL, query);
+
+		free (query);
+
+		return TRUE;
+	}
+
+	/* make the outgoing connection */
+	c     = connection_new (openft_proto);
+	c->fd = net_connect (net_ip_str (xfer->ip), xfer->port);
+
+	/* circular data lookup */
+	c->data = chunk;
+	xfer->c = c;
+
+	/* wait to submit the header */
+	input_add (openft_proto, c, INPUT_WRITE,
+	           (InputCallback) pull_verify_source, TRUE);
+
+#if 0
+	hash_table_insert (active_chunks, (unsigned long) transfer->chunk, c);
+#endif
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+void http_cancel (Chunk *chunk)
+{
+	FT_Transfer *xfer = FT_TRANSFER (chunk);
+
+	if (!xfer)
+		return;
+
+	/* remove the indirect match for this file */
+	indirect_remove (xfer);
+
+	/* callback should NOT be made, we were instructed to remove this data */
+	xfer->callback = NULL;
+	http_connection_close (xfer->c, chunk, xfer);
+}

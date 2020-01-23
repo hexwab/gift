@@ -1,0 +1,56 @@
+
+
+lib
+---
+
+Essential stuff:
+
+- Send proper 0x0a field in download request so we get a good position in the queue
+
+- Handle binary push replies
+
+- Make file hashing non-blocking. Don't remove state data until file is
+  moved to final destination so we can resume verification if it is aborted
+  on shutdown.
+
+- Determine when to look for more sources for a download and start hash 
+  search.
+
+- Time out inactive download connections. It hangs the download indefinitely.
+  Update: Effects now limited by replacing slow nodes with faster ones.
+  
+- Do we need an upper limit on the upload queue length? Is a list efficient
+  enough for large queues?
+
+
+Features:
+
+- Save/load meta data with incomplete dowloads.
+
+
+Optimizations:
+
+- Optimize chunking by only allocating new chunk after the tcp connection to a
+  new source has been established. Requires major rewrites, maybe we can do
+  this once we use binary requests.
+
+- Create sources from X-Alt headers and add them
+
+- Parse index node list packet
+
+- Figure out how to detected firewalled search results.
+  Update: There seems to be nothing in the search results.
+
+- Check if we can send push requests for our own supernodes over the already
+  established session.
+
+- Differentiate between download source connect and request failure and
+  immediately remove the source in the former case.
+
+- Don't add unroutable ips to node cache and remove them on connect if they are there.
+
+- Do we have to 'switch off' hash searches when we don't want any more results?
+
+- Is there a general limit on the number of shares we should upload like in fasttrack?
+
+- A lot of successfuly pushes hit the 'first packet needs 4 byte' limit in http server

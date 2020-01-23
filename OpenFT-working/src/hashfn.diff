@@ -1,0 +1,27 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.104
+diff -u -r1.104 ft_search_db.c
+--- ft_search_db.c	24 Dec 2003 01:59:52 -0000	1.104
++++ ft_search_db.c	27 Dec 2003 14:48:12 -0000
+@@ -197,8 +197,10 @@
+ 
+ #ifdef DB_COMPARE_HAS_DBP
+ # define DB_COMPAREFN(cmpfn) int cmpfn (DB *dbp, const DBT *a, const DBT *b)
++# define DB_HASHFN(hashfn) uint32_t hashfn (DB *dbp, const void *bytes, u_int32_t length)
+ #else
+ # define DB_COMPAREFN(cmpfn) int cmpfn (const DBT *a, const DBT *b)
++# define DB_HASHFN(hashfn) static uint32_t hashfn (const void *bytes, u_int32_t length)
+ #endif
+ 
+ typedef int (*DBCompareFn) (
+@@ -408,7 +410,7 @@
+ /*****************************************************************************/
+ 
+ #ifdef SEARCH_DB_DIRHASH
+-static u_int32_t direct_md5_hash (DB *dbp, const void *bytes, u_int32_t length)
++static DB_HASHFN(direct_md5_hash)
+ {
+ 	u_int32_t hash = 0;
+ 

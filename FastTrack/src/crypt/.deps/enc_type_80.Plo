@@ -1,0 +1,3 @@
+enc_type_80.lo : \
+ enc_type_80.c
+enc_type_80.c :

@@ -1,0 +1,16 @@
+TODO for giFT:
+
+* recently added hash_table_find, need to rewrite all my shitty work-arounds
+* download robustness/cleanups/fixes (** pokes judge)
+* security improvements (need an allow list for port 1213)
+
+TODO for giFT-fe:
+
+* badly needs to be integrated w/ the giFT sources, all files must be renamed
+  to fe-*.[ch], as well as all structures prefixed with FE and appropriately
+  renamed to fit w/ giFT
+* preferences
+
+TODO for OpenFT:
+
+* slight improvements to the HTTP support

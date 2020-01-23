@@ -1,0 +1,9 @@
+#!/usr/bin/perl -n
+# $Id: strip-grotty,v 1.2 2003/05/15 19:01:38 weinholt Exp $
+# Strip unwanted whitespace and stuff from the output of
+#  groff -Tlatin1 -P-cub -ms file.ms
+undef $/;			# Read the whole file at once
+s/\s+-\d+-\s+/\n/g;	# Get rid of page breaks
+s/^\s+\n//g;		# Get rid of the whitespace at the top
+s/\s+$/\n/g;		# Get rid of the whitespace at the bottom
+print;

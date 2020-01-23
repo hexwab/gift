@@ -1,0 +1,149 @@
+giftcurs (0.5.5-1) unstable; urgency=low
+
+  * Captital E in the transfer screen (un)expands all transfers.
+  * Slight protocol change caused transfers to not be seen.
+  * Minor fixes.
+
+ -- Göran Weinholt <weinholt@linux.nu>  Tue, 26 Nov 2002 21:08:00 +0100
+
+giftcurs (0.5.4-1) unstable; urgency=low
+
+  * Formats for the search results were broken.
+  * Small fix for transfers when giFT dies.
+
+ -- Göran Weinholt <weinholt@linux.nu>  Sat, 26 Oct 2002 00:10:34 +0200
+
+giftcurs (0.5.3-1) unstable; urgency=low
+
+  * Layout is determined by configurable formatting strings.
+  * Better support for viewing important messages from giFT.
+  * Support for Tru64 (OSF1 V4.0) and OSF1 curses.
+  * Various bug fixes.
+
+ -- Göran Weinholt <weinholt@linux.nu>  Fri, 25 Oct 2002 15:08:34 +0200
+
+giftcurs (0.5.2-1) unstable; urgency=low
+
+  * Smashed a few bugs.
+  * Meta data shows in the Extra Information box. Use j/k to scroll it.
+
+ -- Göran Weinholt <weinholt@linux.nu>  Mon, 23 Sep 2002 11:38:15 +0200
+
+giftcurs (0.5.1-1) unstable; urgency=low
+
+  * Faster hit sorting algorithm.
+  * Small interface protocol change.
+  * Transfers are sorted, largest to smallest.
+  * Automatic awakening moved to a separate binary.
+  * Depends: should work with Debian stable now.
+
+ -- Göran Weinholt <weinholt@linux.nu>  Thu, 12 Sep 2002 19:56:18 +0200
+
+giftcurs (0.5.0-1) unstable; urgency=low
+
+  * New interface protocol.
+  * Resizing finally works right away.
+
+ -- Christian Häggström <chm@c00.info>  Sun, 25 Aug 2002 12:42:32 +0200
+
+giftcurs (0.4.3-1) unstable; urgency=low
+
+  * A button bar for the very laziest of users. Also good for new users,
+    so the default message timer has been removed. May be disabled, see
+    giFTcurs.conf(5).
+  * More things are clickable, check the ChangeLog.
+  * The 'X' key was changed to 'T', to make cancelling transfers harder.
+
+ -- Goran Weinholt <weinholt@linux.nu>  Sun,  7 Jul 2002 21:08:20 +0200
+
+giftcurs (0.4.2-1) unstable; urgency=low
+
+  * Selections now have their own color. The old behaviour of inverting
+    the color is still available, see giFTcurs.conf(5).
+  * Two new sorting orders.
+  * A setting that will ignore hits with zero availability.
+  * A compile fix for FreeBSD and one for Mac OS X.
+  * Support for the new pause feature in giFT. (Press 'p' on a download.)
+
+ -- Goran Weinholt <weinholt@linux.nu>  Wed, 26 Jun 2002 04:45:49 +0200
+
+giftcurs (0.4.1-1) unstable; urgency=low
+
+  * New release.
+  * An option to log hash and filename of started downloads to a file,
+    so that a user may run md5sum -c.
+  * A PowerPC-specific segfault was fixed.
+
+ -- Goran Weinholt <weinholt@linux.nu>  Mon, 20 May 2002 00:46:54 +0200
+
+giftcurs (0.4.0-1) unstable; urgency=low
+
+  * New release.
+  * Search results and downloads are expandable trees.
+  * A new transfer style. The original is still available, see giFTcurs.conf(5)
+    for more information.
+  * A new manpage, giFTcurs.conf(5).
+  * Support for chunk reporting.
+  * Bug fixes.
+  * Fixed lintian errors.
+						
+ -- Goran Weinholt <weinholt@linux.nu>  Sat, 18 May 2002 17:59:24 +0200
+
+giftcurs (0.3.4-1) unstable; urgency=low
+
+  * New release.
+  * libgpm support.
+  * Search history.
+  * Very much improved settings code.
+  * Temporary workaround for a protocol change.
+
+ -- Goran Weinholt <weinholt@linux.nu>  Thu, 23 Apr 2002 00:31:40 +0200
+
+giftcurs (0.3.3-1) unstable; urgency=low
+
+  * New release.
+  * Improved settings screen.
+  * Proper mouse support.
+  * / for searching among results.
+  * Show average bandwidth on completed transfers.
+  * Brazilian Portuguese, Danish and Dutch translations.
+  * Files in the download list are marked in the search results list.
+  * Mouse wheel support in terminals which support it.
+
+ -- Goran Weinholt <weinholt@linux.nu>  Thu, 18 Apr 2002 19:17:00 +0200
+
+giftcurs (0.3.2-1) unstable; urgency=low
+
+  * New Release.
+
+ -- Christian Haggstrom <chm@c00.info>  Thu, 20 Mar 2002 18:00:00 +0100
+
+giftcurs (0.3.1-1) unstable; urgency=low
+
+  * New Release.
+
+ -- Christian Haggstrom <chm@c00.info>  Thu, 27 Feb 2001 23:12:12 +0200
+
+giftcurs (0.3.0-1) unstable; urgency=low
+
+  * New Release.
+
+ -- Christian Haggstrom <chm@c00.info>  Thu, 27 Feb 2001 23:12:12 +0200
+
+giftcurs (0.2.1-1) unstable; urgency=low
+
+  * New Release.
+
+ -- Christian Haggstrom <chm@c00.info>  Thu, 17 Jan 2001 21:06:05 +0200
+
+giftcurs (0.2.0-1) unstable; urgency=low
+
+  * New Release to match the new giFT interface.
+
+ -- Christian Haggstrom <mrz@hehe.com>  Mon, 22 Oct 2001 19:59:38 +0200
+
+giftcurs (0.1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Christian Haggstrom <mrz@hehe.com>  Mon, 22 Oct 2001 19:59:38 +0200

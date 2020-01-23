@@ -1,0 +1,13 @@
+***************
+*** 1,5 ****
+  /*
+-  * $Id: log.c,v 1.50 2006/01/30 18:23:44 mkern Exp $
+   *
+   * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+   *
+--- 1,5 ----
+  /*
++  * $Id: log.c,v 1.49 2004/01/14 10:00:24 hipnod Exp $
+   *
+   * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+   *

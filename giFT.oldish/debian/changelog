@@ -1,0 +1,12 @@
+gift (0.10.0.cvs-2) unstable; urgency=medium
+
+  * Fixed menu item.
+  * Fixed lintian alerts. Mostly FSSTND compliance.
+
+ -- Scott Robinson <scott@tranzoa.net>  Tue, 08 Oct 2002 21:07:16 -0700
+
+gift (0.10.0.cvs-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Scott Robinson <scott@tranzoa.net>  Fri,  8 Feb 2002 20:14:44 -0800

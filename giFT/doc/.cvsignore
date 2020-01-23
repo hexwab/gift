@@ -1,0 +1,16 @@
+.todo
+
+GNUmakefile
+*.aux
+*.dvi
+*.html
+*.log
+*.pdf
+*.ps
+*.rtf
+*.toc
+*.png
+*.txt
+
+Makefile
+Makefile.in

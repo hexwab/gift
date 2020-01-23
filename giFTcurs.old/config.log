@@ -1,0 +1,114 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:599: checking for non-GNU ld
+configure:634: checking if the linker (/usr/bin/ld) is GNU ld
+configure:685: checking for a BSD compatible install
+configure:738: checking whether build environment is sane
+configure:795: checking whether make sets ${MAKE}
+configure:841: checking for working aclocal
+configure:854: checking for working autoconf
+configure:867: checking for working automake
+configure:880: checking for working autoheader
+configure:893: checking for working makeinfo
+configure:910: checking for gcc
+configure:1023: checking whether the C compiler (gcc  ) works
+configure:1039: gcc -o conftest    conftest.c  1>&5
+configure:1065: checking whether the C compiler (gcc  ) is a cross-compiler
+configure:1070: checking whether we are using GNU C
+configure:1098: checking whether gcc accepts -g
+configure:1141: checking for a BSD compatible install
+configure:1195: checking how to run the C preprocessor
+configure:1416: checking location of ncurses.h file
+configure:1670: checking for ncurses version
+configure:1718: checking for use_default_colors
+configure:1718: checking for resizeterm
+configure:1779: checking for inttypes.h
+configure:1814: checking for stdint.h
+configure:1849: checking for unsigned long long
+configure:1900: checking for shared library run path origin
+configure:1949: checking host system type
+configure:1972: checking for ranlib
+configure:2001: checking for strerror in -lcposix
+configure:2043: checking for ANSI C header files
+configure:2147: checking for working const
+configure:2222: checking for inline
+configure:2262: checking for off_t
+configure:2295: checking for size_t
+configure:2330: checking for working alloca.h
+configure:2363: checking for alloca
+configure:2565: checking for unistd.h
+configure:2604: checking for getpagesize
+configure:2657: checking for working mmap
+configure:2829: checking whether we are using the GNU C Library 2.1 or newer
+configure:2867: checking whether integer division by zero raises SIGFPE
+configure:2965: checking for inttypes.h
+configure:3004: checking whether the inttypes.h PRIxNN macros are broken
+configure:3432: checking for msgfmt
+configure:3467: checking for gmsgfmt
+configure:3504: checking for xgettext
+configure:3541: checking for msgmerge
+configure:3604: checking for argz.h
+configure:3604: checking for limits.h
+configure:3604: checking for locale.h
+configure:3604: checking for nl_types.h
+configure:3604: checking for malloc.h
+configure:3604: checking for stddef.h
+configure:3604: checking for stdlib.h
+configure:3604: checking for string.h
+configure:3604: checking for unistd.h
+configure:3604: checking for sys/param.h
+configure:3645: checking for feof_unlocked
+configure:3645: checking for fgets_unlocked
+configure:3645: checking for getc_unlocked
+configure:3645: checking for getcwd
+configure:3645: checking for getegid
+configure:3645: checking for geteuid
+configure:3645: checking for getgid
+configure:3645: checking for getuid
+configure:3645: checking for mempcpy
+configure:3645: checking for munmap
+configure:3645: checking for putenv
+configure:3645: checking for setenv
+configure:3645: checking for setlocale
+configure:3645: checking for stpcpy
+configure:3645: checking for strcasecmp
+configure:3645: checking for strdup
+configure:3645: checking for strtoul
+configure:3645: checking for tsearch
+configure:3645: checking for __argz_count
+configure:3645: checking for __argz_stringify
+configure:3645: checking for __argz_next
+configure:3729: checking for iconv
+configure:3804: checking for iconv declaration
+configure:3853: checking for nl_langinfo and CODESET
+configure:3889: checking for LC_MESSAGES
+configure:3928: checking for bison
+configure:3961: checking version of bison
+configure:3990: checking whether NLS is requested
+configure:4014: checking whether included gettext is requested
+configure:4034: checking for GNU gettext in libc
+configure:4635: checking for socket in -lsocket
+configure:4683: checking for ANSI C header files
+configure:4790: checking for getopt.h
+configure:4790: checking for sys/vfs.h
+configure:4790: checking for sys/mount.h
+configure:4790: checking for sys/statvfs.h
+configure:4790: checking for regex.h
+configure:4790: checking for termios.h
+configure:4790: checking for sys/ioctl.h
+configure:4829: checking whether gcc needs -no-cpp-precomp
+configure:4852: checking for socket
+configure:4852: checking for select
+configure:4852: checking for strerror
+configure:4908: checking for strndup
+configure:4908: checking for strnlen
+configure:4908: checking for statfs
+configure:4908: checking for basename
+configure:4908: checking for getopt_long
+configure:4908: checking for fork
+configure:4963: checking for poll
+configure:5065: checking for getaddrinfo
+configure:5167: checking for snprintf
+configure:5268: checking for asprintf
+configure:5599: checking for Gpm_Open in -lgpm

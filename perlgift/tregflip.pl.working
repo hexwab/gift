@@ -1,0 +1,237 @@
+#!/usr/bin/perl -w
+use Gtk '-init';
+
+use giFT::daemon;
+
+my $appname="TregFlip";
+my $appver='0.0.1';
+
+my $windows=1;
+my @realms=('Text','User','Hash');
+my $current_realm='Text';
+
+my $giftname;
+my $giftver;
+
+my %client_id=(ATTACH=>\&attach_handler,STATS=>\&stats_handler);
+my %server_id;
+
+my $users=0;
+
+my $mainwin=main_window();
+my $daemon=new giFT::daemon(undef,undef,1);
+
+$daemon->put({attach=>{client=>$appname,version=>$appver}});
+
+my $input_id=Gtk::Gdk->input_add($daemon->get_socket->fileno, ['read'], \&daemon_read);
+
+Gtk->timeout_add(3000,sub{$daemon->put({stats=>undef})});
+    
+Gtk->main;
+
+sub main_window {
+    my %w;
+    $w{'window'}=my $window=new Gtk::Window;
+    $window->signal_connect("destroy", \&closewin);
+    $window->set_title($appname);
+    $window->set_policy(0,0,0);
+
+    $w{'querybox'}=my $querybox=new Gtk::Entry;
+    $querybox->signal_connect('activate',\&do_search);
+    
+    my $menu=new Gtk::Menu;
+    for (0..$#realms) {
+	my $item=new Gtk::MenuItem $realms[$_];
+	my $a=$_;
+	$item->signal_connect('activate',sub {$current_realm=$realms[$a]});
+	$menu->add($item);
+    }
+    my $realmmenu=new Gtk::OptionMenu;
+    $realmmenu->set_menu($menu);
+    
+    my $button = new Gtk::Button("Search");
+    $button->signal_connect("clicked", \&do_search);
+    my $hbox=new Gtk::HBox(0,0);
+    $hbox->add($_) for ($realmmenu,$button);
+    
+    $w{'verlabel'}=my $verlabel=new Gtk::Label "$appname $appver - not connected";
+
+    my $vbox2=new Gtk::VBox(0,0);
+    my $vbox3=new Gtk::VBox(0,0);
+
+    for ('Users','Files','Bytes') {
+	$vbox2->add(new Gtk::Label $_);
+	$w{+lc}=my $temp=new Gtk::Entry;
+	$temp->set_editable(0);
+	$vbox3->add($temp);
+    }
+
+    my $hbox2=new Gtk::HBox(0,0);
+    $hbox2->add($_) for ($vbox2,$vbox3);
+
+    my $vbox = new Gtk::VBox(0,0);
+    $window->add($vbox);
+    $vbox->add($_) for ($querybox,$hbox,$verlabel,$hbox2);
+
+    $querybox->grab_focus;
+    
+    $window->show_all;
+
+    \%w;
+}
+
+sub daemon_read {
+    while (my $m=$daemon->get) {
+	my ($type,undef)=each %$m;
+	my $func;
+	if (exists $client_id{$type} && ref($client_id{$type}) eq 'CODE') {
+	    $func=\$client_id{$type};
+	} else {
+	    my $id=$m->{$type}{''};
+	    if (!defined $id) {
+		warn "No id for $type";
+		use giFT::interface;
+		print STDERR giFT::interface::serialize $m;
+		return;
+	    }
+	    $func=\$client_id{$type}{$id};
+	}
+
+	if (defined $$func) {
+	    if (!&$$func($m)) {
+		# return 0 for finished
+		undef $$func;
+	    }
+	} else {
+#	    warn "No handler for $type client id $id";
+#	    use giFT::interface;
+#	    print STDERR giFT::interface::serialize $m;
+	}
+    }
+}
+
+sub attach_handler {
+    my $m=shift->{ATTACH};
+    $giftname=$m->{server};
+    $giftver=$m->{version};
+    $mainwin->{verlabel}->set_text("$appname $appver => $giftname $giftver");
+}
+
+sub stats_pumper {
+
+}
+
+sub stats_handler {
+    my $m=shift->{STATS};
+    my ($files,$size,$users);
+    $mainwin->{files}->set_text($m->{OpenFT}{files});
+    $mainwin->{bytes}->set_text(format_size($m->{OpenFT}{size}*(1<<30)));
+    $mainwin->{users}->set_text($users=$m->{OpenFT}{users});
+    1;
+}
+
+sub do_search {
+    my $win=new Gtk::Window;
+    $win->signal_connect("destroy", \&closewin);
+    $windows++;
+
+    my $query=$mainwin->{querybox}->get_text;
+    my $realm=$current_realm;
+    $win->set_title("$query (in progress) [$realm] - $appname");
+    $win->set_default_size(600, 300);
+    my @fields=('Filename','Size','User');
+    my $list=Gtk::CList->new_with_titles(@fields);
+    {
+	my $i;
+	$list->set_column_width($i++,$_) for (350,100,150);
+    }
+    $list->set_auto_sort(1);
+    $list->set_selection_mode('extended'); # or 'multiple'
+
+    $list->signal_connect('click-column',sub {
+	my ($list,$col)=@_;
+	if ($list->sort_column!=$col) {
+	    $list->set_sort_type('ascending');
+	} else {
+	    $list->set_sort_type(($list->sort_type eq 'ascending')?'descending':'ascending');
+	}
+
+	my @funcs=(sub {$_[1] cmp $_[2]}, sub {$_[1]<=>$_[2]}, sub {$_[1] cmp $_[2]});
+	$list->set_compare_func($funcs[$col]);
+	
+	$list->set_sort_column($col);
+	$list->sort;
+
+	print "col=$col\n";
+    });
+
+    my $temp=new Gtk::ScrolledWindow;
+    $temp->set_policy('never','always');
+    $temp->add($list);
+    $win->add($temp);
+    $win->show_all;
+
+    my $results=0;
+    my %results=();
+
+    my $num=1+keys %{$client_id{'ITEM'}};
+
+    $client_id{'ITEM'}{$num}=
+	sub {
+#	   print time."\n";
+	    my $update=0;
+#	   while (my $m=$d->get) {
+	    $m=shift;
+	    my $file=$m->{ITEM}{file};
+	    if ($file) {
+		$list->freeze if !$update;
+		$update=1;
+		if (!exists $results{$m->{ITEM}{hash}}) {
+		    $list->append($file,$m->{ITEM}{size},$m->{ITEM}{user});
+		    $results++;
+		}
+		push @{$results{$m->{ITEM}{hash}}},$m;
+	    } else {
+		$win->set_title("$query ($results results) [$realm] - $appname");		
+		return 0;
+	    }
+	    #}
+	    if ($update) {
+		$win->set_title("$query ($results so far) [$realm] - $appname");
+		$list->thaw;
+	    }
+	    1;
+	};
+
+my $method;
+for ($realm) {
+	/Text/ and $method='search';
+	/Hash/ and $method='locate';
+	/User/ and $method='browse';
+    }
+    $daemon->put({$method=>{query=>$query,''=>$num}});
+
+
+
+#    $list->append('foo','bar','baz');
+    
+}
+
+sub format_size {
+    my $size=shift;
+    my $units=0;
+    while ($size>9999) {
+	$size/=1024;
+	$units++;
+    }
+    $units=('','k','M','G','T')[$units];
+    my $f=substr(sprintf("%.3f",$size),0,5);
+    $f=~s/\.$//;
+    $f.$units;
+}
+
+sub closewin {
+    return if --$windows;
+    Gtk->main_quit;
+}
+

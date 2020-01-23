@@ -1,0 +1,119 @@
+# $Id: Make.msvc,v 1.20 2006/02/26 14:19:29 mkern Exp $
+
+
+VERSION = 0.3.0
+#HEAVY_DEBUG = 1
+
+ASLIB_ROOT   = $(ARES_ROOT)\lib
+TEST_ROOT    = $(ARES_ROOT)\test
+CRAWLER_ROOT = $(ARES_ROOT)\crawler
+DELPHI_ROOT  = $(ARES_ROOT)\delphi
+BIN_ROOT     = $(ARES_ROOT)\bin
+ARESDLL_ROOT = $(ARES_ROOT)\aresdll
+PLUGIN_ROOT  = $(ARES_ROOT)\gift
+ZLIB_ROOT    = $(BUILD_ROOT)\zlib
+
+O = .obj
+
+##########################
+# release / debug
+##########################
+
+!if defined(release) || defined(RELEASE)
+
+D=
+_D=
+DEBUG_OR_RELEASE=Release
+DEXT=
+
+CFLAGS  = $(CFLAGS)  -Ox -G6
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+#DEFS    = $(DEFS)    -DNDEBUG -UDEBUG -U_DEBUG
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+
+!else # !defined(release) && !defined(RELEASE)
+
+# must be lower case:
+D=d
+_D=_d
+DEBUG_OR_RELEASE=Debug
+DEXT=d
+
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+!endif # defined(release) || defined(RELEASE)
+
+!if defined(HEAVY_DEBUG)
+DEFS = $(DEFS) -DHEAVY_DEBUG
+!endif
+
+
+##########################
+# zlib support
+##########################
+
+!if !exists($(ZLIB_ROOT))
+!error Directory $(ZLIB_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib.lib
+
+##########################
+# general
+##########################
+
+ASLIB_LIB     = aslib$(DEXT).lib
+ASLIBGIFT_LIB = aslibgift$(DEXT).lib
+TEST_EXE      = astest$(DEXT).exe
+CRAWLER_EXE   = ascrawl$(DEXT).exe
+DELPHI_LIB    = asdelphi$(DEXT).lib
+ARES_DLL      = aresdll$(DET).dll
+ARES_DLL_LIB  = aresdll$(DET).lib   # import lib
+
+# temporary till we don't require giFT symbols anymore
+GIFT_LIB      		= giFT$(DEXT).lib
+GIFT_DLL      		= giFT$(DEXT).dll
+GIFT_EXE   			= giFT$(DEXT).exe
+
+LIBGIFT_LIB      	= libgiFT$(DEXT).lib
+LIBGIFT_DLL      	= libgiFT$(DEXT).dll
+LIBGIFTPROTO_LIB	= libgiFTproto$(DEXT).lib
+LIBGIFTPROTO_DLL	= libgiFTproto$(DEXT).dll
+PLUGIN_LIB      	= Ares$(DEXT).lib
+PLUGIN_DLL          = Ares$(DEXT).dll
+
+# threaded clib
+#CFLAGS   = $(CFLAGS) -MT$(D)
+CFLAGS   = $(CFLAGS) -MD$(D)
+CFLAGS   = $(CFLAGS) -nologo
+
+#DEFS     = $(DEFS) -DHAVE_CONFIG_H
+DEFS     = $(DEFS) -DWIN32 -DNO_STRICT -DVERSION=\"$(VERSION)\"
+INCLUDES = -I$(ASLIB_ROOT) $(INCLUDES)
+INCLUDES = -I$(BUILD_ROOT) -I$(BUILD_ROOT)\libgift\win32 $(INCLUDES)
+
+
+#LDFLAGS  = $(LDFLAGS)  /NODEFAULTLIB:"msvcrtd"
+#LDFLAGS  = $(LDFLAGS) /NODEFAULTLIB:"LIBC"
+LDFLAGS  = $(LDFLAGS) -nologo -version:$(VERSION) 
+LDFLAGS  = $(LDFLAGS) -libpath:"$(ASLIB_ROOT)"
+LDFLAGS  = $(LDFLAGS) -libpath:"$(BUILD_ROOT)\libgift" -libpath:"$(BUILD_ROOT)\libgift\proto"
+
+LIBS     = $(LIBS) binmode.obj oldnames.lib advapi32.lib user32.lib wsock32.lib
+
+
+##########################
+# build tools
+##########################
+
+
+CC = cl
+LD = link
+LT = lib
+

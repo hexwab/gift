@@ -1,0 +1,27 @@
+ $Id: README.win32,v 1.2 2005/12/18 16:45:38 mkern Exp $
+
+gift-ares plugin for gift
+-------------------------
+
+To build the gift-ares plugin for giFT please read 
+http://gift.sourceforge.net/docs/0.11.x/install-win32.html and extrapolate
+a bit.
+
+
+Stand alone Ares library
+------------------------
+
+In order to build the stand alone ares library and windows DLL you will first
+need zlib. Get it from http://prdownloads.sourceforge.net/libpng/zlib123.zip
+and extract it into the directory \zlib at the same level as the directory
+containing this repository. Copy the file win32\zlib.msvc to \zlib and run
+nmake /f zlib.msvc there.
+
+Proceed by building the ares library, the test application and the windows DLL
+by running 
+
+nmake /f Makefile.msvc aslib
+nmake /f Makefile.msvc test
+nmake /f Makefile.msvc aresdll
+
+in the root of this repository.

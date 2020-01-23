@@ -1,0 +1,157 @@
+.\" $Id: giFTcurs.1,v 1.17 2003/07/01 05:01:01 weinholt Exp $
+.TH GIFTCURS 1 "25 Juni 2003"
+.SH NAME
+giFTcurs \- cursed frontend to giFT
+.SH SYNOPSIS
+.B giFTcurs
+.RI [ options ]
+.SH DESCRIPTION
+\fBgiFTcurs\fP is a curses frontend to the giFT daemon.
+giFT is a hub used to connect to many distributed filesharing networks.
+Right now there are three plugins, OpenFT, Gnutella, and FastTrack.
+New plugins are on the way.
+.SH OPTIONS
+This program follows the usual GNU command line syntax, with long options
+starting with two dashes (`\-\-'). A summary of options is included below.
+.TP
+.B \-a, \-\-stickchars
+Use 7-bit chars for line drawing.
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-V, \-\-version
+Show version of program.
+.TP
+.B \-v, \-\-verbose
+Print lots of debugging information to standard error.
+.TP
+.B \-s, \-\-server=host:port
+Connect to another host than the default, localhost:1213.
+.TP
+.B \-p, \-\-profile=name
+Connect with another profile than your username. This currently has no
+effect on giFT.
+.TP
+.B \-d, \-\-nomouse
+Do not read mouse clicks.
+.SH USAGE
+When you start giFTcurs you'll see the main screen.
+The statistics in the upper right corner are the accumulated statistics
+reported by giFT.
+.PP
+To start a search, type a query into the query field.
+giFT takes each word in your query and matches it against tokenized filenames.
+So a search for \fIgiFTcurs.*tar.gz\fP is parsed as \fIgiFTcurs tar gz\fP.
+To exclude a word from a search, prepend the word with \fI\-\fP.
+This means that a search for \fIgiFTcurs \-tar\fP, would match filenames
+which contain the word \fIgiFTcurs\fP but not the word \fItar\fP.
+To start a search press the Enter key or use tab to move to the
+\fIStart search\fP button.
+You will now hopefully see some files in the \fISearch Results\fP
+box, use tab to get there.
+You may later use tab to get back.
+.PP
+The first number in the search results list shows how many users with that
+file currently have available upload slots.
+This is followed by filesize and filename.
+Depending on the type of the file, other meta data may be shown.
+E.g., if it is an audio file, you should see bitrate and duration.
+.PP
+Use up/down, page up/down and home/end to navigate in the list.
+To change the sorting order press left or right.
+Press Enter or D when you've highlighted a file you want to download.
+.PP
+To monitor transfers press F3, or click on the \fITransfers\fP
+button.
+Use tab to change between the two lists.
+The green stuff that appears on transfers is the progress bar,
+not a bug.
+.PP
+If you're not happy with how giFTcurs looks, press F5.
+You will see three lists and some buttons.
+The first list contains a list of color items that can be changed by
+going to the other two lists.
+You can use left and right, as well as tab, to change the active field.
+Press \fISave theme\fP when you're done.
+The \fIShow shares\fP or \fIHide shares\fP button is used to make
+giFT show your shares, or hide your shares so that new uploads can't be
+started.
+Please only hide your shares if you need bandwidth and please show them
+again when you're done.
+The \fISync shares\fP button instructs giFT to reread its configuration
+and search the share root for changes.
+.SH FILES
+.I ~/.giFT/ui/ui.conf
+.IP
+This file is written by giFT\-setup and specifies the default host and
+port giFT clients will connect to.
+These values can be overridden by the \-s command line option.
+.PP
+.I ~/.giFT/ui/giFTcurs.conf
+.IP
+This file contains, among other things, the color theme for giFTcurs.
+See
+.BR giFTcurs.conf (5)
+for more information.
+.SH NOTES
+If your terminal leaves garbage at some places when running giFTcurs,
+your TERM environment variable isn't correctly set. This could also be the
+case when some keys aren't working. To fix this set the TERM environment
+variable to match your terminal. Look in /usr/share/terminfo for an
+entry that your terminal likes. Some examples are Eterm\-color, gnome,
+mach, xterm, xterm\-xf86\-v40 and linux.
+.PP
+If the Fx\-keys just won't work, try M\-x or ESC\ x instead,
+or simply click in the button bar.
+.PP
+If giFTcurs is compiled with mouse support, you can control most of it
+using the mouse. If your terminal supports it, you can even use the
+scroll wheel.
+If you're using the mouse support and you want to cut and paste, hold
+shift while doing it.
+.SH "ENVIRONMENT VARIABLES"
+.TP
+.SM DISPLAY
+When set, giFTcurs will change the X title and icon of the current window.
+If your terminal emulator doesn't support it, you will hear a beep instead.
+.TP
+.SM HOME
+is used to find where the configuration file is.
+.TP
+.SM LOGNAME
+This will be the default value to use as profile when the connection
+to the daemon is made.
+.TP
+.SM PAGER
+This program will be used to show eventual messages from the daemon
+when program exits.
+.TP
+.SM TERM
+The curses library depends on this being set to reflect your
+terminal type.
+.TP
+.SM USER
+If LOGNAME is not set, USER will be used instead.
+.SH BUGS
+The distributed file TODO has notes on what remains to be implemented.
+.PP
+If you want to report a problem with giFTcurs, please report it to our
+bug tracker at Savannah: <http://savannah.nongnu.org/p/giftcurs>.
+.PP
+Provide a \fIdetailed\fP description of the bug, the version of the
+program you were running (giFTcurs \-V displays this information), the
+operating system your are running the program on and if the program
+crashes, we would appreciate a stack trace.
+We would also like to see the debugging output from the program, which
+can be seen by passing the `\-v' flag and redirecting stderr.
+.SH AUTHORS
+G\[:o]ran Weinholt <weinholt@dtek.chalmers.se>,
+Christian H\[:a]ggstr\[:o]m <chm@c00.info>.
+.PP
+Many thanks to the people in #giFT for suggestions and bug reports. Thanks
+also to the giFT developers for making giFT. Indeed do many things come
+to pass.
+.SH SEE ALSO
+.BR giFT (1),
+.BR giFTcurs.conf (5).

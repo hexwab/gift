@@ -1,0 +1,10 @@
+[transfer]
+uniq = 4707000B1B23000F8301.banks_iain-against_a_dark_background.txt
+filename = banks_iain-against_a_dark_background.txt
+hash = SHA1:6OA7HLJUUEQPDLOI6NGC656DYY7ALHOB
+transmit = 0
+total = 1016577
+max_seek = 0
+paused = 0
+chunks = 0-1016577 
+

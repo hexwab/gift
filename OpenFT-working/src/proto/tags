@@ -1,0 +1,43 @@
+FT_HANDLER	ft_query.c	/^FT_HANDLER (ft_search_request)$/
+active_search	ft_query.c	/^static int active_search (sparams_t *params)$/
+auth_child	ft_sharing.c	/^static BOOL auth_child (FTNode *node)$/
+auth_search_handle	ft_query.c	/^static BOOL auth_search_handle (FTNode *node)$/
+auth_search_request	ft_query.c	/^static BOOL auth_search_request (FTNode *node)$/
+auth_search_response	ft_query.c	/^static BOOL auth_search_response (FTNode *node)$/
+clamp_params	ft_query.c	/^static BOOL clamp_params (sparams_t *params)$/
+clear_search	ft_query.c	/^static int clear_search (ds_data_t *key, ds_data_t/
+clear_searches	ft_query.c	/^static int clear_searches (void *udata)$/
+create_result	ft_query.c	/^static BOOL create_result (TCPC *c, FTPacket *pack/
+destroy_result	ft_query.c	/^static void destroy_result (Share *share, ft_nodei/
+drop_parent_full	ft_sharing.c	/^static BOOL drop_parent_full (FTNode *node)$/
+empty_result	ft_query.c	/^static void empty_result (TCPC *c, ft_guid_t *guid/
+exec_search	ft_query.c	/^static int exec_search (TCPC *c, sparams_t *params/
+fill_params	ft_query.c	/^static int fill_params (sparams_t *params, FTNode /
+forward_search	ft_query.c	/^static int forward_search (TCPC *c, sparams_t *par/
+forward_search_peer	ft_query.c	/^static int forward_search_peer (FTNode *node, spar/
+generate_msg	ft_handshake.c	/^static char *generate_msg (Dataset *upgset)$/
+get_parent_info	ft_query.c	/^static ft_nodeinfo_t *get_parent_info (FTNode *nod/
+get_search_request_type	ft_query.c	/^ft_search_flags_t get_search_request_type (ft_sear/
+get_search_type	ft_query.c	/^static ft_search_flags_t get_search_type (sparams_/
+handle_forward_result	ft_query.c	/^static void handle_forward_result (TCPC *c, FTPack/
+handle_forward_sentinel	ft_query.c	/^static void handle_forward_sentinel (TCPC *c, FTPa/
+handle_search_result	ft_query.c	/^static void handle_search_result (TCPC *c, FTPacke/
+handle_search_sentinel	ft_query.c	/^static void handle_search_sentinel (TCPC *c, FTPac/
+is_child	ft_sharing.c	/^static BOOL is_child (TCPC *c)$/
+nodelist_add	ft_handshake.c	/^static int nodelist_add (FTNode *node, Array **arg/
+nodelist_default	ft_handshake.c	/^static int nodelist_default (Array **args)$/
+nodelist_request	ft_handshake.c	/^static int nodelist_request (TCPC *c, FTPacket **l/
+nuke_source	ft_push.c	/^static BOOL nuke_source (FTNode *parent, in_addr_t/
+pending_packets	ft_handshake.c	/^static void pending_packets (in_addr_t ip, in_port/
+push_forward_error	ft_push.c	/^static void push_forward_error (FTNode *node, in_a/
+push_forward_success	ft_push.c	/^static void push_forward_success (FTNode *node, in/
+result_add_meta	ft_query.c	/^static void result_add_meta (ds_data_t *key, ds_da/
+search_result	ft_query.c	/^static BOOL search_result (Share *file, sreply_t */
+search_result_logic	ft_query.c	/^static BOOL search_result_logic (Share *file, srep/
+send_browse	ft_query.c	/^static int send_browse (ds_data_t *key, ds_data_t /
+sreply_finish	ft_query.c	/^static void sreply_finish (sreply_t *reply)$/
+sreply_init	ft_query.c	/^static void sreply_init (sreply_t *reply, TCPC *c,/
+sreply_result	ft_query.c	/^static BOOL sreply_result (sreply_t *reply, ft_nod/
+sreply_send	ft_query.c	/^static int sreply_send (sreply_t *reply, FTPacket /
+submit_digest_index	ft_sharing.c	/^static BOOL submit_digest_index (FTNode *node, FTN/
+version_outdated	ft_handshake.c	/^static void version_outdated (TCPC *c)$/

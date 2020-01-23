@@ -1,0 +1,277 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.96
+diff -u -r1.96 ft_search_db.c
+--- ft_search_db.c	23 Nov 2003 20:14:35 -0000	1.96
++++ ft_search_db.c	26 Nov 2003 18:33:25 -0000
+@@ -80,6 +80,9 @@
+  */
+ #define SEARCH_DB_DIRHASH
+ 
++#define REMOVE_INTERVAL    100 * MSEC /* how often to remove stuff */
++#define REMOVE_COUNT       30 /* number of records to remove at a time */
++
+ /*****************************************************************************/
+ 
+ /*
+@@ -94,6 +97,9 @@
+ static DB     *db_token_idx    = NULL;
+ static DB     *db_share_data   = NULL;
+ 
++static Array  *remove_queue    = NULL;
++static BOOL    removing        = FALSE;
++
+ /*****************************************************************************/
+ 
+ struct md5idx_key
+@@ -681,6 +687,9 @@
+ 		return FALSE;
+ 	}
+ 
++	if (!(remove_queue = array_new (NULL)))
++		return FALSE;
++
+ 	return TRUE;
+ }
+ 
+@@ -1005,7 +1014,7 @@
+ 	if ((success = db_insert_sharedata (sdb, hash, tokens, share)))
+ 	{
+ 		success = db_insert_shareidx (sdb, hash, tokens);
+-		assert (success == TRUE);
++		/* assert (success == TRUE); */
+ 
+ 		/*
+ 		 * TODO: Handle db_insert_tokenidx failure (the flow control is going
+@@ -1265,13 +1274,6 @@
+ 
+ 	sdb->remove_curs = dbcp;
+ 
+-	/*
+-	 * Nullify the node pointer as we do not want to appear attached to any
+-	 * particular node anymore.  This logic is used to prevent stale lookups
+-	 * elsewhere in the code.
+-	 */
+-	sdb->node = NULL;
+-
+ 	return TRUE;
+ }
+ 
+@@ -1300,7 +1302,7 @@
+ 	search_db_free (sdb);
+ }
+ 
+-static int db_remove_host_next (FTSearchDB *sdb)
++static BOOL db_remove_host_next (FTSearchDB *sdb)
+ {
+ 	static struct shareidx_key  *keyrec;
+ #if 0
+@@ -1314,6 +1316,8 @@
+ 	DBT  data;
+ 	int  ret;
+ 
++	int  i;
++
+ 	assert (sdb->share_idx != NULL);
+ 	assert (sdb->remove_curs != NULL);
+ 
+@@ -1326,48 +1330,54 @@
+ 	memset (&key, 0, sizeof (key));
+ 	memset (&data, 0, sizeof (data));
+ 
+-	/*
+-	 * Access the record data from db_shareidx that we will need to use for
+-	 * removing from the main data and indices.
+-	 */
+-	if ((ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT)))
++	for (i=0 ; i<REMOVE_COUNT; i++)
+ 	{
+-		assert (ret == DB_NOTFOUND);
+-		return ret;
+-	}
+-
+-	assert (key.size == sizeof (*keyrec));
+-	keyrec = key.data;
++		/*
++		 * Access the record data from db_shareidx that we will need to
++		 * use for removing from the main data and indices.
++		 */
++		if ((ret = dbcp->c_get (dbcp, &key, &data, DB_NEXT)))
++		{
++			assert (ret == DB_NOTFOUND);
++			return FALSE;
++		}
+ 
+-	assert (data.size >= sizeof (*datarec));
+-	datarec = data.data;
++		assert (key.size == sizeof (*keyrec));
++		keyrec = key.data;
++		
++		assert (data.size >= sizeof (*datarec));
++		datarec = data.data;
+ 
+-	/*
+-	 * Begin removing from the 3 other databases.
+-	 *
+-	 * TODO: Track, report, and handle errors during removal from the other
+-	 * databases.  Any thoughts on what an appropriate action would be in the
+-	 * face of errors here?
+-	 *
+-	 * TODO: Divide db_remove and call that here?
+-	 */
+-	db_remove_md5idx    (sdb, keyrec->md5);
+-	db_remove_tokenidx  (sdb, datarec, keyrec->md5);
+-	db_remove_sharedata (sdb, keyrec->md5);
++		/*
++		 * Begin removing from the 3 other databases.
++		 *
++		 * TODO: Track, report, and handle errors during removal
++		 *  from the other databases.  Any thoughts on what an
++		 *  appropriate action would be in the face of errors here?
++		 *
++		 * TODO: Divide db_remove and call that here?
++		 */
++		db_remove_md5idx    (sdb, keyrec->md5);
++		db_remove_tokenidx  (sdb, datarec, keyrec->md5);
++		db_remove_sharedata (sdb, keyrec->md5);
+ 
+-	/* db_remove_shareidx */
+-	if ((ret = dbcp->c_del (dbcp, 0)))
+-	{
+-		ERR_DB_SDB("DBcursors->c_del", ret, sdb);
+-		db_abort (sdb);
++#if 0
++		/* db_remove_shareidx */
++		if ((ret = dbcp->c_del (dbcp, 0)))
++		{
++			ERR_DB_SDB("DBcursors->c_del", ret, sdb);
++			db_abort (sdb);
++		}
++#endif
+ 	}
+-
+-	return ret;
++	
++	return TRUE;
+ }
+ 
+ static BOOL db_remove_host_timer (FTSearchDB *sdb)
+ {
+ 	int ret;
++	FTSearchDB *next;
+ 
+ 	/*
+ 	 * Remove one entry, walking along a cursor initialized at the beginning
+@@ -1375,11 +1385,23 @@
+ 	 * database operation which failed while attempting to remove, or 0 on
+ 	 * successful remove.
+ 	 */
+-	if ((ret = db_remove_host_next (sdb)) != 0)
++	if ((ret = db_remove_host_next (sdb)) == FALSE)
+ 	{
+-		assert (ret == DB_NOTFOUND);
+ 		db_remove_host_finish (sdb);
+ 
++		/* process the queue */
++		if ((next = array_shift (&remove_queue)))
++		{
++			db_remove_host_init (next);
++			timer_add (REMOVE_INTERVAL, (TimerCallback)db_remove_host_timer, next);
++			FT->DBGFN (FT, "remove_queue: %d items remaining", array_count (&remove_queue));
++		}
++		else
++		{
++			FT->DBGFN (FT, "remove_queue empty");
++			removing = FALSE;
++		}		
++
+ 		/* nuke the timer */
+ 		return FALSE;
+ 	}
+@@ -1555,6 +1577,7 @@
+ 	 * shouldn't get here unless something went wrong.
+ 	 */
+ 	assert (sdb->node != NULL);
++	assert (sdb->node->session != NULL);
+ 
+ 	/*
+ 	 * Retrieve the actual share record containing enough data to
+@@ -1753,6 +1776,9 @@
+ 	assert (data->size == sizeof (*datarec));
+ 	datarec = data->data;
+ 
++	if (!datarec->sdb->node)
++		assert (removing);
++
+ 	/* if node is NULL, stale is TRUE */
+ 	return BOOL_EXPR (datarec->sdb->node == NULL);
+ }
+@@ -1780,7 +1806,7 @@
+ 	     s->flags = DB_NEXT_DUP)
+ 	{
+ 		/* ignore nodes currently being removed */
+-		if (is_stale_db (&data) == TRUE)
++		if (is_stale_db (&data))
+ 			continue;
+ 
+ 		assert (data.size == sizeof (*datarec));
+@@ -1919,7 +1945,7 @@
+ 	{
+ 		/* quick check to make sure this item does't belong to a node
+ 		 * currently being removed */
+-		if (is_stale_db (&data) == TRUE)
++		if (is_stale_db (&data))
+ 			continue;
+ 
+ 		lost = FALSE;
+@@ -2189,7 +2215,17 @@
+ 	sdb = node->session->search_db;    /* FT_SEARCH_DB(node) */
+ 	node->session->search_db = NULL;
+ 
+-	if (sdb)
++	if (!sdb)
++		return TRUE;
++
++	/*
++	 * Nullify the node pointer as we do not want to appear attached to any
++	 * particular node anymore.  This logic is used to prevent stale lookups
++	 * elsewhere in the code.
++	 */
++	sdb->node = NULL;
++
++	if (!removing)
+ 	{
+ # ifndef SEARCH_DB_BENCHMARK
+ 		FT->DBGFN (FT, "%s: scheduled removal", ft_node_fmt (node));
+@@ -2207,10 +2243,17 @@
+ # ifdef SEARCH_DB_BENCHMARK
+ 		while (db_remove_host_timer (sdb) == TRUE);
+ # else
++		removing = TRUE;
++
+ 		/* initiate the timer to handle resource scheduling for us */
+-		timer_add (100 * MSEC, (TimerCallback)db_remove_host_timer, sdb);
++		timer_add (REMOVE_INTERVAL, (TimerCallback)db_remove_host_timer, sdb);
+ # endif /* SEARCH_DB_BENCHMARK */
+ 	}
++	else
++	{
++		assert (array_push (&remove_queue, sdb));
++		FT->DBGFN (FT, "%s: removal queued (%d)", ft_node_fmt (node), array_count (&remove_queue));
++	}
+ #endif /* USE_LIBDB */
+ 
+ 	return ret;
+@@ -2247,7 +2290,11 @@
+ 
+ 	/* open the only database that is likely to be closed */
+ 	if (!(db_shareidx (FT_SEARCH_DB(node), TRUE)))
++#if 0
+ 		db_abort (FT_SEARCH_DB(node));
++#else
++		return FALSE;
++#endif
+ #endif /* USE_LIBDB */
+ 
+ 	return TRUE;

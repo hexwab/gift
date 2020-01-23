@@ -1,0 +1,50 @@
+Index: ft_packet.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_packet.c,v
+retrieving revision 1.47
+diff -u -r1.47 ft_packet.c
+--- ft_packet.c	24 Apr 2004 07:03:11 -0000	1.47
++++ ft_packet.c	19 Jul 2004 22:18:52 -0000
+@@ -261,13 +261,13 @@
+ 	return packet->len;
+ }
+ 
+-size_t ft_packet_remaining (FTPacket *packet)
++int ft_packet_remaining (FTPacket *packet)
+ {
+ 	if (!packet)
+ 		return 0;
+ 
+ 	assert (packet->len >= packet->offset);
+-	return (packet->len - packet->offset);
++	return (packet->len - packet->offset - packet->overrun);
+ }
+ 
+ size_t ft_packet_overrun (FTPacket *packet)
+@@ -404,7 +404,9 @@
+ 
+ 	if (packet->offset + size > packet->len)
+ 	{
+-		packet->overrun += size;
++		packet->overrun = packet->offset + size - packet->len;
++		packet->offset = packet->len;
++
+ 		return TRUE;
+ 	}
+ 
+Index: ft_packet.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_packet.h,v
+retrieving revision 1.21
+diff -u -r1.21 ft_packet.h
+--- ft_packet.h	24 Apr 2004 07:03:11 -0000	1.21
++++ ft_packet.h	19 Jul 2004 22:18:52 -0000
+@@ -129,7 +129,7 @@
+  * Get the number of bytes remaining on the packet stream according to the
+  * current read offset and total packet length.
+  */
+-size_t ft_packet_remaining (FTPacket *packet);
++int ft_packet_remaining (FTPacket *packet);
+ 
+ /**
+  * Access the number of bytes that were requested but could not be satisfied

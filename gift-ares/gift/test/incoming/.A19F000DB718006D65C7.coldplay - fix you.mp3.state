@@ -1,0 +1,11 @@
+[transfer]
+uniq = A19F000DB718006D65C7.coldplay - fix you.mp3
+filename = coldplay - fix you.mp3
+hash = SHA1:6MR3YVXONKEMJUPOKMN3ZDOKDPJ47FE3
+path = ./incoming/A19F000DB718006D65C7.coldplay - fix you.mp3
+transmit = 3584739
+total = 7169479
+max_seek = 7169479
+paused = 0
+chunks = 5377110-6273295 896185-1792370 4480925-5377110 2688555-3584740 
+

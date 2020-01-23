@@ -1,0 +1,130 @@
+meta_image.o: meta_image.c ../lib/gift.h ../config.h \
+ /usr/include/stdio.h /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/gnu/stubs.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h \
+ /usr/include/bits/types.h /usr/include/bits/pthreadtypes.h \
+ /usr/include/bits/sched.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/bits/wchar.h /usr/include/gconv.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/stdlib.h /usr/include/sys/types.h /usr/include/time.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/sigset.h /usr/include/bits/time.h \
+ /usr/include/sys/sysmacros.h /usr/include/alloca.h \
+ /usr/include/string.h /usr/include/assert.h /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/confname.h \
+ /usr/include/getopt.h /usr/include/sys/time.h ../giftconfig.h \
+ ../lib/platform.h /usr/include/sys/stat.h /usr/include/bits/stat.h \
+ ../lib/parse.h ../lib/dataset.h ../lib/list.h ../lib/list_queue.h \
+ ../lib/list_lock.h ../lib/tree.h ../lib/connection.h \
+ ../lib/protocol.h ../lib/if_event.h ../lib/interface.h ../lib/conf.h \
+ ../lib/log.h /usr/include/syslog.h /usr/include/sys/syslog.h \
+ share_file.h share_hash.h meta.h meta_image.h \
+ /usr/include/magick/api.h /usr/include/inttypes.h \
+ /usr/include/stdint.h /usr/include/bits/wordsize.h \
+ /usr/include/magick/magick_config.h /usr/include/magick/semaphore.h \
+ /usr/include/magick/error.h /usr/include/magick/timer.h \
+ /usr/include/magick/image.h /usr/include/magick/list.h \
+ /usr/include/magick/render.h /usr/include/magick/draw.h \
+ /usr/include/magick/gem.h /usr/include/magick/quantize.h \
+ /usr/include/magick/compress.h /usr/include/magick/attribute.h \
+ /usr/include/magick/command.h /usr/include/magick/utility.h \
+ /usr/include/magick/blob.h /usr/include/magick/cache.h \
+ /usr/include/magick/cache_view.h /usr/include/magick/registry.h \
+ /usr/include/magick/magick.h /usr/include/magick/magic.h \
+ /usr/include/magick/delegate.h /usr/include/magick/module.h \
+ /usr/include/magick/monitor.h /usr/include/magick/resource.h \
+ /usr/include/magick/log.h /usr/include/magick/version.h \
+ /usr/include/magick/deprecate.h
+meta_image.c :
+../lib/gift.h :
+../config.h :
+/usr/include/stdio.h :
+/usr/include/features.h :
+/usr/include/sys/cdefs.h :
+/usr/include/gnu/stubs.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h :
+/usr/include/bits/types.h :
+/usr/include/bits/pthreadtypes.h :
+/usr/include/bits/sched.h :
+/usr/include/libio.h :
+/usr/include/_G_config.h :
+/usr/include/wchar.h :
+/usr/include/bits/wchar.h :
+/usr/include/gconv.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h :
+/usr/include/bits/stdio_lim.h :
+/usr/include/bits/sys_errlist.h :
+/usr/include/stdlib.h :
+/usr/include/sys/types.h :
+/usr/include/time.h :
+/usr/include/endian.h :
+/usr/include/bits/endian.h :
+/usr/include/sys/select.h :
+/usr/include/bits/select.h :
+/usr/include/bits/sigset.h :
+/usr/include/bits/time.h :
+/usr/include/sys/sysmacros.h :
+/usr/include/alloca.h :
+/usr/include/string.h :
+/usr/include/assert.h :
+/usr/include/unistd.h :
+/usr/include/bits/posix_opt.h :
+/usr/include/bits/confname.h :
+/usr/include/getopt.h :
+/usr/include/sys/time.h :
+../giftconfig.h :
+../lib/platform.h :
+/usr/include/sys/stat.h :
+/usr/include/bits/stat.h :
+../lib/parse.h :
+../lib/dataset.h :
+../lib/list.h :
+../lib/list_queue.h :
+../lib/list_lock.h :
+../lib/tree.h :
+../lib/connection.h :
+../lib/protocol.h :
+../lib/if_event.h :
+../lib/interface.h :
+../lib/conf.h :
+../lib/log.h :
+/usr/include/syslog.h :
+/usr/include/sys/syslog.h :
+share_file.h :
+share_hash.h :
+meta.h :
+meta_image.h :
+/usr/include/magick/api.h :
+/usr/include/inttypes.h :
+/usr/include/stdint.h :
+/usr/include/bits/wordsize.h :
+/usr/include/magick/magick_config.h :
+/usr/include/magick/semaphore.h :
+/usr/include/magick/error.h :
+/usr/include/magick/timer.h :
+/usr/include/magick/image.h :
+/usr/include/magick/list.h :
+/usr/include/magick/render.h :
+/usr/include/magick/draw.h :
+/usr/include/magick/gem.h :
+/usr/include/magick/quantize.h :
+/usr/include/magick/compress.h :
+/usr/include/magick/attribute.h :
+/usr/include/magick/command.h :
+/usr/include/magick/utility.h :
+/usr/include/magick/blob.h :
+/usr/include/magick/cache.h :
+/usr/include/magick/cache_view.h :
+/usr/include/magick/registry.h :
+/usr/include/magick/magick.h :
+/usr/include/magick/magic.h :
+/usr/include/magick/delegate.h :
+/usr/include/magick/module.h :
+/usr/include/magick/monitor.h :
+/usr/include/magick/resource.h :
+/usr/include/magick/log.h :
+/usr/include/magick/version.h :
+/usr/include/magick/deprecate.h :

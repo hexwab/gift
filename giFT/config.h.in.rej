@@ -1,0 +1,17 @@
+***************
+*** 159,164 ****
+  
+  #undef USE_LIBMAGIC
+  
+  #undef USE_LIBVORBIS
+  
+  #undef USE_LTDL
+--- 159,166 ----
+  
+  #undef USE_LIBMAGIC
+  
++ #undef USE_LIBOGG
++ 
+  #undef USE_LIBVORBIS
+  
+  #undef USE_LTDL

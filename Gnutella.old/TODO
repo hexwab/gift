@@ -1,0 +1,77 @@
+
+short term
+----------
+
+  - make an abstract GtQueryRouterTable type. Make it reference counted
+    and have nodes store a copy of the last one submitted, to allow for
+    easy incremental updates
+
+  - compact query-routing tables to bit-level, or use a better data
+    structure that can represent sparse regions effectively
+
+  - timeout searches properly, avoiding race conditions between search
+    submission and node disconnect/connect by keeping track of the
+    connect time of the last node we submitted a search node to, as well
+    as the total number of nodes submitted to, and only time out if the
+    last submitted connection has been alive for some time
+
+  - make searches use less time by using a smarter data structure
+    (perhaps a trie...gtk-gnutella does something with two-character
+    substrings)
+
+  - guesstimate stats based on default ttl and number of cycles detected
+    on immediate peers
+
+  - restructure node containing structures into an array, that hopefully
+    won't need any kind of locking
+
+  - cleanup old nodes
+
+  - implement pong-caching
+
+  - implement a message router table
+
+  - use bits=4 and bits=1 query routing tables over the network
+
+  - make sure query-routing keywords are being generated correctly
+
+  - use less hacky means of determining whether we have already
+    submitted a reset route table message to the ultrapeer. Currently,
+    we check if the update timer exists
+
+  - maintain firewalled status on a per-port basis
+
+  - possibly only send query-routing table to one ultrapeer, send empty
+    table to others?
+
+  - have a separate "node timer" for doing grunge work for each node
+    instead of one big timer in gt_netorg.c. Use the timer in
+    gt_netorg.c for non-particular node related things, such as
+    connecting to each node.
+
+  - be less aggressive when connecting, but allow connections more time
+    to connect. Cap the number of sockets being used for outgoing
+    connections at any one time, say 20. A good way to do this would be
+    to have a global queue for the outgoing connections made in
+    gt_netorg.c (but _not_ for other outgoing connections, because those
+    may be needed for other reasons).
+
+  - ban ips based on abuse.
+    
+  - limit outgoing connects for pushes in some way?
+
+  - reconnect when push-upload is lost
+
+  - notify users when they use an old version
+
+
+long term
+---------
+
+  - represent a low-level connection with a GtConnection. This would
+    encapsulates bandwidth limits, and could be reused for things like
+    push proxy connections
+
+  - a more extensible HTTP implementation. See http_request.c and
+    src/httpd.c for hints about how it should work. Should use callbacks
+    for most functionality, support redirect, retry-after, etc.

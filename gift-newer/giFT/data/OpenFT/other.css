@@ -1,0 +1,103 @@
+body {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal
+}
+i {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal;
+font-style: italic
+}
+b {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: bold
+}
+td {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal
+}
+input {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal;
+border: 1px outset #000000;
+background: #CCCCFF
+}
+textarea {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal;
+border: 1px outset #000000;
+background: #CCCCFF
+}
+select {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal;
+border: 1px outset #000000;
+background: #CCCCFF
+}
+#meny_text {
+font-family: Verdana;
+font-size: 11px;
+color: #C0C0C0;
+font-weight: bold
+}
+#text {
+font-family: Verdana;
+font-size: 11px;
+color: #000000;
+font-weight: normal
+}
+#text_gra {
+font-family: Verdana;
+font-size: 11px;
+color: #909090;
+font-weight: normal
+}
+#menyrubrik {
+font-family: Verdana;
+font-size: 11px;
+color: #6666CC;
+font-weight: bold
+}
+#rubrik {
+font-family: Verdana;
+font-size: 11px;
+color: #6666CC;
+font-weight: bold
+}
+#varningstext {
+font-family: Verdana;
+font-size: 11px;
+color: #FF0000;
+font-weight: bold
+}
+a:link {
+font-family: Verdana;
+color: #505050;
+text-decoration: none;
+font-weight: bold
+}
+a:visited {
+font-family: Verdana;
+color: #505050;
+text-decoration: none;
+font-weight: bold
+}
+a:hover {
+font-family: Verdana;
+color: #E79B1D;
+text-decoration: none;
+font-weight: bold
+}

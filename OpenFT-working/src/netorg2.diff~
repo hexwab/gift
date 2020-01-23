@@ -1,0 +1,95 @@
+Index: ft_netorg.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.c,v
+retrieving revision 1.34
+diff -u -r1.34 ft_netorg.c
+--- ft_netorg.c	2 Nov 2003 12:09:05 -0000	1.34
++++ ft_netorg.c	1 May 2004 22:55:18 -0000
+@@ -446,6 +446,66 @@
+ 
+ /*****************************************************************************/
+ 
++static void randomize_conn_iptr (ft_state_t state)
++{
++	struct conn_list *clist = NULL;
++	int new_pos;
++
++	if (!(clist = get_conn_list (state)))
++		return;
++
++	if (clist->list == NULL || clist->count == 0)
++		return;
++
++	/* set clist->iptr to random point in list */
++	new_pos = rand() % clist->count;
++	clist->iptr = list_nth (clist->list->list, new_pos);
++
++	/* just in case anything went wrong */
++	if (clist->iptr == NULL)
++		clist->iptr = (clist->list ? clist->list->list : NULL);
++}
++
++int ft_netorg_random (ft_class_t klass, ft_state_t state, int iter,
++                      FTNetorgForeach func, void *udata)
++{
++	int looped = 0;
++
++	if (!func)
++		return 0;
++
++	if (state)
++	{
++		randomize_conn_iptr (state);
++		looped = foreach_list (klass, state, iter, func, udata);
++	}
++	else
++	{
++		/* state = 0x00 indicates that all states should be processed,
++		 * therefore requiring multiple calls to foreach_list that are
++		 * capable of persisting iteration data */
++		randomize_conn_iptr (FT_NODE_CONNECTED);
++		randomize_conn_iptr (FT_NODE_CONNECTING);
++		randomize_conn_iptr (FT_NODE_DISCONNECTED);
++
++		iter_state (klass, FT_NODE_CONNECTED, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_CONNECTING, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_DISCONNECTED, iter, &looped, func, udata);
++	}
++
++	if (iter)
++		assert (looped <= iter);
++
++	return looped;
++}
++
++/*****************************************************************************/
++
++static int count_nodes (FTNode *node, void *udata)
++{
++	return TRUE;
++}
++
+ int ft_netorg_length (ft_class_t klass, ft_state_t state)
+ {
+ 	int klass_idx, state_idx;
+@@ -456,6 +516,11 @@
+ 	assert (state_idx >= 0);
+ 	assert (state_idx <= STATE_MAX);
+ 
++	int count = ft_netorg_foreach (klass, state, 0,
++	                   FT_NETORG_FOREACH(count_nodes), NULL);
++
++	return count;
++	
+ 	/*
+ 	 * Because of the way we squash FT_NODE_USER, we have to match
+ 	 * FT_NODE_CLASSANY (0x0) as a special case and setup the index so that
+@@ -486,6 +551,8 @@
+ 		len += nodes_len[state_idx][klass_test];
+ 	}
+ 
++	assert (len == count);
++
+ 	return len;
+ }
+ 

@@ -1,0 +1,73 @@
+ttl=3 for locate queries
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	4 Jan 2004 04:31:01 -0000
+@@ -44,7 +44,8 @@
+ #define FT_CFG_SEARCH_MINPEERS    ft_cfg_get_int("search/minpeers=8")
+ #define FT_CFG_SEARCH_MAXPEERS    ft_cfg_get_int("search/peers=12")
+ #define FT_CFG_SEARCH_TTL         ft_cfg_get_int("search/default_ttl=2")
++#define FT_CFG_LOCATE_TTL         ft_cfg_get_int("search/locate_ttl=3")
+ #define FT_CFG_SEARCH_RESULTS     ft_cfg_get_int("search/max_results=800")
+ #define FT_CFG_SEARCH_RESULTS_REQ ft_cfg_get_int("search/max_results_req=800")
+-#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=2")
++#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=3")
+ #define FT_CFG_MAX_RESULTS        FT_CFG_SEARCH_RESULTS
+Index: ft_search.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search.c,v
+retrieving revision 1.56
+diff -u -r1.56 ft_search.c
+--- ft_search.c	23 Dec 2003 04:22:35 -0000	1.56
++++ ft_search.c	4 Jan 2004 04:31:02 -0000
+@@ -286,6 +286,7 @@
+ {
+ 	FTPacket *pkt;
+ 	int       type;
++	int       ttl;
+ 
+ 	assert (search != NULL);
+ 	assert (search->event != NULL);
+@@ -297,10 +298,19 @@
+ 	type = search->params.type;
+ 
+ #ifdef FT_SEARCH_PARANOID
+-	if (FT_SEARCH_TYPE(type) == FT_SEARCH_FILENAME)
++	if (FT_SEARCH_METHOD(type) == FT_SEARCH_FILENAME)
+ 		type |= FT_SEARCH_HIDDEN;
+ #endif /* FT_SEARCH_PARANOID */
+ 
++	switch (FT_SEARCH_METHOD(type))
++	{
++	case FT_SEARCH_MD5:
++		ttl = FT_CFG_LOCATE_TTL;
++		break;
++	default:
++		ttl = FT_CFG_SEARCH_TTL;
++	}
++
+ 	if (!(pkt = ft_packet_new (FT_SEARCH_REQUEST, 0)))
+ 		return FALSE;
+ 
+@@ -328,7 +338,7 @@
+ 	/* add the TTL of this search, that is, the number of nodes that will
+ 	 * forward this search along to their peers until the search is stopped
+ 	 * in the network */
+-	ft_packet_put_uint16 (pkt, FT_CFG_SEARCH_TTL, TRUE);
++	ft_packet_put_uint16 (pkt, ttl, TRUE);
+ 
+ 	/* write the maximum number of results we want to get back, so that this
+ 	 * search may more efficiently complete when the result set is large */
+@@ -415,8 +425,7 @@
+ 		                        FT_NETORG_FOREACH(send_search), search);
+ 	}
+ 
+-	FT->DBGFN (FT, "%s: searched %i nodes (ttl=%i)",
+-	           ft_guid_fmt (search->guid), n, FT_CFG_SEARCH_TTL);
++	FT->DBGFN (FT, "%s: searched %i nodes", ft_guid_fmt (search->guid), n);
+ 
+ 	/* we are using this logic to determine how many parents are being waited
+ 	 * on, so that the code can clean itself up immediately if no nodes were

@@ -1,0 +1,21 @@
+graph G {
+    node [label=user, fontname="Helvetica"]
+    aa [label=search]
+    bb [label=search]
+    cc [label=index]
+    a -- aa
+    b -- aa
+    c -- aa
+    d -- aa
+    a -- bb
+    c -- bb
+    e -- bb
+    f -- bb
+    bb -- aa
+    aa -- cc
+    bb -- cc
+    a -- c
+    d -- b
+    g -- cc
+    h -- cc
+}

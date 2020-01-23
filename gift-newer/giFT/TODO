@@ -1,0 +1,51 @@
+TODO for giFT:
+
+* update documentation
+* change settings through client (with <opt/> elements?)
+	* shared trees
+	* download directory
+	* max uploads queue
+	* max downloads queue
+* make <event_name id="NN"/> cancel transfers as if action="cancel" is implied
+* search and respond by metadata or file characteristics other than filename
+  (see hex's http://wab.chronosempire.org.uk/HEx/giFT/).
+* improve mime support using mime.magic
+  (see rossta's http://2ebb.com:18080/gift/gift_magic_all.tar.gz).
+
+Win32 specific
+
+* Convert gift.exe to a native win32 app. I would suggest we add a 
+  win32/winmain.c containing a WinMain function which calls the src/main.c's
+  main() function.
+* Add code to enable gift to be a tray icon. Right clicking the tray icon would
+  yield the following menu:
+  Enable      Enable shares
+  Disable     Disable shares
+  Setup...    Display setup dialog box
+  View Log... View debug log
+  About...    Display Copyright & GPL license
+  Exit        Shutdown gift
+* Add error.c to move error reporting functions (GIFT_ERROR(), etc.) to
+  common place, so we can redirect program output to our choosing. (rossta)
+* Check in mjvh's giftsetup to gift's cvs repository (jasta said to wait)
+  <jasta> I want that stuff added only after giFT's internals are fully 
+  capable of reading the registry keys it provides.
+* Modify giftsetup to use "wizard" interface (back/next/finish).
+* Modify giftsetup to read existing configuration files and update if 
+  necessary.  Currently it only supports writing initial files.
+* Modify giftsetup to notify a running giFT of configuration changes via <opt>.
+  <jasta> this should probably be dealt with internally by giFT...it should 
+  emit an <opt conf=/> to all attached connections when it resynches a conf
+  file
+* Add code (in win32/) to run giFT as a NT/2000/XP service.
+
+TODO for OpenFT:
+
+* improvements to the HTTP support (become HTTP/1.1 compliant)
+* automatic node promotion
+* add a search option to filter results matching the hash of files you are
+  sharing...maybe this should be a giFT-fe feature?
+
+TODO for giFT-fe:
+
+* preferences

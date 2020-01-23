@@ -1,0 +1,22 @@
+AM_CFLAGS = $(GIFT_CFLAGS)
+
+INCLUDES = -I../src
+
+lib_LTLIBRARIES = libOpenFT.la
+
+libdir = $(plugindir)
+
+libOpenFT_la_LDFLAGS = -module -avoid-version
+
+libOpenFT_la_SOURCES = \
+	openft.c   openft.h \
+	node.c     node.h \
+	packet.c   packet.h \
+	protocol.c protocol.h \
+	utils.c    utils.h \
+	daemon.c   daemon.h \
+	share.c    share.h \
+	http.c     http.h \
+	search.c   search.h \
+	html.c     html.h \
+	netorg.c   netorg.h

@@ -1,0 +1,96 @@
+<%perl>
+###############################################################################
+##
+## $Id: about.mhtml,v 1.4 2004/09/18 09:24:30 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'About giFT'
+</%attr>
+
+<h2>What is giFT?</h2>
+
+<p>
+	giFT is a collection of various
+	<a href="/software/">software components</a>
+	geared towards improving the overall usability of a multitude of
+	peer-to-peer file-sharing networks.  This goal is accomplished by
+	unifying the components such that a user of the software may choose
+	any of the <a href="/software/guis.mhtml">available interfaces</a> to
+	access any of
+	the <a href="software/plugins.mhtml">available networks</a>.  The
+	central application,
+	<a href="software/core.mhtml"><span class="comp">giftd</span></a>,
+	uses a plugin-based architecture capable of using multiple networks
+	simultaneously through a single user interface.
+</p>
+
+<p>
+	The giFT project represents the group of software developers
+	responsible for the creation of the core giFT components and the
+	overall system's design.
+	Several <a href="/software/">third party</a> projects have sprouted
+	up to expand the system as a whole, providing a wider selection of
+	<a href="software/guis.mhtml">user interfaces</a> and
+	<a href="software/plugins.mhtml">network plugins</a>.
+</p>
+
+<h2>Target Platforms</h2>
+
+<p>
+	giFT was developed on GNU/Linux using the C programming language with
+	portability in mind.  Unfortunately, most user interfaces were
+	designed only to work on specific platforms, usually due to
+	limitations in the various GUI frameworks that are available.  While
+	<span class="comp">giftd</span> itself should work on just about any
+	conceivable platform, the following are known to provide robust
+	environments for the system as a whole:
+</p>
+
+<ul title="Supported Operating Systems">
+	<li>Microsoft Windows-based operating systems</li>
+	<li>Mac OS X</li>
+	<li>GNU/Linux</li>
+	<li>BSD-based platforms</li>
+	<li>AmigaOS</li>
+</ul>
+
+<p>
+	Refer to the <a href="/software/">software section</a> of the page
+	for specifics on the software available for each platform.
+</p>
+
+<h2>Features</h2>
+
+<p>
+	giFT supports just about every major feature you'd expect to see in
+	any reasonably sophisticated file-sharing client, however we feel it
+	necessary to brag about specifics anyway:
+</p>
+
+<ul id="features" title="Supported features">
+	<li>
+		"Swarmed" downloads (the ability to download a single file from
+		multiple peers simultaneously)
+	</li>
+	<li>Access to multiple networks</li>
+	<li>Centralized and scriptable interface</li>
+	<li>Bandwidth throttling (rate limiting, upload queues, etc)</li>
+	<li>Truly pluggable architecture</li>
+	<li><a href="/download.mhtml">Freely distributed source code</a></li>
+	<li>Extremely portable</li>
+</ul>

@@ -1,0 +1,4546 @@
+/*
+ * $Id: enc_type_2.c,v 1.9 2003/06/29 07:31:17 beren12 Exp $
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*
+ * This file was relayed to me and is originally from Raimar Falke.
+ * I cleaned it up a bit to save bandwidth.
+ * Used for encryption version 0x02
+ * Then it was cleaned up a whole lot more...
+ */
+
+typedef unsigned char	u8;
+typedef unsigned int	u32;
+
+static u32 mix_major0 (u32 *state, u32 extra_state);
+
+/* this all works on unsigned ints so endianess is not an issue */
+
+void enc_type_2 (unsigned int *key, unsigned int seed)
+{
+	mix_major0 (key, seed);
+}
+
+static u32	mix_major0 (u32 *state, u32 extra_state);
+static u32	mix_major1 (u32 *state, u32 extra_state);
+static u32	mix_major2 (u32 *state, u32 extra_state);
+static u32	mix_major3 (u32 *state, u32 extra_state);
+static u32	mix_major4 (u32 *state, u32 extra_state);
+static u32	mix_major5 (u32 *state, u32 extra_state);
+static u32	mix_major6 (u32 *state, u32 extra_state);
+static u32	mix_major7 (u32 *state, u32 extra_state);
+static u32	mix_major8 (u32 *state, u32 extra_state);
+static u32	mix_major9 (u32 *state, u32 extra_state);
+static u32	mix_major10 (u32 *state, u32 extra_state);
+static u32	mix_major11 (u32 *state, u32 extra_state);
+static u32	mix_major12 (u32 *state, u32 extra_state);
+static u32	mix_major13 (u32 *state, u32 extra_state);
+static u32	mix_major14 (u32 *state, u32 extra_state);
+static u32	mix_major15 (u32 *state, u32 extra_state);
+static u32	mix_major16 (u32 *state, u32 extra_state);
+static u32	mix_major17 (u32 *state, u32 extra_state);
+static u32	mix_major18 (u32 *state, u32 extra_state);
+static u32	mix_major19 (u32 *state, u32 extra_state);
+static u32	mix_major20 (u32 *state, u32 extra_state);
+static u32	mix_major21 (u32 *state, u32 extra_state);
+static u32	mix_major22 (u32 *state, u32 extra_state);
+static u32	mix_major23 (u32 *state, u32 extra_state);
+static u32	mix_major24 (u32 *state, u32 extra_state);
+
+static void	mix_minor0 (u32 *state, u32 extra_state);
+static void	mix_minor1 (u32 *state, u32 extra_state);
+static void	mix_minor2 (u32 *state, u32 extra_state);
+static void	mix_minor3 (u32 *state, u32 extra_state);
+static void	mix_minor4 (u32 *state, u32 extra_state);
+static void	mix_minor5 (u32 *state, u32 extra_state);
+static void	mix_minor6 (u32 *state, u32 extra_state);
+static void	mix_minor7 (u32 *state, u32 extra_state);
+static void	mix_minor8 (u32 *state, u32 extra_state);
+static void	mix_minor9 (u32 *state, u32 extra_state);
+static void	mix_minor10 (u32 *state, u32 extra_state);
+static void	mix_minor11 (u32 *state, u32 extra_state);
+static void	mix_minor12 (u32 *state, u32 extra_state);
+static void	mix_minor13 (u32 *state, u32 extra_state);
+static void	mix_minor14 (u32 *state, u32 extra_state);
+static void	mix_minor15 (u32 *state, u32 extra_state);
+static void	mix_minor16 (u32 *state, u32 extra_state);
+static void	mix_minor17 (u32 *state, u32 extra_state);
+static void	mix_minor18 (u32 *state, u32 extra_state);
+static void	mix_minor19 (u32 *state, u32 extra_state);
+
+static void	mix_minor20 (u32 *state);
+static void	mix_minor21 (u32 *state);
+static void	mix_minor22 (u32 *state);
+static void	mix_minor23 (u32 *state);
+static void	mix_minor24 (u32 *state);
+static void	mix_minor25 (u32 *state);
+static void	mix_minor26 (u32 *state);
+static void	mix_minor27 (u32 *state);
+static void	mix_minor28 (u32 *state);
+static void	mix_minor29 (u32 *state);
+static void	mix_minor30 (u32 *state);
+static void	mix_minor31 (u32 *state);
+static void	mix_minor32 (u32 *state);
+static void	mix_minor33 (u32 *state);
+static void	mix_minor34 (u32 *state);
+static void	mix_minor35 (u32 *state);
+static void	mix_minor36 (u32 *state);
+static void	mix_minor37 (u32 *state);
+static void	mix_minor38 (u32 *state);
+static void	mix_minor39 (u32 *state);
+static void	mix_minor40 (u32 *state);
+static void	mix_minor41 (u32 *state);
+static void	mix_minor42 (u32 *state);
+static void	mix_minor43 (u32 *state);
+static void	mix_minor44 (u32 *state);
+static void	mix_minor45 (u32 *state);
+static void	mix_minor46 (u32 *state);
+static void	mix_minor47 (u32 *state);
+static void	mix_minor48 (u32 *state);
+static void	mix_minor49 (u32 *state);
+static void	mix_minor50 (u32 *state);
+static void	mix_minor51 (u32 *state);
+static void	mix_minor52 (u32 *state);
+static void	mix_minor53 (u32 *state);
+static void	mix_minor54 (u32 *state);
+static void	mix_minor55 (u32 *state);
+static void	mix_minor56 (u32 *state);
+static void	mix_minor57 (u32 *state);
+static void	mix_minor58 (u32 *state);
+static void	mix_minor59 (u32 *state);
+static void	mix_minor60 (u32 *state);
+static void	mix_minor61 (u32 *state);
+static void	mix_minor62 (u32 *state);
+static void	mix_minor63 (u32 *state);
+static void	mix_minor64 (u32 *state);
+static void	mix_minor65 (u32 *state);
+static void	mix_minor66 (u32 *state);
+static void	mix_minor67 (u32 *state);
+static void	mix_minor68 (u32 *state);
+static void	mix_minor69 (u32 *state);
+
+static u32 ROR (u32 value, u32 count)
+{
+	count &= 0x1f;
+	return (value >> count) | (value << (32 - count));
+}
+
+static u32 ROL (u32 value, u32 count)
+{
+	count &= 0x1f;
+	return (value << count) | (value >> (32 - count));
+}
+
+u32 mix_major0 (u32 *state, u32 extra_state)
+{
+	u32 a, b;
+
+	a = (extra_state ^ state[15] ^ state[19]) % 11;
+	state[6] *= state[8] * 0x1bb4a70d;
+	state[12] += state[14] + 0xe087bd96;
+	b = extra_state & (state[13] | 0x39367989);
+
+	if (a == 7) {
+		mix_minor30 (state);
+		mix_minor41 (state);
+		mix_minor45 (state);
+		mix_major3 (state, state[19]);
+	}
+
+	state[14] -= ROR (b, 31);
+	state[8] ^= b & 0x8e30c76;
+	state[3] *= state[12] ^ 0xd05f635;
+	state[10] += state[10] + 0xa92dc43a;
+
+	if (a == 0) {
+		mix_minor1 (state, 0x91fc47a9);
+		mix_minor46 (state);
+		mix_minor14 (state, 0x2c669b26);
+		mix_major14 (state, state[5]);
+	}
+
+	b += state[17] + 0xff92b824;
+	state[1] += state[3] ^ 0x62c448c0;
+	state[8] ^= state[3] ^ 0x43c25efd;
+	state[9] ^= ROL (state[9], 16);
+
+	if (a == 5) {
+		mix_minor53 (state);
+		mix_minor14 (state, 0x58da27f4);
+		mix_minor54 (state);
+		mix_major9 (state, state[5]);
+	}
+
+	state[3] -= state[2] - 0xef553b21;
+	state[18] += 0x3b26991e + state[13];
+
+	if (a == 4) {
+		mix_minor39 (state);
+		mix_minor42 (state);
+		mix_minor35 (state);
+		mix_major10 (state, state[7]);
+	}
+
+	state[12] += state[11] & 0x4be050d;
+	state[17] ^= ROR (b, 8);
+	state[8] = ROR (state[8], state[16] + 0xf7);
+	state[12] *= state[8] + 0xf3910fa;
+
+	if (a == 2) {
+		mix_minor58 (state);
+		mix_minor59 (state);
+		mix_minor38 (state);
+		mix_major2 (state, b);
+	}
+
+	state[8] += b + 0x4088eb5f;
+	state[5] &= state[7] ^ 0x1387a250;
+	state[2] |= state[1] ^ 0x47f3a78b;
+	state[17] |= state[10] * 0x1d208465;
+
+	if (a == 1) {
+		mix_minor39 (state);
+		mix_minor49 (state);
+		mix_minor50 (state);
+		mix_major7 (state, state[9]);
+	}
+
+	state[1] -= b & 0x4be5deac;
+	state[4] += state[15] & 0x3496b61a;
+
+	if (a == 10) {
+		mix_minor55 (state);
+		mix_minor61 (state);
+		mix_minor3 (state, 0xcaceada2);
+		mix_major21 (state, state[8]);
+	}
+
+	b = ROR (b, b * 0xffffffb0);
+	state[13] &= state[12] + 0x6b465da;
+
+	if (a == 3) {
+		mix_minor27 (state);
+		mix_minor3 (state, 0xc1903471);
+		mix_minor1 (state, 0x7846089f);
+		mix_major13 (state, state[11]);
+	}
+
+	state[16] |= state[14] + 0xff7068bf;
+	state[7] &= state[19] ^ 0x1e569f2b;
+	state[12] += state[15] * 0x49f90b6a;
+
+	if (a == 6) {
+		mix_minor5 (state, 0xd5456f37);
+		mix_minor26 (state);
+		mix_minor59 (state);
+		mix_major24 (state, state[7]);
+	}
+
+	state[6] -= state[18] * 0xb0223a7;
+	state[19] -= state[4] * 0x4f4bc59;
+	state[17] += state[3] + 0x19da7ccb - (b & 0x3a423827);
+
+	if (a == 9) {
+		mix_minor67 (state);
+		mix_minor29 (state);
+		mix_minor14 (state, 0x245e6d52);
+		mix_major23 (state, b);
+	}
+
+	b += state[11] + 0xea268d79;
+	b ^= state[11] + 0x7b41453;
+
+	if (a == 8) {
+		mix_minor10 (state, 0xfe003ce6);
+		mix_minor34 (state);
+		mix_minor30 (state);
+		mix_major1 (state, b);
+	}
+
+	state[0] ^= state[2] ^ 0x361eddb9;
+	state[0] += 0xc3201c46 + b;
+	state[4] = ROR (state[4], state[4] + 0xf9);
+	state[8] *= state[16] + 0xf6c0ea7;
+	state[11] = ROR (state[11], state[18] * 0x11e13f53);
+	state[2] |= state[4] | 0x5747f7c;	
+	b ^= state[3] * 0x336a3c4f;
+	state[9] ^= (state[8] + 0x5ff3732) ^ (b + 0x2b702a62);
+	state[1] *= state[1] + 0xfa4e2f52;
+
+	return b;
+}
+
+u32 mix_major1 (u32 *state, u32 extra_state)
+{
+	u32 eax;
+	u32 ebx;
+	u32 ecx;
+	u32 edx;
+	u32 esi;
+
+	u32 local_u32_4_0;
+	u32 local_u32_4_2;
+
+	eax = state[12] ^ state[9];
+	edx = state[6];
+	eax = eax ^ edx;
+	local_u32_4_2 = eax;
+	esi = local_u32_4_2 % 0xb; 
+	eax = (extra_state) + 0x2183b643;
+	edx = state[3];
+	state[5] += ((edx) & 0x24398ab);
+	eax = 0x24631391 +  edx + eax ;
+	edx = state[18];
+	eax = eax - edx;
+	local_u32_4_0 = eax;
+
+	if (esi == 2)
+	{
+		mix_minor26 (state);
+		mix_minor58 (state);
+		mix_minor67 (state);
+		mix_major5 (state, state[19]);
+	}
+	eax = state[14] + 0xc0fd80ba;
+	local_u32_4_0 = local_u32_4_0 ^ eax;
+	state[12] -= state[1] * 0xe99b672;
+	state[15] ^= state[0] + 0xca70bf60;
+
+	if (esi == 1)
+	{
+		mix_minor6 (state, 0x13db4bec);
+		mix_minor44 (state);
+		mix_minor26 (state);
+		mix_major3 (state, state[11]);
+	}
+	eax = (local_u32_4_0) ^ 0x17339c6;
+	local_u32_4_0 = local_u32_4_0 + eax;
+	state[15] += state[7] * 0x15f0a011;
+	state[4] &= 0x1b597286 + state[17];
+	state[17] *= state[15] & 0x389e630b;
+
+	if (esi == 3)
+	{
+		mix_minor44 (state);
+		mix_minor25 (state);
+		mix_minor63 (state);
+		mix_major14 (state, state[3]);
+	}
+	state[18] ^= 0x31a138ce ^ state[19];
+	state[16] &= local_u32_4_0 * 0x271fe1f1;
+	state[7] = ROR (state[7], (state[16] ^ 0x29));
+
+	if (esi == 5)
+	{
+		mix_minor12 (state, 0x8cf196c0);
+		mix_minor13 (state, 0x08271071);
+		mix_minor64 (state);
+		mix_major9 (state, local_u32_4_0);
+	}
+	state[2] *= ROR (state[6], 0x1f);
+	edx = (local_u32_4_0) + 0xfee822a8;
+	ecx = state[14];
+	edx = edx - ecx;
+	eax = (edx * 0x9dfbe4) * state[5];
+	edx = 0xfd2ead2f +  state[13] + eax ;
+	local_u32_4_0 = edx;
+
+	if (esi == 9)
+	{
+		mix_minor60 (state);
+		mix_minor42 (state);
+		mix_minor18 (state, 0x28394e8a);
+		mix_major10 (state, state[18]);
+	}
+	state[7] += 0x2b29baf9 + state[17];
+	state[2] = ROR (state[2], ROL (state[0], 0x19));
+
+	if (esi == 6)
+	{
+		mix_minor46 (state);
+		mix_minor2 (state, 0xca477dca);
+		mix_minor41 (state);
+		mix_major2 (state, state[4]);
+	}
+
+	eax = state[5] * 0x282f40d5;
+	local_u32_4_0 = local_u32_4_0 - eax;
+	state[12] &= state[16] + 0x2223fa4b;
+	eax = ROR (state[18], 0x10);
+	local_u32_4_0 = local_u32_4_0 & eax;
+
+	if (esi == 8)
+	{
+		mix_minor46 (state);
+		mix_minor7 (state, 0xcf7247dd);
+		mix_minor4 (state, 0x48b70310);
+		mix_major7 (state, local_u32_4_0);
+	}
+	state[17] += 0xf9ac8515 + state[7];
+	state[7] += state[10] + 0xf9b69577;
+
+	if (esi == 4)
+	{
+		mix_minor8 (state, 0x375ebf07);
+		mix_minor54 (state);
+		mix_minor12 (state, 0x4c285c11);
+		mix_major21 (state, state[13]);
+	}
+	state[7] += state[13] ^ 0x6d56f7f;
+	state[8] += 0x8c8d3d9c - local_u32_4_0;
+
+	if (esi == 7)
+	{
+		mix_minor24 (state);
+		mix_minor33 (state);
+		mix_minor42 (state);
+		mix_major13 (state, state[4]);
+	}
+	state[5] += 0x4d2bd380 - state[12];
+	state[1] += 0xfcee8aad - local_u32_4_0;
+	eax = state[18];
+	state[18] *= 0x696c0 * state[1];
+	state[8] *= (state[4] + 0xdc2745dc);
+
+	if (esi == 10)
+	{
+		mix_minor58 (state);
+		mix_minor25 (state);
+		mix_minor36 (state);
+		mix_major24 (state, state[2]);
+	}
+	edx = state[7] + 0xd9de0ed7;
+	ecx = state[18];
+	edx = edx ^ ecx;
+	local_u32_4_2 = edx;
+	state[18] = edx;
+	state[11] = ROR (state[11], (state[6] + 0x71));
+	state[19] += 0xb295dc + local_u32_4_2;
+
+	if (esi == 0)
+	{
+		mix_minor41 (state);
+		mix_minor30 (state);
+		mix_minor64 (state);
+		mix_major23 (state, local_u32_4_0);
+	}
+	ebx = (local_u32_4_0) | 0x58eafd;
+	eax = state[15] - ebx;
+	state[15] = eax;
+	state[5] = ROR (state[5], (state[12] * 0xffffffc6));
+	esi = state[2] + 0xf42fd441 + state[19];
+	state[2] = esi;
+        state[12] *= ((esi) | 0x10d913b8);
+	ebx = state[11];
+	edx = 0x2039d1f9 + ebx;
+	ecx = state[1];
+	edx = edx ^ ecx;
+	local_u32_4_2 = edx;
+	state[1] = edx;
+	state[15] += ROR (esi, 0x3);
+	state[11] = 0x55f96491 +  (local_u32_4_2) + ebx ;
+	state[4] *= state[15] & 0x864fe18;
+	eax = local_u32_4_0;
+	edx = state[10];
+	eax = 0x2ff6c3cc +  edx + eax ;
+	local_u32_4_0 = eax;
+	state[18] *= (state[18] + 0xf5eb4571);
+	return eax;
+}
+
+
+u32 mix_major2 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_5_0;
+	u32	local_u32_5_1;
+	u32	local_u32_5_3;
+
+	edi = extra_state;
+	edx = state[9] % 0x0B;
+	local_u32_5_0 = edx;
+	state[0] = (state[0] | 0x4d9f89df) | edi;
+	ebx = edi & 0x10691818;
+	edi = edi - ebx;
+	state[15] &= ROR (state[15], 0x12);
+
+	if (local_u32_5_0 == 2)
+	{
+		mix_minor63 (state);
+		mix_minor62 (state);
+		mix_minor43 (state);
+		mix_major12 (state, state[9]);
+	}
+	ecx = state[7] ^ 0x1f11181f;
+	edi = edi | ecx;
+	state[17] = ROR (state[17], (state[18] + 0x18));
+	state[3] &= state[18] + 0xc18379a4;
+	state[8] += 0x8845990 + state[2];
+
+	if (local_u32_5_0 == 8)
+	{
+		mix_minor4 (state, 0x25323763);
+		mix_minor64 (state);
+		mix_minor69 (state);
+		mix_major18 (state, edi);
+	}
+	eax = ROL (state[7], 0x1e);
+	edi = edi * eax;
+	state[14] = ROR (state[14], (edi ^ 0x61));
+	state[3] -= state[3] ^ 0x1a11c1c;
+
+	if (local_u32_5_0 == 3)
+	{
+		mix_minor48 (state);
+		mix_minor16 (state, 0x9b43e646);
+		mix_minor61 (state);
+		mix_major6 (state, edi);
+	}
+	state[5] += 0xbdf50793 + edi;
+	eax = state[6] ^ 0x341c6ce5;
+	edi = edi - eax;
+	eax = state[14] | 0x11712ba;
+	edi = edi ^ eax;
+	state[4] += 0x1df0f08c - edi;
+
+	if (local_u32_5_0 == 4)
+	{
+		mix_minor44 (state);
+		mix_minor41 (state);
+		mix_minor64 (state);
+		mix_major4 (state, state[2]);
+	}
+	eax = state[15] + 0xd8a810b1;
+	edi = edi * eax;
+	state[0] += 0x8e4e3c5 - state[7];
+	state[9] -= edi ^ 0x13f1a8da;
+
+	if (local_u32_5_0 == 7)
+	{
+		mix_minor20 (state);
+		mix_minor47 (state);
+		mix_minor57 (state);
+		mix_major11 (state, state[12]);
+	}
+	state[14] ^= (0xf2dd8a98 + edi);
+	state[14] |= state[3] & 0xb51383c;
+
+	if (local_u32_5_0 == 1)
+	{
+		mix_minor36 (state);
+		mix_minor27 (state);
+		mix_minor47 (state);
+		mix_major22 (state, state[9]);
+	}
+	state[0] += 0x16bda446 - state[2];
+        state[2] -= state[0] ^ 0x3576dfb9;
+
+	if (local_u32_5_0 == 9)
+	{
+		mix_minor26 (state);
+		mix_minor32 (state);
+		mix_minor49 (state);
+		mix_major5 (state, state[9]);
+	}
+	state[5] -= state[6] | 0x1720cf3;
+	state[16] ^= 0x2dfed60 ^ state[19];
+	eax = state[12] + 0xffcf5d22;
+	edi = edi * eax;
+	eax = state[11] ^ 0x26b4296;
+	edi = edi + eax;
+
+	if (local_u32_5_0 == 6)
+	{
+		mix_minor55 (state);
+		mix_minor2 (state, 0xd70512e7);
+		mix_minor4 (state, 0x46d51d34);
+		mix_major3 (state, edi);
+	}
+	ebx = ROL (edi, 0xb);
+	eax = ROR (edi, ebx);
+	edi = eax;
+	eax = ROL (state[17], 0x19);
+	edi = edi - eax;
+	state[4] += state[3] ^ 0x125c14db;
+
+	if (local_u32_5_0 == 0)
+	{
+		mix_minor18 (state, 0x33e6ff92);
+		mix_minor19 (state, 0x4e055014);
+		mix_minor41 (state);
+		mix_major14 (state, state[9]);
+	}
+	state[9] |= ROR (state[15], 0x1f);
+	edi = edi + 0xfde54451 - state[19];
+	state[9] = ROR (state[9], (state[11] | 0x3));
+	state[18] ^= 0x22da8ee3 ^ edi;
+
+	if (local_u32_5_0 == 10)
+	{
+		mix_minor46 (state);
+		mix_minor28 (state);
+		mix_minor69 (state);
+		mix_major9 (state, state[2]);
+	}
+	state[2] = ROR (state[2], (state[9] + 0x8f));
+	state[5] = ROR (state[5], (state[18] & 0x53));
+	state[5] -= state[1] ^ 0x2822999;
+
+	if (local_u32_5_0 == 5)
+	{
+		mix_minor12 (state, 0x4cf0e3f7);
+		mix_minor11 (state, 0x54c9ac57);
+		mix_minor61 (state);
+		mix_major10 (state, state[9]);
+	}
+	eax = ROR (edi, 0x18);
+	edx = state[1];
+	eax = eax + edx;
+	local_u32_5_3 = eax;
+	state[1] = eax;
+	ebx = state[4];
+	state[6] += ((ebx) | 0x161d3ea);
+	state[9] += 0xc2e590c + edi;
+	local_u32_5_1 = edi;
+	local_u32_5_1 = local_u32_5_1 ^ 0x125deacd;
+	edi = edi - local_u32_5_1;
+	state[7] &= state[17] ^ 0x10b015bf;
+	state[17] = 0x1bb396c0;
+	local_u32_5_3 = local_u32_5_3 & 0x7a04e3e;
+	state[9] *= local_u32_5_3;
+	ecx = state[16] | 0x16cf1fa2;
+	edi = ((edi + ecx) * 0x1d5ac40e) * state[14];
+	state[4] = ebx ^ (0xf27819a7 + edi);
+	return edi;
+}
+
+
+u32 mix_major3 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_6_0;
+
+	u32     tmp;
+
+	edi = extra_state;
+	ebx = (edi ^ state[16] ^ state[10]) % 0x0B;
+	local_u32_6_0 = ebx;
+	state[12] *= (state[3] & 0x19997dc0);
+	ecx = state[0] + 0xd31e211;
+	edi = edi | ecx;
+	state[14] += 0x7cfa160 - state[0];
+
+	if (ebx == 10)
+	{
+		mix_minor48 (state);
+		mix_minor46 (state);
+		mix_minor13 (state, 0x8df0232e);
+		mix_major17 (state, state[2]);
+	}
+	state[13] = ROR (state[13], (edi + 0xe6));
+	state[3] *= (state[12] + 0xfd1d773c);
+
+	if (local_u32_6_0 == 3)
+	{
+		mix_minor37 (state);
+		mix_minor39 (state);
+		mix_minor5 (state, 0x268ea793);
+		mix_major16 (state, state[12]);
+	}
+
+	eax = 0xd10c7a44 + edi;
+	edi = edi | eax;
+	eax = state[0];
+	edi = (0xf3754e81 +  eax + edi ) ^ 0x21d2a427;
+	ebx = state[16];
+	edi = edi ^ ebx;
+
+	if (local_u32_6_0 == 1)
+	{
+		mix_minor38 (state);
+		mix_minor12 (state, 0xebe9adea);
+		mix_minor31 (state);
+		mix_major15 (state, state[11]);
+	}
+	state[16] |= 0x599c0b2 | state[4];
+	ebx = state[0] + 0xdd;
+	eax = ROL (edi, ebx);
+	edi = eax;
+	state[3] &= state[6] ^ 0x1d86d59a;
+	state[0] ^= 0x22d79e78 ^ state[10];
+
+	if (local_u32_6_0 == 9)
+	{
+		mix_minor45 (state);
+		mix_minor17 (state, 0xc7a7026f);
+		mix_minor45 (state);
+		mix_major8 (state, state[16]);
+	}
+	state[15] = ROL (state[15], (state[9] + 0x22));
+	eax = ROL (edi, 0xd);
+	edi = edi + eax;
+	edx = state[4] ^ 0x17568f8b;
+	edi = edi + edx;
+	state[3] -= state[9] ^ 0x1b7d211b;
+
+	if (local_u32_6_0 == 7)
+	{
+		mix_minor35 (state);
+		mix_minor0 (state, 0x79bfdc2b);
+		mix_minor64 (state);
+		mix_major12 (state, edi);
+	}
+	state[14] *= (state[10] ^ 0x25da4024);
+	state[3] += state[19] ^ 0x195596e2;
+
+	if (local_u32_6_0 == 8)
+	{
+		mix_minor37 (state);
+		mix_minor60 (state);
+		mix_minor3 (state, 0x48d82db3);
+		mix_major18 (state, edi);
+	}
+	state[3] ^= ROR (state[4], 0xb);
+	state[19] ^= state[2] & 0x142c74fa;
+	state[7] = 0x3de4cf2b;
+	eax = state[5] * 0x1195dbf3;
+	edi = edi ^ eax;
+
+	if (local_u32_6_0 == 5)
+	{
+		mix_minor51 (state);
+		mix_minor51 (state);
+		mix_minor28 (state);
+		mix_major6 (state, state[9]);
+	}
+	state[12] *= 0x25bf72d4 * state[14];
+	eax = ROL (state[11], 0x2);
+	edi = edi + eax;
+
+	if (local_u32_6_0 == 0)
+	{
+		mix_minor28 (state);
+		mix_minor20 (state);
+		mix_minor41 (state);
+		mix_major4 (state, edi);
+	}
+	state[7] += 0xfbd89057 + edi;
+	state[12] += 0xfec898a3 - edi;
+	eax = 0xe6d9d0ce + edi;
+	edi = edi * eax;
+	state[2] *= 0x25d5927e * state[0];
+
+	if (local_u32_6_0 == 6)
+	{
+		mix_minor41 (state);
+		mix_minor35 (state);
+		mix_minor1 (state, 0x3df99882);
+		mix_major11 (state, state[3]);
+	}
+	eax = edi ^ 0x7951f14a;
+	edi = edi - eax;
+	eax = state[19] ^ 0x159fa550;
+	edi = edi * eax;
+	state[9] -= edi * 0x1b0d12a6;
+
+	if (local_u32_6_0 == 4)
+	{
+		mix_minor58 (state);
+		mix_minor26 (state);
+		mix_minor26 (state);
+		mix_major22 (state, edi);
+	}
+	state[12] += (state[4] | 0xf2ff1db);
+	state[7] -= edi * 0x1a41598b;
+	state[17] *= (state[14] & 0x36ff2c0);
+        state[12] ^= state[2] & 0xac8676c;
+
+	if (local_u32_6_0 == 2)
+	{
+		mix_minor60 (state);
+		mix_minor67 (state);
+		mix_minor44 (state);
+		mix_major5 (state, state[11]);
+	}
+	state[19] ^= state[11] + 0xe311654d;
+	state[18] ^= state[16] * 0x1267cd78;
+	tmp = (edi ^ 0x1c8b2015) & state[16];
+	state[16] = tmp * (tmp | 0xc26f29a);
+	state[14] &= state[10] + 0xcec46d19;
+	eax = state[0] + 0x32ff9d2f;
+	edi = edi * eax;
+	state[8] -= state[8] ^ 0xc03874d;
+	eax = state[13];
+	edi = 0xf9b39aca +  eax + edi ;
+	return edi;
+}
+
+
+u32 mix_major4 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_7_0;
+	u32	local_u32_7_1;
+
+	edi = extra_state;
+	ebx = state[15];
+	local_u32_7_1 = ebx;
+	eax = state[2];
+	local_u32_7_1 = local_u32_7_1 ^ eax;
+	local_u32_7_1 = local_u32_7_1 ^ edi;
+	ecx = local_u32_7_1 % 0x09;
+	local_u32_7_0 = ecx;
+	state[14] += 0xd3892fe6 + ebx;
+	state[2] += 0xe600fde6 - edi;
+	state[15] = ebx ^ (state[4] + 0x385e38e);
+	state[18] |= 0xc6189f52 + edi;
+
+	if (local_u32_7_0 == 7)
+	{
+		mix_minor43 (state);
+		mix_minor24 (state);
+		mix_minor14 (state, 0x2b312900);
+		mix_major19 (state, state[1]);
+	}
+	eax = state[14] + 0x8f6f81a9;
+	ecx = state[11];
+	eax = eax & ecx;
+	local_u32_7_1 = eax;
+	state[11] = eax;
+	state[12] = ROL (state[12], ROR (state[6], 0xe));
+	edx = ROL (state[8], 0xe);
+	edi = edi - edx;
+	edx = ROR ((local_u32_7_1), 0x1);
+	eax = ROR (state[0], edx);
+	state[0] = eax + (local_u32_7_1 ^ 0x43cd4d14);
+
+	if (local_u32_7_0 == 3)
+	{
+		mix_minor22 (state);
+		mix_minor48 (state);
+		mix_minor19 (state, 0x6469b080);
+		mix_major20 (state, state[14]);
+	}
+	state[3] -= state[8] ^ 0x155c464;
+	state[16] += 0xf8d647b6 + state[0];
+	state[2] ^= 0x11e3788d ^ state[4];
+
+	if (local_u32_7_0 == 5)
+	{
+		mix_minor15 (state, 0x1045494f);
+		mix_minor51 (state);
+		mix_minor55 (state);
+		mix_major17 (state, state[10]);
+	}
+	eax = ROL (edi, 0xb);
+	edi = edi | eax;
+	state[5] &= edi ^ 0x16984b90;
+	state[16] += ROR (edi, 0x1d);
+	state[0] += 0xc3e56f16 + state[15];
+
+	if (local_u32_7_0 == 2)
+	{
+		mix_minor46 (state);
+		mix_minor17 (state, 0xc9dcd626);
+		mix_minor40 (state);
+		mix_major16 (state, state[1]);
+	}
+	state[5] &= state[11] + 0xe57356e7;
+	state[18] -= edi ^ 0x23f157f6;
+	ecx = state[18] & 0x155b7cc8;
+	edi = edi - ecx;
+
+	if (local_u32_7_0 == 1)
+	{
+		mix_minor48 (state);
+		mix_minor15 (state, 0x1b423418);
+		mix_minor50 (state);
+		mix_major15 (state, edi);
+	}
+	state[8] = (state[8] | 0x21496d22) | state[5];
+	edi = edi + 0x93b1543f - state[18];
+	state[14] = (state[14] * 0x1db47609) * edi;
+	state[7] = ROR (state[7], (state[10] ^ 0x5a));
+        state[7] = ROL (state[7], (state[18] + 0x7c));
+
+	if (local_u32_7_0 == 0)
+	{
+		mix_minor46 (state);
+		mix_minor4 (state, 0x45257d1a);
+		mix_minor59 (state);
+		mix_major8 (state, edi);
+	}
+	state[8] ^= ROL (state[5], 0x3);
+	state[6] ^= 0x2c8ca15 ^ edi;
+	state[13] += ROL (edi, 0xd);
+
+	if (local_u32_7_0 == 4)
+	{
+		mix_minor61 (state);
+		mix_minor8 (state, 0x76f29932);
+		mix_minor34 (state);
+		mix_major12 (state, state[18]);
+	}
+	state[17] ^= state[2] & 0xa0962e5;
+	state[3] *= (edi & 0xd505f52);
+	eax = state[15] ^ 0x15284f42;
+	edi = edi - eax;
+
+	if (local_u32_7_0 == 8)
+	{
+		mix_minor37 (state);
+		mix_minor47 (state);
+		mix_minor12 (state, 0x37f1d8d8);
+		mix_major18 (state, state[8]);
+	}
+	state[7] &= state[2] + 0xf8df2963;
+	state[6] *= 0x256b9c9c * edi;
+	state[10] += state[1] | 0xda16d9b;
+	state[9] *= (state[5] ^ 0x28b62e0c);
+
+	if (local_u32_7_0 == 6)
+	{
+		mix_minor35 (state);
+		mix_minor0 (state, 0x0bc3315f);
+		mix_minor37 (state);
+		mix_major6 (state, edi);
+	}
+
+	eax = state[5] * 0x23779c9e;
+	ecx = state[12];
+	eax = eax ^ ecx;
+	state[12] = eax;
+	state[10] *= (ROR ((state[19]), 0x1d));
+	state[0] ^= 0x38a5f94 ^ state[10];
+	ecx = state[15];
+	edi = 0x1c82e95e +  ecx + edi ;
+	state[9] = ROL (state[9], (state[5] ^ 0x1d));
+	state[12] += 0xc0e4fa7d +  edi;
+	state[17] ^= 0x141bbf98 ^ state[7];
+        state[9] ^= ROR (state[18], 0x6);
+        state[4] -= state[13] & 0x2373fe39;
+	state[19] += ROL (edi, 0xf);
+	return edi;
+}
+
+
+u32 mix_major5 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_8_0;
+	u32	local_u32_8_1;
+	u32	local_u32_8_2;
+	u32	local_u32_8_3;
+
+	edx = state[18] % 0x0B;
+	local_u32_8_0 = edx;
+	state[5] |= state[17] * 0x2e7a089;
+	state[3] ^= state[13] + 0x1fef7de0;
+	edx = state[16] ^ 0x8338b85;
+	edi = (extra_state) - edx;
+
+	if (local_u32_8_0 == 0)
+	{
+		mix_minor14 (state, 0x27888b0f);
+		mix_minor14 (state, 0x2b13a34b);
+		mix_minor30 (state);
+		mix_major20 (state, state[11]);
+	}
+
+	edi = edi * 0x1cd19bfb;
+	state[3] *= (state[12] + 0x15bdbb56);
+	state[11] ^= 0x374580a7 + edi;
+	state[10] += edi | 0x86941f3;
+
+	if (local_u32_8_0 == 4)
+	{
+		mix_minor32 (state);
+		mix_minor4 (state, 0x01c99372);
+		mix_minor50 (state);
+		mix_major17 (state, state[18]);
+	}
+	state[6] -= state[16] ^ 0x11119dd6;
+	state[13] += 0xcb82c76c + state[18];
+	state[8] -= state[1] ^ 0x3b98ae58;
+
+	if (local_u32_8_0 == 9)
+	{
+		mix_minor42 (state);
+		mix_minor64 (state);
+		mix_minor21 (state);
+		mix_major16 (state, state[1]);
+	}
+	state[17] ^= state[17] + 0xcfd5283;
+	state[5] &= state[13] + 0x539ef62;
+	state[11] &= state[14] ^ 0x639b87fe;
+
+	if (local_u32_8_0 == 8)
+	{
+		mix_minor22 (state);
+		mix_minor59 (state);
+		mix_minor18 (state, 0x2925fd1d);
+		mix_major15 (state, state[18]);
+	}
+	ebx = edi | 0x369e02e;
+	ecx = state[12] - ebx;
+	local_u32_8_1 = ecx;
+	state[12] = ecx;
+	state[6] *= (ecx + 0xf0544c52);
+	eax = state[5];
+	edi = 0x8dcb06 +  eax + edi ;
+	state[12] = local_u32_8_1 - (edi & 0x632ffca);
+
+	if (local_u32_8_0 == 3)
+	{
+		mix_minor15 (state, 0x1ab2160f);
+		mix_minor41 (state);
+		mix_minor14 (state, 0x2d87d79a);
+		mix_major8 (state, state[17]);
+	}
+	state[16] -= state[6] * 0x345114ef;
+	state[10] = ROR (state[10], (state[11] * 0xf6123d0));
+	state[0] += state[4] & 0x18b74e25;
+
+	if (local_u32_8_0 == 7)
+	{
+		mix_minor12 (state, 0x50e04b1f);
+		mix_minor53 (state);
+		mix_minor47 (state);
+		mix_major12 (state, state[15]);
+	}
+	state[2] -= state[2] ^ 0x18f1b56;
+	state[19] = ROL (state[19], (state[13] + 0x66));
+
+	if (local_u32_8_0 == 6)
+	{
+		mix_minor8 (state, 0x3d2cd180);
+		mix_minor19 (state, 0xdc7b4010);
+		mix_minor13 (state, 0x489ba0b3);
+		mix_major18 (state, edi);
+	}
+	ebx = state[7] + 0x56;
+	eax = ROR (edi, ebx);
+	ebx = state[14] + 0xf1;
+	eax = ROL (eax, ebx);
+	edi = eax;
+
+	if (local_u32_8_0 == 5)
+	{
+		mix_minor8 (state, 0x2dec9dea);
+		mix_minor29 (state);
+		mix_minor59 (state);
+		mix_major6 (state, state[7]);
+	}
+
+	edi = edi + 0xd26e6435;
+	eax = state[10];
+	local_u32_8_1 = eax;
+	edi = edi - eax;
+	state[8] = ROL (state[8], (state[13] ^ 0x95));
+	state[1] += (local_u32_8_1 ^ 0x1da5a5e2);
+
+	if (local_u32_8_0 == 2)
+	{
+		mix_minor45 (state);
+		mix_minor55 (state);
+		mix_minor17 (state, 0xbb1c556c);
+		mix_major4 (state, state[10]);
+	}
+	state[7] |= edi * 0x1665683f;
+	state[6] += 0xd3198985 + state[17];
+	eax = state[1] * 0xb2490cd;
+	edi = edi & eax;
+
+	if (local_u32_8_0 == 1)
+	{
+		mix_minor50 (state);
+		mix_minor45 (state);
+		mix_minor11 (state, 0x1a1dbabb);
+		mix_major11 (state, state[6]);
+	}
+	state[13] -= state[3] ^ 0x49caa386;
+	state[5] += 0xca44ad - state[7];
+	eax = state[14] | 0xce2b27d;
+	edi = edi + eax;
+
+	if (local_u32_8_0 == 10)
+	{
+		mix_minor33 (state);
+		mix_minor22 (state);
+		mix_minor3 (state, 0x47252b3e);
+		mix_major22 (state, state[11]);
+	}
+	ecx = state[15] + 0x9f72b74b;
+	eax = state[6];
+	ecx = ecx + eax;
+	local_u32_8_2 = ecx;
+	state[15] = ecx;
+	state[16] += 0xaa1914c0 - state[3];
+	eax = ROL (edi, 0x12);
+	edi = edi - eax;
+	state[14] ^= 0x7a9f2d9 ^ state[9];
+	state[19] &= ROL (state[3], 0xa);
+	edi = (edi * 0xd49e9d9) * local_u32_8_2;
+	edx = state[2] ^ 0xc52d715;
+	ecx = state[4];
+	edx = edx + ecx;
+	local_u32_8_3 = edx;
+	state[4] = edx;
+	state[15] = (local_u32_8_2 * 0x300c07b6) * state[11];
+	state[4] = (edi * 0x59c5268) ^ local_u32_8_3;
+	state[7] += 0xf1ae26ce - edi;
+	return edi;
+}
+
+
+u32 mix_major6 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_9_0;
+	u32	local_u32_9_2;
+
+	edx = state[5];
+	local_u32_9_0 = edx;
+	ecx = state[3];
+	local_u32_9_0 = local_u32_9_0 ^ ecx;
+	edx = state[18];
+	local_u32_9_0 = local_u32_9_0 ^ edx;
+	local_u32_9_0 = local_u32_9_0 & 0x7;
+	state[7] ^= 0x3610ff4 ^ state[5];
+	state[18] = ROL (state[14], 0x13) ^ edx;
+	eax = state[10] + 0x4e;
+	state[15] = ROR (state[15], eax);
+	edi = ((state[1] + 0xa89a8207) ^ extra_state) & 0xecc2fa7d;
+
+	if (local_u32_9_0 == 0)
+	{
+		mix_minor54 (state);
+		mix_minor19 (state, 0x8b7d007b);
+		mix_minor62 (state);
+		mix_major19 (state, edi);
+	}
+
+	ecx = state[0] * 0x19dd786;
+	edx = state[15];
+	ecx = ecx ^ edx;
+	local_u32_9_2 = ecx;
+	state[15] = ecx;
+	eax = ROL (edi, 0xc);
+	edi = edi * eax;
+	state[17] &= edi | 0x1249d1c;
+	state[15] = (state[8] + 0x5e67551f) ^ local_u32_9_2;
+	edx = state[0] * 0x320ea6ec;
+	edi = edi + edx;
+	eax = state[19] + 0xee10c43d;
+	edi = edi ^ eax;
+
+	if (local_u32_9_0 == 1)
+	{
+		mix_minor2 (state, 0xf8fa5a1e);
+		mix_minor14 (state, 0x27ec9d71);
+		mix_minor41 (state);
+		mix_major20 (state, state[2]);
+	}
+	eax = edi ^ 0x67;
+	state[15] = ROR (state[15], eax);
+	eax = state[14] * 0x54cc1685;
+	state[5] = (state[5] - eax);
+	state[12] += 0xf7d8f2fa - edi;
+	state[5] += 0xf95da87e - state[10];
+	eax = ROL (state[8], 0x12);
+	edi = edi ^ eax;
+
+	if (local_u32_9_0 == 5)
+	{
+		mix_minor53 (state);
+		mix_minor23 (state);
+		mix_minor60 (state);
+		mix_major17 (state, state[16]);
+	}
+
+	edx = state[2];
+	local_u32_9_2 = edx;
+	state[19] += edx ^ 0x4983faaa;
+	edi = (edi & 0x911ab6a) & state[6];
+	state[17] &= edx + 0xfbb4acd7;
+	state[5] += 0xf96465d3 + state[13];
+	eax = state[2] | 0x99;
+	edx = ROL (edi, eax);
+	edi = edx;
+	local_u32_9_2 = local_u32_9_2 | 0x176f7fa2;
+	state[9] += local_u32_9_2;
+
+	if (local_u32_9_0 == 7)
+	{
+		mix_minor53 (state);
+		mix_minor67 (state);
+		mix_minor38 (state);
+		mix_major16 (state, edi);
+	}
+	eax = edi + 0xd0;
+	state[4] = ROR (state[4], eax);
+	eax = state[6] ^ 0x1ae616e0;
+	edi = edi | eax;
+	eax = (((state[15] << 7) - state[15]) << 7) + state[15];
+	ecx = state[15];
+	eax = (ecx + 4 * (ecx + 2 * eax)) << 2;
+	edi = edi ^ eax;
+	eax = state[2] + 0x83;
+	state[14] = ROR (state[14], eax);
+
+	if (local_u32_9_0 == 6)
+	{
+		mix_minor13 (state, 0xb49ff199);
+		mix_minor33 (state);
+		mix_minor3 (state, 0x95bdeb6f);
+		mix_major15 (state, edi);
+	}
+	state[12] -= state[10] & 0x1311b0aa;
+	state[14] ^= 0xf5736e40 + edi;
+	state[17] += ROR (state[18], 0xf);
+	eax = state[11] + 0x25e8d98c;
+	edi = edi ^ eax;
+	eax = state[14] | 0x28;
+	state[0] = ROL (state[0], eax);
+	state[13] -= state[3] ^ 0x2a68c40c;
+
+	if (local_u32_9_0 == 3)
+	{
+		mix_minor40 (state);
+		mix_minor0 (state, 0x4df565cd);
+		mix_minor8 (state, 0x6162ad12);
+		mix_major8 (state, state[3]);
+	}
+	state[12] += ROR (edi, 0xc);
+	eax = state[6] & 0x29;
+	state[7] = ROL (state[7], eax);
+	eax = edi * 0x64f01864;
+	edx = ROL (edi, eax);
+	eax = state[16] ^ 0x24;
+	edx = ROR (edx, eax);
+	edi = edx;
+	eax = ROL (state[1], 0xb);
+	state[6] = ROL (state[6], eax);
+
+	if (local_u32_9_0 == 4)
+	{
+		mix_minor31 (state);
+		mix_minor31 (state);
+		mix_minor17 (state, 0xcc0af9dd);
+		mix_major12 (state, state[13]);
+	}
+	state[14] += ROR (state[14], 0x9);
+	state[3] *= (state[13] & 0x24b1abab);
+	state[3] += 0x10decc67 - state[12];
+	ebx = state[15];
+	eax = ebx ^ 0x194903b4;
+	edi = edi * eax;
+
+	if (local_u32_9_0 == 2)
+	{
+		mix_minor33 (state);
+		mix_minor48 (state);
+		mix_minor66 (state);
+		mix_major18 (state, state[14]);
+		ebx = state[15];
+	}
+	state[15] = (ebx * 0x2ed0158e) * edi;
+	state[14] += 0xc4d28c7c + state[3];
+	state[11] -= state[18] ^ 0x3e1bda7e;
+	state[2] *= ROL (state[13], 0x18);
+	return edi;
+}
+
+
+u32 mix_major7 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_10_0;
+	u32	local_u32_10_1;
+	u32	local_u32_10_2;
+	u32	local_u32_10_3;
+
+	edi = extra_state;
+	eax = state[6] ^ state[3] ^ edi;
+	local_u32_10_2 = eax;
+	edx = local_u32_10_2 % 0x0B;
+	local_u32_10_0 = edx;
+	state[8] += edi * 0x25d21c70;
+	eax = ROR (state[13], 0x1a);
+	edi = edi + eax;
+	state[15] += ROR (state[0], 0x12);
+
+	if (edx == 1)
+	{
+		mix_minor45 (state);
+		mix_minor17 (state, 0x0c947c99);
+		mix_minor17 (state, 0xa3f86a33);
+		mix_major18 (state, state[9]);
+	}
+	edx = state[4] ^ 0x214bbbb;
+	edi = edi + edx;
+	state[5] = ROL (state[5], (edi * 0xffffff9d));
+	state[17] -= state[18] | 0x1102e01a;
+	state[19] += 0xf1e0cc5a + state[12];
+
+	if (local_u32_10_0 == 0)
+	{
+		mix_minor19 (state, 0xadec496e);
+		mix_minor49 (state);
+		mix_minor43 (state);
+		mix_major6 (state, state[13]);
+	}
+	state[8] |= edi * 0x33ff2ce9;
+	state[4] *= (0x2fe45acf + edi);
+	state[3] ^= ROR (edi, 0xd);
+	eax = state[12] & 0x2e2ac892;
+	edi = edi ^ eax;
+
+	if (local_u32_10_0 == 7)
+	{
+		mix_minor59 (state);
+		mix_minor69 (state);
+		mix_minor41 (state);
+		mix_major4 (state, state[15]);
+	}
+	eax = ROL (state[14], 0x1);
+	edi = edi * eax;
+	eax = 0x7a3b4f0e + edi;
+	edi = edi ^ eax;
+	state[5] += state[11] ^ 0x5f050ce6;
+
+	if (local_u32_10_0 == 2)
+	{
+		mix_minor46 (state);
+		mix_minor45 (state);
+		mix_minor24 (state);
+		mix_major11 (state, state[17]);
+	}
+
+	eax = state[17];
+	local_u32_10_1 = eax;
+	eax = ROR (eax, 0x12);
+	local_u32_10_3 = eax;
+	state[9] -= state[11] & 0x524788df;
+	edx = local_u32_10_3;
+	edi = 0x17b2d86 +  edx + edi  + state[3];
+	state[12] |= (local_u32_10_1 ^ 0xd2348b5);
+
+	if (local_u32_10_0 == 4)
+	{
+		mix_minor60 (state);
+		mix_minor56 (state);
+		mix_minor64 (state);
+		mix_major22 (state, edi);
+	}
+	state[4] += state[0] ^ 0x3ca6760a;
+	state[10] = ROR (state[10], (state[12] & 0x3e));
+	state[12] -= edi ^ 0x32b59495;
+	state[11] -= state[7] ^ 0xcc6cef3;
+
+	if (local_u32_10_0 == 9)
+	{
+		mix_minor51 (state);
+		mix_minor51 (state);
+		mix_minor46 (state);
+		mix_major5 (state, state[6]);
+	}
+	state[18] -= edi ^ 0x42ce4263;
+	state[8] ^= state[15] + 0xfc1ccf0a;
+	state[4] *= (state[2] + 0xdc6ebf0);
+
+	if (local_u32_10_0 == 8)
+	{
+		mix_minor34 (state);
+		mix_minor33 (state);
+		mix_minor35 (state);
+		mix_major3 (state, state[19]);
+	}
+	state[14] ^= state[17] + 0x29e0bfe6;
+	state[2] ^= state[0] + 0xc0a98770;
+	state[6] += ROL (state[11], 0xf);
+
+	if (local_u32_10_0 == 10)
+	{
+		mix_minor43 (state);
+		mix_minor38 (state);
+		mix_minor4 (state, 0x42452ecf);
+		mix_major14 (state, edi);
+	}
+
+	eax = state[18];
+	edi = 0xff5138a0 +  eax + edi  - state[5];
+
+	if (local_u32_10_0 == 6)
+	{
+		mix_minor2 (state, 0xf2b7a1ae);
+		mix_minor32 (state);
+		mix_minor0 (state, 0x00af5623);
+		mix_major9 (state, edi);
+	}
+	state[3] = ROR (state[3], (state[17] & 0x4a));
+        state[3] ^= state[7] * 0x36e7ec8;
+
+	if (local_u32_10_0 == 3)
+	{
+		mix_minor41 (state);
+		mix_minor5 (state, 0x3677750a);
+		mix_minor64 (state);
+		mix_major10 (state, edi);
+	}
+	state[10] = ROR (state[10], (state[19] * 0x23b9e79));
+	state[14] *= (state[12] + 0xd914afe4);
+
+	if (local_u32_10_0 == 5)
+	{
+		mix_minor22 (state);
+		mix_minor57 (state);
+		mix_minor44 (state);
+		mix_major2 (state, state[18]);
+	}
+	edi = edi + 0xfe572373 - state[8];
+	ecx = state[2] ^ 0x2fe3c8;
+	edi = edi | ecx;
+	eax = state[18] + 0x522baa5a;
+	edi = edi ^ eax;
+	state[8] -= state[7] ^ 0x1609874e;
+	eax = state[4] | 0x1e171635;
+	state[10] ^= eax;
+	eax = state[10] + 0xe985f44f;
+	edi = edi ^ eax;
+	ecx = state[1] + 0xd304451b;
+	edi = edi ^ ecx;
+	state[6] += 0x19b93371 - state[16];
+	ebx = state[10] & 0x6d;
+	eax = ROR (edi, ebx);
+	edi = eax;
+	return eax;
+}
+
+
+u32 mix_major8 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_11_0;
+	u32	local_u32_11_1;
+	u32	local_u32_11_2;
+	u32	local_u32_11_5;
+
+	eax = state[5];
+	local_u32_11_5 = eax;
+	ecx = state[9];
+	local_u32_11_5 = local_u32_11_5 ^ ecx;
+	eax = state[19];
+	local_u32_11_5 = local_u32_11_5 ^ eax;
+	ecx = local_u32_11_5 % 0x05;
+	local_u32_11_0 = ecx;
+	edx = state[12];
+	local_u32_11_5 = edx;
+	local_u32_11_5 = local_u32_11_5 ^ 0xb6b4743;
+	eax = (local_u32_11_5) + state[5];
+	local_u32_11_1 = eax;
+	state[5] = eax;
+	edi = (0x221bed03 + edx) * extra_state;
+	state[3] *= (state[11] ^ 0x2663a394);
+	eax = state[4] ^ 0x4f1894;
+	edi = edi | eax;
+	state[5] = (local_u32_11_1) & 0xad85e5da;
+	state[17] &= 0xd191e790 + edi;
+	ecx = state[1] * 0x1c634b75;
+	edi = edi + ecx;
+
+	if (local_u32_11_0 == 2)
+	{
+		mix_minor34 (state);
+		mix_minor25 (state);
+		mix_minor3 (state, 0x00d37638);
+		mix_major19 (state, state[1]);
+	}
+
+	edx = state[6];
+	local_u32_11_5 = edx;
+	local_u32_11_5 = local_u32_11_5 ^ 0x1fdc8171;
+	state[3] -= local_u32_11_5;
+	ecx = state[14] * 0xdc63a30;
+	eax = state[15];
+	ecx = ecx ^ eax;
+	local_u32_11_2 = ecx;
+	state[15] = ecx;
+	state[7] = ROL (state[7], (edi + 0x28));
+	ebx = state[8];
+	ecx = 0xe4fb2084 + ebx;
+	edi = edi ^ ecx;
+	state[6] = edx + 0xb6a8bfd8 - edi;
+	edx = ROR (state[6], 0x1);
+	edi = edi * edx;
+	state[13] *= ROR (ebx, 0x1f);
+        state[18] ^= (local_u32_11_2) + 0xa969bc16;
+
+	if (local_u32_11_0 == 1)
+	{
+		mix_minor25 (state);
+		mix_minor4 (state, 0x4a75112a);
+		mix_minor38 (state);
+		mix_major20 (state, state[2]);
+	}
+	edx = state[1] & 0x6;
+	eax = ROR (edi, edx);
+	edi = eax;
+	state[8] += 0xeba05ea0 - state[17];
+	eax = state[16] + 0xe8427306;
+	state[16] = eax + state[19];
+	state[16] ^= state[7] + 0x35f9fb28;
+	state[13] += edi & 0x16076281;
+	eax = 0xe43a6120 + edi;
+	edi = edi * eax;
+	state[1] += 0xd94074d - state[3];
+
+	if (local_u32_11_0 == 3)
+	{
+		mix_minor19 (state, 0x170b22b9);
+		mix_minor53 (state);
+		mix_minor41 (state);
+		mix_major17 (state, state[17]);
+	}
+	edx = state[18] + 0xc5;
+	eax = ROR (edi, edx);
+	edi = eax;
+	state[6] += 0x126c7192 + edi;
+	state[4] &= state[9] ^ 0xe4c97d9;
+	ecx = 0x5246092 + edi;
+	edi = edi ^ ecx;
+	state[14] += 0x12466f7c + state[3];
+	state[7] += 0xe724e487 - state[19];
+	edi = edi + 0xfffcc68a;
+	edx = state[2];
+	edi = edi - edx;
+	state[2] = edx - (state[12] * 0xf8b6e25);
+
+	if (local_u32_11_0 == 4)
+	{
+		mix_minor36 (state);
+		mix_minor5 (state, 0x3daf9351);
+		mix_minor0 (state, 0x74973164);
+		mix_major16 (state, state[12]);
+	}
+	state[3] = ROL (state[3], (state[6] ^ 0x91));
+	state[4] += edi & 0x3dd7da06;
+	state[11] *= (0xb6484f2a + state[8]);
+	edi = edi ^ (state[8] & 0x274e05b8);
+        state[18] ^= state[5] + 0x263032a4;
+	state[16] ^= 0x1a70ff38 + edi;
+
+	if (local_u32_11_0 == 0)
+	{
+		mix_minor37 (state);
+		mix_minor22 (state);
+		mix_minor45 (state);
+		mix_major15 (state, state[10]);
+	}
+	eax = state[4] + 0x4a83a932 + edi;
+	local_u32_11_5 = eax;
+	state[4] = eax;
+	edx = edi ^ 0x1bb7cdc3;
+	state[19] = ROL (state[19], (state[2] + 0xd0));
+	state[0] = ROL (state[0], (state[19] ^ 0xa0));
+	edi = 0xf1efd9b1 +  edx + edi  - local_u32_11_5;
+	edx = state[1];
+	local_u32_11_5 = edx;
+	local_u32_11_5 = local_u32_11_5 | 0x64a30a;
+	state[11] ^= local_u32_11_5;
+	state[1] = edx + 0x4cd3708 - state[8];
+	state[0] += 0xf6d388b6 +  edi;
+	state[8] += 0x4b8444f - state[1];
+	state[7] = ROL (state[7], (ROL (edi, 0x9)));
+	state[17] = ROR (state[17], (state[10] + 0x9c));
+	return edi;
+}
+
+
+u32 mix_major9 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_12_0;
+	u32	local_u32_12_1;
+	u32	local_u32_12_2;
+	eax = state[15] ^ state[1];
+	edx = state[19];
+	eax = eax ^ edx;
+	local_u32_12_2 = eax;
+	edx = local_u32_12_2 % 0x0B;
+	local_u32_12_0 = edx;
+	state[19] |= (state[18] + 0xe56713bc);
+	state[12] |= state[8] + 0xefc639fe;
+	edi = extra_state;
+
+	if (local_u32_12_0 == 2)
+	{
+		mix_minor40 (state);
+		mix_minor26 (state);
+		mix_minor65 (state);
+		mix_major15 (state, edi);
+	}
+	state[4] ^= state[18] + 0xf20ff41d;
+	ebx = edi + 0xcb;
+	eax = ROL (edi, ebx);
+	edi = eax;
+
+	if (local_u32_12_0 == 5)
+	{
+		mix_minor28 (state);
+		mix_minor35 (state);
+		mix_minor2 (state, 0xedd4970c);
+		mix_major8 (state, edi);
+	}
+	state[2] ^= ROR (edi, 0x1);
+	state[10] *= (0x3842b736 + edi);
+
+	if (local_u32_12_0 == 4)
+	{
+		mix_minor21 (state);
+		mix_minor28 (state);
+		mix_minor16 (state, 0x6a542aec);
+		mix_major12 (state, state[13]);
+	}
+	state[5] ^= 0x224deca3 ^ state[4];
+	state[9] += state[15] & 0xe43bfd6;
+	state[12] += state[18] | 0x24e2f424;
+	edi = 0xefc5f81f;
+
+	if (local_u32_12_0 == 1) 
+	{
+		mix_minor43 (state);
+		mix_minor11 (state, 0x107e6e17);
+		mix_minor10 (state, 0x48a3b120);
+		mix_major18 (state, state[0]);
+	}
+	state[11] *= (state[10] + 0xf0b1e409);
+	edx = state[5];
+	local_u32_12_1 = edx;
+	state[5] = edx + 0x2961fc0;
+	state[9] *= ((local_u32_12_1) + 0x13bcdf0b);
+	state[6] *= (state[11] + 0xe91b219c);
+
+	if (local_u32_12_0 == 7)
+	{
+		mix_minor29 (state);
+		mix_minor41 (state);
+		mix_minor28 (state);
+		mix_major6 (state, edi);
+	}
+	state[1] *= (state[1] + 0xff4abdb4);
+	eax = ROL (0xefc5f81f, 0x1a);
+	edi = 0xefc5f81f + eax;
+	eax = state[10];
+	state[13] += ROR (eax, 0x1b);
+	state[10] = eax + state[3] + 0xea05fa03;
+
+	if (local_u32_12_0 == 10)
+	{
+		mix_minor24 (state);
+		mix_minor31 (state);
+		mix_minor17 (state, 0xa27b88f5);
+		mix_major4 (state, edi);
+	}
+	state[19] += 0xe8b6d37d - state[2];
+	eax = state[12] * 0xa95c314;
+	edi = edi ^ eax;
+
+	if (local_u32_12_0 == 8)
+	{
+		mix_minor64 (state);
+		mix_minor6 (state, 0x0848682c);
+		mix_minor54 (state);
+		mix_major11 (state, state[11]);
+	}
+	eax = state[11] & 0x346472bf;
+	edi = edi + eax;
+	eax = state[15] * 0xbeb977c;
+	edi = edi & eax;
+	eax = state[2] ^ 0x33dd726a;
+	edi = edi + eax;
+	state[19] &= edi ^ 0x13220e;
+
+	if (local_u32_12_0 == 6)
+	{
+		mix_minor63 (state);
+		mix_minor54 (state);
+		mix_minor43 (state);
+		mix_major22 (state, state[2]);
+	}
+
+	eax = 0x13a371f7 + edi;
+	edi = edi * eax;
+	state[0] = ROL (state[0], (edi * 0xffffffa2));
+	ebx = state[15] * 0x344294f;
+	eax = ROL (edi, ebx);
+	edi = eax;
+	state[12] += state[11] | 0x15477725;
+
+	if (local_u32_12_0 == 3)
+	{
+		mix_minor56 (state);
+		mix_minor0 (state, 0x65dea5bd);
+		mix_minor55 (state);
+		mix_major5 (state, state[9]);
+	}
+	state[16] += 0xb2878320 + state[8];
+	state[0] += state[11] * 0x128142d3;
+	state[13] = ROR (state[13], (edi + 0x49));
+
+	if (local_u32_12_0 == 0)
+	{
+		mix_minor33 (state);
+		mix_minor69 (state);
+		mix_minor58 (state);
+		mix_major3 (state, state[17]);
+	}
+	state[13] = ROR (state[13], (state[4] + 0x3a));
+	edx = 0xb401ddcd + edi;
+	edi = edi | edx;
+	ebx = state[16] + 0x77;
+	eax = ROR (edi, ebx);
+	edi = eax;
+	edx = state[11] ^ 0x14302fce;
+	edi = edi + edx;
+
+	if (local_u32_12_0 == 9)
+	{
+		mix_minor30 (state);
+		mix_minor47 (state);
+		mix_minor13 (state, 0xa60ad5b0);
+		mix_major14 (state, state[17]);
+	}
+	state[7] += state[2] & 0x2104615d;
+	state[6] |= ROL (state[4], 0x15);
+	edx = edi * 0x144af0fa;
+	ecx = state[16] - edx;
+	local_u32_12_2 = ecx;
+	state[16] = ecx;
+	eax = state[9] * 0x1d7178c2;
+	edi = (edi ^ eax) * 0x3564b1fd;
+	state[16] = local_u32_12_2 - ROR (edi, 0xb);
+	state[8] ^= state[19] * 0x383ae479;
+	state[11] += 0xc4759a85 + edi;
+	state[9] ^= (state[11] + 0x35e01882);
+	state[10] &= state[0] ^ 0x105d6dd1;
+	return edi;
+}
+
+
+u32 mix_major10 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_13_0;
+	u32	local_u32_13_2;
+	u32	local_u32_13_3;
+
+	edi = extra_state;
+	edx = state[5] % 0x0B;
+	local_u32_13_0 = edx;
+	state[17] ^= 0x2277a712 + edi;
+	state[19] *= (state[8] + 0xe6c6654e);
+	state[6] = ROR (state[6], (state[1] ^ 0x5b));
+
+	if (edx == 3)
+	{
+		mix_minor11 (state, 0x31a0be43);
+		mix_minor6 (state, 0x0f1fb17d);
+		mix_minor43 (state);
+		mix_major8 (state, state[1]);
+	}
+	state[0] *= (0x22e5f53d + edi);
+	state[6] += 0xf7f0c308 - state[14];
+
+	if (local_u32_13_0 == 6)
+	{
+		mix_minor9 (state, 0x83400b93);
+		mix_minor33 (state);
+		mix_minor28 (state);
+		mix_major12 (state, state[2]);
+	}
+
+	eax = state[9];
+	edi = 0xafa2e81 +  eax + edi ;
+	state[15] *= (state[17] + 0xfd2839c0);
+	state[14] += 0x30bd8dc6 - state[6];
+	state[2] += state[7] ^ 0x1edb75c4;
+
+	if (local_u32_13_0 == 4)
+	{
+		mix_minor67 (state);
+		mix_minor49 (state);
+		mix_minor29 (state);
+		mix_major18 (state, edi);
+	}
+	state[2] = 0x2cfa7327;
+	state[7] += 0xf2bf5a7 - state[8];
+	state[11] = ROR (state[11], (state[6] | 0x95));
+	state[2] ^= ROL (state[10], 0x18);
+
+	if (local_u32_13_0 == 2)
+	{
+		mix_minor2 (state, 0x92600aeb);
+		mix_minor41 (state);
+		mix_minor26 (state);
+		mix_major6 (state, edi);
+	}
+	state[16] ^= ROL (state[5], 0x1d);
+	state[8] = ROL (state[8], ROL (state[8], 0x13));
+
+	if (local_u32_13_0 == 0)
+	{
+		mix_minor11 (state, 0x514492f6);
+		mix_minor9 (state, 0x4eb7f6f0);
+		mix_minor51 (state);
+		mix_major4 (state, edi);
+	}
+	state[13] *= (edi & 0x9aee05b);
+	state[18] = ROL (state[18], (state[0] + 0x29));
+
+	if (local_u32_13_0 == 5)
+	{
+		mix_minor37 (state);
+		mix_minor52 (state);
+		mix_minor65 (state);
+		mix_major11 (state, state[5]);
+	}
+	state[16] += 0x15c7f2a + edi;
+	state[0] += state[8] | 0xc568bd;
+	ebx = state[11];
+	eax = ROR (ebx, 0x19);
+	edi = edi + eax;
+
+	if (local_u32_13_0 == 10)
+	{
+		mix_minor29 (state);
+		mix_minor18 (state, 0x31f4e46c);
+		mix_minor55 (state);
+		mix_major22 (state, edi);
+		ebx = state[11];
+	}
+	state[11] = ebx & (state[0] | 0x3c992378);
+	edi = edi ^ 0x1ebdf827;
+	eax = state[2];
+	edi = edi ^ eax;
+	edx = state[16] & 0x1a8092b;
+	edi = edi ^ edx;
+	state[4] ^= eax + 0xf6a7c14d;
+
+	if (local_u32_13_0 == 7)
+	{
+		mix_minor14 (state, 0x52f66ce7);
+		mix_minor14 (state, 0x27c30f6a);
+		mix_minor68 (state);
+		mix_major5 (state, state[5]);
+	}
+	eax = state[1] + 0xbd4eb37a;
+	edi = edi | eax;
+	eax = state[15] ^ 0xe476c17;
+	edi = edi * eax;
+
+	if (local_u32_13_0 == 9)
+	{
+		mix_minor41 (state);
+		mix_minor18 (state, 0x08b07010);
+		mix_minor68 (state);
+		mix_major3 (state, state[19]);
+	}
+	state[0] -= state[4] & 0x55d63dde;
+	state[14] += 0xfa050d42 + state[19];
+	state[12] &= (state[0] + 0x9ff4339);
+	state[15] ^= state[12] + 0xccdc186;
+
+	if (local_u32_13_0 == 8)
+	{
+		mix_minor25 (state);
+		mix_minor31 (state);
+		mix_minor43 (state);
+		mix_major14 (state, state[12]);
+	}
+	state[10] = ROR (state[10], (state[11] + 0xfb));
+	state[5] ^= state[15] + 0x130fea4;
+	ecx = state[19] + 0xdf1438e7;
+	edi = edi ^ ecx;
+
+	if (local_u32_13_0 == 1)
+	{
+		mix_minor20 (state);
+		mix_minor54 (state);
+		mix_minor35 (state);
+		mix_major9 (state, edi);
+	}
+	state[11] += state[3] ^ 0x30f43d2;
+	edx = state[16];
+	local_u32_13_3 = edx;
+	ecx = edx * 0x485950f;
+	eax = state[13] - ecx;
+	local_u32_13_2 = eax;
+	state[13] = eax;
+	state[15] *= (state[1] + 0xa295d0d);
+	ecx = state[0] * 0x68f4b257;
+	edi = edi ^ ecx;
+	state[12] &= state[8] + 0xe49d7359;
+	state[7] -= state[2] * 0x16a7a0b6;
+	ecx = (local_u32_13_2) + 0x18727e9f;
+	edi = edi & ecx;
+	state[14] &= ROL (edi, 0x3);
+	state[19] -= state[6] ^ 0x13892cf5;
+	ecx = local_u32_13_3 * 0x2fad5f96;
+	edi = edi - ecx;
+	return edi;
+}
+
+
+u32 mix_major11 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_14_0;
+	u32	local_u32_14_1;
+	u32	local_u32_14_5;
+	u32	local_u32_14_6;
+	u32	local_u32_14_7;
+	u32	local_u32_14_8;
+	u32	local_u32_14_10;
+	eax = state[11] ^ state[3];
+	ecx = state[17];
+	eax = eax ^ ecx;
+	local_u32_14_1 = eax;
+	ecx = local_u32_14_1 % 0x0A;
+	local_u32_14_0 = ecx;
+	state[15] -= state[0] & 0x201c33b4;
+	state[9] &= state[4] ^ 0x4b5700f;
+	ecx = state[15] | 0x1f564f3c;
+	edi = (((extra_state) - ecx) + 0xfe30d470) * state[14];
+	state[14] = edi;
+
+	if (local_u32_14_0 == 2)
+	{
+		mix_minor58 (state);
+		mix_minor9 (state, 0x0ac34cb2);
+		mix_minor65 (state);
+		mix_major19 (state, state[1]);
+	}
+	state[3] ^= ROL (state[7], 0x1c);
+	edi = 0xb2363254;
+	state[17] += 0x503fc4de;
+	state[18] += state[1] * 0xf14c9c;
+
+	if (local_u32_14_0 == 6)
+	{
+		mix_minor21 (state);
+		mix_minor28 (state);
+		mix_minor54 (state);
+		mix_major20 (state, state[5]);
+	}
+	eax = (state[0] + 0xaf4b1f37) * state[3];
+	local_u32_14_10 = eax;
+	state[3] = eax;
+	state[11] *= (state[11] + 0x1d1cbc4e);
+	state[13] ^= state[1] + 0xf6c6f628;
+	state[17] ^= (local_u32_14_10) + 0x7f863fa;
+
+	if (local_u32_14_0 == 4)
+	{
+		mix_minor16 (state, 0x9573ad30);
+		mix_minor31 (state);
+		mix_minor12 (state, 0xdbe4b2f1);
+		mix_major17 (state, edi);
+	}
+	eax = state[4] | 0x3b62a700;
+	ecx = state[11];
+	eax = eax + ecx;
+	local_u32_14_5 = eax;
+	state[11] = eax;
+	state[19] ^= 0xf3c3d3f0;
+	edx = state[10] + 0xee;
+	eax = ROR (0xb2363254, edx);
+	edi = eax;
+	state[16] |= ROR (state[16], 0xa);
+	state[7] = (state[7] * 0x5053948) * local_u32_14_5;
+
+	if (local_u32_14_0 == 3)
+	{
+		mix_minor58 (state);
+		mix_minor8 (state, 0x2e860b98);
+		mix_minor69 (state);
+		mix_major16 (state, state[4]);
+	}
+	state[1] &= edi * 0x377e5649;
+	state[18] += state[2] | 0x57a0b91;
+	state[7] = ROL (state[7], (edi + 0x87));
+	state[4] -= ROL (state[7], 0x2);
+
+	if (local_u32_14_0 == 0)
+	{
+		mix_minor9 (state, 0x77c54c67);
+		mix_minor12 (state, 0x4faf0f81);
+		mix_minor56 (state);
+		mix_major15 (state, state[18]);
+	}
+
+	eax = 0xfea6f980 + edi;
+	edi = edi * eax;
+	state[18] += state[2] * 0x33aaef75;
+	state[2] ^= (state[12] + 0xda4bd31e);
+	ecx = state[6] | 0x107e370;
+	edi = edi - ecx;
+	state[17] += 0x191504c - edi;
+
+	if (local_u32_14_0 == 9)
+	{
+		mix_minor48 (state);
+		mix_minor6 (state, 0xcabc5012);
+		mix_minor41 (state);
+		mix_major8 (state, state[14]);
+	}
+	eax = ROL (state[15], 0x7);
+	ecx = state[3];
+	eax = eax + ecx;
+	local_u32_14_6 = eax;
+	state[3] = eax;
+	eax = state[12] + 0x18afd3db;
+	ecx = state[10];
+	eax = eax - ecx;
+	local_u32_14_7 = eax;
+	state[12] = eax;
+	eax = state[5] + 0x1392be9b + local_u32_14_7;
+	local_u32_14_6 = local_u32_14_6 ^ 0xfd205d5;
+	state[5] = eax - local_u32_14_6;
+	state[8] ^= 0x9000ce9 ^ edi;
+
+	if (local_u32_14_0 == 5)
+	{
+		mix_minor51 (state);
+		mix_minor24 (state);
+		mix_minor32 (state);
+		mix_major12 (state, state[19]);
+	}
+	edx = edi + 0x59;
+	eax = ROR (state[19], edx);
+	local_u32_14_8 = eax;
+	state[19] = eax;
+	state[11] = ROR (state[11], (eax * 0x1962fc70));
+	edi = edi ^ 0x534576d7 ^ state[12];
+	state[11] = ROL (state[11], state[1] ^ 0x15);
+	state[19] = state[9] * 0x12af9c5 + local_u32_14_8;
+
+	if (local_u32_14_0 == 8)
+	{
+		mix_minor4 (state, 0x34046fd8);
+		mix_minor42 (state);
+		mix_minor60 (state);
+		mix_major18 (state, state[0]);
+	}
+	state[10] = ROL (state[10], (edi * 0x3533614));
+	state[1] -= ROL (state[14], 0x13);
+	ecx = state[16] + 0xed222733;
+	edi = edi | ecx;
+	state[16] &= state[3] * 0x532f53a;
+	ecx = state[11] * 0x14718f9a;
+	edi = edi ^ ecx;
+
+	if (local_u32_14_0 == 1)
+	{
+		mix_minor49 (state);
+		mix_minor63 (state);
+		mix_minor9 (state, 0xf17ef298);
+		mix_major6 (state, state[13]);
+	}
+	state[3] *= (edi | 0x1739a522);
+	eax = state[1] | 0x4b09e3e;
+	edi = edi * eax;
+	state[7] ^= 0x2a4ea48a ^ state[12];
+
+	if (local_u32_14_0 == 7)
+	{
+		mix_minor35 (state);
+		mix_minor35 (state);
+		mix_minor19 (state, 0xd566f896);
+		mix_major4 (state, edi);
+	}
+	state[19] += 0x1dc54aa - edi;
+	return edi;
+}
+
+
+u32 mix_major12 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_15_0;
+
+	edi = extra_state;
+	ebx = (edi ^ state[7] ^ state[16]) % 0x06;
+	local_u32_15_0 = ebx;
+	ecx = state[18] & 0x104394c4;
+	state[18] = ecx & state[6];
+	eax = 0xe92519e2 + edi;
+	edi = edi * eax;
+	state[4] += 0x46d5ad23 + state[19];
+	state[6] += state[1] + 0x3fd0884;
+	edi = (edi + 0xc46fe68) * state[9];
+	state[9] = edi;
+	ebx = state[13];
+
+	if (local_u32_15_0 == 5)
+	{
+		mix_minor11 (state, 0x55da4384);
+		mix_minor55 (state);
+		mix_minor56 (state);
+		mix_major19 (state, state[4]);
+		ebx = state[13];
+	}
+	eax = state[11] ^ 0x4453b1d7;
+	state[11] = eax ^ state[7];
+	state[4] ^= state[12] + 0x187596ce;
+	state[14] += state[19] ^ 0x1ecd4347;
+	state[17] &= state[6] + 0xaa504a66;
+	state[13] = 0x2482f7ba + ebx - state[7];
+
+	if (local_u32_15_0 == 2)
+	{
+		mix_minor17 (state, 0xc3898ffa);
+		mix_minor14 (state, 0x38e82473);
+		mix_minor37 (state);
+		mix_major20 (state, state[18]);
+	}
+	state[5] *= (state[17] | 0x14128b1f);
+	state[5] &= (state[9] | 0x8ae69ec);
+	eax = state[5] | 0x25dcee2a;
+	edi = eax * 0xf7abca44;
+	state[12] += state[10] * 0x2b5c108a;
+	state[19] += 0x45d1e08 - state[10];
+
+	if (local_u32_15_0 == 1)
+	{
+		mix_minor61 (state);
+		mix_minor14 (state, 0x27f9409b);
+		mix_minor12 (state, 0x2bcf3aae);
+		mix_major17 (state, state[7]);
+	}
+	state[5] += 0x17a9626b - state[3];
+	ecx = state[8];
+	edi = 0x55003f14 +  ecx + edi ;
+	state[9] += ROL (state[6], 0x1f);
+	state[2] |= ROL (state[19], 0xd);
+	eax = state[19] ^ 0xfbf02d6;
+	state[19] = eax ^ state[15];
+	state[3] |= (state[18] * 0x279ed38c);
+	eax = state[19] ^ 0x234a2088;
+	edi = edi & eax;
+
+	if (local_u32_15_0 == 0)
+	{
+		mix_minor42 (state);
+		mix_minor12 (state, 0x9406e46c);
+		mix_minor55 (state);
+		mix_major16 (state, state[14]);
+	}
+	state[4] += 0xd5555942 + state[9];
+	state[6] += 0xf6a829d0 + state[0];
+	state[2] += state[17] * 0x6877a2b6;
+	eax = state[11] + 0x4f92882e;
+	edi = edi | eax;
+        state[4] ^= 0x2a0e1a7a + edi;
+	eax = edi * 0xba88b94;
+	edi = edi * eax;
+
+	if (local_u32_15_0 == 3)
+	{
+		mix_minor18 (state, 0x10a0821a);
+		mix_minor40 (state);
+		mix_minor33 (state);
+		mix_major15 (state, edi);
+	}
+	state[8] -= state[19] ^ 0x88fae5c;
+	eax = edi ^ 0x6171e1a;
+	edi = edi - eax;
+	eax = state[0] & 0x6369ab7c;
+	edi = edi * eax;
+	state[2] ^= state[12] & 0x36b79ddb;
+	eax = 0xff3ba490 + edi;
+	edi = edi ^ eax;
+
+	if (local_u32_15_0 == 4)
+	{
+		mix_minor42 (state);
+		mix_minor39 (state);
+		mix_minor11 (state, 0x42775467);
+		mix_major8 (state, state[2]);
+	}
+
+	edx = state[9];
+	eax = edx * 0x2a0582f6;
+	edi = edi ^ eax;
+	state[9] = edx ^ (state[10] + 0xf71f2197);
+	state[17] |= 0x417b0639 + edi;
+	state[6] ^= ROR (edi, 0x11);
+	state[15] += 0x1935355 - state[3];
+	eax = state[15] ^ 0x232ddb67;
+	edi = edi - eax;
+	eax = ROR (edi, 0x5);
+	edi = edi ^ eax;
+	state[13] += 0x25393a1 + state[5];
+	return edi;
+}
+
+
+u32 mix_major13 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_16_0;
+	u32	local_u32_16_2;
+	u32	local_u32_16_3;
+
+	edi = extra_state;
+	eax = state[1] ^ state[18];
+	edx = state[12];
+	eax = eax ^ edx;
+	local_u32_16_2 = eax;
+	edx = local_u32_16_2 % 0x0B;
+	local_u32_16_0 = edx;
+	state[7] *= (0xfd2296dd + edi);
+	eax = state[9] + 0x10ce1e6b;
+	edi = edi * eax;
+	state[13] |= state[14] & 0xe7aa887;
+
+	if (local_u32_16_0 == 9)
+	{
+		mix_minor61 (state);
+		mix_minor14 (state, 0x57f23dd8);
+		mix_minor34 (state);
+		mix_major4 (state, state[15]);
+	}
+	eax = state[19] + 0x44864e65;
+	state[19] = eax + state[17];
+	state[2] += 0x456501d3 - state[10];
+	state[11] ^= state[17] + 0xe91158ed;
+
+	if (local_u32_16_0 == 6)
+	{
+		mix_minor41 (state);
+		mix_minor46 (state);
+		mix_minor27 (state);
+		mix_major11 (state, state[8]);
+	}
+	state[13] += 0xffeafe84 - edi;
+	state[3] ^= state[10] & 0x5898bbff;
+	eax = state[17] ^ 0xb4b5ddd;
+	edi = edi - eax;
+	state[5] &= 0xf2a69347 + edi;
+
+	if (local_u32_16_0 == 7)
+	{
+		mix_minor10 (state, 0x1f9b5706);
+		mix_minor55 (state);
+		mix_minor38 (state);
+		mix_major22 (state, state[19]);
+	}
+	state[8] += 0x35a3f082 + state[11];
+	state[15] &= 0xf0918e1c + edi;
+
+	if (local_u32_16_0 == 8)
+	{
+		mix_minor12 (state, 0x8bd80373);
+		mix_minor48 (state);
+		mix_minor39 (state);
+		mix_major5 (state, edi);
+	}
+	edi = edi + 0x1e87b29e - state[12];
+	eax = state[0] + 0x9b993250;
+	edi = edi ^ eax;
+	state[13] ^= state[17] * 0xb083b2b;
+
+	if (local_u32_16_0 == 5)
+	{
+		mix_minor68 (state);
+		mix_minor58 (state);
+		mix_minor52 (state);
+		mix_major3 (state, state[14]);
+	}
+	state[1] = ROL (state[1], (state[0] ^ 0xfa));
+	state[5] ^= state[11] * 0x17321349;
+	ecx = state[3] + 0xffce689b;
+	edi = edi ^ ecx;
+	state[4] *= (0x2570be6e + edi);
+
+	if (local_u32_16_0 == 10)
+	{
+		mix_minor13 (state, 0xc0e125f2);
+		mix_minor57 (state);
+		mix_minor20 (state);
+		mix_major14 (state, state[6]);
+	}
+	state[15] *= 0x2d42b937;
+	state[4] *= (0xf544478e + edi);
+	state[0] = ((state[9] ^ 0x4dc36a) + state[0]) + 0x10bb4f25 - edi;
+
+	if (local_u32_16_0 == 3)
+	{
+		mix_minor39 (state);
+		mix_minor26 (state);
+		mix_minor1 (state, 0x43816fc4);
+		mix_major9 (state, state[15]);
+	}
+	state[19] &= ROR (state[3], 0xe);
+	state[17] *= 0x18575b09 * edi;
+	state[1] |= edi * 0x50ebe77;
+	eax = state[6] | 0x4d24003d;
+	edi = edi + eax;
+
+	if (local_u32_16_0 == 4)
+	{
+		mix_minor13 (state, 0x49d6a047);
+		mix_minor29 (state);
+		mix_minor22 (state);
+		mix_major10 (state, state[9]);
+	}
+	state[15] &= 0xf770857b + state[0];
+	state[0] = ROR (state[0], (edi * 0xffffffed));
+	eax = edi | 0x2576a843;
+	edi = edi - eax;
+
+	if (local_u32_16_0 == 0)
+	{
+		mix_minor49 (state);
+		mix_minor41 (state);
+		mix_minor14 (state, 0x4a39e439);
+		mix_major2 (state, state[8]);
+	}
+	state[1] += edi * 0x2994c8c;
+	state[16] ^= state[6] + 0xfe25a480;
+	state[3] = (state[3] * 0x1e333f7b) * state[11];
+	state[7] = ROR (state[7], (state[17] ^ 0xda));
+
+	if (local_u32_16_0 == 2)
+	{
+		mix_minor51 (state);
+		mix_minor3 (state, 0xc6acc5fa);
+		mix_minor6 (state, 0x1f4370a1);
+		mix_major7 (state, state[1]);
+	}
+	state[13] ^= state[18] + 0x149e5b40;
+	state[0] += 0x541a494 + state[19];
+
+	if (local_u32_16_0 == 1)
+	{
+		mix_minor38 (state);
+		mix_minor28 (state);
+		mix_minor50 (state);
+		mix_major21 (state, edi);
+	}
+	state[2] += 0x16deeae - edi;
+	state[9] -= state[0] ^ 0x1120ce2d;
+	eax = state[13] ^ 0x2a74ac2a;
+	edx = state[7];
+	eax = eax ^ edx;
+	local_u32_16_3 = eax;
+	state[13] = eax;
+	state[12] &= state[9] + 0xdab80c67;
+	state[14] -= edi * 0x2776477;
+	state[4] -= state[19] * 0x2f2e21d0;
+	state[19] += 0xe78ae13d - state[3];
+	local_u32_16_2 = edi;
+	local_u32_16_2 = local_u32_16_2 ^ 0x434c0d3a;
+	edi = (edi - local_u32_16_2) + 0x11f70706 - state[2];
+	ebx = state[16] + 0xa9;
+	eax = ROR (edi, ebx);
+	edi = eax;
+	state[13] = local_u32_16_3 + edi * 0x2a0d21c3;
+	return eax;
+}
+
+
+u32 mix_major14 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+
+	u32	local_u32_17_0;
+	u32	local_u32_17_2;
+	u32	local_u32_17_3;
+
+	edi = extra_state;
+	eax = state[6] ^ state[8];
+	edx = state[15];
+	eax = eax ^ edx;
+	local_u32_17_2 = eax;
+	edx = local_u32_17_2 % 0x0B;
+	local_u32_17_0 = edx;
+	state[14] &= edi ^ 0x1c0b5143;
+	state[17] *= (state[5] + 0x4ef38b53);
+	state[15] ^= ROR (state[16], 0x8);
+
+	if (local_u32_17_0 == 4)
+	{
+		mix_minor6 (state, 0x8018c7d6);
+		mix_minor36 (state);
+		mix_minor47 (state);
+		mix_major16 (state, state[10]);
+	}
+	ecx = state[17] & 0x3b118c17;
+	edi = edi ^ ecx;
+	ebx = state[7] * 0xb755cab;
+	eax = ROR (edi, ebx);
+	edi = eax;
+	state[5] -= ROR (state[12], 0x5);
+
+	if (local_u32_17_0 == 10)
+	{
+		mix_minor13 (state, 0x89c9204a);
+		mix_minor16 (state, 0x84049032);
+		mix_minor14 (state, 0x75f250e0);
+		mix_major15 (state, edi);
+	}
+	eax = state[10] + 0xe81a232b;
+	edi = edi ^ eax;
+	state[18] |= state[2] + 0xef9e8d77;
+	state[3] += 0xce3d3234 + state[4];
+
+	if (local_u32_17_0 == 5)
+	{
+		mix_minor27 (state);
+		mix_minor38 (state);
+		mix_minor20 (state);
+		mix_major8 (state, state[0]);
+	}
+	eax = ROR (edi, 0xf);
+	edi = edi * eax;
+	eax = state[7] + 0x358107b;
+	edi = edi & eax;
+	state[12] += ROL (state[3], 0x14);
+
+	if (local_u32_17_0 == 3)
+	{
+		mix_minor20 (state);
+		mix_minor5 (state, 0x14ef3da3);
+		mix_minor6 (state, 0x5aef9557);
+		mix_major12 (state, edi);
+	}
+
+	edi = 0xddcb6fb3 +  edi + edi ;
+	eax = state[4];
+	edx = eax * 0x2a5c35ea;
+	edi = edi ^ edx;
+	state[4] = eax + 0x3b4034a1 - state[3];
+	state[11] &= state[19] | 0x2856103;
+
+	if (local_u32_17_0 == 1)
+	{
+		mix_minor21 (state);
+		mix_minor56 (state);
+		mix_minor25 (state);
+		mix_major18 (state, state[16]);
+	}
+	state[7] |= 0x2d3d686 + edi;
+	edi = (edi & 0x316de5b2) & state[15];
+
+	if (local_u32_17_0 == 7)
+	{
+		mix_minor20 (state);
+		mix_minor33 (state);
+		mix_minor0 (state, 0x1d71d16c);
+		mix_major6 (state, state[15]);
+	}
+	edi = 0x4d77c09e +  ((edi ^ 0x3e8999a9 ^ state[17]) << 1) ;
+	state[6] *= (state[10] + 0xd1650ad7);
+	state[7] *= (state[3] & 0xade0835);
+
+	if (local_u32_17_0 == 0)
+	{
+		mix_minor26 (state);
+		mix_minor28 (state);
+		mix_minor67 (state);
+		mix_major4 (state, state[3]);
+	}
+	state[9] -= state[15] ^ 0x32bd1767;
+	state[12] ^= (state[3] + 0x74289e8a);
+	state[9] ^= state[5] + 0xd55d1b86;
+	eax = state[12] * 0x13b7b134;
+	edi = edi & eax;
+
+	if (local_u32_17_0 == 8)
+	{
+		mix_minor35 (state);
+		mix_minor30 (state);
+		mix_minor21 (state);
+		mix_major11 (state, state[2]);
+	}
+
+	edi = 0xda1b9ad7 +  edi + edi ;
+	state[6] -= state[18] * 0x452ad09;
+	state[4] += edi ^ 0x4895c9e2;
+
+	if (local_u32_17_0 == 9)
+	{
+		mix_minor49 (state);
+		mix_minor49 (state);
+		mix_minor46 (state);
+		mix_major22 (state, state[16]);
+	}
+
+	eax = 0xf8ecf928 + edi;
+	edi = edi ^ eax;
+	state[18] = ROR (state[18], (state[5] + 0xad));
+
+	if (local_u32_17_0 == 6)
+	{
+		mix_minor55 (state);
+		mix_minor69 (state);
+		mix_minor67 (state);
+		mix_major5 (state, state[8]);
+	}
+
+	edi = edi * 0x34b70af0;
+	state[5] -= ROL (state[19], 0x17);
+
+	if (local_u32_17_0 == 2)
+	{
+		mix_minor46 (state);
+		mix_minor47 (state);
+		mix_minor47 (state);
+		mix_major3 (state, state[18]);
+	}
+	eax = ROR (state[5], 0x2) * state[8];
+	local_u32_17_2 = eax;
+	state[8] = eax;
+	local_u32_17_3 = eax;
+	local_u32_17_3 = local_u32_17_3 & 0x15595f;
+	edx = state[17];
+	local_u32_17_3 = local_u32_17_3 + edx;
+	state[17] = local_u32_17_3;
+	state[19] = ROR (state[19], (state[7] + 0x41));
+	state[9] -= edi * 0x539f549;
+	ecx = ((local_u32_17_2) ^ 0x10549d01) * state[0];
+	local_u32_17_2 = ecx;
+	state[0] = ecx;
+	state[11] -= state[4] ^ 0x1cd38676;
+	state[12] += ROR (edi, 0x10);
+	ebx = ROL (state[16], 0x1b);
+	eax = ROL (edi, ebx);
+	edi = eax;
+	edx = state[15] + 0x266b587;
+	local_u32_17_3 = local_u32_17_3 ^ edx;
+	state[17] = local_u32_17_3 - ROR ((local_u32_17_2), 0x1d);
+	state[3] += 0x2669d0a1 - state[13];
+	return edi;
+}
+
+
+u32 mix_major15 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_18_0;
+	u32	local_u32_18_1;
+	u32	local_u32_18_3;
+	u32	local_u32_18_5;
+
+	edx = state[15];
+	local_u32_18_1 = edx;
+	ecx = extra_state;
+	local_u32_18_0 = ecx;
+	local_u32_18_0 = local_u32_18_0 ^ edx;
+	edx = state[12];
+	local_u32_18_0 = local_u32_18_0 ^ edx;
+	local_u32_18_0 = local_u32_18_0 & 0x3;
+	eax = state[3] ^ 0x94;
+	state[6] = ROR (state[6], eax);
+	state[12] += ((extra_state) ^ 0x9a94557);
+	ebx = state[11] * 0xfffffff9;
+	edx = ROL ((extra_state), ebx);
+	state[15] = (state[6] ^ 0x2c63c7d7) * local_u32_18_1;
+	eax = state[9] * 0x3471499e;
+	edx = edx - eax;
+	state[4] += 0x1565237b - state[17];
+	edx = edx ^ 0x34293622;
+	ecx = state[3];
+	edx = edx ^ ecx;
+	extra_state = edx;
+	state[11] = 0xbab1970a +  edx + state[11] ;
+	state[7] |= state[18] & 0x2e7cbf50;
+
+	if (local_u32_18_0 == 2)
+	{
+		mix_minor28 (state);
+		mix_minor53 (state);
+		mix_minor11 (state, 0x51614109);
+		mix_major19 (state, state[11]);
+	}
+
+	ebx = state[12];
+	esi = (0xc178e538 + ebx) & state[16];
+	state[16] = esi;
+	edx = state[6] * 0xf7a199;
+	ecx = state[14];
+	edx = edx | ecx;
+	local_u32_18_5 = edx;
+	state[14] = edx;
+	edx = state[9] + 0x598a281 + extra_state;
+	local_u32_18_3 = edx;
+	state[9] = edx;
+	eax = state[0] + 0xf6c67dcd;
+	extra_state = extra_state ^ eax;
+	state[14] = (ebx * 0x2a688905) + local_u32_18_5;
+	eax = (extra_state) | 0x29;
+	state[16] = ROR (esi, eax);
+	state[10] += (extra_state) | 0x4d8cb855;
+	state[19] += 0x32b94292 - local_u32_18_3;
+	eax = local_u32_18_3 * 0x1c873f09;
+	edx = ROR ((extra_state), eax);
+	eax = state[4] * 0x1643c5e0;
+	edx = ROL (edx, eax);
+	extra_state = edx;
+
+	if (local_u32_18_0 == 1)
+	{
+		mix_minor9 (state, 0xed396fb0);
+		mix_minor66 (state);
+		mix_minor13 (state, 0x861ab0ce);
+		mix_major20 (state, extra_state);
+	}
+	state[6] &= ROL (state[10], 0x1c);
+	state[16] += ((extra_state) ^ 0x5aafcd4a);
+	state[12] &= (extra_state) ^ 0x1c22a3b7;
+	eax = state[17] ^ 0x2e;
+	edx = ROL ((extra_state), eax);
+	eax = state[4] * 0x358b021d;
+	ecx = state[18] - eax;
+	local_u32_18_5 = ecx;
+	state[18] = ecx;
+	state[16] ^= state[13] + 0xac30f7a;
+	eax = state[1] + 0xc2;
+	edx = ROR (edx, eax);
+	extra_state = edx;
+	state[18] = (local_u32_18_5) + 0xee6e38da - extra_state;
+
+	if (local_u32_18_0 == 0)
+	{
+		mix_minor31 (state);
+		mix_minor31 (state);
+		mix_minor52 (state);
+		mix_major17 (state, state[9]);
+	}
+	state[2] += state[16] | 0x5cbeb00;
+	eax = ROR ((extra_state), 0x16);
+	esi = state[7] - eax;
+	state[7] = esi;
+	state[4] ^= (extra_state) + 0x1580fb54;
+	ebx = state[12];
+	eax = ROL (ebx, 0x19);
+	edx = state[17] - eax;
+	local_u32_18_5 = edx;
+	state[17] = edx;
+	state[16] += (state[8] ^ 0x1b3ea2);
+	state[5] += 0x193cf230 - extra_state;
+	eax = (extra_state) + 0x72;
+	state[18] = ROL (state[18], eax);
+	eax = (local_u32_18_5) & 0x66e0e812;
+	extra_state = extra_state - eax;
+	state[12] = ebx ^ (ROL (esi, 0x12));
+	state[17] = (local_u32_18_5) + 0xb70d1a - state[13];
+
+	if (local_u32_18_0 == 3)
+	{
+		mix_minor46 (state);
+		mix_minor9 (state, 0x537936c7);
+		mix_minor24 (state);
+		mix_major16 (state, state[17]);
+	}
+	state[6] += 0xdfef3914 + state[1];
+	eax = ROL (state[5], 0x1d);
+	extra_state = extra_state + eax;
+	state[18] -= state[8] | 0x456bd4b;
+	eax = state[13];
+	edx = 0x123e07ad + eax;
+	extra_state = extra_state & edx;
+	state[0] ^= extra_state * 0x22af60a0;
+	state[13] = eax + 0xf69f7aa2 - state[12];
+	ebx = (extra_state) ^ 0xfc;
+	state[17] = ROR (state[17], ebx);
+	state[13] += state[5] * 0x248bf14b;
+	state[2] ^= ROR ((extra_state), 0xc);
+	return extra_state;
+}
+
+
+u32 mix_major16 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_19_0;
+	u32	local_u32_19_1;
+	u32	local_u32_19_2;
+	u32	local_u32_19_3;
+	u32	local_u32_19_4;
+	u32	local_u32_19_5;
+
+	esi = extra_state;
+	ecx = state[12] % 0x03;
+	local_u32_19_0 = ecx;
+	state[7] ^= state[7] + 0x1256f342;
+	state[9] ^= ROL (state[14], 0x9);
+	ecx = state[13];
+	local_u32_19_4 = ecx;
+	local_u32_19_4 = local_u32_19_4 ^ 0x4a20925;
+	state[0] += local_u32_19_4;
+	state[13] = ROR (state[13], esi | 0xab);
+	esi = esi + 0x2cd8307e;
+	ecx = state[10];
+	local_u32_19_1 = ecx;
+	esi = esi - ecx;
+	ebx = state[17] * 0x5979375;
+	eax = ROR (esi, ebx);
+	esi = eax;
+	state[8] += state[15] | 0x11570bca;
+	eax = state[3] ^ 0x4c404c71;
+	esi = esi & eax;
+	local_u32_19_1 = local_u32_19_1 ^ 0x85d82e;
+	esi = esi + local_u32_19_1;
+	state[11] = 0x26d0f98c +  esi + ((state[6] & 0xf076b8f) * state[11]) ;
+
+	if (local_u32_19_0 == 0)
+	{
+		mix_minor29 (state);
+		mix_minor21 (state);
+		mix_minor33 (state);
+		mix_major19 (state, state[7]);
+	}
+	state[1] ^= ROR (esi, 0x17);
+	state[9] += 0xf24cc80b + esi;
+	state[3] = ROL (state[3], (state[14] * 0x6223b3d));
+	state[19] += 0x64922cc + esi;
+	esi = esi + 0x1e0944e3 - state[0];
+	edx = esi * 0xffffffdc;
+	eax = ROR (esi, edx);
+	esi = eax;
+	ecx = state[15] + 0x8d90c5a3;
+	esi = esi * ecx;
+	state[17] ^= (esi & 0xdd9bf1a);
+	state[4] += 0xd5bd8bc1 - state[6];
+	esi = 0x1226f462 +  esi + esi ;
+	state[17] ^= ROL (state[13], 0x5);
+	state[13] = ROL (state[13], esi & 0x12);
+
+	if (local_u32_19_0 == 2)
+	{
+		mix_minor45 (state);
+		mix_minor3 (state, 0x03407a08);
+		mix_minor10 (state, 0xf1979b41);
+		mix_major20 (state, esi);
+	}
+	esi = (esi | 0x10b9b57a) | state[9];
+	ecx = state[0] + 0x477a65c2;
+	eax = state[10];
+	ecx = ecx + eax;
+	local_u32_19_2 = ecx;
+	state[0] = ecx;
+	ecx = state[7];
+	local_u32_19_4 = ecx;
+	local_u32_19_4 = local_u32_19_4 ^ 0x1b348ba1;
+	state[8] |= local_u32_19_4;
+	state[16] = ROL (state[16], ROL (state[1], 0x8));
+	ebx = state[19];
+	ecx = ebx * 0xfa375c5;
+	esi = esi ^ ecx;
+	eax = ROR (state[5], 0xd);
+	local_u32_19_4 = eax;
+	state[11] = ROR (state[11], local_u32_19_4);
+	state[7] ^= (0x64bd3f85 + ebx);
+	eax = (ROR (esi, 0x19)) * state[6];
+	local_u32_19_3 = eax;
+	state[6] = eax;
+	ecx = 0xaeeb67de +  esi + state[5] ;
+	local_u32_19_5 = ecx;
+	state[5] = ecx;
+	state[19] = ebx | (ROR (ecx, 0x16));
+	state[0] = 0xe1f2872 +  (local_u32_19_3) + (local_u32_19_2) ;
+
+	if (local_u32_19_0 == 1)
+	{
+		mix_minor53 (state);
+		mix_minor27 (state);
+		mix_minor7 (state, 0xd6e998c5);
+		mix_major17 (state, esi);
+	}
+	esi = (esi | 0x40c95dca) | state[6];
+	ebx = state[12] ^ 0xe1;
+	eax = ROL (esi, ebx);
+	esi = eax;
+	state[3] &= state[8] + 0xed5ca98b;
+	state[4] += 0x92abec6e + esi;
+	eax = ROR (state[13], 0x16);
+	esi = esi & eax;
+	state[2] += state[15] * 0xff635ec;
+	state[6] ^= (0x37343841 + esi);
+	state[9] += 0xf8e12c69 + state[14];
+	state[14] -= ROL (state[10], 0x14);
+	return esi;
+}
+
+
+u32 mix_major17 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_20_0;
+	u32	local_u32_20_1;
+	u32	local_u32_20_2;
+	u32	local_u32_20_3;
+	u32	local_u32_20_5;
+	u32	local_u32_20_7;
+	u32	local_u32_20_8;
+
+	esi = extra_state;
+	local_u32_20_0 = esi;
+	local_u32_20_0 = local_u32_20_0 & 0x1;
+	state[5] += 0x34b87873 - state[18];
+	ecx = state[17] + 0x2051ec4;
+	ebx = state[1];
+	local_u32_20_1 = ebx;
+	ecx = ecx - ebx;
+	local_u32_20_2 = ecx;
+	state[17] = ecx;
+	ecx = state[6] ^ 0x5c80bc7;
+	ebx = state[16];
+	local_u32_20_8 = ebx;
+	ecx = ecx ^ ebx;
+	local_u32_20_3 = ecx;
+	state[6] = ecx;
+	eax = ROR (esi, 0x1a);
+	esi = esi - eax;
+	state[5] *= (ebx | 0x154e9813);
+	state[0] |= state[5] + 0xbac2a47e;
+	state[13] *= (state[9] ^ 0xbf263a6);
+	state[9] |= ROL (state[11], 0x17);
+	state[16] = ebx * (local_u32_20_1 & 0x1c28de84);
+	state[6] = ROR (state[2], 0xb) ^ local_u32_20_3;
+	state[12] ^= ROR (state[9], 0x18);
+	esi = 0x2c5a0200 +  esi + esi ;
+	state[19] |= state[12] + 0xa104f7f6;
+	state[17] = (state[11] + 0xf51e9043) ^ local_u32_20_2;
+	state[15] += 0x37f1bc89 + esi;
+
+	if (local_u32_20_0 == 0)
+	{
+		mix_minor16 (state, 0x1ab3f2a6);
+		mix_minor7 (state, 0xdd3520d7);
+		mix_minor53 (state);
+		mix_major19 (state, state[4]);
+	}
+	eax = state[5] | 0x79ba9a48;
+	esi = esi + eax;
+	state[4] -= (state[2] ^ 0x1ecdadba);
+	eax = state[10] + 0xf01ca4cf;
+	esi = esi ^ eax;
+	eax = state[8] + 0xf58222aa;
+	esi = esi ^ eax;
+	state[8] |= (state[7] * 0x59c62257);
+	state[7] ^= state[7] | 0x2d2750f0;
+	eax = state[17] | 0x1719d4f;
+	esi = esi + eax;
+	state[19] *= (state[4] + 0xcec35bec);
+	state[18] ^= state[2] + 0xdc17a237;
+	state[19] += 0xca0f8bc5 + state[5];
+	esi = 0xff282d98 +  esi + esi ;
+	state[0] += 0x2a09f2a5 + esi;
+	state[11] ^= state[2] + 0x30e437d6;
+	state[12] |= 0xee36df26 + esi;
+	state[15] &= 0xc95e1442 + esi;
+
+	if (local_u32_20_0 == 1)
+	{
+		mix_minor27 (state);
+		mix_minor7 (state, 0xd54c23bc);
+		mix_minor7 (state, 0xdb72a68e);
+		mix_major20 (state, state[14]);
+	}
+
+	edx = state[17];
+	eax = edx ^ 0x72eeed7;
+	state[7] = (state[7] - eax);
+	edx = edx * 0x162a030d;
+	ecx = state[15];
+	local_u32_20_5 = ecx;
+	state[17] = edx * ecx;
+	state[7] &= (state[14] + 0xf0dd3ef3);
+	ebx = state[1];
+	local_u32_20_7 = ebx;
+	esi = esi + state[1];
+	state[2] ^= 0x2d9ceb17 ^ state[13];
+	state[7] &= (esi ^ 0x176b1b8e);
+	state[8] |= 0xdab13e76 + esi;
+	state[16] += 0x2a74b8d4 - state[12];
+	esi = esi + 0xcc1039a3 - state[4];
+	eax = state[5] * 0x1239378b;
+	esi = esi - eax;
+	state[0] ^= 0xd9a5ac4 ^ esi;
+	local_u32_20_7 = local_u32_20_7 ^ 0x346ff630;
+	state[10] -= local_u32_20_7;
+	esi = (esi & 0x5638016d) & state[4];
+	eax = state[10] + 0xa4c7df2;
+	esi = esi & eax;
+	local_u32_20_5 = local_u32_20_5 ^ 0x2f99340b;
+	state[14] += local_u32_20_5;
+	state[11] |= state[7] + 0xd5881b85;
+	eax = state[16] * 0x474eb79;
+	state[9] = ROL (state[9], eax);
+	return esi;
+}
+
+
+u32 mix_major18 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_21_0;
+	u32	local_u32_21_1;
+	u32	local_u32_21_3;
+	eax = state[17] ^ state[16];
+	edx = state[13];
+	eax = eax ^ edx;
+	local_u32_21_1 = eax;
+	esi = local_u32_21_1 % 0x07;
+	state[2] += 0xe7e9ac84 - state[9];
+	eax = (extra_state) + 0xd5e47036;
+	state[7] &= eax;
+	state[7] ^= 0x5d5e7006 ^ state[18];
+	ecx = state[6] ^ 0x16afd25f;
+	extra_state = extra_state + ecx;
+	state[0] = ROR (state[0], (state[18] | 0x7b));
+
+	if (esi == 4)
+	{
+		mix_minor33 (state);
+		mix_minor17 (state, 0xc4eceecd);
+		mix_minor39 (state);
+		mix_major19 (state, state[17]);
+	}
+	state[1] *= 0x927384a * state[0];
+	ebx = state[6];
+	eax = ebx * 0x2ac0b63c;
+	extra_state = extra_state ^ eax;
+	eax = state[5] * 0xef44412;
+	extra_state = extra_state ^ eax;
+	eax = ROL (state[18], 0x16);
+	extra_state = extra_state - eax;
+
+	if (esi == 1)
+	{
+		mix_minor37 (state);
+		mix_minor23 (state);
+		mix_minor35 (state);
+		mix_major20 (state, extra_state);
+		ebx = state[6];
+	}
+	edx = ((extra_state) + 0x4d05da6a) & ebx;
+	local_u32_21_0 = edx;
+	state[6] = edx;
+	state[13] *= (state[18] ^ 0xe2ba11c);
+	extra_state = extra_state ^ 0x2e3d328f;
+	eax = state[2];
+	extra_state = extra_state ^ eax;
+	edx = (state[1] | 0x110c8a1) * extra_state;
+	extra_state = edx;
+	state[4] = ROL (state[4], (ROR ((local_u32_21_0), 0x1b)));
+
+	if (esi == 0)
+	{
+		mix_minor16 (state, 0xc38b9c69);
+		mix_minor47 (state);
+		mix_minor4 (state, 0x48654651);
+		mix_major17 (state, extra_state);
+	}
+	state[19] &= (ROR ((extra_state), 0x8));
+	eax = ROR (state[19], 0xc);
+	extra_state = extra_state | eax;
+	eax = state[14] * 0x2d8924b3;
+	extra_state = extra_state + eax;
+	state[10] ^= state[15] + 0xdcba6126;
+	eax = state[16] & 0xf72e29a;
+	extra_state = extra_state + eax;
+	state[3] -= state[18] | 0x7614cfb;
+
+	if (esi == 6)
+	{
+		mix_minor60 (state);
+		mix_minor8 (state, 0x395f45a4);
+		mix_minor33 (state);
+		mix_major16 (state, state[9]);
+	}
+	state[19] &= 0xfe6ea18f + state[4];
+	state[6] *= (state[7] & 0x226185b2);
+	state[0] += state[4] ^ 0x35388017;
+	eax = state[14] * 0x268d6eae;
+	extra_state = extra_state ^ eax;
+
+	if (esi == 3)
+	{
+		mix_minor18 (state, 0x285b4910);
+		mix_minor11 (state, 0x552ba7b1);
+		mix_minor26 (state);
+		mix_major15 (state, state[0]);
+	}
+
+	eax = extra_state;
+	local_u32_21_0 = eax;
+	local_u32_21_0 = local_u32_21_0 ^ 0xbf3b8c0;
+	state[15] += local_u32_21_0;
+	state[10] = ROR (state[10], ROR (state[18], 0x19));
+	edx = extra_state;
+	local_u32_21_0 = edx;
+	local_u32_21_0 = local_u32_21_0 ^ 0x61d2180;
+	ecx = state[19];
+	local_u32_21_0 = local_u32_21_0 | ecx;
+	state[19] = local_u32_21_0;
+	state[4] &= state[19] + 0x588d79a3;
+
+	if (esi == 5)
+	{
+		mix_minor10 (state, 0xbdf382e1);
+		mix_minor7 (state, 0xccb8542b);
+		mix_minor69 (state);
+		mix_major8 (state, state[8]);
+	}
+	state[0] += 0x19039f88 + extra_state;
+	ebx = ROR (state[7], 0xe);
+	eax = ROL ((extra_state), ebx);
+	extra_state = eax;
+	edx = state[8] ^ 0x1f3dce4;
+	ecx = state[6];
+	edx = edx + ecx;
+	local_u32_21_1 = edx;
+	state[6] = edx;
+	state[17] *= (state[18] + 0x4f2cb877);
+	state[6] = (local_u32_21_1) & (state[15] * 0x177f5d63);
+	state[12] = ROL (state[12], ROL (state[16], 0x1));
+
+	if (esi == 2)
+	{
+		mix_minor23 (state);
+		mix_minor32 (state);
+		mix_minor7 (state, 0xc2793931);
+		mix_major12 (state, state[18]);
+	}
+	esi = state[19] + 0xbe9fd027;
+	ebx = state[12];
+	esi = esi + ebx;
+	state[19] = esi;
+	edx = state[2] * 0x3ec8c5cb;
+	extra_state = extra_state & edx;
+	ecx = state[4];
+	local_u32_21_0 = ecx;
+	local_u32_21_0 = local_u32_21_0 & 0x48357b75;
+	state[8] += local_u32_21_0;
+	state[1] = ROL (state[1], (state[6] + 0xf4));
+	edx = state[11] + 0x13c7dc0f;
+	ecx = state[14];
+	edx = edx ^ ecx;
+	local_u32_21_3 = edx;
+	state[14] = edx;
+	state[4] += (ROL ((extra_state), 0x13));
+	state[12] = ebx + 0x15ea2e80 - state[2];
+	edx = state[11];
+	esi = 0xaff84c32 +  esi + edx ;
+	state[11] = esi;
+	ebx = (extra_state) ^ 0x58dd1776 ^ state[7];
+	state[2] ^= (state[5] * 0x278991a8);
+	state[14] = 0xf431b0d4 +  state[2] + (local_u32_21_3) ;
+	return ebx;
+}
+
+
+u32 mix_major19 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+	u32	esi;
+
+	u32	local_u32_22_0;
+	u32	local_u32_22_2;
+	u32	local_u32_22_3;
+	u32	local_u32_22_4;
+	u32	local_u32_22_5;
+	u32	local_u32_22_6;
+	u32	local_u32_22_7;
+	u32	local_u32_22_8;
+	u32	local_u32_22_9;
+	u32	local_u32_22_10;
+	u32	local_u32_22_11;
+	u32	local_u32_22_12;
+	u32	local_u32_22_13;
+	u32	local_u32_22_14;
+	u32	local_u32_22_15;
+	u32	local_u32_22_16;
+	u32	local_u32_22_17;
+	u32	local_u32_22_18;
+	u32	local_u32_22_19;
+	u32	local_u32_22_20;
+	u32	local_u32_22_21;
+	u32	local_u32_22_22;
+	u32	local_u32_22_23;
+	u32	local_u32_22_24;
+	u32	local_u32_22_25;
+	u32	local_u32_22_26;
+	u32	local_u32_22_28;
+
+	edi = extra_state;
+	ecx = 0xd2670e69 + edi;
+	ebx = state[3];
+	ecx = ecx ^ ebx;
+	local_u32_22_0 = ecx;
+	state[3] = ecx;
+	ecx = state[2];
+	local_u32_22_21 = ecx;
+	eax = ecx & 0x3bd91a6d;
+	edi = edi ^ eax;
+	esi = state[12];
+	edi = 0xe162a863 +  esi + edi ;
+	state[3] = (local_u32_22_0) + 0x2f72a89a - edi;
+	ebx = state[3] & 0x4053f57a;
+	ecx = state[11];
+	ebx = ebx ^ ecx;
+	local_u32_22_2 = ebx;
+	state[11] = ebx;
+	eax = 0xfe64a9df + esi;
+	edi = edi * eax;
+	ebx = state[6] ^ 0x6c235a3;
+	ecx = state[14];
+	local_u32_22_22 = ecx;
+	ebx = ebx ^ ecx;
+	local_u32_22_3 = ebx;
+	state[6] = ebx;
+	eax = state[7] + 0x7b;
+	ebx = ROL ((local_u32_22_2), eax);
+	local_u32_22_4 = ebx;
+	state[11] = ebx;
+	ebx = state[8];
+	local_u32_22_23 = ebx;
+	ebx = ebx + 0xdf869976;
+	ecx = state[13];
+	ebx = ebx ^ ecx;
+	local_u32_22_5 = ebx;
+	state[13] = ebx;
+	eax = state[12] + 0x41;
+	ebx = ROL (state[4], eax);
+	local_u32_22_6 = ebx;
+	state[4] = ebx;
+	ebx = local_u32_22_5;
+	local_u32_22_7 = ebx;
+	local_u32_22_7 = local_u32_22_7 ^ 0x3d475dc2;
+	state[9] += local_u32_22_7;
+	eax = (ROR (edi, 0x19)) + local_u32_22_22;
+	local_u32_22_8 = eax;
+	state[14] = eax;
+	local_u32_22_9 = edi;
+	local_u32_22_9 = local_u32_22_9 ^ 0x222fef6f;
+	ecx = state[10];
+	local_u32_22_9 = local_u32_22_9 + ecx;
+	state[10] = local_u32_22_9;
+	ebx = state[19];
+	local_u32_22_24 = ebx;
+	ebx = ROR (ebx, 0x9) ^ esi;
+	local_u32_22_10 = ebx;
+	state[12] = ebx;
+	ebx = local_u32_22_6;
+	ecx = local_u32_22_23;
+	ebx = 0x56d964ed +  ecx + ebx ;
+	local_u32_22_11 = ebx;
+	state[4] = ebx;
+	ebx = state[18] + 0x132444b;
+	ecx = state[7];
+	local_u32_22_25 = ecx;
+	ebx = ebx - ecx;
+	local_u32_22_12 = ebx;
+	state[18] = ebx;
+	state[0] = 0xd35add1b;
+	eax = local_u32_22_3 * 0x6fe2b2f;
+	edi = edi + eax;
+	ebx = state[1];
+	local_u32_22_26 = ebx;
+	ebx = ebx + 0xacf6925;
+	ecx = (local_u32_22_8) * ebx;
+	local_u32_22_13 = ecx;
+	state[14] = ecx;
+	ebx = ROR (edi, 0x13);
+	ecx = state[15];
+	ebx = ebx ^ ecx;
+	local_u32_22_14 = ebx;
+	state[15] = ebx;
+	esi = 0xc0c8f110 - ebx;
+	state[0] = esi;
+	eax = edi | 0x2a57ebeb;
+	edi = edi ^ eax;
+	state[12] = local_u32_22_10 - ROL (edi, 0xd);
+	eax = (local_u32_22_5) & 0x15a66bda;
+	edi = edi | eax;
+	ecx = local_u32_22_12;
+	edi = 0x235ac102 +  ecx + edi ;
+	eax = edi + 0x2d;
+	state[8] = ROL ((local_u32_22_23), eax);
+	edx = state[12] + 0x3bbb70fe;
+	ebx = state[5];
+	edx = edx ^ ebx;
+	local_u32_22_15 = edx;
+	state[5] = edx;
+	eax = (local_u32_22_26) + 0xec51134a;
+	edi = edi & eax;
+	ecx = local_u32_22_4 * 0x87095a6;
+	ebx = local_u32_22_24;
+	ecx = ecx ^ ebx;
+	local_u32_22_16 = ecx;
+	state[19] = ecx;
+	eax = edx & 0xf43f6fb;
+	esi = esi - eax;
+	state[0] = esi;
+	state[15] = 0xea66f8dc +  (local_u32_22_11) + (local_u32_22_14) ;
+	ecx = (local_u32_22_16) + 0xd049cfd6;
+	ebx = local_u32_22_25;
+	ecx = ecx - ebx;
+	local_u32_22_17 = ecx;
+	state[19] = ecx;
+	state[13] = (local_u32_22_5) - (esi ^ 0x253c86f9);
+	ebx = state[16];
+	local_u32_22_28 = ebx;
+	eax = ebx | 0x520e84ba;
+	edi = edi + eax;
+	eax = ROL ((local_u32_22_12), 0x17);
+	ebx = (local_u32_22_9) - eax;
+	local_u32_22_18 = ebx;
+	state[10] = ebx;
+	eax = (edi * 0x2ee5918a) + local_u32_22_12;
+	local_u32_22_19 = eax;
+	state[18] = eax;
+	state[7] = ((local_u32_22_4) ^ 0xf0a32bc) & local_u32_22_25;
+	eax = edi ^ 0xfa89177;
+	esi = esi - eax;
+	state[0] = esi;
+	state[2] = ROL (state[9], 0x18) | local_u32_22_21;
+	state[14] = local_u32_22_13 * 0x1cb1574a;
+	ebx = edi + 0x8d;
+	esi = ebx;
+	ebx = ROR ((local_u32_22_18), esi);
+	local_u32_22_20 = ebx;
+	state[10] = ebx;
+	esi = ((local_u32_22_4) + 0xef291170) & local_u32_22_26;
+	state[1] = esi;
+	local_u32_22_17 = local_u32_22_17 & 0x259a6745;
+	state[6] = (local_u32_22_3) + local_u32_22_17;
+	eax = state[2] ^ 0x10467b8;
+	edi = edi - eax;
+	state[18] = (state[9] + 0xdbff9c2b) * local_u32_22_19;
+	state[16] = (edi ^ 0x8d4c279) + local_u32_22_28;
+	state[5] = (local_u32_22_15) - (ROR ((local_u32_22_20), 0x18));
+	return edi;
+}
+
+
+u32 mix_major20 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	edi;
+	u32	esi;
+
+	u32	local_u32_23_0;
+	u32	local_u32_23_1;
+	u32	local_u32_23_2;
+	u32	local_u32_23_3;
+	u32	local_u32_23_4;
+	u32	local_u32_23_5;
+	u32	local_u32_23_6;
+	u32	local_u32_23_7;
+	u32	local_u32_23_9;
+	u32	local_u32_23_10;
+	u32	local_u32_23_11;
+	u32	local_u32_23_12;
+	u32	local_u32_23_13;
+	eax = (extra_state) & 0xce;
+	edx = ROL (state[14], eax);
+	local_u32_23_13 = edx;
+	state[14] = edx;
+	edx = state[15];
+	local_u32_23_9 = edx;
+	eax = edx ^ 0xbf446ce;
+	extra_state = extra_state + eax;
+	ecx = 0xe227ea76 + (extra_state << 1);
+	extra_state = ecx;
+	state[19] *= 0x50ee813 * local_u32_23_9;
+	ebx = state[10] + 0x9e;
+	eax = ROR (state[19], ebx);
+	edi = eax;
+	state[19] = edi;
+	eax = (extra_state) & 0x372035b;
+	ecx = state[16] - eax;
+	local_u32_23_0 = ecx;
+	state[16] = ecx;
+	ebx = state[5];
+	edx = 0xd9d1da08 + ebx;
+	ecx = state[18];
+	edx = edx | ecx;
+	local_u32_23_1 = edx;
+	state[18] = edx;
+	edx = state[11];
+	local_u32_23_2 = edx;
+	eax = ROL (edx, 0x9);
+	ebx = ebx + eax;
+	local_u32_23_3 = ebx;
+	state[5] = ebx;
+	ecx = state[0];
+	local_u32_23_10 = ecx;
+	eax = ecx * 0xffffffc3;
+	ecx = edx;
+	edx = ROR (state[8], eax);
+	local_u32_23_4 = edx;
+	state[8] = edx;
+	eax = (local_u32_23_10) ^ 0x46d0b40;
+	extra_state = extra_state + eax;
+	edx = state[1];
+	local_u32_23_11 = edx;
+	state[14] = (edx + 0xe8684fc) ^ local_u32_23_13;
+	eax = state[14] * 0x28f80128;
+	extra_state = extra_state - eax;
+	eax = ROR (edx, 0xa);
+	extra_state = extra_state ^ eax;
+	edx = (local_u32_23_0) + 0xa0397f;
+	edi = edi * edx;
+	local_u32_23_13 = edi;
+	state[19] = edi;
+	edx = ROL ((extra_state), 0x11);
+	esi = edx + state[13];
+	state[13] = esi;
+	edx = state[4] + 0x95670090;
+	ecx = state[6];
+	local_u32_23_12 = ecx;
+	edx = edx - ecx;
+	local_u32_23_5 = edx;
+	state[4] = edx;
+	extra_state = 0xf2eafbc6;
+	eax = (extra_state) + 0x32;
+	ebx = ROL (state[14], eax);
+	local_u32_23_6 = ebx;
+	state[14] = ebx;
+	edi = ((extra_state) + 0xf3369e63) * local_u32_23_10;
+	state[0] = edi;
+	eax = state[3] + 0xfa61efff + local_u32_23_2;
+	local_u32_23_7 = eax;
+	state[3] = eax;
+	eax = state[12] ^ 0x75;
+	edx = ROL ((extra_state), eax);
+	state[8] = (local_u32_23_4) + 0xda64c153 - state[10];
+	state[9] += 0x22a4da90 - state[8];
+	eax = (local_u32_23_13) | 0x2cd48d0d;
+	edx = edx ^ eax;
+	ecx = local_u32_23_13;
+	edx = 0xc6a5343a +  ecx + edx ;
+	extra_state = edx;
+	state[13] = 0xc3172899 + esi - edx;
+	edx = ROL ((local_u32_23_5), 0xb);
+	ecx = local_u32_23_6;
+	state[14] = edx ^ ecx;
+	state[19] = (local_u32_23_13) ^ 0x274bf2e7 ^ state[14];
+	state[16] = (state[9] ^ 0x1448b87d) + local_u32_23_0;
+	edx = state[19] ^ 0x7c5e8091;
+	extra_state = extra_state & edx;
+	edx = (local_u32_23_9) + 0x2de973cc;
+	ecx = extra_state;
+	edx = edx - ecx;
+	local_u32_23_13 = edx;
+	state[15] = edx;
+	edx = extra_state;
+	ecx = local_u32_23_3;
+	edx = 0xd0a90eaf +  ecx + edx ;
+	extra_state = edx;
+	edi = (edi + 0x5cd4018) * state[17];
+	state[17] = edi;
+	eax = ROR ((extra_state), 0x6);
+	ebx = (extra_state) - eax;
+	state[15] = (state[7] ^ 0x1c718ec4) * local_u32_23_13;
+	eax = ROL (state[14], 0x1f);
+	state[4] = ROR ((local_u32_23_5), eax);
+	state[6] = local_u32_23_12 - local_u32_23_11 * 0x11e6e4aa;
+	state[3] = (local_u32_23_7) + 0x20a45ef - state[14];
+	state[14] &= local_u32_23_2 ^ 0x79362e5;
+	ebx = ebx ^ 0x434171f9 ^ local_u32_23_1;
+	return ebx;
+}
+
+
+u32 mix_major21 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_24_1;
+	u32	local_u32_24_2;
+	eax = state[11] ^ state[2];
+	edx = state[15];
+	eax = eax ^ edx;
+	local_u32_24_1 = eax;
+	esi = local_u32_24_1 % 0x0B;
+	state[13] = ROR (state[13], ((extra_state) | 0xde));
+	extra_state = extra_state + 0x67e07c3f;
+	ebx = state[6];
+	extra_state = extra_state - ebx;
+	edx = extra_state * 0x157052aa;
+	extra_state = extra_state ^ edx;
+
+	if (esi == 1)
+	{
+		mix_minor22 (state);
+		mix_minor62 (state);
+		mix_minor63 (state);
+		mix_major6 (state, extra_state);
+		ebx = state[6];
+	}
+	state[6] = ROL (ebx, (ROR (ebx, 0xb)));
+	state[19] += extra_state * 0x2437b7c7;
+
+	if (esi == 6)
+	{
+		mix_minor3 (state, 0x05247491);
+		mix_minor28 (state);
+		mix_minor13 (state, 0xe6e8c2b7);
+		mix_major4 (state, state[2]);
+	}
+	state[3] += 0xf9430940 + state[12];
+	state[11] -= state[6];
+
+	if (esi == 5)
+	{
+		mix_minor40 (state);
+		mix_minor41 (state);
+		mix_minor66 (state);
+		mix_major11 (state, state[8]);
+	}
+	state[0] += state[14] | 0x27c78ea;
+	state[18] -= (extra_state) & 0x6b2cc678;
+	state[15] = ROR (state[15], (state[11] & 0xca));
+
+	if (esi == 4)
+	{
+		mix_minor67 (state);
+		mix_minor26 (state);
+		mix_minor21 (state);
+		mix_major22 (state, extra_state);
+	}
+	eax = ROR (state[18], 0x2);
+	extra_state = extra_state ^ eax;
+	state[10] += state[15] * 0x42515298;
+	state[19] += state[2] ^ 0x2a15668a;
+
+	if (esi == 7)
+	{
+		mix_minor2 (state, 0xdb66bc4d);
+		mix_minor30 (state);
+		mix_minor58 (state);
+		mix_major5 (state, state[11]);
+	}
+	state[6] += 0xe28d6e07 - extra_state;
+	state[1] &= state[3] + 0x8a7848d;
+	state[10] *= (state[17] + 0xf76061aa);
+
+	if (esi == 0)
+	{
+		mix_minor29 (state);
+		mix_minor5 (state, 0x209ec3db);
+		mix_minor60 (state);
+		mix_major3 (state, state[12]);
+	}
+
+	eax = state[1];
+	state[6] += ROR (eax, 0x8);
+	state[1] = eax * (state[2] | 0x16a41bdf);
+
+	if (esi == 8)
+	{
+		mix_minor68 (state);
+		mix_minor7 (state, 0xb7817f0f);
+		mix_minor6 (state, 0x5a1bbab6);
+		mix_major14 (state, state[3]);
+	}
+	state[0] += 0x21889c31 - state[4];
+	eax = ((extra_state) ^ 0x14a9f943) * extra_state;
+	extra_state = eax;
+	state[5] |= state[13] + 0x5c58f04e;
+	state[19] ^= state[14] + 0x49437c23;
+
+	if (esi == 2)
+	{
+		mix_minor22 (state);
+		mix_minor30 (state);
+		mix_minor29 (state);
+		mix_major9 (state, state[13]);
+	}
+	state[9] |= state[6] ^ 0x360a1ff0;
+	state[13] &= state[14] * 0x810027b;
+	edx = 0x3053624 +  (extra_state << 1);
+	extra_state = edx;
+
+	if (esi == 3)
+	{
+		mix_minor20 (state);
+		mix_minor38 (state);
+		mix_minor27 (state);
+		mix_major10 (state, state[17]);
+	}
+
+	extra_state = extra_state + 0xc7af02f5;
+	ecx = state[1];
+	extra_state = extra_state - ecx;
+	extra_state = extra_state & 0xc11a9b11;
+	state[6] ^= state[12] + 0xac2e6058;
+	state[12] ^= (state[17] + 0xd87e9f50);
+
+	if (esi == 10)
+	{
+		mix_minor37 (state);
+		mix_minor29 (state);
+		mix_minor31 (state);
+		mix_major2 (state, state[6]);
+	}
+	state[9] = ROL (state[9], (state[7] ^ 0xe1));
+	edx = state[14] ^ 0xff63c7c;
+	extra_state = extra_state + edx;
+
+	if (esi == 9)
+	{
+		mix_minor0 (state, 0x4a7d7f69);
+		mix_minor22 (state);
+		mix_minor40 (state);
+		mix_major7 (state, state[5]);
+	}
+	esi = state[9] ^ 0x132ee304;
+	ebx = state[6];
+	esi = esi ^ ebx;
+	state[9] = esi;
+	state[12] *= (state[14] + 0x11e0a175);
+	eax = extra_state;
+	local_u32_24_1 = eax;
+	local_u32_24_1 = local_u32_24_1 ^ 0x267e2568;
+	edx = state[14] - local_u32_24_1;
+	local_u32_24_2 = edx;
+	state[14] = edx;
+	eax = ROL (state[3], 0xb);
+	state[0] = ROL (state[0], (eax));
+	state[8] ^= 0xe173238 ^ ebx;
+	state[0] *= ebx + 0xee9e5b6a;
+	ebx = state[15];
+	ecx = ebx * 0x1fe0f470;
+	esi = esi | ecx;
+	state[9] = esi;
+	eax = state[2] + 0x69;
+	esi = eax;
+	state[2] = ROL (state[2], esi);
+	state[16] ^= (local_u32_24_2 * 0x1b4bf87b);
+	eax = (state[10] + 0x2383020a) & state[16];
+	local_u32_24_1 = eax;
+	state[16] = eax;
+	state[15] = (0xeb32d6f9 +  state[7] + ebx) ^ ROL (eax, 0x11);
+	state[16] = ((extra_state) | 0x20914367) + local_u32_24_1;
+	return extra_state;
+}
+
+
+u32 mix_major22 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_25_0;
+	u32	local_u32_25_1;
+	u32	local_u32_25_2;
+
+	ebx = extra_state;
+	esi = ebx % 0x0B;
+	state[12] += ebx ^ 0xc3115e;
+	state[19] += 0x4f9d3712 - extra_state;
+	state[16] &= state[11] * 0x37e68d12;
+
+	if (esi == 1)
+	{
+		mix_minor4 (state, 0x1e03d70a);
+		mix_minor57 (state);
+		mix_minor19 (state, 0xa966b21d);
+		mix_major19 (state, state[7]);
+	}
+
+	edx = state[18];
+	eax = edx ^ 0x4ea934da;
+	extra_state = extra_state - eax;
+	state[1] &= edx ^ 0x18a1ba1a;
+
+	if (esi == 0)
+	{
+		mix_minor14 (state, 0x2f3d2bc4);
+		mix_minor11 (state, 0x36d5c53e);
+		mix_minor37 (state);
+		mix_major20 (state, extra_state);
+	}
+	state[18] += state[17] * 0x3bf23dc7;
+	state[12] += (state[5]) ^ 0x3537eae2;
+	state[9] += 0xf4d4e1ee + state[5];
+	state[11] -= ROL (state[16], 0x16);
+
+	if (esi == 2)
+	{
+		mix_minor67 (state);
+		mix_minor67 (state);
+		mix_minor37 (state);
+		mix_major17 (state, state[16]);
+	}
+	state[17] = ROL (state[17], (state[1] ^ 0x80));
+	eax = ROR (state[5], 0x1);
+	extra_state = extra_state | eax;
+	state[11] += 0xf0871714 + extra_state;
+
+	if (esi == 3)
+	{
+		mix_minor35 (state);
+		mix_minor65 (state);
+		mix_minor3 (state, 0x1b430ac9);
+		mix_major16 (state, state[18]);
+	}
+
+	extra_state = extra_state & 0x1b54f10;
+	state[15] += 0xe9b29695 + state[1];
+	state[9] ^= state[19] + 0xf9850900;
+
+	if (esi == 8)
+	{
+		mix_minor4 (state, 0x2b0ca8e6);
+		mix_minor19 (state, 0xecb73833);
+		mix_minor61 (state);
+		mix_major15 (state, state[11]);
+	}
+	state[0] += 0x224785 + state[6];
+	state[1] -= state[9] * 0x602a9ff;
+
+	if (esi == 4)
+	{
+		mix_minor53 (state);
+		mix_minor14 (state, 0x2975b593);
+		mix_minor26 (state);
+		mix_major8 (state, state[10]);
+	}
+	state[14] += ROL (state[5], 0x1e);
+	state[8] -= state[12] * 0x223c8eff;
+	state[3] += state[11] * 0xc99e9b5;
+
+	if (esi == 7)
+	{
+		mix_minor57 (state);
+		mix_minor45 (state);
+		mix_minor49 (state);
+		mix_major12 (state, state[13]);
+	}
+	eax = (state[3] ^ 0xf8e252d) * extra_state;
+	extra_state = eax;
+	state[12] += eax & 0xa58c765;
+
+	if (esi == 10)
+	{
+		mix_minor39 (state);
+		mix_minor0 (state, 0x4e98d8f0);
+		mix_minor61 (state);
+		mix_major18 (state, state[13]);
+	}
+	state[11] -= state[3] ^ 0x59507436;
+	state[10] ^= 0x1082cbd7 ^ extra_state;
+
+	if (esi == 9)
+	{
+		mix_minor50 (state);
+		mix_minor53 (state);
+		mix_minor4 (state, 0x3430b0d1);
+		mix_major6 (state, state[3]);
+	}
+	state[3] = ROR (state[3], (state[2] * 0x22b21be0));
+	state[8] = ROR (state[8], ((extra_state) + 0xc1));
+	state[17] ^= state[15] * 0x1627a9f4;
+
+	if (esi == 6)
+	{
+		mix_minor1 (state, 0x7725a142);
+		mix_minor30 (state);
+		mix_minor41 (state);
+		mix_major4 (state, extra_state);
+	}
+
+	eax = state[11];
+	edx = (ROL (eax, 0x15)) * extra_state;
+	extra_state = edx;
+	state[3] ^= (eax + 0x27d2e810);
+	state[3] += state[16] * 0x2bb9259f;
+
+	if (esi == 5)
+	{
+		mix_minor40 (state);
+		mix_minor63 (state);
+		mix_minor61 (state);
+		mix_major11 (state, extra_state);
+	}
+	edx = state[19] ^ 0x2b7f6e80;
+	ecx = state[17];
+	edx = edx ^ ecx;
+	local_u32_25_1 = edx;
+	state[19] = edx;
+	state[7] ^= ROL (state[0], 0x18);
+	esi = ((extra_state) | 0x334e9536) ^ state[4];
+	state[4] = esi;
+	state[11] -= ROL ((extra_state), 0x13);
+	ecx = (extra_state) + 0xf8e5b64c;
+	eax = state[12];
+	ecx = ecx ^ eax;
+	local_u32_25_2 = ecx;
+	state[12] = ecx;
+	esi = 0x661bc871 +  esi ;
+	state[11] += esi;
+	edx = state[0] & 0xc9;
+	eax = ROR ((local_u32_25_1), edx);
+	local_u32_25_1 = eax;
+	state[19] = eax;
+	edx = extra_state;
+	local_u32_25_0 = edx;
+	local_u32_25_0 = local_u32_25_0 & 0x7b85306;
+	state[15] += local_u32_25_0;
+	state[7] += 0x1394a239 - local_u32_25_2;
+	state[17] ^= (state[3] + 0x4d2d2d3c);
+	ebx = state[6];
+	local_u32_25_0 = ebx;
+	local_u32_25_0 = local_u32_25_0 & 0x312a10;
+	edx = (local_u32_25_2) - local_u32_25_0;
+	local_u32_25_2 = edx;
+	state[12] = edx;
+	ecx = (local_u32_25_1) + 0xba345c89;
+	eax = state[13];
+	ecx = ecx | eax;
+	state[13] = ecx * ((extra_state) + 0x2098c7b4);
+	eax = ROL (state[10], 0x16);
+	state[6] = (ebx & eax) - (local_u32_25_2 & 0x13175e3d);
+	return extra_state;
+}
+
+
+u32 mix_major23 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	ecx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_26_0;
+	u32	local_u32_26_1;
+	u32	local_u32_26_3;
+
+	u8	local_u8_17;
+
+	ebx = extra_state;
+	esi = ebx % 0x0B;
+	eax = ROL (state[5], 0xb);
+	extra_state = extra_state & eax;
+	state[18] -= ROR ((extra_state), 0x17);
+	state[19] += 0xb42a2f00 + extra_state;
+
+	if (esi == 5)
+	{
+		mix_minor5 (state, 0x3299ed82);
+		mix_minor62 (state);
+		mix_minor33 (state);
+		mix_major22 (state, state[2]);
+	}
+	state[0] += 0x71507fd7 + state[12];
+	eax = extra_state;
+	edx = state[19];
+	eax = 0x9a68096 +  edx + eax ;
+	extra_state = eax;
+
+	if (esi == 6)
+	{
+		mix_minor64 (state);
+		mix_minor47 (state);
+		mix_minor62 (state);
+		mix_major5 (state, state[10]);
+	}
+	state[0] += 0x238788d8 + state[2];
+	state[3] = ROR (state[3], (state[15] + 0xd6));
+	state[10] += 0xdf1e2fab - state[9];
+
+	if (esi == 3)
+	{
+		mix_minor50 (state);
+		mix_minor6 (state, 0x3d280587);
+		mix_minor44 (state);
+		mix_major3 (state, extra_state);
+	}
+	eax = ROL ((extra_state), 0x1b);
+	extra_state = extra_state ^ eax;
+	eax = ROR (state[11], 0x17);
+	extra_state = extra_state - eax;
+
+	if (esi == 7)
+	{
+		mix_minor48 (state);
+		mix_minor51 (state);
+		mix_minor16 (state, 0x0adfc7bd);
+		mix_major14 (state, state[15]);
+	}
+	eax = state[18] + 0x13ba6066;
+	state[18] = eax + state[10];
+	state[11] += 0xd44a337d - state[10];
+	state[17] &= state[3] + 0xad722336;
+
+	if (esi == 4)
+	{
+		mix_minor8 (state, 0x046a58b1);
+		mix_minor55 (state);
+		mix_minor52 (state);
+		mix_major9 (state, state[8]);
+	}
+	state[7] -= ROL ((extra_state), 0xf);
+	eax = state[6] + 0x45d2e311;
+	extra_state = extra_state | eax;
+	eax = 0xd196f18f + state[7];
+	extra_state = extra_state ^ eax;
+	state[7] = ROL (state[7], ((extra_state) ^ 0x48));
+
+	if (esi == 8)
+	{
+		mix_minor55 (state);
+		mix_minor64 (state);
+		mix_minor14 (state, 0x76fb5502);
+		mix_major10 (state, state[13]);
+	}
+	state[6] += state[18] * 0x413db8c1;
+	state[0] ^= state[19] + 0x2be41642;
+	state[4] *= ROR (state[9], 0x12);
+
+	if (esi == 10)
+	{
+		mix_minor26 (state);
+		mix_minor47 (state);
+		mix_minor59 (state);
+		mix_major2 (state, extra_state);
+	}
+
+	ebx = state[6] * 0x20d47013;
+	eax = ROL ((extra_state), ebx);
+	extra_state = eax;
+	state[17] *= (state[3] & 0x9262077);
+	state[13] ^= state[14] + 0xfa8ae5a0;
+
+	if (esi == 1)
+	{
+		mix_minor65 (state);
+		mix_minor21 (state);
+		mix_minor24 (state);
+		mix_major7 (state, state[13]);
+	}
+	ebx = ROL (state[2], 0x11);
+	eax = ROR ((extra_state), ebx);
+	extra_state = eax;
+	state[13] += 0xffd58fe8 - state[8];
+	state[8] += (state[6] ^ 0x1d606322);
+
+	if (esi == 9)
+	{
+		mix_minor52 (state);
+		mix_minor26 (state);
+		mix_minor14 (state, 0x26ca48f6);
+		mix_major21 (state, state[10]);
+	}
+	state[16] += 0xe3a240f7 + state[19];
+	eax = ROR (state[14], 0x3);
+	extra_state = extra_state ^ eax;
+
+	if (esi == 0)
+	{
+		mix_minor43 (state);
+		mix_minor16 (state, 0xc2043573);
+		mix_minor1 (state, 0x9d6390ca);
+		mix_major13 (state, state[4]);
+	}
+	state[18] ^= (state[7] | 0x196e1a4c);
+	eax = state[18] ^ 0xffcac8f;
+	extra_state = extra_state + eax;
+	state[1] ^= 0xb09adec ^ state[0];
+
+	if (esi == 2)
+	{
+		mix_minor53 (state);
+		mix_minor39 (state);
+		mix_minor67 (state);
+		mix_major24 (state, state[11]);
+	}
+	eax = (state[2] + 0x328852b1) * state[14];
+	local_u32_26_0 = eax;
+	state[14] = eax;
+	edx = state[15] & 0x1e0a37a;
+	ecx = state[8];
+	edx = edx ^ ecx;
+	local_u32_26_3 = edx;
+	state[8] = edx;
+	eax = ROL ((extra_state), 0xd);
+	esi = eax * state[3];
+	state[3] = esi;
+	state[6] ^= state[18] + 0xc9c48b38;
+	ecx = state[14] + 0x7d;
+	local_u8_17 = ecx;
+	state[2] = ROL (state[2], ecx);
+	eax = state[10];
+	local_u32_26_1 = eax;
+	eax = ROR (eax, 0xd);
+	extra_state = extra_state ^ eax;
+	local_u8_17 = local_u8_17 + 0x86;
+	eax = ROR ((extra_state), local_u8_17);
+	state[12] ^= (local_u32_26_3) + 0xef774f5b;
+	local_u32_26_3 = eax;
+	local_u32_26_3 = local_u32_26_3 ^ 0x58f00a07;
+	ecx = local_u32_26_3;
+	eax = eax + ecx;
+	extra_state = eax;
+	state[9] ^= 0x5483deb2 ^ extra_state;
+	state[14] = (state[0] * 0x2c63f116) | local_u32_26_0;
+	local_u32_26_1 = local_u32_26_1 ^ 0xa051af;
+	esi = esi + local_u32_26_1;
+	state[3] = esi;
+	extra_state = extra_state + 0xfdb247f0;
+	ecx = state[0];
+	extra_state = extra_state - ecx;
+	state[2] += 0xf9432db1 - extra_state;
+	return extra_state;
+}
+
+
+u32 mix_major24 (u32 *state, u32 extra_state)
+{
+	u32	eax;
+	u32	ebx;
+	u32	edx;
+	u32	esi;
+
+	u32	local_u32_27_0;
+	u32	local_u32_27_2;
+	u32	local_u32_27_3;
+
+	u32	tmp;
+
+	eax = state[17] ^ state[8];
+	edx = state[10];
+	eax = eax ^ edx;
+	local_u32_27_2 = eax;
+	esi = local_u32_27_2 % 0x0B;
+	eax = (state[7] * extra_state) ^ 0x13a77c41;
+	edx = state[0];
+	eax = eax ^ edx;
+	local_u32_27_0 = eax;
+	state[2] = ROL (state[2], (state[3] + 0x10));
+
+	if (esi == 1)
+	{
+		mix_minor27 (state);
+		mix_minor59 (state);
+		mix_minor22 (state);
+		mix_major11 (state, state[12]);
+	}
+	edx = (local_u32_27_0) + 0xf4135aef;
+	local_u32_27_0 = local_u32_27_0 ^ edx;
+	ebx = state[6] + 0x9;
+	eax = ROL ((local_u32_27_0), ebx);
+	local_u32_27_0 = eax;
+	state[14] += ROL (state[13], 0x19);
+	state[16] ^= state[8] + 0x19454e81;
+
+	if (esi == 10)
+	{
+		mix_minor63 (state);
+		mix_minor32 (state);
+		mix_minor29 (state);
+		mix_major22 (state, state[8]);
+	}
+	state[3] *= ((local_u32_27_0) + 0xcb4ea17e);
+	state[17] = ROL (state[17], (state[17] ^ 0x34));
+	edx = state[11] * 0x2c0fd99b;
+	local_u32_27_0 = local_u32_27_0 - edx;
+
+	if (esi == 3)
+	{
+		mix_minor57 (state);
+		mix_minor63 (state);
+		mix_minor25 (state);
+		mix_major5 (state, local_u32_27_0);
+	}
+	state[12] += 0x7e55995 + state[19];
+	state[14] -= state[13] * 0x3dd1a491;
+	state[4] |= (state[8]) & 0x162b97ec;
+	state[8] += state[3] + 0xc3000fb6;
+
+	if (esi == 6)
+	{
+		mix_minor48 (state);
+		mix_minor11 (state, 0x425840fc);
+		mix_minor18 (state, 0x2fd37052);
+		mix_major3 (state, state[9]);
+	}
+	state[13] += state[8] ^ 0x2a161224;
+	state[10] += state[1] * 0xc693c6b;
+	state[4] *= (state[10] + 0xecde6b96);
+
+	if (esi == 9)
+	{
+		mix_minor40 (state);
+		mix_minor4 (state, 0x3f94809c);
+		mix_minor40 (state);
+		mix_major14 (state, state[13]);
+	}
+	state[8] *= ROR (state[13], 0x19);
+	state[17] ^= ROR (state[14], 0x18);
+	eax = state[4] + 0x1c938114;
+	local_u32_27_0 = local_u32_27_0 & eax;
+
+	if (esi == 2)
+	{
+		mix_minor6 (state, 0xc053579b);
+		mix_minor42 (state);
+		mix_minor27 (state);
+		mix_major9 (state, local_u32_27_0);
+	}
+	state[0] *= ((local_u32_27_0) + 0xc328858);
+	eax = state[15] | 0x137d6d8;
+	local_u32_27_0 = local_u32_27_0 + eax;
+	state[3] += 0xae4f0ae - state[9];
+
+	if (esi == 0)
+	{
+		mix_minor45 (state);
+		mix_minor24 (state);
+		mix_minor51 (state);
+		mix_major10 (state, state[3]);
+	}
+	tmp = (state[10] + 0xe55615) * local_u32_27_0;
+	state[15] = (state[15] | 0x120d32e3) | tmp;
+	ebx = state[15] ^ 0x2c;
+	edx = ROL (tmp, ebx);
+	local_u32_27_0 = edx;
+	state[6] = ROR (state[6], state[7]);
+
+	if (esi == 7)
+	{
+		mix_minor23 (state);
+		mix_minor57 (state);
+		mix_minor55 (state);
+		mix_major2 (state, state[17]);
+	}
+	state[3] -= (state[4]) | 0x2587388f;
+	state[2] += 0xffda87c9 + state[4];
+	eax = ROR (state[2], 0x11);
+	local_u32_27_0 = local_u32_27_0 - eax;
+	state[1] += state[6] * 0x34aabe3a;
+
+	if (esi == 4)
+	{
+		mix_minor30 (state);
+		mix_minor46 (state);
+		mix_minor57 (state);
+		mix_major7 (state, state[16]);
+	}
+	state[17] ^= 0x3d17e55a ^ state[13];
+	state[15] *= (state[14] + 0xdaf5121);
+
+	if (esi == 5)
+	{
+		mix_minor57 (state);
+		mix_minor60 (state);
+		mix_minor61 (state);
+		mix_major21 (state, local_u32_27_0);
+	}
+	state[6] = ROL (state[6], (state[17] * 0x1c8e3df4));
+	state[6] += state[15] ^ 0x14819516;
+
+	if (esi == 8)
+	{
+		mix_minor3 (state, 0x463d99a3);
+		mix_minor50 (state);
+		mix_minor56 (state);
+		mix_major13 (state, state[5]);
+	}
+	state[8] |= state[14] + 0xc735f228;
+	ebx = state[17] + 0x7e;
+	eax = ROR (state[7], ebx);
+	esi = eax;
+	state[7] = esi;
+	edx = (local_u32_27_0 * 0x340d3ff2) * state[10];
+	local_u32_27_0 = edx;
+	state[16] *= (state[14] + 0x57a8d4b3);
+	state[6] += 0x534be48e - state[1];
+	state[2] ^= (state[9] * 0xd695251);
+	state[12] ^= esi;
+	edx = state[17];
+	local_u32_27_3 = edx;
+	state[1] = 0xf022cb99 +  edx + state[1] ;
+	eax = local_u32_27_0;
+	local_u32_27_2 = eax;
+	local_u32_27_2 = local_u32_27_2 | 0x2954ac20;
+	state[4] += local_u32_27_2;
+	local_u32_27_2 = eax;
+	local_u32_27_2 = local_u32_27_2 ^ 0x1b904466;
+	esi = esi * local_u32_27_2;
+	state[7] = esi;
+	state[2] -= eax * 0x31fef0e1;
+	eax = (local_u32_27_3) + 0xf0359c9e;
+	local_u32_27_0 = local_u32_27_0 ^ eax;
+	return local_u32_27_0;
+}
+
+void mix_minor0 (u32 *state, u32 extra_state)
+{
+	state[14] ^= extra_state ^ 0x363a614;
+}
+
+void mix_minor1 (u32 *state, u32 extra_state)
+{
+	state[0] += extra_state + 0x4c3ef3f1;
+}
+
+void mix_minor2 (u32 *state, u32 extra_state)
+{
+	state[19] = ROL (state[19], extra_state + 8);
+}
+
+void mix_minor3 (u32 *state, u32 extra_state)
+{
+	state[8] -= extra_state ^ 0x3d1f0efd;
+}
+
+void mix_minor4 (u32 *state, u32 extra_state)
+{
+	state[10] = ROL (state[10], ROL (extra_state, 13));
+}
+
+void mix_minor5 (u32 *state, u32 extra_state)
+{
+	state[17] ^= ROR (extra_state, 23);
+}
+
+void mix_minor6 (u32 *state, u32 extra_state)
+{
+	state[4] ^= extra_state + 0x20c85ea;
+}
+
+void mix_minor7 (u32 *state, u32 extra_state)
+{
+	state[9] += extra_state + 0x14035bf;
+}
+
+void mix_minor8 (u32 *state, u32 extra_state)
+{
+	state[3] *= extra_state ^ 0x1aff70c8;
+}
+
+void mix_minor9 (u32 *state, u32 extra_state)
+{
+	state[1] &= extra_state + 0xd14ae1a1;
+}
+
+void mix_minor10 (u32 *state, u32 extra_state)
+{
+	state[11] += extra_state ^ 0x1f99dc87;
+}
+
+void mix_minor11 (u32 *state, u32 extra_state)
+{
+	state[8] += extra_state + 0x5a7c4580;
+}
+
+void mix_minor12 (u32 *state, u32 extra_state)
+{
+	state[12] += extra_state & 0x21e847a;
+}
+
+void mix_minor13 (u32 *state, u32 extra_state)
+{
+	state[14] -= extra_state - 0xe6f27e4;
+}
+
+void mix_minor14 (u32 *state, u32 extra_state)
+{
+	state[3] += extra_state & 0x9706840;
+}
+
+void mix_minor15 (u32 *state, u32 extra_state)
+{
+	state[5] += ROL (extra_state, 30);
+}
+
+void mix_minor16 (u32 *state, u32 extra_state)
+{
+	state[3] -= extra_state - 0x1805a906;
+}
+
+void mix_minor17 (u32 *state, u32 extra_state)
+{
+	state[16] = ROL (state[16], extra_state ^ 0xe1);
+}
+
+void mix_minor18 (u32 *state, u32 extra_state)
+{
+	state[14] += extra_state + 0x49fa4a75;
+}
+
+void mix_minor19 (u32 *state, u32 extra_state)
+{
+	state[4] *= extra_state + 0xc5c4d698;
+}
+
+void mix_minor20 (u32 *state)
+{
+	state[12] = ROR (state[12], state[14] * 0x56be2363);
+}
+
+void mix_minor21 (u32 *state)
+{
+	state[12] *= state[1] * 0x4b4f2e1;
+}
+
+void mix_minor22 (u32 *state)
+{
+	state[2] *= state[10] + 0xfa1f1e0b;
+}
+
+void mix_minor23 (u32 *state)
+{
+	state[19] += state[19] ^ 0x43b6b05;
+}
+
+void mix_minor24 (u32 *state)
+{
+	state[18] -= ROR (state[4], 18);
+}
+
+void mix_minor25 (u32 *state)
+{
+	state[0] &= state[10] + 0xfc9be92d;
+}
+
+void mix_minor26 (u32 *state)
+{
+	state[9] ^= state[3] + 0xbe5fec7d;
+}
+
+void mix_minor27 (u32 *state)
+{
+	state[6] *= state[15] | 0x46afede0;
+}
+
+void mix_minor28 (u32 *state)
+{
+	state[17] -= state[6] * 0x1b677cc8;
+}
+
+void mix_minor29 (u32 *state)
+{
+	state[14] &= state[15] + 0xfc471d2b;
+}
+
+void mix_minor30 (u32 *state)
+{
+	state[19] += state[16] + 0x24a7d94d;
+}
+
+void mix_minor31 (u32 *state)
+{
+	state[15] *= state[0] ^ 0x48ad05f2;
+}
+
+void mix_minor32 (u32 *state)
+{
+	state[16] -= state[4] - 0xbb834311;
+}
+
+void mix_minor33 (u32 *state)
+{
+	state[8] += ROL (state[4], 26);
+}
+
+void mix_minor34 (u32 *state)
+{
+	state[13] *= state[18] + 0xac048a2;
+}
+
+void mix_minor35 (u32 *state)
+{
+	state[16] &= state[18] + 0xe832eb88;
+}
+
+void mix_minor36 (u32 *state)
+{
+	state[4] -= state[1] - 0xe6f17893;
+}
+
+void mix_minor37 (u32 *state)
+{
+	state[6] *= state[7] | 0x17b60bb5;
+}
+
+void mix_minor38 (u32 *state)
+{
+	state[15] += ROL (state[12], 16);
+}
+
+void mix_minor39 (u32 *state)
+{
+	state[6] &= state[10] + 0xfd7af7e;
+}
+
+void mix_minor40 (u32 *state)
+{
+	state[7] = ROR (state[7], state[18] & 0x82);
+}
+
+void mix_minor41 (u32 *state)
+{
+	state[17] = ROR (state[17], state[7] ^ 0x43);
+}
+
+void mix_minor42 (u32 *state)
+{
+	state[0] ^= state[8] + 0xeee530d5;
+}
+
+void mix_minor43 (u32 *state)
+{
+	state[10] += state[1] + 0xc484cfa2;
+}
+
+void mix_minor44 (u32 *state)
+{
+	state[16] += state[5] ^ 0x19a836dc;
+}
+
+void mix_minor45 (u32 *state)
+{
+	state[17] += state[7] + 0xd68a11c3;
+}
+
+void mix_minor46 (u32 *state)
+{
+	state[17] += ROL (state[7], 19);
+}
+
+void mix_minor47 (u32 *state)
+{
+	state[18] -= state[6] * 0x368eaf4e;
+}
+
+void mix_minor48 (u32 *state)
+{
+	state[2] = ROR (state[2], state[7] ^ 0xc3);
+}
+
+void mix_minor49 (u32 *state)
+{
+	state[19] |= state[5] + 0xda7c6c8e;
+}
+
+void mix_minor50 (u32 *state)
+{
+	state[6] *= ROR (state[2], 12);
+}
+
+void mix_minor51 (u32 *state)
+{
+	state[14] += state[18] + 0xf655a040;
+}
+
+void mix_minor52 (u32 *state)
+{
+	state[11] += state[19] * 0x251df1bd;
+}
+
+void mix_minor53 (u32 *state)
+{
+	state[11] -= state[0] ^ 0x51a859c;
+}
+
+void mix_minor54 (u32 *state)
+{
+	state[18] += state[6] + 0xdcccfc5;
+}
+
+void mix_minor55 (u32 *state)
+{
+	state[16] -= state[18] ^ 0x39848960;
+}
+
+void mix_minor56 (u32 *state)
+{
+	state[14] ^= state[19] + 0x1a6f3b29;
+}
+
+void mix_minor57 (u32 *state)
+{
+	state[12] &= state[5] + 0x4ef1335a;
+}
+
+void mix_minor58 (u32 *state)
+{
+	state[14] *= state[13] + 0xdb61abf8;
+}
+
+void mix_minor59 (u32 *state)
+{
+	state[18] ^= state[19] * 0x378f67;
+}
+
+void mix_minor60 (u32 *state)
+{
+	state[18] ^= state[4] * 0x2dd2a2fe;
+}
+
+void mix_minor61 (u32 *state)
+{
+	state[16] -= state[4] - 0xe357b476;
+}
+
+void mix_minor62 (u32 *state)
+{
+	state[6] *= state[16] * 0x381203;
+}
+
+void mix_minor63 (u32 *state)
+{
+	state[10] |= ROR (state[11], 24);
+}
+
+void mix_minor64 (u32 *state)
+{
+	state[10] ^= state[5] + 0x147c80d5;
+}
+
+void mix_minor65 (u32 *state)
+{
+	state[16] ^= state[3] * 0x27139980;
+}
+
+void mix_minor66 (u32 *state)
+{
+	state[15] = ROR (state[15], state[17] & 0x7f);
+}
+
+void mix_minor67 (u32 *state)
+{
+	state[14] &= ROL (state[19], 6);
+}
+
+void mix_minor68 (u32 *state)
+{
+	state[8] *= state[0] * 0x1a4c02dd;
+}
+
+void mix_minor69 (u32 *state)
+{
+	state[16] ^= state[14] + 0xfddb63a2;
+}

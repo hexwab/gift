@@ -1,0 +1,80 @@
+# $Id: Make.msvc,v 1.8 2002/06/03 22:42:17 rossta Exp $
+
+VERSION = 0.10
+
+O = .obj
+
+# release / debug
+!if defined(release) || defined(RELEASE)
+D=
+DEXT=
+CFLAGS  = $(CFLAGS)  -Ox -G6
+
+DEFS    = $(DEFS)    -DNDEBUG -U_DEBUG
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+!else
+# must be lower case:
+D=d
+DEXT=$(DEXT)
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+!endif
+
+
+# static / dynamic linking
+!if defined(static) || defined(STATIC)
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_DLOPEN
+!else
+CFLAGS   = $(CFLAGS) -MD$(D) -DUSE_DLOPEN
+!endif
+
+
+# zlib stuff
+!if defined(zlib) || defined(ZLIB) || defined (use_zlib) || defined(USE_ZLIB)
+
+!if "$(ZLIB_ROOT)" == ""
+ZLIB_ROOT=d:\pub\src\zlib
+!endif
+
+!if !exists($(ZLIB_ROOT))
+!error Directory $(ZLIB_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!endif
+
+
+GIFT_LIB = giFT$(DEXT).lib
+GIFT_DLL = giFT$(DEXT).dll
+GIFT_EXE = giFT$(DEXT).exe
+LIBGIFT_LIB = libgiFT$(DEXT).lib
+LIBGIFT_DLL = libgiFT$(DEXT).dll
+LIBGIFT_STATIC = libgiFTstatic$(DEXT).lib
+OPENFT_STATIC	= OpenFTstatic$(DEXT).lib
+OPENFT_DLL	= OpenFT$(DEXT).dll
+GIFTFE_EXE	= giFTfe$(DEXT).exe
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT
+INCLUDES = $(INCLUDES) -I../win32 -I../src -I../lib -I../OpenFT
+LDFLAGS  = $(LDFLAGS) -nologo -libpath:"../src" -libpath:"../lib" \
+           -version:$(VERSION)
+LIBS     = $(LIBS) advapi32.lib kernel32.lib user32.lib ws2_32.lib \
+           binmode.obj oldnames.lib
+
+!if defined(windows) || defined(WINDOWS)
+DEFS     = $(DEFS) -D_WINDOWS
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+!else
+DEFS     = $(DEFS) -D_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:console
+!endif
+
+CC = cl
+LD = link
+LT = lib

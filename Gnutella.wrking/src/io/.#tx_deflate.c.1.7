@@ -1,0 +1,609 @@
+/*
+ * $Id: tx_deflate.c,v 1.7 2004/03/11 18:37:12 mkern Exp $
+ *
+ * Copyright (C) 2004 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gt_gnutella.h"
+#include "gt_packet.h"       /* packet manipulation macros */
+
+#include "io/tx_stack.h"
+#include "io/tx_layer.h"
+#include "io/io_buf.h"
+
+#include <zlib.h>
+
+/*****************************************************************************/
+
+#define TX_DEFLATE_DEBUG    0
+
+#if TX_DEFLATE_DEBUG
+#define DEFLATE_TRACEFN(tx) \
+	GT->DBGSOCK (GT, gt_tx_stack_get_conn(tx->stack), "entered")
+
+#ifndef _MSC_VER
+#define DEFLATE_DBG(tx,fmt...) \
+	GT->DBGSOCK (GT, gt_tx_stack_get_conn(tx->stack), fmt)
+#else
+#define DEFLATE_DBG(tx,fmt) \
+	GT->DBGSOCK (GT, gt_tx_stack_get_conn(tx->stack), "DEFLATE_DBG") 
+#endif
+
+#define DEFLATE_DUMP(tx_deflate) \
+{ \
+	float percent = ((float)tx_deflate->nbytes_in - \
+	     tx_deflate->nbytes_out - tx_deflate->nbytes_unflushed) / \
+	                 (float)tx_deflate->nbytes_in; \
+\
+    DEFLATE_DBG(tx, "in %z out %z flushed %z unflushed %z (flushing %d) " \
+	            "ratio %.2f%% avg %.2f", \
+	            tx_deflate->nbytes_in, tx_deflate->nbytes_out, \
+	            tx_deflate->nbytes_flushed, tx_deflate->nbytes_unflushed, \
+	            tx_deflate->flushing, percent * 100.0, \
+	            (float)tx_deflate->nbytes_out / gt_uptime()); \
+}
+#else
+
+#ifndef _MSC_VER
+#define DEFLATE_DBG(tx,fmt...)
+#else
+#define DEFLATE_DBG(tx,fmt)
+#endif
+
+#define DEFLATE_TRACEFN(tx)
+#define DEFLATE_DUMP(tx_deflate)
+#endif
+
+/*****************************************************************************/
+
+#define TX_DEFLATE_BUFSIZE  (1024)
+
+#define FLUSH_AFTER         (4096)          /* flush after this many bytes */
+
+#define NAGLE_TIMEOUT       (200 * MSEC)    /* 200 milliseconds */
+
+/*****************************************************************************/
+
+struct tx_deflate
+{
+	/* zlib data */
+	z_stream       z;
+
+	/* compressed buffer */
+	struct io_buf *buf;
+
+	/* Nagle timer that sends stored data after NAGLE_TIMEOUT milliseconds */
+	timer_id       nagle_timer;
+
+	size_t         nbytes_in;        /* total uncompressed bytes  */
+	size_t         nbytes_out;       /* total compressed bytes */
+	size_t         nbytes_flushed;   /* total bytes written to lower layer */
+	size_t         nbytes_unflushed; /* bytes currently waiting in z_stream */
+
+	/*
+	 * Whether the zstream is currently being flushed, and so whether deflate
+	 * must receive a Z_SYNC_FLUSH parameter to continue flushing.  The flush
+	 * ends when deflate returns with avail_out > 0.
+	 */
+	BOOL           flushing;
+
+	/*
+	 * When doing a flush, it's possible that there will be a partially
+	 * filled buffer leftover.  If there's no new data that comes in, the data
+	 * will be delayed again until more data comes from the upper layer.  This
+	 * flag is set when this happens, so we know that we should flush the
+	 * buffer to the lower layer as soon as possible, even if it isn't
+	 * completely full.
+	 */
+	BOOL           delayed;
+};
+
+/*****************************************************************************/
+
+static void start_nagle_timer (struct tx_layer *tx, struct tx_deflate *deflate);
+static void stop_nagle_timer  (struct tx_layer *tx, struct tx_deflate *deflate);
+
+/*****************************************************************************/
+
+static void tx_deflate_enable (struct tx_layer *tx)
+{
+	/* TODO */
+}
+
+static void tx_deflate_disable (struct tx_layer *tx)
+{
+	/* TODO */
+}
+
+/*****************************************************************************/
+
+static void tx_deflate_toggle (struct tx_layer *tx, BOOL stop)
+{
+	/* nothing, we do not consume packets, only pass along */
+}
+
+/*****************************************************************************/
+
+static BOOL alloc_buffer (struct tx_deflate *tx_deflate)
+{
+	if (tx_deflate->buf)
+		return TRUE;
+
+	if (!(tx_deflate->buf = io_buf_new (TX_DEFLATE_BUFSIZE)))
+		return FALSE;
+
+	return TRUE;
+}
+
+static void finish_flush (struct tx_deflate *tx_deflate)
+{
+	tx_deflate->nbytes_unflushed = 0;
+	tx_deflate->flushing         = FALSE;
+}
+
+static tx_status_t flush_buffer (struct tx_layer *tx,
+                                 struct tx_deflate *tx_deflate)
+{
+	tx_status_t ret;
+	size_t      n;
+
+	DEFLATE_TRACEFN(tx);
+
+	n = io_buf_read_avail (tx_deflate->buf);
+
+	/*
+	 * The buffer filled up.  Try to send again until the lower
+	 * layer is saturated.
+	 */
+	ret = gt_tx_layer_queue (tx, tx_deflate->buf);
+	assert (ret != TX_EMPTY);
+
+	if (ret == TX_ERROR || ret == TX_FULL)
+		return ret;
+
+	tx_deflate->nbytes_flushed += n;
+	assert (ret == TX_OK);
+
+	stop_nagle_timer (tx, tx_deflate);
+
+	tx_deflate->buf     = NULL;
+	tx_deflate->delayed = FALSE;
+
+	return TX_OK;
+}
+
+/*
+ * Try to flush the data inside the z_stream and send it to the layer beneath
+ * this one.
+ */
+static tx_status_t flush_stream (struct tx_layer *tx,
+                                 struct tx_deflate *tx_deflate)
+{
+	z_stream   *z   = &tx_deflate->z;
+	tx_status_t ret;
+	size_t      wlen, old_avail;
+
+	DEFLATE_TRACEFN(tx);
+
+	if (!alloc_buffer (tx_deflate))
+		return TX_ERROR;
+
+	old_avail = io_buf_write_avail (tx_deflate->buf);
+
+	z->avail_in  = 0;
+	z->next_in   = NULL;  /* don't disrupt anything else */
+	z->next_out  = io_buf_write_ptr (tx_deflate->buf);
+	z->avail_out = old_avail;
+
+	ret = deflate (z, Z_SYNC_FLUSH);
+
+	/*
+	 * If this is true we've already flushed all possible data.
+	 */
+	if (ret == Z_BUF_ERROR)
+	{
+		tx_deflate->flushing = FALSE;
+
+		/* send the stored data */
+		if (io_buf_read_avail (tx_deflate->buf) > 0)
+			return flush_buffer (tx, tx_deflate);
+
+		return TX_EMPTY;
+	}
+
+	if (ret != Z_OK)
+		return TX_ERROR;
+
+	wlen = old_avail - z->avail_out;
+
+	io_buf_push (tx_deflate->buf, wlen);
+	tx_deflate->nbytes_out += wlen;
+
+	tx_deflate->flushing = TRUE;
+
+	/* if there is space, the flush completed successfully */
+	if (z->avail_out > 0)
+		finish_flush (tx_deflate);
+
+	if ((ret = flush_buffer (tx, tx_deflate) != TX_OK))
+		return ret;
+
+	/* stop when the flush completes */
+	if (!tx_deflate->flushing)
+		return TX_OK;
+
+	/* tail recurse until the flush completes */
+	return flush_stream (tx, tx_deflate);
+}
+
+static BOOL deflate_nagle_timeout (struct tx_layer *tx)
+{
+	struct tx_deflate *tx_deflate = tx->udata;
+	tx_status_t        ret;
+
+	DEFLATE_TRACEFN(tx);
+
+	/* this assertion means we have to disarm the timer when sending the
+	 * buffer */
+	assert (tx_deflate->buf != NULL);
+
+	ret = flush_stream (tx, tx_deflate);
+
+	/* no matter what, we disable the Nagle timer after this */
+	stop_nagle_timer (tx, tx_deflate);
+
+	if (ret == TX_ERROR)
+	{
+		gt_tx_stack_abort (tx->stack);
+		return FALSE;
+	}
+
+	DEFLATE_DBG(tx, "buffer delayed?: %d", tx_deflate->delayed);
+
+	return FALSE;
+}
+
+static void start_nagle_timer (struct tx_layer *tx,
+                               struct tx_deflate *tx_deflate)
+{
+	DEFLATE_DBG(tx, "nagle timer=%d", tx_deflate->nagle_timer);
+
+	if (tx_deflate->nagle_timer != 0)
+		return;
+
+	tx_deflate->nagle_timer = timer_add (NAGLE_TIMEOUT,
+	                                     (TimerCallback)deflate_nagle_timeout,
+	                                     tx);
+}
+
+static void stop_nagle_timer (struct tx_layer *tx,
+                              struct tx_deflate *tx_deflate)
+{
+	DEFLATE_DBG(tx, "nagle timer=%d", tx_deflate->nagle_timer);
+	timer_remove_zero (&tx_deflate->nagle_timer);
+}
+
+/*****************************************************************************/
+
+/*
+ * The upper layer has sent us a buffer to process.
+ */
+static tx_status_t tx_deflate_queue (struct tx_layer *tx, struct io_buf *msg)
+{
+	struct tx_deflate *tx_deflate      = tx->udata;
+	z_stream          *z               = &tx_deflate->z;
+	BOOL               flush_completed = FALSE;
+	int                ret;
+
+	DEFLATE_TRACEFN(tx);
+
+	/*
+	 * Deflate the incoming message, adding it to the buffer.
+	 *
+	 * If our buffer is currently full, return TX_FULL.
+	 */
+
+	if (!alloc_buffer (tx_deflate))
+	{
+		io_buf_free (msg);
+		return TX_ERROR;
+	}
+
+	z->next_in   = io_buf_read_ptr    (msg);
+	z->avail_in  = io_buf_read_avail  (msg);
+	z->next_out  = io_buf_write_ptr   (tx_deflate->buf);
+	z->avail_out = io_buf_write_avail (tx_deflate->buf);
+
+	if (z->avail_out == 0)
+		return TX_FULL;
+
+	while (io_buf_read_avail (msg) > 0 && z->avail_out > 0)
+	{
+		size_t rlen, wlen;
+
+		assert (z->next_in == io_buf_read_ptr (msg));
+		assert (z->next_out == io_buf_write_ptr (tx_deflate->buf));
+
+		/* begin flushing after a certain amount */
+		if (tx_deflate->nbytes_unflushed >= FLUSH_AFTER)
+			tx_deflate->flushing = TRUE;
+
+		ret = deflate (z, tx_deflate->flushing ? Z_SYNC_FLUSH : 0);
+
+		if (ret != Z_OK)
+		{
+			GT->DBGFN (GT, "deflate: error %d", ret);
+			io_buf_free (msg);
+			return TX_ERROR;
+		}
+
+		rlen = io_buf_read_avail (msg) - z->avail_in;
+		wlen = io_buf_write_avail (tx_deflate->buf) - z->avail_out;
+		assert (rlen > 0 || wlen > 0); /* hmm, is this true when flushing? */
+#if 0
+		assert (wlen > 0);
+#endif
+
+		tx_deflate->nbytes_in        += rlen;
+		tx_deflate->nbytes_unflushed += rlen;
+		tx_deflate->nbytes_out       += wlen;
+
+		DEFLATE_DUMP(tx_deflate);
+
+		/* update the buffer lengths */
+		io_buf_push (tx_deflate->buf, wlen);
+		io_buf_pop  (msg, rlen);
+
+		if (z->avail_out == 0)
+			break;
+
+		/*
+		 * If we have available output space and no more input space,
+		 * we know the flush completed, so unset flush mode.
+		 *
+		 * NOTE: there might be a bug here.  The flush may fit exactly
+		 * everytime, causing us to never leave flush mode.  I think zlib may
+		 * try to prevent this itself, though.
+		 */
+		if (tx_deflate->flushing && z->avail_in == 0)
+		{
+			flush_completed = TRUE;
+			finish_flush (tx_deflate);
+		}
+	}
+
+	/*
+	 * If we completed a flush, and the buffer isn't full, set the delayed
+	 * flag so that service_deflate() will write the buffer immediately to
+	 * reduce latency, as it has already endured a Nagle timeout period.
+	 */
+	if (flush_completed &&
+	    io_buf_read_avail (tx_deflate->buf) < TX_DEFLATE_BUFSIZE)
+	{
+		DEFLATE_DBG(tx, "setting ->delayed flag on buf(%d)",
+		            io_buf_read_avail (tx_deflate->buf));
+		tx_deflate->delayed = TRUE;
+	}
+
+	/*
+	 * If the message buffer was only partially emptied, don't free
+	 * it and let tx_layer.c know to handle it specially.
+	 */
+	if (io_buf_read_avail (msg) > 0)
+		return TX_PARTIAL;
+
+	io_buf_free (msg);
+
+	return TX_OK;
+}
+
+/*****************************************************************************/
+
+/*
+ * This is the most complicated part of the whole stack:
+ *
+ * [1] Call upper layer's ready routine to grab a buffer (gt_tx_layer_ready).
+ *
+ * [2] That function will call tx_deflate_queue, which compresses the data to
+ *     a buffer, as many times as it can while there's more data to process.
+ *
+ * [3] If we didn't fill the buffer, or there was no data, return TX_EMPTY
+ *     telling the lower layer there is no data.
+ *
+ * [4] If there's no data in the upper layer, but we're in flush mode, call
+ *     flush_stream() to send whatever data is stored inside the z_stream,
+ *     and stop.
+ *
+ * [5] If we filled the buffer, or if we have a paritally filled buffer that
+ *     was delayed in deflate_nagle_timeout(), send it to the lower layer with
+ *     flush_buffer().  If the lower layer returns TX_FULL, stop and return
+ *     TX_OK.  Otherwise, continue by calling this function recursively.
+ *
+ *     NOTE: The buffer is filled in tx_deflate_queue but sent in this
+ *     function (or from the Nagle timer if the buffer isn't full).
+ *
+ * The caller of this function has to setup a Nagle timer if any data was
+ * written and TX_FULL was not encountered.
+ */
+static tx_status_t service_deflate (struct tx_layer *tx,
+                                    struct tx_deflate *tx_deflate)
+{
+	tx_status_t ret;
+
+	DEFLATE_TRACEFN(tx);
+
+	/* [1] + [2] */
+	ret = gt_tx_layer_ready (tx);
+
+	if (ret == TX_ERROR)
+		return TX_ERROR;
+
+	/* [3] */
+	if (ret == TX_EMPTY)
+	{
+		assert (ret == TX_EMPTY);
+
+		/* [4]: continue flush even if no data avail */
+		if (tx_deflate->flushing)
+			ret = flush_stream (tx, tx_deflate);
+
+		return ret;
+	}
+
+	assert (tx_deflate->buf != NULL);
+
+	if (tx_deflate->delayed)
+	{
+		DEFLATE_DBG(tx, "flushing delayed buf(%d)",
+		            io_buf_read_avail (tx_deflate->buf));
+	}
+
+	/*
+	 * [5]
+	 *
+	 * flush_buffer will stop the Nagle timer if the buffer was
+	 * successfully sent.
+	 *
+	 * We must also flush the buffer if it contains partial data from a
+	 * previous flush that was delayed in the Nagle timer due to having no
+	 * space.
+	 */
+	if (tx_deflate->delayed || io_buf_write_avail (tx_deflate->buf) == 0)
+		ret = flush_buffer (tx, tx_deflate);
+
+	if (ret != TX_OK)
+		return ret;
+
+	/* tail recurse until the lower layer is saturated */
+	return service_deflate (tx, tx_deflate);
+}
+
+/*
+ * The lower layer is ready to write.
+ */
+static tx_status_t tx_deflate_ready (struct tx_layer *tx)
+{
+	struct tx_deflate *tx_deflate  = tx->udata;
+	size_t             old_flushed;
+	tx_status_t        ret;
+
+	/* keep track of how much was previously flushed */
+	old_flushed = tx_deflate->nbytes_flushed;
+
+	ret = service_deflate (tx, tx_deflate);
+
+	if (ret == TX_ERROR || ret == TX_FULL)
+	{
+		if (ret == TX_FULL)
+		{
+			/* flush buffer shouldve deactivated the Nagle timer */
+			assert (tx_deflate->nagle_timer == 0);
+
+			/* we wrote something -- let caller know it's ok */
+			ret = TX_OK;
+		}
+
+		return ret;
+	}
+
+	assert (ret == TX_OK || ret == TX_EMPTY);
+
+	/*
+	 * If the lower layer was not saturated (evidenced by _not_ returning
+	 * TX_FULL), and there is a partially completed buffer, the Nagle
+	 * timer must be armed.  This ensures the data waiting in this layer will
+	 * go out in a timely manner.  If the lower layer was saturated, we don't
+	 * need to arm the timer because there is no buffer space to flush to
+	 * anyway, and when the lower layer unsaturates it will reinvoke this
+	 * layer to write more data.
+	 *
+	 * TODO: Still need to flush if there is some urgent data waiting.  So,
+	 * should add a ->flush callback.
+	 *
+	 * XXX: Using tx_deflate->buf != NULL as a hacky way to recognize that
+	 * some data was written to the z_stream.
+	 */
+	if (tx_deflate->buf != NULL)
+		start_nagle_timer (tx, tx_deflate);
+
+	DEFLATE_DBG(tx, "buf waiting=[%d] ret=%s",
+	            tx_deflate->buf ? io_buf_read_avail (tx_deflate->buf) : 0,
+	            ret == TX_EMPTY ? "TX_EMPTY" : "TX_OK");
+	DEFLATE_DUMP(tx_deflate);
+
+	/*
+	 * For the return value from this function, decipher whether
+	 * service_deflate() wrote some data.
+	 *
+	 * If nothing was written, then we should stop sending now, by returning
+	 * TX_EMPTY.  That will remove the input in tx_link.c that's calling this
+	 * layer, which kind of sucks, because this could be the case a lot of the
+	 * time when the whole buffer hasn't been filled up, leading to a removing
+	 * and adding the input a lot.
+	 *
+	 * Otherwise, return TX_OK if something was sent to the lower layer.
+	 */
+	if (old_flushed == tx_deflate->nbytes_flushed)
+		return TX_EMPTY;
+
+	return TX_OK;
+}
+
+/*****************************************************************************/
+
+static BOOL tx_deflate_init (struct tx_layer *tx)
+{
+	struct tx_deflate *tx_deflate;
+
+	if (!(tx_deflate = NEW (struct tx_deflate)))
+		return FALSE;
+
+	if (deflateInit (&tx_deflate->z, Z_DEFAULT_COMPRESSION) != Z_OK)
+	{
+		FREE (tx_deflate);
+		return FALSE;
+	}
+
+	tx_deflate->nagle_timer      = 0;
+	tx_deflate->flushing         = FALSE;
+	tx_deflate->nbytes_in        = 0;
+	tx_deflate->nbytes_out       = 0;
+	tx_deflate->nbytes_flushed   = 0;
+	tx_deflate->nbytes_unflushed = 0;
+
+	tx->udata = tx_deflate;
+	return TRUE;
+}
+
+static void tx_deflate_destroy (struct tx_layer *tx)
+{
+	struct tx_deflate *tx_deflate = tx->udata;
+
+	timer_remove (tx_deflate->nagle_timer);
+
+	deflateEnd (&tx_deflate->z);
+	FREE (tx_deflate);
+}
+
+/*****************************************************************************/
+
+struct tx_layer_ops gt_tx_deflate_ops =
+{
+	tx_deflate_init,
+	tx_deflate_destroy,
+	tx_deflate_toggle,
+	tx_deflate_queue,
+	tx_deflate_ready,
+	tx_deflate_enable,
+	tx_deflate_disable,
+};

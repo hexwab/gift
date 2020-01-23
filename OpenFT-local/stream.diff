@@ -1,0 +1,588 @@
+? openft.spec
+? test
+? src/bloom
+? src/ft_bloom
+? src/ft_search_db.c.temp
+? src/ft_tokenize
+? src/gmon.out
+? src/local-share.diff
+? src/localchild.diff
+? src/random_nodes.diff
+? src/routing.diff
+Index: configure.ac
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/configure.ac,v
+retrieving revision 1.24
+diff -u -r1.24 configure.ac
+--- configure.ac	31 Jul 2004 22:02:18 -0000	1.24
++++ configure.ac	31 Oct 2004 20:55:16 -0000
+@@ -23,14 +23,14 @@
+ 
+ AC_PREREQ(2.53)
+ 
+-AC_INIT(gift-openft, 0.2.1.4)
++AC_INIT(gift-openft, 0.2.1.5)
+ AC_CONFIG_SRCDIR([src/ft_openft.h])
+ 
+ # TODO: parse from $VERSION?
+ OPENFT_MAJOR=0
+ OPENFT_MINOR=2
+ OPENFT_MICRO=1
+-OPENFT_REV=4
++OPENFT_REV=5
+ 
+ AC_DEFINE_UNQUOTED(OPENFT_MAJOR, $OPENFT_MAJOR, [Major])
+ AC_DEFINE_UNQUOTED(OPENFT_MINOR, $OPENFT_MINOR, [Minor])
+@@ -102,7 +102,7 @@
+ dnl Test for libgift and libgiftproto...
+ dnl ###########################################################################
+ 
+-GIFT_PLUGIN_PKGCONFIG(OPENFT, 0.11.4, 0.12.0)
++GIFT_PLUGIN_PKGCONFIG(OPENFT, 0.11.8, 0.12.0)
+ AC_SUBST(OPENFT_CFLAGS)
+ AC_SUBST(OPENFT_LIBS)
+ 
+Index: src/ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- src/ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ src/ft_conf.h	31 Oct 2004 20:55:17 -0000
+@@ -63,6 +63,10 @@
+ #define FT_CFG_NODE_CLASS_ALLOW   ft_cfg_get_int("main/class_allow=3");
+ #define FT_CFG_NODE_ALIAS         ft_cfg_get_str("main/alias")
+ 
++#define FT_CFG_VER_MINPARENT      ft_cfg_get_str("version/min_parent=131331")
++#define FT_CFG_VER_MINPEER        ft_cfg_get_str("version/min_peer=131331")
++#define FT_CFG_VER_MINCHILD       ft_cfg_get_str("version/min_child=131329")
++
+ #define FT_CFG_NODES_CACHE_MAX    (500)
+ 
+ #define FT_CFG_SEARCH_VFY         (0)
+Index: src/ft_conn.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conn.c,v
+retrieving revision 1.55
+diff -u -r1.55 ft_conn.c
+--- src/ft_conn.c	5 May 2004 04:42:42 -0000	1.55
++++ src/ft_conn.c	31 Oct 2004 20:55:17 -0000
+@@ -414,6 +414,9 @@
+ 	if (timer_cnt & 1)
+ 		ft_node_cache_update ();
+ 
++	if (timer_cnt & 1)
++		ft_session_tidy_streams ();
++
+ 	/* gather stats, either from our index nodes if we are a search node or
+ 	 * our parent if we are a child */
+ 	n = ft_netorg_foreach (FT_NODE_INDEX, FT_NODE_CONNECTED, 10,
+Index: src/ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.68
+diff -u -r1.68 ft_http_server.c
+--- src/ft_http_server.c	11 May 2004 21:25:18 -0000	1.68
++++ src/ft_http_server.c	31 Oct 2004 20:55:18 -0000
+@@ -788,8 +788,9 @@
+ 	assert (f != NULL);
+ 
+ 	/* overflowing shouldnt be possible, but just in case.... */
++#if 0
+ 	assert (c->start + c->transmit < c->stop);
+-
++#endif
+ 	/*
+ 	 * Ask giFT for the size we should send.  If this returns 0, the upload
+ 	 * was suspended.
+Index: src/ft_openft.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.c,v
+retrieving revision 1.61
+diff -u -r1.61 ft_openft.c
+--- src/ft_openft.c	3 Sep 2004 16:42:59 -0000	1.61
++++ src/ft_openft.c	31 Oct 2004 20:55:19 -0000
+@@ -307,8 +307,9 @@
+ 	/* disconnect everyone for cleanliness */
+ 	ft_netorg_clear (FT_NETORG_FOREACH(cleanup_conn), NULL);
+ 
++#if 0
+ 	ft_search_db_destroy ();
+-
++#endif
+ 	ft_routing_free ();
+ 
+ 	/* cleanup */
+Index: src/ft_packet.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_packet.c,v
+retrieving revision 1.48
+diff -u -r1.48 ft_packet.c
+--- src/ft_packet.c	19 Jul 2004 22:20:48 -0000	1.48
++++ src/ft_packet.c	31 Oct 2004 20:55:19 -0000
+@@ -641,6 +641,32 @@
+ 	return ret;
+ }
+ 
++int ft_packet_send_streamed (TCPC *c, FTPacket *packet)
++{
++	FTSession *session;
++
++	if (!c || !FT_NODE(c) || !(session = FT_SESSION(c)))
++		return ft_packet_send (c, packet);
++
++	/* yes, this drops the packet on the floor */
++	if (session->stage < 4)
++	{
++		ft_packet_free (packet);
++		return 0;
++	}
++
++	if (!session->autoflushed)
++	{
++		session->autoflushed = ft_stream_get (c, FT_STREAM_SEND | FT_STREAM_AUTOFLUSH, NULL);
++		session->af_pkts = 0;
++
++		FT->DBGFN (FT, "creating autoflushed stream for %s: %p", ft_node_fmt (FT_NODE(c)), session->autoflushed);
++		assert (session->autoflushed);
++	}
++	
++	return ft_stream_send (session->autoflushed, packet);
++}
++
+ static int locate_to (FTNode *node, in_addr_t *ip)
+ {
+ 	/* we request info on a specific ip address and upon receiving this
+Index: src/ft_packet.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_packet.h,v
+retrieving revision 1.21
+diff -u -r1.21 ft_packet.h
+--- src/ft_packet.h	24 Apr 2004 07:03:11 -0000	1.21
++++ src/ft_packet.h	31 Oct 2004 20:55:19 -0000
+@@ -25,7 +25,7 @@
+  */
+ #define FT_PACKET_STREAM  (1 << 15)
+ 
+-#define FT_PACKET_MAX     2048         /**< maximum data size in a packet */
++#define FT_PACKET_MAX     65279        /**< maximum data size in a packet */
+ #define FT_PACKET_HEADER  4            /**< header size for all packets */
+ 
+ /**
+@@ -241,6 +241,8 @@
+  */
+ int ft_packet_send (TCPC *c, FTPacket *packet);
+ 
++int ft_packet_send_streamed (TCPC *c, FTPacket *packet);
++
+ /**
+  * Ensure that the packet is appropriately delivered to a potentially
+  * unestablished socket connection.
+Index: src/ft_protocol.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_protocol.c,v
+retrieving revision 1.71
+diff -u -r1.71 ft_protocol.c
+--- src/ft_protocol.c	3 Aug 2003 10:56:34 -0000	1.71
++++ src/ft_protocol.c	31 Oct 2004 20:55:20 -0000
+@@ -167,8 +167,10 @@
+ BOOL ft_protocol_handle (TCPC *c, FTPacket *packet)
+ {
+ 	if (!c || !packet)
++	  {
++	    FT->DBGFN (FT, "");
+ 		return FALSE;
+-
++	  }
+ 	/* stream messages need a special interface to read all raw messages out,
+ 	 * so we will simply wrap it around handle_command indirectly */
+ 	if (ft_packet_flags (packet) & FT_PACKET_STREAM)
+Index: src/ft_session.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_session.c,v
+retrieving revision 1.91
+diff -u -r1.91 ft_session.c
+--- src/ft_session.c	27 Oct 2004 20:26:46 -0000	1.91
++++ src/ft_session.c	31 Oct 2004 20:55:21 -0000
+@@ -531,6 +531,45 @@
+ 
+ /*****************************************************************************/
+ 
++static BOOL tidy_stream (FTNode *node, int *total)
++{
++	FTSession *session = node->session;
++
++	assert (session);
++	
++	if (!session->autoflushed)
++		return FALSE;
++	
++	(*total)++;
++
++	if (session->af_pkts == session->autoflushed->pkts)
++	{
++		ft_stream_finish (session->autoflushed);
++		session->autoflushed = NULL;
++		session->af_pkts = 0;
++
++		return TRUE;
++	}
++
++	session->af_pkts = session->autoflushed->pkts;
++
++	return FALSE;
++}
++
++void ft_session_tidy_streams (void)
++{
++	int tidied, total;
++
++	total = 0;
++
++	tidied = ft_netorg_foreach (FT_NODE_CLASSANY, FT_NODE_CONNECTED, 0,
++			    FT_NETORG_FOREACH(tidy_stream), &total);
++
++	FT->DBGFN (FT, "cleaned up %d of %d autoflushed streams", tidied, total);
++}
++
++/*****************************************************************************/
++
+ static void connect_complete (TCPC *c, int fd, input_id id, int incoming)
+ {
+ 	char *err = NULL;
+Index: src/ft_session.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_session.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_session.h
+--- src/ft_session.h	23 Dec 2003 05:22:50 -0000	1.27
++++ src/ft_session.h	31 Oct 2004 20:55:21 -0000
+@@ -89,6 +89,11 @@
+ 	FTStream     *submit_del;          /**< Separate stream for share removal
+ 	                                    *   because FTStream's are not capable
+ 	                                    *   of combining commands */
++	FTStream     *autoflushed;         /**< Stream for not-easily-encapsulated
++					        data; flushed periodically. */
++	unsigned int  af_pkts;             /**< Number of (uncompressed)
++					    *  packets sent via autoflush last time
++					    *  we checked */
+ 	Dataset      *cap;                 /**< List of supported node features
+ 	                                    *   and their respective support
+ 	                                    *   values.  This is used to negotiate
+@@ -194,6 +199,9 @@
+ 
+ /*****************************************************************************/
+ 
++void ft_session_tidy_streams (void);
++
++/*****************************************************************************/
+ /**
+  * Override the previous purpose completely.  This will not handle
+  * ::ft_session_drop_purpose, although will warn if setting goal to 0.
+Index: src/ft_stream.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_stream.c,v
+retrieving revision 1.33
+diff -u -r1.33 ft_stream.c
+--- src/ft_stream.c	25 Apr 2004 23:36:02 -0000	1.33
++++ src/ft_stream.c	31 Oct 2004 20:55:22 -0000
+@@ -82,6 +82,8 @@
+ 			stream->s.avail_in = 0;
+ 		}
+ 		break;
++	default:
++		abort ();
+ 	}
+ #endif /* USE_ZLIB */
+ 
+@@ -93,21 +95,35 @@
+                              uint16_t cmd)
+ {
+ 	FTStream *stream;
++	BOOL autoflush = BOOL_EXPR(dir & FT_STREAM_AUTOFLUSH);
+ 
++	dir &= ~FT_STREAM_AUTOFLUSH;
++
++	assert (dir == FT_STREAM_SEND || dir == FT_STREAM_RECV);
+ 	if (id == 0)
+ 		return NULL;
+ 
+ 	if (!(stream = MALLOC (sizeof (FTStream))))
+ 		return NULL;
+ 
++//	FT->DBGFN (FT, "");
+ 	stream->c     = c;
+ 	stream->cmd   = cmd;
+ 	stream->dir   = dir;
+ 	stream->id    = id;
+ 	stream->flags = flags;
+ 
++#ifdef USE_ZLIB
++	if (autoflush)
++		assert (dir == FT_STREAM_SEND);
++
++	stream->autoflush = autoflush;
++	stream->flush_timer = 0;
++#endif
++
+ 	if (!stream_init (stream, dir))
+ 	{
++		FT->DBGFN (FT, "failed");
+ 		free (stream);
+ 		return NULL;
+ 	}
+@@ -127,6 +143,8 @@
+ 		inflateEnd (&stream->s);
+ 		break;
+ 	}
++	
++	timer_remove_zero (&stream->flush_timer);
+ #endif /* USE_ZLIB */
+ 
+ 	free (stream);
+@@ -146,6 +164,8 @@
+ 	 case FT_STREAM_SEND:
+ 		d = &(FT_SESSION(c)->streams_send);
+ 		break;
++	default:
++		abort ();
+ 	}
+ 
+ 	return d;
+@@ -189,12 +209,17 @@
+ {
+ 	Dataset **d;
+ 
++//	FT->DBGFN (FT, "c=%d str=%p id=%d", c, stream, id);
+ 	if (!c || !stream || id == 0)
+ 		return FALSE;
+ 
++//	FT->DBGFN (FT, "");
++
+ 	if (!(d = get_direction (c, dir)))
+ 		return FALSE;
+ 
++	assert (!dataset_lookup (*d, &id, sizeof (id)));
++
+ 	dataset_insert (d, &id, sizeof (id), stream, 0);
+ 	return TRUE;
+ }
+@@ -253,7 +278,10 @@
+ 	}
+ 
+ 	if (!(stream = stream_new (c, dir, id, flags, ft_packet_command (packet))))
++	{
++		FT->DBGFN (FT, "failed");
+ 		return NULL;
++	}
+ 
+ #if 0
+ 	FT->DBGFN (FT, "%s: %lu(%s): initialized",
+@@ -261,9 +289,10 @@
+ 			   get_direction_str (stream));
+ #endif
+ 
+-	if (!insert_stream (c, dir, id, stream))
++	if (!insert_stream (c, stream->dir, id, stream))
+ 	{
+-		free (stream);
++		stream_free (stream);
++		FT->DBGFN (FT, "failed");
+ 		return NULL;
+ 	}
+ 
+@@ -271,7 +300,7 @@
+ }
+ 
+ #ifdef USE_ZLIB
+-static void output_flush (FTStream *stream)
++static void output_flush (FTStream *stream, BOOL finish)
+ {
+ 	int          err;
+ 	unsigned int len;
+@@ -290,7 +319,7 @@
+ 	{
+ 		if (stream->s.avail_out)
+ 		{
+-			err = deflate (&stream->s, Z_FINISH);
++			err = deflate (&stream->s, finish ? Z_FINISH : Z_SYNC_FLUSH);
+ 
+ 			if ((sizeof (stream->out_buf) - stream->s.avail_out) == 0 &&
+ 			    err == Z_BUF_ERROR)
+@@ -315,8 +344,11 @@
+ 			break;
+ 	}
+ 
+-	/* write the eof packet */
+-	stream_write (stream, NULL, 0);
++	if (finish)
++	{
++		/* write the eof packet */
++		stream_write (stream, NULL, 0);
++	}
+ }
+ #endif /* USE_ZLIB */
+ 
+@@ -327,7 +359,7 @@
+ 
+ #ifdef USE_ZLIB
+ 	if (stream->dir == FT_STREAM_SEND)
+-		output_flush (stream);
++		output_flush (stream, TRUE);
+ 
+ #if 0
+ 	/* it's really not very useful to print streams that were never actually
+@@ -374,8 +406,17 @@
+ }
+ 
+ #ifdef USE_ZLIB
++static BOOL do_autoflush (FTStream *stream)
++{
++	output_flush (stream, FALSE);
++
++	stream->flush_timer = 0;
++	return FALSE; /* remove */
++}
++
+ static void zlib_deflate (FTStream *stream, unsigned char *p, size_t len)
+ {
++	BOOL flushed = FALSE;
+ 	z_stream *s = &stream->s;
+ 
+ 	s->next_in  = (Bytef *) p;
+@@ -386,12 +427,30 @@
+ 		if (s->avail_out == 0)
+ 		{
+ 			stream_write (stream, stream->out_buf, sizeof (stream->out_buf));
++			flushed = TRUE;
+ 			s->next_out  = (Bytef *) stream->out_buf;
+ 			s->avail_out = (unsigned int) sizeof (stream->out_buf);
+ 		}
+ 
+ 		assert (deflate (s, Z_NO_FLUSH) == Z_OK);
+ 	}
++
++	if (!stream->autoflush)
++		return;
++
++	if (flushed)
++	{
++		if (s->next_out == stream->out_buf)
++			timer_remove_zero (&stream->flush_timer);
++		else
++			timer_reset (stream->flush_timer);
++	}
++	else
++		if (!stream->flush_timer)
++			stream->flush_timer = timer_add (
++					FT_STREAM_FLUSH_INTERVAL,
++					(TimerCallback)do_autoflush,
++					stream);
+ }
+ #endif /* USE_ZLIB */
+ 
+@@ -421,11 +480,8 @@
+ 	assert (stream->dir == FT_STREAM_SEND);
+ 
+ 	if (stream->cmd == 0)
+-		stream->cmd = ft_packet_command (packet);
+-
+-	/* for now we don't support this */
+-	assert (ft_packet_command (packet) == stream->cmd);
+-
++		stream->cmd = stream->autoflush ? 247 : ft_packet_command (packet);
++	
+ 	if ((pdata = ft_packet_serialize (packet, &pdatalen)))
+ 	{
+ 		stream_deflate (stream, pdata, pdatalen);
+Index: src/ft_stream.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_stream.h,v
+retrieving revision 1.11
+diff -u -r1.11 ft_stream.h
+--- src/ft_stream.h	17 Sep 2003 23:40:56 -0000	1.11
++++ src/ft_stream.h	31 Oct 2004 20:55:22 -0000
+@@ -47,6 +47,11 @@
+  */
+ #define FT_STREAM_HEADER 6
+ 
++/* The amount of compressed output after which we flush.
++ * OpenFT <= 0.2.1.4 has a maximum packet size of 2048, so we use that.
++ */
++#define FT_STREAM_BUFSIZE (2048 - FT_STREAM_HEADER)
++
+ /**
+  * Describes which direction the stream affects.  Streams cannot be
+  * bidirectional due to implementation and design flaws.  This is not likely
+@@ -58,6 +63,11 @@
+ 	FT_STREAM_SEND
+ } ft_stream_dir_t;
+ 
++/* flushes any buffered output periodically */
++#define FT_STREAM_AUTOFLUSH  0x10 /* or'd with ft_stream_dir_t */
++
++#define FT_STREAM_FLUSH_INTERVAL (20 * SECONDS)
++
+ /**
+  * Special flags within the stream packet that describes how to manage the
+  * data being delivered.
+@@ -108,12 +118,15 @@
+ 	 * Holds temporary compressed (or uncompressed) data as it's being
+ 	 * processed.
+ 	 */
+-	unsigned char      out_buf[FT_PACKET_MAX - FT_STREAM_HEADER];
+-	unsigned char      in_buf[FT_PACKET_MAX - FT_STREAM_HEADER];
++	unsigned char      out_buf[FT_STREAM_BUFSIZE];
++	unsigned char      in_buf[FT_STREAM_BUFSIZE];
++
+ 	size_t             in_rem;
+ 
+ #ifdef USE_ZLIB
+ 	z_stream           s;              /**< Actually compression element */
++	BOOL               autoflush;
++	timer_id           flush_timer;
+ #endif /* USE_ZlIB */
+ } FTStream;
+ 
+Index: src/proto/ft_query.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/proto/ft_query.c,v
+retrieving revision 1.15
+diff -u -r1.15 ft_query.c
+--- src/proto/ft_query.c	21 Nov 2003 16:05:18 -0000	1.15
++++ src/proto/ft_query.c	31 Oct 2004 20:55:24 -0000
+@@ -207,12 +207,15 @@
+ {
+ 	int ret;
+ 
++#if 1
+ 	/* TODO: this API should really be unified somewhere in ft_packet.c */
+ 	if (reply->stream)
+ 		ret = ft_stream_send (reply->stream, pkt);
+ 	else
+ 		ret = ft_packet_send (reply->c, pkt);
+-
++#else
++	ret = ft_packet_send_streamed (reply->c, pkt);
++#endif
+ 	return ret;
+ }
+ 
+@@ -504,7 +507,7 @@
+ 	ft_packet_put_str (pkt, params->realm);
+ 
+ 	/* deliver the search query */
+-	if (ft_packet_send (FT_CONN(node), pkt) < 0)
++	if (ft_packet_send_streamed (FT_CONN(node), pkt) < 0)
+ 	{
+ 		ft_search_fwd_finish (sfwd);
+ 		return FALSE;
+@@ -915,7 +918,7 @@
+ 	if ((data = ft_packet_get_raw (pkt, &len)))
+ 		ft_packet_put_raw (fwd, data, len);
+ 
+-	ft_packet_send (FT_CONN(src), fwd);
++	ft_packet_send_streamed (FT_CONN(src), fwd);
+ }
+ 
+ static void handle_search_sentinel (TCPC *c, FTPacket *pkt, ft_guid_t *guid,

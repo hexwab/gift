@@ -1,0 +1,80 @@
+# $Id: Makefile.msvc,v 1.7 2003/07/11 02:27:47 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I..
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+GNUTELLA_DEF = "../win32/gnutella_api.def"
+TARGET     = $(GNUTELLA_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+TARGET     = $(GNUTELLA_STATIC)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+OBJECTS = \
+	file_cache$(O) \
+	ft_http_client$(O) \
+	ft_http_server$(O) \
+	ft_xfer$(O) \
+	gt_accept$(O) \
+	gt_ban$(O) \
+	gt_conf$(O) \
+	gt_connect$(O) \
+	gt_gnutella$(O) \
+	gt_guid$(O) \
+	gt_netorg$(O) \
+	gt_node$(O) \
+	gt_packet$(O) \
+	gt_protocol$(O) \
+	gt_query_route$(O) \
+	gt_search$(O) \
+	gt_search_exec$(O) \
+	gt_share$(O) \
+	gt_share_file$(O) \
+	gt_stats$(O) \
+	gt_utils$(O) \
+	gt_web_cache$(O) \
+	gt_xfer$(O) \
+	html$(O) \
+	http$(O) \
+	http_request$(O) \
+	sha1$(O) \
+	trie$(O)
+	
+all : $(TARGET)
+
+install : $(TARGET)
+!if defined(dynamic) || defined(DYNAMIC)
+	@copy /y $(TARGET) ..\win32-dist\Gnutella.dll
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS) $(GNUTELLA_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(GNUTELLA_DEF) $(LIBS) \
+	       $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

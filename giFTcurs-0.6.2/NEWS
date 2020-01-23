@@ -1,0 +1,141 @@
+New in 0.6.2, released 2004-01-11:
+	* An Italian translation from Stefano Palmeri was added.
+	* UTF-8 support when linked to ncursesw (use --with-ncursesw).
+	* A SIGBUS error on sparc64 was fixed.
+
+New in 0.6.1, released 2003-08-31:
+	* The 'Start search' button doesn't automatically clear old
+	  searches, since some networks return more results when searched
+	  multiple times.
+	* Some annoying bugs regarding interface protocol ID's were fixed.
+
+New in 0.6.0, released 2003-07-10:
+	* Now uses GLib 2.
+	* The md5file option is now deprecated, since giFT verifies the
+	  checksum of downloads itself.
+	* Banned words are stored in the config file.
+	* A user ignore feature. Press 'i' to ignore them for the session,
+	  press 'I' to ignore them permanently.
+	* A console where all messages are shown. Pressing 'v' will turn
+	  on verbose mode. Pressing 'w' changes wrapping.
+	* The search tab is highlighted when a search completes, and the
+	  same goes for the transfer tab when a download completes.
+	* A small interface protocol change is supported. giFT now uses
+	  only the ID's in the range 32768-65535, to avoid ID collisions.
+
+New in 0.5.7, released 2003-05-01:
+	* Ability to exclude search terms by placing a '-' before them.
+	* Sorting of hits and transfers by arbitrary fields which can be
+	  specified in the config file.
+
+New in 0.5.6, released 2003-02-27:
+	* Improved format strings.
+	* 'q' exits the program.
+	* Portability fixes.
+	* Don't crash when a search result without a mime field is
+	  to be shown. Thanks to Jan-Marek Glogowski for discovering
+	  and fixing this.
+
+New in 0.5.5, released 2002-11-25:
+	* Captital E in the transfer screen (un)expands all transfers.
+	* Slight protocol change caused transfers to not be seen.
+	* Minor fixes.
+
+New in 0.5.4, released 2002-10-26:
+	* Formats for the search results were broken.
+	* Small fix for transfers when giFT dies.
+
+New in 0.5.3, released 2002-10-25:
+	* Layout is determined by configurable formatting strings.
+	* Better support for viewing important messages from giFT.
+	* Support for Tru64 (OSF1 V4.0) and OSF1 curses.
+	* Various bug fixes.
+
+New in 0.5.2, released 2002-09-23:
+	* Smashed a few bugs.
+	* Meta data shows in the Extra Information box. Use j/k to scroll it.
+
+New in 0.5.1, released 2002-09-12:
+	* Faster hit sorting algorithm.
+	* Small interface protocol change.
+	* Transfers are sorted, largest to smallest.
+	* Automatic awakening moved to a separate binary.
+
+New in 0.5.0, released 2002-08-25:
+	* Resizing finally works right away. This was the oldest bug.
+	* Interface protocol changed drastically.
+
+New in 0.4.3, released 2002-07-07:
+	* A button bar for the very laziest of users. Also good for new users,
+	  so the default message timer has been removed. May be disabled, see
+	  giFTcurs.conf(5).
+	* More things are clickable, check the ChangeLog.
+	* The 'X' key was changed to 'T', to make cancelling transfers harder.
+
+New in 0.4.2, released 2002-06-26:
+	* Selections now have their own color. The old behaviour of inverting
+	  the color is still available, see giFTcurs.conf(5).
+	* Two new sorting orders.
+	* A setting that will ignore hits with zero availability.
+	* A compile fix for FreeBSD and one for Mac OS X.
+	* Support for the new pause feature in giFT. (Press 'p' on a download.)
+
+New in 0.4.1, released 2002-05-20:
+	* An option to log hash and filename of started downloads to a file,
+	  so that a user may run md5sum -c.
+	* A PowerPC-specific segfault was fixed.
+
+New in 0.4.0, released 2002-05-18:
+	* Search results and downloads are expandable trees.
+	* A new transfer style. The original is still available, see
+	  giFTcurs.conf(5) for more information.
+	* A new manpage, giFTcurs.conf(5).
+	* Support for chunk reporting.
+	* Bug fixes.
+
+New in 0.3.4, released 2002-04-23:
+	* libgpm support
+	* Search history.
+	* Very much improved settings code.
+	* Temporary workaround for a protocol change.
+
+New in 0.3.3, released 2002-04-18:
+	* Improved settings screen.
+	* Proper mouse support.
+	* / for searching among results.
+	* Show average bandwidth on completed transfers.
+	* Brazilian Portuguese, Danish and Dutch translations.
+	* Files in the download list are marked in the search results list.
+	* Mouse wheel support in terminals which support it.
+	* Ban words filter on incoming search results.
+
+New in 0.3.2, released 2002-03-20:
+	* Comply with a procotol change that affected downloading.
+	* Alphabetical sorting of results.
+	* Nodepage uploads are automagically removed when complete.
+	* A few bugs were fixed.
+
+New in 0.3.1, released 2002-03-13:
+	* Stats work again.
+	* A screen for changing colors was added.
+	* The transfer screen was improved.
+	* A partial French translation was added.
+	* Lots of bugs were fixed.
+
+New in 0.3.0, released 2002-02-27:
+	* Adhere to the new interface protocol.
+	* Most likely stuff we've forgotten about.
+
+New in 0.2.1, released 2002-01-17:
+	* Many small improvements and bug fixes.
+
+New in 0.2.0, released 2002-12-19:
+	* Clean hit list automagically on new search.
+	* Timed delays between hit list update, no CPU hog here.
+	* Downloads through giFT.
+	* The new somewhat limited <stats/> is used and the main
+	  screen was adapted to this.
+	* Fixed a socket leak and some memory leaks.
+
+New in 0.1.0, released 2001-11-20:
+	* Initial release.

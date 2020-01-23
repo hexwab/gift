@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+#include "mother.h"
+
+int main(void) {
+	unsigned long seed=0x12345678;
+	
+	for (;;) {
+		unsigned long n=mother(seed);
+		fwrite(&n, sizeof(n), 1, stdout);
+	}
+}

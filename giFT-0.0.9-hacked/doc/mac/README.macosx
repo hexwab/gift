@@ -1,0 +1,52 @@
+
+
+                      giFT on Darwin/Mac OS X
+
+
+PREAMBLE:
+giFT is under development. If you don't know how to compile and debug software from the terminal, you shouldn't be using it.
+
+
+RECOMMENDED COMPILE SETTINGS:
+./autogen.sh --disable-libdl CPPFLAGS=-I/sw/include LDFLAGS=-L/sw/lib
+ or
+./autogen.sh CPPFLAGS=-I/sw/include LDFLAGS=-L/sw/lib
+
+
+BUG REPORTING:
+If you experience crashes, etc., with giFT, you should submit a bug report. At the very least you should include:
+- A stack trace from "~/Library/Logs/CrashReporter/giFT.crash.log". If the file doesn't exist, open "/Applications/Utilities/Console.app", and check "Enable crash reporting" in the preferences.
+- "~/.giFT/gift.log"
+- "configure.log"
+- If the problems are related to downloading, you should include the hidden state file in the incoming directory. 
+The more information you provide, the easier it is to help you. Also, you should remember to perform cvs update, make distclean, reconfigure, recompile and invoke the crash again prior to reporting a bug - it just might have been fixed :) 
+
+You shouldn't report bugs to the giFT project if you use the patched version of giFT distributed with Fink - you should report them to the package maintainer.
+
+
+KNOWN ISSUES:
+- dependancies
+Use Fink to install the libraries and hope they work with giFT...
+- Amount of users
+Yes, there are "only" ~600 users using the OpenFT network. Somehow that's enough to make it outperform gnutella anyway. This is partly due to fact that gnutella sucks and giFT/OpenFT doesn't.
+- zlib
+Darwin and Mac OS X come with zlib 1.1.3 and giFT requires 1.1.4. The only difference is that 1.1.4 fixes a serious security issue - an issue which doesn't affect Mac OS X. Change all occurrences of "1.1.4" to "1.1.3" (both w/o quotes) in configure.ac and rerun autogen.sh.
+- libdl
+The standard libdl on Darwin cannot load dynamic libraries at runtime. If you use Fink to install a new implementation of libdl, dlcompat, everything should work fine. If you compile dlcompat yourself, you should either use the --enable-fink option or remove the line containing "-Ddlsym=dlsym_prepend_underscore" from configure.ac and rerun autogen.sh.
+- 10.1
+giFT doesn't work as well on Mac OS X 10.1 as it does on 10.2 and later. This is due to the fact the BSD subsystem received a major update with 10.2. giFT can be made to work on 10.1 with some major hackery, but you're on your own if you want to do it.
+
+
+LINKS:
+Fink - http://fink.sf.net/
+zlib vulnerability - http://www.cert.org/advisories/CA-2002-07.html
+dlcompat - http://www.opendarwin.org/projects/dlcompat/
+
+
+FEEDBACK:
+send comments, corrections and stuff to:
+gift-users (at) lists dot sourceforge dot net
+
+
+Happy giFTing!
+- Dan Christiansen

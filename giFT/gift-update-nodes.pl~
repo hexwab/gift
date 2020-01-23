@@ -1,0 +1,101 @@
+#!/usr/bin/perl -w
+use strict;
+use Data::Dumper;
+
+our $VERSION='0.3';
+
+for ($ARGV[0]) {
+    last unless $_ && /^-/;
+    /^--?v/i and do {
+	print "gift-update-nodes version $VERSION\n";
+	exit 0;
+    };
+    print "Usage: $0 [plugins...]\n";
+    exit 0;
+}
+
+my $method;
+
+eval { use LWP::Simple };
+$method='lwp' if (!$@);
+
+if (!$method) {
+    system("wget --version >/dev/null 2>&1")==0 and $method='wget';
+}
+
+if (!$method) {
+    my $ret=system("curl --version >/dev/null 2>&1");
+    ($ret==0 || $ret==2<<8) and $method='curl'; # WTF? --version returns non-zero status?
+}
+
+if (!$method) {
+    die "couldn't find a downloader: none of LWP, wget or curl seems to work";
+}
+
+print "method=$method\n";
+exit;
+my $manual=1;
+my @plugins;
+
+if (@ARGV and $ARGV[0]) { # WTF?
+    @plugins=@ARGV;
+    $manual=0;
+} else {
+    open(FOO, "giftd -V|") or die "failed to get plugins list from giFT";
+    my $gotavail=0;
+    while (<FOO>) {
+	next unless /Available plugins:/..1;
+	$gotavail=1;
+	next unless /^\t(\S+) /;
+	push @plugins, $1;
+    }
+    close FOO;
+    die "failed to get plugins list from giFT" if !$gotavail;
+    die "no plugins found" if !@plugins;
+}
+
+my $list=`cat ~/nodes.cgi`;
+my $url="http://update.kceasy.com/cgi-bin/nodes.cgi?app=gift-update-nodes&version=$VERSION";
+#get($url) or die "failed to fetch nodes list";
+
+my %files;
+my $plugin;
+for (split/\n/,$list) {
+    chomp;
+    s/\r$//; # just in case
+    next if /^#/ or /^$/;
+    $plugin=$1, next if (/^\[(.*)\]$/);
+    die "parse error reading nodes list" unless /^\d+\s*=\s*(.*)/ and $plugin;
+    my $file;
+    @{$file}{qw[desc type unk1 filename url unk2]}=split/\|/,$1;
+    push @{$files{$plugin}}, $file;
+}
+
+print Dumper \%files;
+
+for my $plugin (@plugins) {
+    if (-d "~/.giFT/$plugin/") {
+	die "plugin \`$plugin\' not configured (rerun gift-setup?)" if $manual;
+	next;
+    }
+
+    if (!$files{$plugin}) {
+	print STDERR "No nodes for plugin \`$plugin\', skipping...\n";
+	next;
+    }
+    for my $file (@{$files{$plugin}}) {
+	print STDERR "Updating $file->{desc} from $file->{url}...\n";
+	my $contents=geturl($file->{url}) or die "failed to fetch URL \`$file->{url}'";
+	$contents=gunzip($contents) if $contents=~/^\x1f\x8b/;
+    }
+}
+	
+
+sub geturl {
+    eval { use LWP::Simple qw[get]; };
+    if (!$@) {
+	return get($_[0]);
+    }
+}
+    
+    

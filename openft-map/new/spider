@@ -1,0 +1,1 @@
+while :; do a=`date +%s`;~/gift/openft-map/new/poe.pl |bzip2 >maps/$a;echo $a >latest-map;sleep 360;done

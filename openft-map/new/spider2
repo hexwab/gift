@@ -1,0 +1,1 @@
+while :; do a=`date +%s`;perl poe-10.pl |bzip2 >maps/$a;echo $a >latest-map;sleep 1200;done 

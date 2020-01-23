@@ -1,0 +1,46 @@
+$Id: ChangeLog,v 1.15 2004/05/08 10:39:38 jasta Exp $
+
+libgift 0.11.7:
+
+   * Fixed VA_COPY bug in strobj which led to crashes on AMD64 (possibly other
+     platforms?)
+
+   * Fixed fd leak in platform_child() implementation.
+
+   * Fixed a bug where we possibly send SIGTERM to random processes
+     in platform_cleanup().
+
+libgift 0.11.6:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.5:
+
+   * Minor updates to the following interfaces:
+
+      conf.c
+      dataset.c
+      strobj.c
+      stopwatch.c
+
+   * Fixed a bug where it may be possible for a timer callback to remove a
+     newly registered timer with a FALSE return value.
+
+   * Major win32 portability improvements.
+
+libgift 0.11.4:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.3:
+
+   * Synchronized the version to match giftd.
+
+libgift 0.11.2:
+
+   * Minor conf.c changes for the giftd.conf move.  Perhaps this logic should
+     be in giftd instead of libgift?
+
+libgift 0.11.1:
+
+   * Synchronized the version to match giftd.

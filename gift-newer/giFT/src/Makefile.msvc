@@ -1,0 +1,60 @@
+# $Id: Makefile.msvc,v 1.11 2002/04/30 13:56:51 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../lib
+GIFTAPI_DEF ="../win32/gift_api.def"
+
+LOADEROBJ = "..\win32\loader$(O)"
+
+# static / dynamic linking
+!if defined(static) || defined(STATIC)
+LIBS     = $(LIBS) $(OPENFT_LIB)
+!endif
+
+LIBS = $(LIBS) $(LIBGIFT_LIB)
+
+TARGET = giFT.exe
+TARGETDLL = $(GIFT_DLL)
+TARGETLIB = $(GIFT_LIB)
+
+OBJECTS = \
+	daemon$(O) \
+	download$(O) \
+	if_port$(O) \
+	main$(O) \
+	md5$(O) \
+	mime$(O) \
+	plugin$(O) \
+	sharing$(O) \
+	transfer$(O) \
+	upload$(O)
+
+all: $(TARGETDLL) $(TARGET)
+
+install: $(TARGET) $(TARGETDLL)
+ 	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+ 	@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGETDLL): $(OBJECTS) $(GIFTAPI_DEF)
+	@$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	  -def:$(GIFTAPI_DEF) $(LIBS) $(OBJECTS)
+
+$(TARGET): $(LOADEROBJ) $(TARGETDLL)
+	@$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(GIFT_LIBS) $(TARGETLIB) \
+	  $(LOADEROBJ)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(LOADEROBJ)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+ 
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

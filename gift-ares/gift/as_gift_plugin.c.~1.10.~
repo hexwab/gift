@@ -1,0 +1,593 @@
+
+#include "as_ares.h"
+
+#ifndef GIFT_PLUGIN
+# error "GIFT_PLUGIN not defined. Your build environment seems broken."
+#endif
+
+Protocol *gift_proto;
+
+static as_bool meta_to_gift (ASMetaTag *tag, Share *share)
+{
+	if (!STRCASECMP (tag->name, "bitrate") && tag->value)
+		share_set_meta (share, tag->name, stringf ("%s000", tag->value));
+	else
+		share_set_meta (share, tag->name, tag->value);
+
+	return TRUE;
+}
+
+static void search_callback (ASSearch *search, ASResult *r, as_bool duplicate)
+{
+	Share *share;
+
+	if (!r->filename)
+		return;
+
+	if (!(share = share_new (NULL)))
+		return;
+
+	share->p    = gift_proto;
+	share->size = r->filesize;
+	share_set_path (share, r->filename);
+	share_set_mime (share, mime_type (r->filename));
+
+	share_set_hash (share, "SHA1", r->hash->data, AS_HASH_SIZE, FALSE);
+
+	as_meta_foreach_tag (r->meta, (ASMetaForeachFunc)meta_to_gift, share);
+
+#if 0
+	{
+		char *url;
+		ASSource *s;
+		url = as_source_serialize (r->source);
+
+		assert (url);
+
+		s = as_source_unserialize (url);
+		assert (s);
+		as_source_free (s);
+		free (url);
+	}
+#endif
+	gift_proto->search_result (gift_proto, search->udata, r->source->username,
+			      NULL, as_source_serialize (r->source), 1, share);
+
+	share_free (share);
+}
+
+int asp_giftcb_search (Protocol *p, IFEvent *event, char *query, char *exclude,
+		       char *realm, Dataset *meta)
+{
+	ASSearch *search;
+	ASSearchRealm r = SEARCH_ANY;
+
+	if (realm)
+	{
+		struct {
+			char *name;
+			ASSearchRealm realm;
+		} realms[] = {
+			{ "image", SEARCH_IMAGE },
+			{ "audio", SEARCH_AUDIO },
+			{ "video", SEARCH_VIDEO },
+			{ "text", SEARCH_DOCUMENT },
+			{ "application", SEARCH_SOFTWARE },
+			{ NULL, SEARCH_ANY }
+		}, *ptr;
+
+		for (ptr = realms; ptr->name; ptr++)
+		{
+			if (!strncasecmp (realm, ptr->name, strlen (ptr->name)))
+			{
+				r = ptr->realm;
+				break;
+			}
+		}
+	}
+
+	search = as_searchman_search (AS->searchman,
+				      (ASSearchResultCb) search_callback,
+				      query, r);
+
+	if (!search)
+		return FALSE;
+
+	search->udata = event;
+
+	return TRUE;
+}
+
+struct foo {
+	ASSearch *search;
+	IFEvent *event;
+};
+
+static as_bool find_search (ASHashTableEntry *entry, struct foo *bar)
+{
+	ASSearch *s = entry->val;
+	
+	if (s->udata == bar->event)
+	{
+		assert (!bar->search);
+		bar->search = s;
+	}
+
+	return FALSE;
+}
+
+void asp_giftcb_search_cancel (Protocol *p, IFEvent *event)
+{
+	struct foo bar = { NULL, event };
+	as_bool ret;
+
+	as_hashtable_foreach (AS->searchman->searches,
+				    (ASHashTableForeachFunc)find_search,
+				    &bar);
+	
+	assert (bar.search);
+	
+	ret = as_searchman_remove (AS->searchman, bar.search);
+	assert (ret);
+}
+
+int asp_giftcb_stats (Protocol *p, unsigned long *users, unsigned long *files,
+                                          double *size, Dataset **extra)
+{
+	*users = AS->netinfo->users;
+	*files = AS->netinfo->files;
+	*size  = AS->netinfo->size;
+
+	return AS->netinfo->conn_have;
+}
+
+unsigned char *asp_giftcb_hash (const char *path, size_t *len)
+{
+	ASHash *hash = as_hash_file (path);
+
+	if (len && hash)
+		*len = AS_HASH_SIZE;
+
+	return (unsigned char *)hash;
+}
+
+unsigned char *asp_giftcb_hash_encode (unsigned char *data)
+{
+	ASHash *hash;
+	unsigned char *encoded;
+
+	hash = as_hash_create (data, AS_HASH_SIZE);
+
+	if (!hash)
+		return NULL;
+	
+	encoded = as_hash_encode (hash);
+	as_hash_free (hash);
+
+	return encoded;
+}
+
+static as_bool dl_state_callback (ASDownConn *conn, ASDownConnState state)
+{
+	SourceStatus s;
+	const char *t;
+	Source *source = conn->udata1;
+	BOOL remove = FALSE;
+	
+	switch (state)
+	{
+	case DOWNCONN_CONNECTING:
+		s = SOURCE_WAITING, t = "Connecting";
+		break;
+	case DOWNCONN_TRANSFERRING:
+		s = SOURCE_ACTIVE, t = "Active";
+		break;
+	case DOWNCONN_FAILED:
+		s = SOURCE_CANCELLED, t = "Failed";/*, remove = TRUE;*/
+		break;
+	case DOWNCONN_COMPLETE:
+		/* transfer's already been freed */
+		return TRUE;
+	case DOWNCONN_QUEUED:
+	{
+		s = SOURCE_QUEUED_REMOTE;
+		if (conn->queue_pos && conn->queue_len)
+			t = stringf ("Queued (%d of %d)", conn->queue_pos, conn->queue_len);
+		else
+			t = "Queued";
+		break;
+	}
+	default:
+		abort ();
+	}
+
+#if 0
+	AS_DBG_3 ("state callback: %p (%s) '%s'", conn, source->url, t);
+#endif
+
+	if (remove)
+		gift_proto->source_abort (gift_proto, source->chunk->transfer, source);
+
+	gift_proto->source_status (gift_proto, conn->udata1, s, t);
+
+	return TRUE;
+}
+
+static as_bool dl_data_callback (ASDownConn *conn, as_uint8 *data,
+				 unsigned int len)
+{
+	Source *source = conn->udata1;
+
+        gift_proto->chunk_write (gift_proto, source->chunk->transfer, source->chunk,
+			    source, data, len);
+
+	return TRUE;
+}
+
+int asp_giftcb_download_start (Protocol *p, Transfer *transfer, Chunk *chunk,
+                                                           Source *source)
+{
+	ASSource *s;
+	ASDownConn *dc;
+	ASHash *hash;
+
+	assert (source->url);
+
+	if (!(s = as_source_unserialize (source->url)))
+	{	
+		AS_DBG_1 ("malformed url '%s'", source->url);
+		gift_proto->source_abort (gift_proto, source->chunk->transfer, source);
+
+		return FALSE;
+	}
+	
+	if (strncmp (source->hash, "SHA1:", 5) ||
+	    !(hash = as_hash_decode (source->hash + 4)))
+	{
+		AS_DBG_1 ("malformed hash '%s'", source->hash);
+		gift_proto->source_abort (gift_proto, source->chunk->transfer, source);
+
+		return FALSE;
+	}
+
+	dc = as_downconn_create (s, (ASDownConnStateCb)dl_state_callback,
+				 (ASDownConnDataCb)dl_data_callback);
+	
+	if (!dc)
+	{	
+		AS_DBG_1 ("dc failed '%s'", source->url);
+		as_source_free (s);
+		return FALSE;
+	}
+
+	source->udata = dc;
+	dc->udata1 = source;
+	
+	AS_DBG_2 ("started dl %p from %s", dc, source->url);
+	
+	as_downconn_start (dc, hash, chunk->start + chunk->transmit,
+			   chunk->stop - chunk->start - chunk->transmit);
+
+	gift_proto->source_status (gift_proto, source, SOURCE_WAITING, "Connecting");
+
+	return TRUE;
+}
+
+static BOOL dl_stop_callback (ASDownConn *dc)
+{
+	as_downconn_free (dc);
+
+	return FALSE; /* remove */
+}
+
+void asp_giftcb_download_stop (Protocol *p, Transfer *transfer, Chunk *chunk,
+			       Source *source, int complete)
+{
+	ASDownConn *dc = source->udata;
+
+#if 1
+	timer_add (0, (TimerCallback)dl_stop_callback, dc);
+#else
+	as_downconn_cancel (dc);
+
+	/* FIXME */
+	as_downconn_free (dc);
+#endif
+}
+
+void meta_from_gift (ds_data_t *key, ds_data_t *value,
+                                  ASMeta *meta)
+{
+	as_bool ret;
+
+	if (!STRCASECMP (key->data, "bitrate") && value->data)
+	{
+		char *val = strdup (value->data);
+		int len = strlen (val);
+		
+		if (len > 3)
+			val[len - 3] = '\0';
+		
+		ret = as_meta_add_tag (meta, key->data, val);
+		
+		free (val);
+	}
+	else
+		ret = as_meta_add_tag (meta, key->data, value->data);
+
+	assert (ret);
+}
+
+static List *sharelist = NULL;
+static timer_id share_timer = 0;
+
+static BOOL submit_shares (List **list)
+{
+	as_bool ret;
+
+	ret = as_shareman_add_and_submit (AS->shareman, *list);
+
+	assert (ret);
+
+	list_free (*list);
+
+	*list = NULL;
+
+	share_timer = 0;
+
+	return FALSE; /* remove */
+}
+
+BOOL asp_giftcb_share_add (Protocol *p, Share *share, void *data)
+{
+	ASShare *ashare;
+	ASMeta *meta;
+	Hash *hash;
+	ASRealm realm;
+
+	if (!(hash = share_get_hash (share, "SHA1")))
+		return FALSE;
+
+	realm = as_meta_realm_from_filename (share->path);
+	
+	/* FIXME! */
+	if (realm == REALM_UNKNOWN || realm == REALM_SOFTWARE)
+		return FALSE;
+
+	if (!(meta = as_meta_create ()))
+		return FALSE;
+
+	share_foreach_meta (share, (DatasetForeachFn)meta_from_gift, meta);
+
+	ashare = as_share_create (share->path, as_hash_create (hash->data, 20), meta,
+                          share->size, realm);
+
+	assert (ashare);
+
+	ashare->udata = share;
+
+	sharelist = list_prepend (sharelist, ashare);
+
+	if (share_timer)
+		timer_reset (share_timer);
+	else
+		share_timer = timer_add (15 * SECONDS, (TimerCallback) submit_shares, &sharelist);
+
+	assert (!share_get_udata (share, gift_proto->name));
+
+	share_set_udata (share, gift_proto->name, ashare);
+
+	return TRUE;
+}
+
+BOOL asp_giftcb_share_remove (Protocol *p, Share *share, void *data)
+{
+	Hash *hash;
+	ASShare *ashare;
+	as_bool ret;
+	
+	assert (!share_timer);
+
+	/* FIXME: dups */
+	hash = share_get_hash (share, "SHA1");
+
+	if (!hash)
+		return FALSE;
+
+	ashare = as_shareman_lookup (AS->shareman, (ASHash *)(hash->data));
+
+	if (!ashare || ashare->udata != share)
+		return FALSE;
+
+	ret = as_shareman_remove (AS->shareman, (ASHash *)(hash->data));
+
+	assert (ret);
+
+	share_set_udata (share, gift_proto->name, NULL);
+
+	return TRUE;
+}
+
+void asp_giftcb_share_free (Protocol *p, Share *share, void *data)
+{
+	assert (!share_get_udata (share, gift_proto->name));
+}
+
+static const char *upload_to_user (ASUpload *up)
+{
+	return (STRING_NULL(up->username)) ?
+		stringf ("%s@%s", up->username, net_ip_str (up->host))
+		: net_ip_str (up->host);
+}
+
+static void wrote (ASUpload *up, int len)
+{
+	Chunk *chunk = up->udata;
+	assert (chunk);
+
+	/* yes, giFT checks for a NULL segment pointer, but never
+	 * actually dereferences it... ugh */
+	gift_proto->chunk_write (gift_proto, chunk->transfer, chunk, chunk->source,
+				 (void *)len, len);
+}
+
+static as_bool send_progress (ASUpload *up)
+{
+	Chunk *chunk;
+
+	if (!(chunk = up->udata))
+		return FALSE;
+
+	if (chunk->transmit == up->sent)
+		return FALSE;
+
+	wrote (up, up->sent - chunk->transmit);
+
+	return TRUE;
+}
+
+as_bool up_state_cb (ASUpMan *man, ASUpload *up,
+		     ASUploadState state)
+{
+	Chunk *chunk;
+	Transfer *transfer;
+
+#if 0
+	AS_DBG_2("upload_state: %p: %d", up, state);
+#endif
+	switch (state) {
+	case UPLOAD_ACTIVE:
+		transfer = gift_proto->upload_start (gift_proto, &chunk, upload_to_user (up),
+						     up->share->udata, up->start, up->stop);
+
+		assert (transfer && chunk->transfer == transfer);
+		
+		up->udata = chunk;
+		chunk->udata = up;
+
+		break;
+		break;
+	case UPLOAD_COMPLETE:
+		send_progress (up);
+		break;
+	case UPLOAD_FAILED:
+	case UPLOAD_CANCELLED:
+		wrote (up, 0);
+		break;
+	default:
+		abort ();
+	}
+
+	return TRUE;
+}
+
+as_bool up_auth_cb (ASUpMan *man, ASUpload *up,
+		    int *queue_length)
+{
+	upload_auth_t auth;
+	int ret;
+	Share *share = up->share->udata;
+	const char *user = upload_to_user (up);
+	assert (share);
+
+	ret = gift_proto->upload_auth (gift_proto, user, share, &auth);
+	
+	switch (ret) {
+	case UPLOAD_AUTH_ALLOW:
+		return 0;
+		
+	case UPLOAD_AUTH_STALE:
+	case UPLOAD_AUTH_MAX_PERUSER:
+	case UPLOAD_AUTH_HIDDEN:
+		return -1;
+
+	case UPLOAD_AUTH_MAX:
+		if (queue_length)
+			*queue_length = auth.queue_ttl;
+		return auth.queue_pos ? auth.queue_pos : -1;
+		
+	case UPLOAD_AUTH_NOTSHARED:
+		/* can't happen? */
+		abort ();
+		
+	default:
+		abort ();
+	}
+}
+
+int upload_iter (ASUpload *up, void *udata)
+{
+	if (up->state != UPLOAD_ACTIVE)
+		return FALSE;
+
+	return send_progress (up);
+}
+
+static void up_progress_cb (ASUpMan *man)
+{
+	list_foreach (man->uploads, (ListForeachFunc)upload_iter, NULL);
+}
+
+void asp_giftcb_upload_stop (Protocol *p, Transfer *transfer, Chunk *chunk,
+			       Source *source)
+{
+	ASUpload *up = chunk->udata;
+
+	assert (up);
+
+	as_upman_remove (AS->upman, up);
+}
+
+static int asp_giftcb_start (Protocol *proto)
+{
+	if (!as_init ())
+		return FALSE;
+
+	if (!as_nodeman_load (AS->nodeman, gift_conf_path ("Ares/nodes")))
+		return FALSE;
+
+	if (!as_start ())
+		return FALSE;
+
+	as_upman_set_state_cb (AS->upman, (ASUpManStateCb)up_state_cb);
+	as_upman_set_auth_cb (AS->upman, (ASUpManAuthCb)up_auth_cb);
+	as_upman_set_progress_cb (AS->upman, (ASUpManProgressCb)up_progress_cb);
+
+	as_sessman_connect (AS->sessman, 4);
+
+	return TRUE;
+}
+
+static void asp_giftcb_destroy (Protocol *proto)
+{
+	as_nodeman_save (AS->nodeman, gift_conf_path ("Ares/nodes"));
+	as_cleanup ();
+}
+
+int Ares_init (Protocol *p)
+{
+	p->version_str = strdup ("foo");
+
+	p->support (p, "range-get", TRUE);
+	p->support (p, "hash-unique", TRUE);
+
+	p->hash_handler (p, "SHA1", HASH_PRIMARY,
+			 (HashFn)asp_giftcb_hash,
+			 (HashDspFn)asp_giftcb_hash_encode);
+
+	p->start          = asp_giftcb_start;
+	p->destroy        = asp_giftcb_destroy;
+	p->search         = asp_giftcb_search;
+	p->search_cancel  = asp_giftcb_search_cancel;
+	p->stats          = asp_giftcb_stats;
+        p->download_start = asp_giftcb_download_start;
+        p->download_stop  = asp_giftcb_download_stop;
+        p->upload_stop    = asp_giftcb_upload_stop;
+        p->share_add      = asp_giftcb_share_add;
+        p->share_remove   = asp_giftcb_share_remove;
+        p->share_free     = asp_giftcb_share_free;
+
+	gift_proto = p;
+
+	return TRUE;
+}

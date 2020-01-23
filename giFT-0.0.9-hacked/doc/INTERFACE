@@ -1,0 +1,614 @@
+                           giFT's Interface Protocol
+
+  Author: Josh Guilfoyle
+
+  Author: Eelco Lempsink
+
+   Abstract
+
+   This document is a draft of the specifications of giFT's new Interface
+   Protocol. Using this for implementing a parser is at your own risk. As it
+   is anyway.
+
+     ----------------------------------------------------------------------
+
+   Table of Contents
+
+   1. SYNTAX
+
+                1.1. Commands
+
+                1.2. Keys
+
+                1.3. Subcommands
+
+                1.4. Definitions
+
+                             1.4.1. Key
+
+                             1.4.2. Subcommand
+
+                             1.4.3. Command
+
+                1.5. Things you should know when parsing
+
+                             1.5.1. Whitespace and order
+
+                             1.5.2. Escaping
+
+                             1.5.3. Hug a tree
+
+   2. PROTOCOL
+
+                2.1. Notations
+
+                2.2. Attaching Connections
+
+                             2.2.1. Session-Specific Event Identifiers
+
+                             2.2.2. Attach
+
+                             2.2.3. Detach
+
+                2.3. Finding files
+
+                             2.3.1. Search
+
+                             2.3.2. Browse
+
+                             2.3.3. Locate
+
+                             2.3.4. Results
+
+                             2.3.5. Meta data
+
+                2.4. Transferring files
+
+                             2.4.1. New transfers
+
+                             2.4.2. Reports
+
+                             2.4.3. Pausing / Cancelling
+
+                             2.4.4. Finished transfers
+
+                2.5. Shared Files
+
+                2.6. Protocol Statistics
+
+                2.7. Configuration File Manipulation
+
+                2.8. Exiting
+
+1. SYNTAX
+
+  1.1. Commands
+
+   The interface protocol works by sending specific commands over a socket.
+   The basic syntax of both queries and responses is the same. A complete
+   command block ends with a ;:
+
+     COMMAND;                                                         
+
+   Some commands require an id. You need to send this as an argument (between
+   parenthesis, no quotes) to the command:
+
+     COMMAND(argument);                                               
+
+   . See Section 2.2.1, "Session-Specific Event Identifiers" for information
+   about using ids.
+
+  1.2. Keys
+
+   Most commands have a set of keys. A key often has a value, in the form of
+   an argument, but this is not required.
+
+     COMMAND                                                          
+        key1(argument)                                                
+        key2                                                          
+     ;                                                                
+
+   Whitespace (outside arguments) isn't important, so that command could have
+   also been written as:
+
+     COMMAND key1 (argument) key2;                                    
+
+   Order doesn't matter either, so even
+
+     COMMAND key2 key1 (argument);                                    
+
+   is syntactically correct. More information about whitespace and order
+   later.
+
+  1.3. Subcommands
+
+   Besides keys (or you could say "as a special key") there are subcommands.
+   A subcommand has a set of keys (with arguments) between braces ({ and })
+   as a argument. The keys of a subcommand have the same syntax as keys of a
+   normal command. A subcommand can have a normal argument itself too.
+
+     COMMAND                                                          
+        key1                                                          
+        SUBCOMMAND (argument) {                                       
+           subkey1                                                    
+           subkey2(argument)                                          
+        }                                                             
+     ;                                                                
+
+   A subcommand can even have a subcommand itself (that would make it a
+   subsubcommand). Information about how you should parse that is in
+   Section 1.5.3, "Hug a tree".
+
+  1.4. Definitions
+
+   As an overview, here are the definitions of all used objects (bottom-up).
+   The *, + and ? are used a special chars, and have the same meaning as they
+   would have in a regular expression [1] . Keep in mind, (sub)commands en
+   keys are case insensitive, and order and whitespace don't matter (except
+   inside an argument). Of course, you must use the command, subcommand or
+   key before its argument. The only time you'll actually need whitespace is
+   when the command is directly followed by a key.
+
+    1.4.1. Key
+
+     key (argument)?                                                  
+
+    1.4.2. Subcommand
+
+     SUBCOMMAND (argument)? { key+ SUBCOMMAND* }                      
+
+    1.4.3. Command
+
+     COMMAND (argument)? key* SUBCOMMAND* ;                           
+
+   key, SUBCOMMAND and COMMAND are replaceable by any string matching
+   \w[\d\w_]* [2] . An argument can contain any character, but (, ), {, }, ;
+   and \ must be escaped.
+
+  1.5. Things you should know when parsing
+
+    1.5.1. Whitespace and order
+
+   Whitespace outside arguments is not important. All whitespace is treated
+   the same, namely as a single space ('  '). You can consider whitespace as
+   a 'token-seperator'.
+
+   Order isn't important either, it doesn't really matter in what the order
+   is of the keys, and, less trivial, you can send the argument and the set
+   of keys (for subcommands) in any order.
+
+   Time for an example. This:
+
+     SEARCH(4)                                                        
+        query (foo  bar)                                              
+        realm (audio)                                                 
+        META {                                                        
+              bitrate(>=192)foo(bla)                                  
+        }                                                             
+          (c owns me)                                                 
+        bla      ( blum! )     ;                                      
+
+   Is actually just the same as this:
+
+     SEARCH (4)                                                       
+        query (foo  bar)                                              
+        realm (audio)                                                 
+        META (c owns me) {                                            
+            bitrate (>=192)                                           
+            foo (bla)                                                 
+        }                                                             
+        bla ( blum! )                                                 
+     ;                                                                
+
+    1.5.2. Escaping
+
+   By this time, you should have asked yourself "But what if I, for example,
+   want to include a ')' in an argument?", but even if you didn't, here's
+   what:
+
+   Each argument in the protocol must be encoded by escaping (, ), {, }, ;
+   and \ to ensure that only cleanly parsable text is present. Escaping in
+   this context means that you must put \ directly for the special character.
+   An example:
+
+     COMMAND                                                          
+        key(arg\(ument\))                                             
+        SUBCOMMAND (/\{dude\}\\)                                      
+           subkey(\;\;\;)                                             
+     ;                                                                
+
+   Note that you'll have to escape every the characters in every context, so
+   you'll have to escape a } even if it's part of a argument.
+
+    1.5.3. Hug a tree
+
+   As you've seen, the protocol is designed in such a way that requires
+   parsers to organize (recursively) a list of keys and their values. A key
+   value may include a list of other keys, therefore constructing a tree-like
+   parsing method is ideal.
+
+2. PROTOCOL
+
+  2.1. Notations
+
+     o (SUB)COMMAND.
+
+     o *, +, ?. 'meta-characters'[1], don't include these.
+
+     o replaceable text
+
+     o optional subcommands/arguments/attributes
+
+     o Data sent by the client                                         
+
+     o Data sent by the server                                         
+
+     o Data that can be sent by both the client and the server         
+
+     o variable explanation or a link to the first explanation         
+
+  2.2. Attaching Connections
+
+    2.2.1. Session-Specific Event Identifiers
+
+   Event identifiers are requested by the client (with a few exceptions) and
+   will be considered session-specific. The response of the server will use
+   the same id as the client requested. This completely eliminates the need
+   to wait on the servers event response, and consequently the command
+   completely. All session-specific id's must be unique (to that session) and
+   must not overlap. This means you'll have to keep track of all used ids,
+   the ones specified by your client, and the ones giFT uses,
+
+    2.2.2. Attach
+
+   In order to take advantage of the event identifiers (and therefore
+   multiple events per socket), giFT clients are expected to register this as
+   an active single-socket session with the daemon. This is done via the
+   ATTACH request, described below:
+
+     ATTACH                                                           
+        client(client)                                                
+        version(client version)                                       
+     ;                                                                
+                                                                      
+                                                                      
+   client         The name of your client. This can be used to gather 
+                  statistics on the use of different clients, but     
+                  that's not (yet) implemented.                       
+   client version Your client's version.                              
+
+   Client and version are expected to be your formal client name and version
+   identifier. Upon seeing this request, the server will reply with:
+
+     ATTACH                                                           
+        server(server)                                                
+        version(server version)                                       
+     ;                                                                
+                                                                      
+                                                                      
+   server         The name of the server, this will be 'giFT'.        
+   server version giFT's version. This can be important if certain    
+                  parts of this protocol change, and you want your    
+                  client to support it.                               
+
+    2.2.3. Detach
+
+   You may also request an explicit detach from the session which will result
+   in the connections closure from the server. Please note that this request
+   is ignored if the session is not attached. This request is simply:
+
+     DETACH;                                                          
+
+   Of course, the server, and with it all uploads and downloads, will keep
+   running.
+
+  2.3. Finding files
+
+    2.3.1. Search
+
+   The most basic way of finding files, is just a plain search. This is done
+   by using the SEARCH (as you already guessed). Valid options for a search
+   are as follows:
+
+     SEARCH (session-id)                                              
+        query (tokens)                                                
+        exclude (tokens)                                              
+        realm (realm)                                                 
+        META {                                                        
+           key_name (value)                                           
+        }                                                             
+                                                                      
+     ;                                                                
+                                                                      
+                                                                      
+   session-id The (client)session specific id. (See Section 2.2.1,    
+              "Session-Specific Event Identifiers")                   
+   tokens     Search (or exclude) tokens. Of course, when the         
+              protocol you're searching doesn't do tokenized          
+              searches, it will be regarded as one token.             
+   realm      The realm to search. This can be everything, audio,     
+              video, images, text documents, software.                
+
+    2.3.2. Browse
+
+   The BROWSE command carries the same options and basic structure as the
+   SEARCH command. The server may safely treat both searches and browses
+   identically except when presenting the request to the protocol, which
+   should assume these operations are quite different. The data received from
+   the querying requests is identical in form.
+
+   The common use of BROWSE is to specify a protocol specific identifier for
+   a user as the query. As with SEARCH, you can limit the request by using
+   keys as realm, for example.
+
+    2.3.3. Locate
+
+   LOCATE also follows the same basic structure as the SEARCH command. The
+   main difference is its options. LOCATE only specifies query.
+
+   The purpose of LOCATE is to find different sources for the same file. Use
+   a file hash as its query.
+
+    2.3.4. Results
+
+   The server replies to SEARCH, BROWSE and LOCATE with the following:
+
+     ITEM (session-id)                                                
+        user (username)                                               
+        node (server)                                                 
+        availability (availability)                                   
+        size (filesize)                                               
+        hash (hash)                                                   
+        url (protocol specific url)                                   
+        mime (mime-type)                                              
+        META {                                                        
+          name (value)                                                
+        }                                                             
+     ;                                                                
+                                                                      
+                                                                      
+   session-id            See SEARCH and Section 2.2.1,                
+                         "Session-Specific Event Identifiers". This   
+                         is the same id as you specified for the      
+                         SEARCH;.                                     
+   username              Specific user you're downloading from. For   
+                         protocol that don't use username's this will 
+                         most likely be the ip of the host.           
+   server                The 'server' this result is found on. For    
+                         centralized networks this is the server, for 
+                         semi-centralized networks the node the       
+                         search result came from and for              
+                         decentralized networks the exact 'peer'.     
+   availability          The number of open 'slots' on the remote     
+                         host. !FIXME! (add more text)                
+   filesize              The size of the file in bytes. Very useful   
+                         for lots of things ;-)                       
+   mime-type             The mime-type of the file. Only returned if  
+                         the protocol supports it, of course.         
+   hash                  The hash of the file. This can be used to    
+                         find exactly similar files so that multiple  
+                         sources can be used for a download. (Again,  
+                         if supported by the protocol). Use this      
+                         value for 'grouping' files.                  
+   protocol specific url An URL that point to a file in a format      
+                         specific for the protocol of the network     
+                         it's on.                                     
+
+   When giFT has returned all search results, an empty ITEM will be sent:
+
+     ITEM(session-id);                                                
+
+   To cancel a search manually use any of the searching commands with a
+   'cancel' action, for example:
+
+     SEARCH(session-id) action(cancel);                               
+
+    2.3.5. Meta data
+
+   The META subcommand will contain a set of keys that are applicable for
+   this type of file (if known). Those keys are not hardcoded, so you'll have
+   to find a creative way of parsing those. You could for example hardcode a
+   few keys certain mime categories such as 'artist' and 'title' for audio/*,
+   and match meta keys that contain those values. Just an idea.
+
+  2.4. Transferring files
+
+    2.4.1. New transfers
+
+   When initiating transfers you must send all sources that are to be used in
+   the form described below. You should note that a download will be
+   instantiated when the first source is seen. Protocols which do not support
+   hashes will always create a new transfer when an ADDSOURCE command is
+   given.
+
+     ADDSOURCE                                                        
+        user (username)                                               
+        hash (hash)                                                   
+        size (filesize)                                               
+        url (url)                                                     
+        save (save)                                                   
+     ;                                                                
+                                                                      
+                                                                      
+   username See ITEM.                                                 
+   hash     See ITEM.                                                 
+   filesize See ITEM.                                                 
+   url      See ITEM.                                                 
+   save     The location to save the file too. Do not include a path, 
+            it'll be put in the completed directory.                  
+
+   The protocol uses one generic format for new transfers, ADDdir, where dir
+   is the direction of the transfer, namely DOWNLOAD or UPLOAD. On ATTACH;,
+   the ADDdirs for all current transfers will be dumped.
+
+     ADDdir (session-id)                                              
+        hash (hash)                                                   
+        state (state)                                                 
+        transmit (transmited)                                         
+        size (filesize)                                               
+        file (save)                                                   
+        shared (shared)                                               
+        SOURCE* {                                                     
+           user (username)                                            
+           url (url)                                                  
+           status (status)                                            
+           start (chunk start)                                        
+           transmit (chunk transmit)                                  
+           total (chunk total)                                        
+        }                                                             
+     ;                                                                
+                                                                      
+                                                                      
+   session-id See SEARCH and Section 2.2.1, "Session-Specific Event   
+              Identifiers". This id is specified by the server and    
+              can be used to 'track' a download.                      
+   hash       See ITEM.                                               
+   state      Active, Paused or Completed. See Section 2.4.3,         
+              "Pausing / Cancelling" for more information about       
+              pausing transfers.                                      
+   transmit   Number of bytes transmitted.                            
+   filesize   See ITEM.                                               
+   file       The file being transfered, only the filename, no path.  
+   shared     Boolean value (0|1) indicating whether or not the file  
+              is explicitly shared. Only for UPLOADs.                 
+   username   See ITEM.                                               
+   url        See ITEM.                                               
+   status     The status of the chunk. Can be one of the following:   
+              Active, Waiting, Paused, Queued, Queued (Remotely),     
+              Queued (queue position), Complete, Cancelled            
+              (Remotely), Timed out. The UI should only calculate the 
+              average transfer speed if status is Active.             
+   start      If the source is a chunk of the file, start contains    
+              the bytelocation this chunk starts.                     
+   total      The bytelocation the chunk ends. start-total can be     
+              seen as a range.                                        
+
+    2.4.2. Reports
+
+   Reporting of a transfer's progress will be done in a similar way for
+   uploads and downloads. In fact, the format looks a lot like ADDdir's, only
+   with a minor addition. The command for reports is CHGdir (That means,
+   CHGUPLOAD or CHGDOWNLOAD. Please note that CHGdir will only be sent when
+   something actually changed. By default it will not be sent more than once
+   a second.
+
+     CHGdir(session-id)                                               
+        throughput (throughput)                                       
+        elapsed (elapsed)                                             
+        ...                                                           
+        [ADDdir's body]                                               
+     ;                                                                
+                                                                      
+                                                                      
+   session-id See SEARCH and Section 2.2.1, "Session-Specific Event   
+              Identifiers".                                           
+   throughput Number of bytes transferred since last dir_CHANGE.      
+   elapsed    Number of milliseconds elapsed since last dir_CHANGE.   
+
+    2.4.3. Pausing / Cancelling
+
+   To cancel a transfer (both uploads and downloads):
+
+     TRANSFER(session-id)                                             
+        action (action)                                               
+     ;                                                                
+                                                                      
+                                                                      
+   session-id See SEARCH and Section 2.2.1, "Session-Specific Event   
+              Identifiers". Retrieve this info from the information   
+              DONWLOADS; and UPLOADS; dump.                           
+   action     cancel, pause or unpause. Pretty self-explainatory,     
+              right? :-)                                              
+
+   For downloads, you can also cancel only one source. This is done with the
+   DELSOURCE command:
+
+     DELSOURCE(session-id)                                            
+        url (url)                                                     
+     ;                                                                
+                                                                      
+                                                                      
+   session-id See SEARCH and Section 2.2.1, "Session-Specific Event   
+              Identifiers".                                           
+   url        See ITEM.                                               
+
+    2.4.4. Finished transfers
+
+   When a transfer finished (because it has completed or has been cancelled),
+   the DELdir (DELUPLOAD or DELDOWNLOAD) command will be sent. It's format is
+   clear and simple:
+
+     DELdir(session-id);                                              
+
+  2.5. Shared Files
+
+   To manipulate the shares index you may use:
+
+     SHARE                                                            
+        action (action)                                               
+     ;                                                                
+                                                                      
+                                                                      
+   action sync, hide or show. If action() is omitted, all your shares 
+          will be dumped as ITEMs.                                    
+
+   The server will return the action that is currently processing on ALL
+   share changes. I'll explain myself later.
+
+     SHARE                                                            
+        action (action)                                               
+        status (action status)                                        
+     ;                                                                
+                                                                      
+                                                                      
+   action        See SHARE. No action() means there's nothing going   
+                 on.                                                  
+   action status The status of the current action. Only shown if      
+                 action (sync). Lists a percentage (including the %   
+                 sign).                                               
+
+  2.6. Protocol Statistics
+
+   Request stats dump explicitly:
+
+      STATS;                                                          
+
+   Stats response:
+
+                                                                      
+     STATS                                                            
+        protocol* {                                                   
+           users (users)                                              
+           files (files)                                              
+           size  (total size)                                         
+     ;                                                                
+                                                                      
+                                                                      
+   protocol   The name of the protocol(s) to request the stats from.  
+              Use giFT for local stats. If no protocols are given,    
+              stats for all protocols will be returned.               
+   users      Number of users.                                        
+   files      Number of files.                                        
+   total size The total size of all files (float). Given in GB.       
+
+  2.7. Configuration File Manipulation
+
+   TODO
+
+  2.8. Exiting
+
+   To shutdown giFT, you can use the QUIT command:
+
+     QUIT;                                                            
+
+   Simple as that. Please note that unlike DETACH;, all transfers will be
+   stopped too. (giFT automatically resumes downloads, for protocols that
+   support it, on start up.)
+
+   --------------
+
+   [1] *, + and ? mean "zero or more times", "one or more times", "zero times
+   or one time" respectively.
+
+   [2] This means that it must start with a letter (case doesn't matter),
+   which can be followed by more letters, numbers and an underscore (_).

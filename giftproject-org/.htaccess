@@ -1,0 +1,9 @@
+DirectoryIndex index.mhtml
+
+AddHandler cgi-script .pl
+Options +ExecCGI
+
+AddType text/html .mhtml
+AddHandler mason-perl .mhtml
+
+Action mason-perl /cgi-bin/mason-handler.pl

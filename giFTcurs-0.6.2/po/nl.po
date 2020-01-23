@@ -1,0 +1,949 @@
+# giFTcurs - curses interface to giFT
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Eelco Lempsink <eelco@33lc0.net> (2002, 2003) and
+# Koen van Leeuwen <koen@vanleeuwen.xs4all.nl> (2002).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: giFTcurs 0.3.3\n"
+"Report-Msgid-Bugs-To: giftcurs-devel@nongnu.org\n"
+"POT-Creation-Date: 2004-01-11 21:17+0100\n"
+"PO-Revision-Date: = Creation-Date\n"
+"Last-Translator: Eelco Lempsink <eelco@33lc0.net>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: src/get.c:48
+msgid "A source search for this file is already in progress."
+msgstr "Het zoeken van bronnen voor dit bestand is al bezig."
+
+#: src/get.c:86
+msgid "Already downloading from this source"
+msgstr "Downloaden van deze bron al bezig."
+
+#: src/get.c:90
+msgid "Downloading from a single source"
+msgstr "Aan het downloaden van een enkele bron"
+
+#: src/get.c:97
+#, c-format
+msgid "Revived '%s'."
+msgstr "'%s' opgeleefd."
+
+#: src/get.c:104
+#, c-format
+msgid "I have no sources for '%s'."
+msgstr "Ik heb geen bronnen voor '%s'."
+
+#: src/get.c:119
+#, c-format
+msgid "Already downloading '%s'."
+msgstr "Downloaden van '%s' al bezig."
+
+#: src/get.c:122
+msgid "Downloading..."
+msgstr "Aan het downloaden..."
+
+#: src/get.c:153
+#, c-format
+msgid "Source search complete for '%s'."
+msgstr "Zoeken naar bronnen voor '%s' voltooid."
+
+#: src/get.c:188
+#, c-format
+msgid "Started a source search for '%s'."
+msgstr "Aan het zoeken naar meer bronnen '%s'."
+
+#: src/gift.c:66
+msgid "I'm all out of id's, Jim. Maybe you could cancel a search?"
+msgstr ""
+"Ik ben door m'n id's heen, gast. Misschien kun je een zoekopdracht annuleren?"
+
+#: src/gift.c:81
+#, c-format
+msgid "The daemon used the reserved ID %u, upgrade the daemon."
+msgstr "De daemon gebruikte het gereserveerd ID %u, upgrade de daemon."
+
+#: src/gift.c:100
+msgid "The connection with the daemon was unexpectedly closed!"
+msgstr "Verbinding met de daemon plotseling verbroken!"
+
+#: src/gift.c:133
+#, c-format
+msgid "Can't connect to the daemon at %s:%s, is giFT running?"
+msgstr "Kan niet verbinden met daemon op %s:%s, draait giFT wel?"
+
+#: src/main.c:153
+#, c-format
+msgid "%s v%s - This is Free Software. Press F1 or M-1 for more info."
+msgstr "%s v%s - Dit is Vrije Software. Druk op F1 of M-1 voor meer info."
+
+#: src/main.c:214
+#, c-format
+msgid "%s version %s, compiled %s %s\n"
+msgstr "%s versie %s, gecompileerd %s %s\n"
+
+#: src/main.c:251
+#, c-format
+msgid "%s - curses frontend to giFT\n"
+msgstr "%s - curses frontend voor giFT\n"
+
+#: src/main.c:252
+#, c-format
+msgid "Usage: %s [OPTION]...\n"
+msgstr "Gebruik: %s [OPTIE]...\n"
+
+#: src/main.c:253
+#, c-format
+msgid ""
+"Options:\n"
+"  -a, --stickchars        use 7-bit chars for line drawing\n"
+"  -h, --help              display this help and exit\n"
+"  -V, --version           output version information and exit\n"
+"  -v, --verbose           flood stderr with debugging info\n"
+"  -s, --server=host:port  set server address [%s:%s]\n"
+"  -p, --profile=name      select what profile to use [%s]\n"
+msgstr ""
+"Opties:\n"
+"  -a, --stickchars        gebruik 7-bit tekens om lijnen te tekenen\n"
+"  -h, --help              laat alleen deze help zien\n"
+"  -V, --version           laat alleen versie informatie zien\n"
+"  -v, --verbose           laat (te) veel debug info zien\n"
+"  -s, --server=host:port  stel server adres [%s:%s]\n"
+"  -p, --profile=name      selecteer een profiel [%s]\n"
+
+#: src/main.c:262
+#, c-format
+msgid "  -d, --nomouse           don't use the mouse\n"
+msgstr "  -d, --nomouse           gebruik de muis niet\n"
+
+#: src/misc.c:205
+#, c-format
+msgid "The daemon has synced %i file."
+msgid_plural "The daemon has synced %i files."
+msgstr[0] "De daemon heeft %i bestand gesynchroniseerd."
+msgstr[1] "De daemon heeft %i bestanden gesynchroniseerd."
+
+#: src/misc.c:208
+msgid "The daemon is done syncing shares."
+msgstr "De daemon is klaar met synchroniseren."
+
+#: src/misc.c:210
+#, c-format
+msgid "The daemon reported the following sync status: %s"
+msgstr "Daemon raporteerde de volgende synchronisatie-status: %s"
+
+#: src/misc.c:215
+msgid "Daemon reported that sharing now is enabled."
+msgstr "Daemon raporteerde dat de bestanden nu worden gedeeld."
+
+#: src/misc.c:222
+msgid "Daemon reported that sharing now is disabled."
+msgstr "Daemon raporteerde dat de bestanden nu niet worden gedeeld."
+
+#: src/misc.c:245
+#, c-format
+msgid "Attached to %s v%s."
+msgstr "Verbonden met %s v%s."
+
+#: src/misc.c:263
+msgid "never mind"
+msgstr "laat maar zitten"
+
+#: src/misc.c:265
+msgid "There is an important message from the daemon! Check the console."
+msgstr "Er is een belangrijk bericht van de daemon! Zie het console."
+
+#: src/misc.c:268
+msgid "And now a few words from our sponsor:"
+msgstr "En dan nu een boodschap van onze sponsor:"
+
+#: src/screen.c:69
+msgid "standard"
+msgstr "standaard"
+
+#: src/screen.c:70
+msgid "header"
+msgstr "kop"
+
+#: src/screen.c:71
+msgid "search box"
+msgstr "zoek box"
+
+#: src/screen.c:72
+msgid "result box"
+msgstr "resultaat box"
+
+#: src/screen.c:73
+msgid "statistics box"
+msgstr "statistieken box"
+
+#: src/screen.c:74
+msgid "statistics data"
+msgstr "statistiek data"
+
+#: src/screen.c:75
+msgid "bad statistics"
+msgstr "foute statistieken"
+
+#: src/screen.c:76
+msgid "info box"
+msgstr "info box"
+
+#: src/screen.c:77
+msgid "download box"
+msgstr "download box"
+
+#: src/screen.c:78
+msgid "upload box"
+msgstr "upload box"
+
+#: src/screen.c:79
+msgid "help box"
+msgstr "help box"
+
+#: src/screen.c:80
+msgid "console box"
+msgstr "console box"
+
+#: src/screen.c:81
+msgid "good hits"
+msgstr "goede resultaten"
+
+#: src/screen.c:82
+msgid "bad hits"
+msgstr "foute resultaten"
+
+#: src/screen.c:83
+msgid "progress bar"
+msgstr "voortgangsbalk"
+
+#: src/screen.c:84
+msgid "total progress"
+msgstr "voortgangsbalk"
+
+#: src/screen.c:85
+msgid "scroll indicator"
+msgstr "schuif indicator"
+
+#: src/screen.c:86
+msgid "selection"
+msgstr "selectie"
+
+#: src/screen.c:87
+msgid "button bar"
+msgstr "knoppenbalk"
+
+#: src/screen.c:88
+msgid "button bar selection"
+msgstr "knoppenbalk selectie"
+
+#: src/screen.c:89
+msgid "button bar alert"
+msgstr "knoppenbalk waarschuwing"
+
+#: src/screen.c:94
+msgid "black"
+msgstr "zwart"
+
+#: src/screen.c:95
+msgid "red"
+msgstr "rood"
+
+#: src/screen.c:96
+msgid "green"
+msgstr "groen"
+
+#: src/screen.c:97
+msgid "yellow"
+msgstr "geel"
+
+#: src/screen.c:98
+msgid "blue"
+msgstr "blauw"
+
+#: src/screen.c:99
+msgid "magenta"
+msgstr "magenta"
+
+#: src/screen.c:100
+msgid "cyan"
+msgstr "cyaan"
+
+#: src/screen.c:101
+msgid "white"
+msgstr "wit"
+
+#: src/screen.c:103
+msgid "default"
+msgstr "default"
+
+#: src/search.c:329
+#, c-format
+msgid "Search complete. We got %i unique hit for %s."
+msgid_plural "Search complete. We got %i unique hits for %s."
+msgstr[0] "Zoeken voltooid. %i uniek resultaat voor %s."
+msgstr[1] "Zoeken voltooid. %i unieke resultaten voor %s."
+
+#: src/search.c:376
+#, c-format
+msgid "The limit of %d unique hits was reached."
+msgstr "De limiet van %d unieke resultaten bereikt."
+
+#: src/settings.c:119
+#, c-format
+msgid "Could not rename %s to %s: %s"
+msgstr "Kon %s niet naar %s hernoemen: %s"
+
+#: src/settings.c:145
+#, c-format
+msgid "# %s configuration file created by v%s.\n"
+msgstr "# %s configuratie bestand aangemaakt door v%s.\n"
+
+#: src/settings.c:148
+msgid ""
+"\n"
+"# 'default' means no color, i.e. transparent on some terminals.\n"
+msgstr ""
+"\n"
+"# 'default' betekent kleurloos, d.w.z. doorzichtig op sommige terminals.\n"
+
+#: src/settings.c:149
+msgid "# See giFTcurs.conf(5) for more information.\n"
+msgstr "# Zie giFTcurs.conf(5) voor meer informatie.\n"
+
+#: src/transfer.c:39
+msgid "Waiting"
+msgstr "Wachtend"
+
+#: src/transfer.c:40
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+#: src/transfer.c:41
+msgid "Queued (Remotely)"
+msgstr "In wachtrij (Remote)"
+
+#: src/transfer.c:42
+msgid "Queued"
+msgstr "In wachtrij"
+
+#: src/transfer.c:43
+msgid "Active"
+msgstr "Actief"
+
+#: src/transfer.c:44
+msgid "Complete"
+msgstr "Voltooid"
+
+#: src/transfer.c:45
+msgid "Cancelled (Remotely)"
+msgstr "Afgebroken (Remote)"
+
+#: src/transfer.c:46
+msgid "Timed out"
+msgstr "Verlopen"
+
+#: src/transfer.c:47
+msgid "Awaiting connection"
+msgstr "Wachten op verbinding"
+
+#: src/transfer.c:48
+msgid "Connecting"
+msgstr "Aan het verbinden"
+
+#: src/transfer.c:49
+msgid "Receiving"
+msgstr "Aan het ontvangen"
+
+#: src/transfer.c:50
+msgid "Verifying"
+msgstr "Aan het verifiëren"
+
+#: src/transfer.c:52
+msgid "Sending"
+msgstr "Aan het sturen"
+
+#: src/transfer.c:53
+msgid "Received HTTP PUSH"
+msgstr "HTTP PUSH ontvangen"
+
+#: src/transfer.c:54
+msgid "Received HTTP headers"
+msgstr "HTTP headers ontvangen"
+
+#: src/transfer.c:55
+msgid "Sent HTTP request"
+msgstr "HTTP verzoek verstuurd"
+
+#: src/transfer.c:56
+msgid "Malformed HTTP header"
+msgstr "Misvormde HTTP header"
+
+#: src/transfer.c:57
+msgid "Remote host had an aneurism"
+msgstr "Host op afstand had een bloedprop"
+
+#: src/transfer.c:58
+msgid "Connection closed"
+msgstr "Verbinding verbroken"
+
+#: src/transfer.c:59
+msgid "Connection refused"
+msgstr "Verbinding geweigerd"
+
+#: src/transfer.c:60
+msgid "File not found"
+msgstr "Bestand niet gevonden"
+
+#: src/transfer.c:61
+msgid "Local read error"
+msgstr "Lokale leesfout"
+
+#: src/transfer.c:62
+msgid "Incorrect chunk size"
+msgstr "Foute hapgrootte"
+
+#: src/transfer.c:63
+msgid "No route to host"
+msgstr "Geen route naar host"
+
+#: src/transfer.c:71
+msgid "duration"
+msgstr "duur"
+
+#: src/transfer.c:72
+msgid "title"
+msgstr "titel"
+
+#: src/transfer.c:73
+msgid "track"
+msgstr "nummer"
+
+#: src/transfer.c:74
+msgid "comment"
+msgstr "commentaar"
+
+#: src/transfer.c:75
+msgid "frequency"
+msgstr "frequentie"
+
+#: src/transfer.c:76
+msgid "year"
+msgstr "jaar"
+
+#: src/transfer.c:77
+msgid "album"
+msgstr "album"
+
+#: src/transfer.c:78
+msgid "artist"
+msgstr "artiest"
+
+#: src/transfer.c:79
+msgid "bitrate"
+msgstr "bitrate"
+
+#: src/transfer.c:80
+msgid "resolution"
+msgstr "resolutie"
+
+#: src/transfer.c:81
+msgid "language"
+msgstr "taal"
+
+#: src/transfer.c:82
+msgid "category"
+msgstr "categorie"
+
+#: src/transfer.c:83
+msgid "keywords"
+msgstr "zoektermen"
+
+#: src/transfer.c:187
+msgid "Inactive"
+msgstr "Inactief"
+
+#: src/transfer.c:225 src/ui_transfer.c:620
+msgid "Unknown status"
+msgstr "Onbekende status"
+
+#: src/transfer.c:606
+#, c-format
+msgid "Download of %s completed."
+msgstr "Downloaden van %s voltooid."
+
+#: src/transfer.c:608
+#, c-format
+msgid "Download of %s cancelled."
+msgstr "Downloaden van %s afgebroken."
+
+#: src/transfer.c:617
+msgid "Cancelled"
+msgstr "Afgebroken"
+
+#: src/ui.c:225
+msgid "Exit"
+msgstr "Afsluiten"
+
+#: src/ui_console.c:102 src/ui_console.c:211
+msgid "Console"
+msgstr "Console"
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned on."
+msgstr "Veel informatie aan"
+
+#: src/ui_console.c:129
+msgid "Verbose mode turned off."
+msgstr "Veel informatie uit"
+
+#: src/ui_console.c:134
+msgid "Wrapping lines."
+msgstr "Regels worden afgebroken"
+
+#: src/ui_console.c:134
+msgid "Line wrapping turned off."
+msgstr "Regels worden niet afgebroken"
+
+#: src/ui_help.c:44
+#, c-format
+msgid ""
+"Welcome to giFTcurs!\n"
+"\n"
+"Key list:\n"
+"{%header:B}up{%prev}/{%header:B}down{%prev}        select item or scroll in "
+"a list\n"
+"{%header:B}PgUp{%prev}/{%header:B}PgDown{%prev}    scroll lists one screen "
+"at a time\n"
+"{%header:B}tab{%prev}            move to the next input field\n"
+"{%header:B}F1{%prev}             this help screen\n"
+"{%header:B}F2{%prev}             the main screen\n"
+"    {%header:B}enter{%prev}      download the highlighted file\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}e{%prev}          expand/collapse search results\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        scroll information box\n"
+"    {%header:B}p{%prev}          change network in statistics box\n"
+"    {%header:B}u{%prev}          browse selected user\n"
+"    {%header:B}i{%prev}          ignore selected user, this session\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    ignore selected user, all "
+"sessions\n"
+"{%header:B}F3{%prev}             the transfer screen\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}    expand/collapse transfer\n"
+"    {%header:B}left{%prev}/{%header:B}right{%prev} change sorting method\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}        move window splitter\n"
+"{%header:B}F4{%prev}             the console screen\n"
+"    {%header:B}v{%prev}          toggle verbose mode\n"
+"    {%header:B}w{%prev}          toggle line wrap\n"
+"{%header:B}F5{%prev}             the settings screen\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}          exit the program\n"
+"\n"
+"See giFTcurs(1) and giFTcurs.conf(5) for more information."
+msgstr ""
+"Welkom in giFTcurs!\n"
+"\n"
+"Toetsen:\n"
+"{%header:B}op{%prev}/{%header:B}neer{%prev}          selecteer item uit "
+"lijst\n"
+"{%header:B}pageup{%prev}/{%header:B}pagedown{%prev}  schuif lijst met één "
+"scherm tegelijk\n"
+"{%header:B}tab{%prev}              naar volgend invoer veld\n"
+"{%header:B}F1{%prev}               dit helpscherm\n"
+"{%header:B}F2{%prev}               het hoofdscherm\n"
+"    {%header:B}enter{%prev}        download het geselecteerde bestand\n"
+"    {%header:B}links{%prev}/{%header:B}rechts{%prev} verander sorteer "
+"volgorde\n"
+"    {%header:B}e{%prev}            toon/verberg zoekresultaten\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}          schuif informatie box\n"
+"    {%header:B}p{%prev}          wijzig netwerk in statistiek box\n"
+"    {%header:B}u{%prev}          blader door bestanden gebruiker\n"
+"    {%header:B}i{%prev}          negeer gebruiker\n"
+"    {%header:B}shift{%prev}-{%header:B}i{%prev}    negeer gebruiker, alle "
+"sessies\n"
+"{%header:B}F3{%prev}               het overdrachtvenster\n"
+"    {%header:B}enter{%prev}/{%header:B}e{%prev}      toon/verberg "
+"overdracht\n"
+"    {%header:B}links{%prev}/{%header:B}rechts{%prev} verander sorteer "
+"volgorde\n"
+"    {%header:B}j{%prev}/{%header:B}k{%prev}          verander venster "
+"grootte\n"
+"{%header:B}F4{%prev}             het consolescherm\n"
+"    {%header:B}v{%prev}          veel informatie aan/uit\n"
+"    {%header:B}w{%prev}          doorlopende regels aan/uit\n"
+"{%header:B}F5{%prev}               het instellingenscherm\n"
+"{%header:B}F10{%prev}/{%header:B}q{%prev}             het programma "
+"afsluiten\n"
+"\n"
+"Zie giFTcurs(1) en giFTcurs.conf(5) voor meer informatie."
+
+#. TRANSLATORS: The authors' names are G"oran Weinholt and
+#. Christian H"aggstr"om, so if your charset has support for 'a' and 'o'
+#. with two dots over then please use those characters in their names.
+#: src/ui_help.c:76
+msgid ""
+"Copyright (C) 2001, 2002, 2003 Goran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright (C) 2003 Christian Haggstrom <chm@c00.info>.\n"
+"Our homepage is at http://www.nongnu.org/giftcurs/."
+msgstr ""
+"Copyright © 2001, 2002, 2003 Göran Weinholt <weinholt@dtek.chalmers.se>.\n"
+"Copyright © 2003 Christian Häggström <chm@c00.info>.\n"
+"Onze website is http://www.nongnu.org/giftcurs/."
+
+#: src/ui_help.c:137 src/ui_help.c:190
+msgid "Help"
+msgstr "Help"
+
+#: src/ui_main.c:116
+msgid "everything"
+msgstr "alles"
+
+#: src/ui_main.c:116
+msgid "audio"
+msgstr "audio"
+
+#: src/ui_main.c:116
+msgid "video"
+msgstr "video"
+
+#: src/ui_main.c:117
+msgid "images"
+msgstr "afbeeldingen"
+
+#: src/ui_main.c:117
+msgid "text documents"
+msgstr "documenten"
+
+#: src/ui_main.c:117
+msgid "software"
+msgstr "software"
+
+#: src/ui_main.c:118
+msgid "user"
+msgstr "gebruiker"
+
+#: src/ui_main.c:118
+msgid "hash"
+msgstr "frommel"
+
+#: src/ui_main.c:118
+msgid "list my shares"
+msgstr "toon gedeelde bestanden"
+
+#: src/ui_main.c:251 src/ui_main.c:295
+msgid "Couldn't start search!"
+msgstr "Kon niet begin met zoeken!"
+
+#: src/ui_main.c:253
+msgid "Retrieving file list..."
+msgstr "Bestandslijst aan het ontvangen..."
+
+#: src/ui_main.c:297
+msgid "Searching..."
+msgstr "Aan het zoeken..."
+
+#: src/ui_main.c:315
+msgid "No previous search pattern."
+msgstr "Geen vorig zoekpatroon."
+
+#: src/ui_main.c:319
+msgid "No hits to search on."
+msgstr "Geen resultaat om op te zoeken."
+
+#: src/ui_main.c:342
+#, c-format
+msgid "Pattern not found: '%s'."
+msgstr "Patroon niet gevonden: '%s'."
+
+#: src/ui_main.c:449
+msgid "Search stopped."
+msgstr "Zoeken gestopt."
+
+#: src/ui_main.c:452
+msgid "Search cleared."
+msgstr "Zoekresultaten verwijderd."
+
+#: src/ui_main.c:455
+msgid "A magical search appears, but it is cancelled too soon."
+msgstr "A magische zoekopdracht verschijnt, maar is te snel afgebroken."
+
+#: src/ui_main.c:485
+#, c-format
+msgid "Sorting order changed to %s."
+msgstr "Resultaten nu %s gesorteerd."
+
+#: src/ui_main.c:526
+#, c-format
+msgid "Always ignoring results from '%s'."
+msgstr "Resultaten van '%s' voor altijd genegeerd."
+
+#: src/ui_main.c:528
+#, c-format
+msgid "Ignoring results from '%s' in this session only."
+msgstr "Resultaten van '%s' deze sessie genegeerd."
+
+#: src/ui_main.c:576
+msgid "Search"
+msgstr "Zoeken"
+
+#: src/ui_main.c:580
+msgid "Extra Information"
+msgstr "Extra Informatie"
+
+#: src/ui_main.c:585
+msgid "Search Results"
+msgstr "Zoekresultaten"
+
+#: src/ui_main.c:598
+msgid "Statistics"
+msgstr "Statistieken"
+
+#: src/ui_main.c:611 src/ui_main.c:617
+msgid "Query"
+msgstr "Zoek "
+
+#: src/ui_main.c:614 src/ui_main.c:620
+msgid "Realm"
+msgstr "Soort"
+
+#: src/ui_main.c:627
+msgid "Start search"
+msgstr "Start zoeken"
+
+#: src/ui_main.c:632
+msgid "Stop search"
+msgstr "Stop zoeken"
+
+#: src/ui_main.c:632
+msgid "Clear search"
+msgstr "Schoon scherm"
+
+#: src/ui_main.c:654
+msgid "Size"
+msgstr "Grootte"
+
+#: src/ui_main.c:655
+msgid "byte"
+msgid_plural "bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
+
+#: src/ui_main.c:661
+msgid "User"
+msgstr "Gebruiker"
+
+#: src/ui_main.c:670
+msgid "Path"
+msgstr "Pad"
+
+#: src/ui_main.c:676
+msgid "Hash"
+msgstr "Frommel"
+
+#: src/ui_main.c:683
+msgid "Mime"
+msgstr "Mime"
+
+#: src/ui_main.c:708
+msgid "Nothing selected."
+msgstr "Niets geselecteerd."
+
+#: src/ui_main.c:733
+#, c-format
+msgid ""
+"{%header:B}Users online: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+msgstr ""
+"{%header:B}    Gebruikers: {if users}{%stat-data}{else}{%stat-bad}{endif}"
+"{users}"
+
+#: src/ui_main.c:734
+#, c-format
+msgid ""
+"{%header:B}Total shared: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+msgstr ""
+"{%header:B}Totaal gedeeld: {%stat-data}{bytes:bi}B{%stat-box:B}/{%stat-data}"
+"{files:b}"
+
+#: src/ui_main.c:735
+#, c-format
+msgid ""
+"{%header:B}Local shares: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:"
+"B}/{%stat-data}{own_files:b}{else}Hidden{endif}"
+msgstr ""
+"{%header:B}  Zelf gedeeld: {%stat-data}{if sharing}{own_bytes:bi}B{%stat-box:"
+"B}/{%stat-data}{own_files:b}{else}Verborgen{endif}"
+
+#: src/ui_main.c:736
+#, c-format
+msgid ""
+"{%header:B} Shared/user: {%stat-data}{if users}{shared_per_user:bi}B{else} - "
+"{endif}"
+msgstr ""
+"{%header:B} Gedeeld/gebr.: {%stat-data}{if users}{shared_per_user:bi}B{else} "
+"- {endif}"
+
+#: src/ui_main.c:1072
+msgid "Searches"
+msgstr "Zoeken"
+
+#: src/ui_settings.c:149
+msgid "Color theme saved."
+msgstr "Kleurenthema opgeslagen."
+
+#: src/ui_settings.c:158
+msgid "Default color theme loaded."
+msgstr "Standaard kleurenthema geladen."
+
+#: src/ui_settings.c:190
+msgid "Color Theme"
+msgstr "Kleurenthema"
+
+#: src/ui_settings.c:195
+msgid "Item"
+msgstr "Item"
+
+#: src/ui_settings.c:197
+msgid "Foreground"
+msgstr "Voorgrond"
+
+#: src/ui_settings.c:199
+msgid "Background"
+msgstr "Achtergrond"
+
+#: src/ui_settings.c:208
+msgid "Save theme"
+msgstr "Thema opslaan"
+
+#: src/ui_settings.c:211
+msgid "Load defaults"
+msgstr "Standaard laden"
+
+#: src/ui_settings.c:216
+msgid "Sharing"
+msgstr "Delen"
+
+#: src/ui_settings.c:220
+msgid "Sync shares"
+msgstr "Gedeelde bestanden synchroniseren"
+
+#: src/ui_settings.c:226
+msgid "Unknown sharing status"
+msgstr "Onbekende status (gedeelde bestanden)"
+
+#: src/ui_settings.c:226
+msgid "Hide shares"
+msgstr "Gedeelde bestanden verbergen"
+
+#: src/ui_settings.c:226
+msgid "Show shares"
+msgstr "Gedeelde bestanden publiceren"
+
+#: src/ui_settings.c:304
+msgid "Settings"
+msgstr "Instellingen"
+
+#: src/ui_transfer.c:101
+msgid ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+msgstr ""
+"{$expanded} {filename}{space} | [{progress filesize transferred}{fixed:26}"
+"{space}{if active}{transferred:bi}/{filesize:bi} {ratio:3}% @ {bandwidth:bi}"
+"B/s{else}{status}{endif}{space}{endfixed}{endprogress}]"
+
+#: src/ui_transfer.c:108
+msgid ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}B/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+msgstr ""
+"  - {space}{user}@{net} | [{progress filesize start transferred}{fixed:26}"
+"{space}{if active}{bandwidth:bi}b/s{else}{status}{endif}{space}{endfixed}"
+"{endprogress}]"
+
+#: src/ui_transfer.c:115
+msgid ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:bi}B{endif}{space}Total: {transferred:bi}/{filesize:bi} at "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{if disk_free<2000000000}Disk free: "
+"{disk_free:ki}B{endif}{space}Totaal: {transferred:ki}/{filesize:bi} met "
+"{bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:122
+msgid ""
+"{progress filesize transferred}{space}Total: {transferred:bi}/{filesize:bi} "
+"at {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+msgstr ""
+"{progress filesize transferred}{space}Totaal: {transferred:ki}/{filesize:bi} "
+"met {bandwidth:bi}B/s{if eta} {eta:t}{endif}{endprogress}"
+
+#: src/ui_transfer.c:315
+#, c-format
+msgid "Please confirm deletion of %sB downloaded data by pressing shift-t"
+msgstr "Druk op shift-t om %sB gedownloade data te verwijderen"
+
+#: src/ui_transfer.c:347
+#, c-format
+msgid "Source sorting order changed to %s."
+msgstr "Bronnen nu %s gesorteerd."
+
+#: src/ui_transfer.c:349
+#, c-format
+msgid "Transfer sorting order changed to %s."
+msgstr "Overdrachten nu %s gesorteerd."
+
+#: src/ui_transfer.c:368
+msgid "find more sources"
+msgstr "meer bronnen"
+
+#: src/ui_transfer.c:369
+msgid "kill transfer"
+msgstr "stop overdracht"
+
+#: src/ui_transfer.c:370
+msgid "clear finished"
+msgstr "wis geëindigden"
+
+#: src/ui_transfer.c:371
+msgid "(un)pause"
+msgstr "(de)pauzeer"
+
+#: src/ui_transfer.c:387
+msgid "Downloads"
+msgstr "Downloads"
+
+#: src/ui_transfer.c:388
+msgid "Uploads"
+msgstr "Uploads"
+
+#: src/ui_transfer.c:648
+msgid "Transfers"
+msgstr "Overdrachten"
+
+#~ msgid "Users online"
+#~ msgstr "  Gebruikers"
+
+#~ msgid "Total shared"
+#~ msgstr "   Bestanden"
+
+#~ msgid "Local shares"
+#~ msgstr "Zelf gedeeld"
+
+#~ msgid " Shared/user"
+#~ msgstr " Bytes/gebr."
+
+#~ msgid "f%sBE/f%s"
+#~ msgstr "f%sBE/f%s"
+
+#~ msgid "Hidden"
+#~ msgstr "Verborgen"
+
+#~ msgid "f%sB"
+#~ msgstr "f%sB"

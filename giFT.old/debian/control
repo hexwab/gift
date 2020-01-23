@@ -1,0 +1,12 @@
+Source: gift
+Section: net
+Priority: optional
+Maintainer: Scott Robinson <scott@tranzoa.net>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: gift
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: GNU Internet File Transfer
+ An extensible, modular system for accessing file sharing network protocls.

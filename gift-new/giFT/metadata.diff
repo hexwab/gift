@@ -1,0 +1,794 @@
+? src/meta.c
+? src/meta.h
+? src/enum.c
+? src/enum.h
+? src/id.c
+? src/id.h
+? src/id_vorbis.c
+? src/id_vorbis.h
+Index: OpenFT/html.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/html.c,v
+retrieving revision 1.47
+diff -u -r1.47 html.c
+--- OpenFT/html.c	15 Mar 2002 19:41:32 -0000	1.47
++++ OpenFT/html.c	31 Mar 2002 20:37:23 -0000
+@@ -24,6 +24,7 @@
+ 
+ #include "http.h"
+ #include "html.h"
++#include "meta.h"
+ 
+ #include "parse.h"
+ 
+@@ -229,9 +230,25 @@
+ {
+ 	char *encoded = url_encode (file->hpath);
+ 
+-	fprintf (f, "<TR><TD>%lu</TD><TD><A HREF=\"%s\">%s</A></TD></TR>\n",
+-	         file->size, encoded, file->hpath);
++	Metadata *bitrate = meta_lookup(file->meta,TAG_BITRATE,NULL);
++	Metadata *duration = meta_lookup(file->meta,TAG_DURATION,NULL);
++	
++	fprintf (f, "<TR><TD>%lu</TD><TD><A HREF=\"%s\">%s</A></TD>",
++		 file->size, encoded, file->hpath);
++
++	if (bitrate)
++		fprintf (f, "<TD>%lu</TD>\n",
++			 meta_get_integer(bitrate));
++	else
++		fprintf (f, "<TD></TD>\n");
++
++	if (duration)
++		fprintf (f, "<TD>%lu:%02lu</TD>\n",
++			 meta_get_integer(duration)/60,meta_get_integer(duration)%60);
++	else
++		fprintf (f, "<TD></TD>\n");
+ 
++	fprintf (f, "</TR>\n");
+ 	free (encoded);
+ 
+ 	return TRUE;
+@@ -307,7 +324,7 @@
+ 	         "</TABLE>\n"
+ 	         "<H2>Shares</H2>\n"
+ 	         "<TABLE BORDER=0 CELLSPACING=1 CELLPADDING=2>\n"
+-	         "<TR><TD><B>Filesize</B></TD><TD><B>Filename</B></TD></TR>\n");
++	         "<TR><TD><B>Filesize</B></TD><TD><B>Filename</B></TD><TD><B>Bitrate</B></TD><TD><B>Duration</B></TD></TR>\n");
+ 
+ 	/* insert shares list here */
+ 	list_foreach_remove (share_index_sorted (),
+Index: src/Makefile.am
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/Makefile.am,v
+retrieving revision 1.32
+diff -u -r1.32 Makefile.am
+--- src/Makefile.am	13 Mar 2002 22:44:49 -0000	1.32
++++ src/Makefile.am	31 Mar 2002 20:37:25 -0000
+@@ -30,6 +30,10 @@
+ 	parse.h         parse.c \
+ 	protocol.h      protocol.c \
+ 	platform.h      platform.c \
++	meta.h		meta.c \
++	enum.h		enum.c \
++	id.h		id.c \
++	id_vorbis.h	id_vorbis.c \
+ 	gift.h          main.c
+ 
+ giFT_LDADD = $(GIFT_LIBS)
+Index: src/network.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/network.h,v
+retrieving revision 1.14
+diff -u -r1.14 network.h
+--- src/network.h	27 Mar 2002 12:13:26 -0000	1.14
++++ src/network.h	31 Mar 2002 20:37:25 -0000
+@@ -29,6 +29,10 @@
+ # include <netdb.h>
+ #endif /* !WIN32 */
+ 
++#ifndef SHUT_RDWR
++#define SHUT_RDWR 2
++#endif
++
+ /**************************************************************************/
+ 
+ #define RW_BUFFER 2048
+Index: src/sharing.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.c,v
+retrieving revision 1.34
+diff -u -r1.34 sharing.c
+--- src/sharing.c	31 Mar 2002 10:52:04 -0000	1.34
++++ src/sharing.c	31 Mar 2002 20:37:29 -0000
+@@ -28,6 +28,8 @@
+ #include "md5.h"
+ 
+ #include "sharing.h"
++#include "meta.h"
++#include "id.h"
+ 
+ #include "upload.h"
+ 
+@@ -179,6 +181,7 @@
+ 
+ 	file->local = FALSE;
+ 	file->data  = NULL;
++	file->meta  = NULL;
+ 
+ 	return file;
+ }
+@@ -193,6 +196,7 @@
+ 	free (file->root);
+ 	free (file->path);
+ 	free (file->md5);
++	meta_free (file->meta);
+ 	free (file);
+ }
+ 
+@@ -361,6 +365,9 @@
+ 		if (p_notify)
+ 			notify_protocol (share, PROTOCOL_SHARE_ADD);
+ 	}
++
++	/* FIXME: should cache this */
++	share->meta = id_file (path);
+ 
+ 	fprintf (f, "%lu %s %lu %s\n", mtime, md5, size, path);
+ 
+Index: src/sharing.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.h,v
+retrieving revision 1.14
+diff -u -r1.14 sharing.h
+--- src/sharing.h	31 Mar 2002 10:52:04 -0000	1.14
++++ src/sharing.h	31 Mar 2002 20:37:29 -0000
+@@ -28,7 +28,9 @@
+ 	char         *type;   /* audio/mpeg                             */
+ 
+ 	char         *md5;
+-
++	
++	List	     *meta;
++	
+ 	unsigned long size;
+ 	time_t        mtime;
+ 
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/meta.c	Sun Mar 31 21:08:19 2002
+@@ -0,0 +1,152 @@
++#include "gift.h"
++#include "meta.h"
++#include "list.h"
++#include "enum.h"
++
++static Metadata *new_tag (List ** md_list)
++{
++	Metadata *md = malloc (sizeof (Metadata));
++	if (!md)
++	{
++		TRACE(("malloc failed!"));
++		return 0;
++	}
++	//  printf("new_tag: %p\n",md);
++	*md_list = list_append (*md_list, md);
++	return md;
++}
++
++Metadata *meta_add_integer (List ** md_list, int tag, unsigned long value)
++{
++	Metadata *md = new_tag (md_list);
++	if (!md)
++		return 0;
++	md->type = (tag & ~META_MASK) | META_INTEGER;
++	md->value.int_val = value;
++	return md;
++}
++
++Metadata *meta_add_string (List ** md_list, int tag, unsigned char *value)
++{
++	Metadata *md = new_tag (md_list);
++	if (!md)
++		return 0;
++	md->type = (tag & ~META_MASK) | META_STRING;
++	md->value.str_val = value;
++	meta_encode_enum (md);
++	return md;
++}
++
++Metadata *meta_add_enum (List ** md_list, int tag, unsigned long value)
++{
++	Metadata *md = new_tag (md_list);
++	if (!md)
++		return 0;
++	md->type = (tag & ~META_MASK) | META_ENUM;
++	md->value.enum_val = value;
++	return md;
++}
++
++static int dump_tags_callback (void *data, void *unused)
++{
++	Metadata *md = data;
++	const char *t=meta_tag_name(md->type);
++	switch (md->type & META_MASK)
++	{
++	case META_INTEGER:
++		TRACE (("%s: %lu",t, md->value.int_val));
++		break;
++	case META_STRING:
++		TRACE (("%s: %s",t, md->value.str_val));
++		break;
++	case META_ENUM:
++		TRACE (("%s: %lu [enum]",t, md->value.enum_val));
++		break;
++	}
++	return 0;
++}
++
++void meta_dump (List * md_list)
++{
++	list_foreach (md_list, dump_tags_callback, NULL);
++}
++
++static int meta_free_callback (void *data, void *unused)
++{
++	Metadata *md = data;
++	//  GIFT_DEBUG (("0x%x, %p\n",md->type, md));
++	if ((md->type & META_MASK) == META_STRING)
++		free (md->value.str_val);
++	free (data);
++	return 0;
++}
++
++void meta_free (List * md_list)
++{
++	list_foreach (md_list, meta_free_callback, NULL);
++	list_free (md_list);
++}
++
++unsigned long meta_get_integer (Metadata * md)
++{
++	unsigned char *string;
++	unsigned long value = 0;
++
++	switch (md->type & META_MASK)
++	{
++	case META_INTEGER:
++		value = md->value.int_val;
++		break;
++	case META_STRING:
++		value = strtoul (md->value.str_val, NULL, 0);
++		break;
++	case META_ENUM:
++		string = meta_decode_enum (md);
++		if (string)
++			value = strtoul (string, NULL, 0);
++		break;
++	default:
++		GIFT_WARN (("Unknown meta tag type 0x%x\n", md->type));
++		break;
++	}
++	return value;
++}
++
++unsigned char * meta_get_string (Metadata * md)
++{
++	unsigned char *string = NULL;
++	if (md)
++	{
++		switch (md->type & META_MASK)
++		{
++		case META_INTEGER:
++			/* XXX should do some funky sprintf stuff here */
++			break;
++		case META_STRING:
++			string = md->value.str_val;
++			break;
++		case META_ENUM:
++			string = meta_decode_enum (md);
++			break;
++		default:
++			GIFT_WARN (("unknown tag type 0x%x\n", md->type));
++		}
++	}
++	return string;
++}
++
++Metadata * meta_lookup (List *md_list, int tag, List **next_ptr)
++{
++	for (; md_list; md_list = list_next (md_list))
++	{
++		Metadata *md=(Metadata *)md_list->data;
++		if (md && ((md->type & ~META_MASK) == tag))
++		{
++			/*TRACE(("%d",tag));*/
++			if (next_ptr)
++				*next_ptr = list_next (md_list);
++			return md;
++		}
++	}
++	return NULL;
++}
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/meta.h	Sun Mar 31 21:03:37 2002
+@@ -0,0 +1,51 @@
++#ifndef _META_H_
++
++#define META_INTEGER 0
++#define META_STRING  1
++#define META_ENUM    2
++
++#define META_MASK    3
++
++#define META_SHIFT   2
++
++#define TAG_BITRATE  0x10
++#define TAG_DURATION 0x14
++#define TAG_REALM    0x0c
++#define TAG_TITLE    0x20
++#define TAG_ARTIST   0x24
++#define TAG_ALBUM    0x28
++#define TAG_COMMENT  0x2c
++#define TAG_YEAR     0x30
++#define TAG_TRACK    0x34
++#define TAG_MIME     0x38
++#define TAG_CHANNELS 0x3c
++#define TAG_FREQ     0x40
++
++#include "list.h"
++
++typedef
++struct metadata
++{
++	int type;
++	union
++	{
++		unsigned long int_val;	/* should be long long? */
++		unsigned char *str_val;
++		unsigned long enum_val;
++	}
++	value;
++}
++Metadata;
++
++
++Metadata * meta_add_integer (List ** md_list, int tag, unsigned long value);
++Metadata * meta_add_string (List ** md_list, int tag, unsigned char *value);
++Metadata * meta_add_enum (List ** md_list, int tag, unsigned long value);
++unsigned long meta_get_integer (Metadata * md);
++unsigned char *meta_get_string (Metadata * md);
++void meta_free (List * md_list);
++Metadata * meta_lookup (List *md_list, int tag, List **next_ptr);
++
++
++#define _META_H_
++#endif
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/enum.c	Sun Mar 31 21:05:32 2002
+@@ -0,0 +1,126 @@
++#include "enum.h"
++#include "gift.h"
++
++const unsigned char *enum_mime[] =
++{
++	"application/octet-stream",
++	"text/plain",
++	"image/gif",
++	"audio/mpeg",
++	"video/mpeg",
++	"image/jpeg",
++	"application/x-msvideo",
++	"application/x-ogg"
++};
++#define MIME_SIZE 8
++
++const unsigned char *enum_realm[] =
++{
++	"Unknown",
++	"Audio",
++	"Video",
++	"Image",
++	"Document",
++	"Other",
++};
++#define REALM_SIZE 5
++
++typedef struct
++{
++	const char *name;
++	const int size;
++	const unsigned char **list;
++}
++Enum_list;
++
++Enum_list tag_enums[] =
++{
++	{"name", 0, NULL},		/* filename (unused) */
++	{"size", 0, NULL},		/* filesize */
++	{"md5",  0, NULL},		/* md5 */
++	{"realm", REALM_SIZE, enum_realm},	/* realm */
++	{"bitrate", 0, NULL},		/* bitrate/kbps */
++	{"duration", 0, NULL},		/* duration/sec */
++	{"width", 0, NULL},		/* Xres/px */
++	{"height", 0, NULL},		/* Yres/px */
++	{"title", 0, NULL},		/* title */
++	{"artist", 0, NULL},		/* artist */
++	{"album", 0, NULL},		/* album */
++	{"comment", 0, NULL},		/* comment */
++	{"year", 0, NULL},		/* year */
++	{"track", 0, NULL},		/* track number */
++	{"type", MIME_SIZE, enum_mime},	/* MIME type */
++	{"channels", 0, NULL},          /* channels */
++	{"freq", 0, NULL},              /* sampling frequency/Hz */
++};
++
++#define listsize(l) (sizeof(l)/sizeof(l[0]))
++
++#define TAG_ENUMS_SIZE listsize(tag_enums)
++
++
++unsigned char *meta_decode_enum (Metadata * md)
++{
++	unsigned char *string = NULL;
++	Enum_list *el;
++	unsigned int type;
++	if ((md->type & META_MASK) != META_ENUM)
++	{
++		GIFT_WARN (("non-enum tag 0x%x\n", md->type));
++		return NULL;
++	}
++	type = (md->type >> META_SHIFT);
++	if (type <= TAG_ENUMS_SIZE)
++	{
++		el = tag_enums + type;
++		if (md->value.enum_val < el->size)
++			string = el->list[md->value.enum_val];
++		else
++			GIFT_WARN (("value %lu out of range (max %u)\n", md->value.enum_val, el->size));
++		
++	}
++	return string;
++}
++
++Metadata *meta_encode_enum (Metadata * md)
++{
++	Enum_list *el;
++	unsigned int type;
++	if (!md)
++		return NULL;
++	if ((md->type & META_MASK) != META_STRING)
++		return md;
++
++	type = (md->type >> META_SHIFT);
++	if (type <= TAG_ENUMS_SIZE)
++	{
++		const unsigned char **ptr;
++		int count = 0;
++		el = tag_enums + type;
++		ptr = el->list;
++		while (count < el->size)
++		{
++			if (!strcmp (*ptr, md->value.str_val))
++				break;
++			ptr++;
++			count++;
++		}
++		if (count != el->size)
++		{
++			free (md->value.str_val);
++			md->type = (md->type & ~META_MASK) | META_ENUM;
++			md->value.enum_val = count;
++			/*GIFT_DEBUG (("is an enum! type %d val %d", md->type, count));*/
++		}
++	}
++	return md;
++}
++
++const char *meta_tag_name (unsigned int type)
++{
++	const char *name=NULL;
++	type >>= META_SHIFT;
++	if (type <= TAG_ENUMS_SIZE)
++		name=tag_enums[type].name;
++	return name;
++}
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/enum.h	Sun Mar 31 21:05:40 2002
+@@ -0,0 +1,5 @@
++#include "meta.h"
++
++unsigned char *meta_decode_enum (Metadata * md);
++Metadata *meta_encode_enum (Metadata * md);
++const char *meta_tag_name (unsigned int type);
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/id.c	Sun Mar 31 21:04:00 2002
+@@ -0,0 +1,43 @@
++/* identify a file and return some metadata */
++
++#include "id.h"
++#include "id_vorbis.h"
++#include "meta.h"
++
++#define NUM_ID_FUNCS 1
++
++static IdFunc id_func[]=
++{
++	id_vorbis
++};
++
++List *id_file (char *path)
++{
++	FILE *fh;
++	List *md_list=NULL;
++	int i;
++	if ((fh=fopen (path, "rb")))
++	{	
++		for(i=0;i<NUM_ID_FUNCS;i++)
++		{
++			fseek(fh, 0, SEEK_SET);
++			if ((id_func[i]) (fh,&md_list))
++			{
++				TRACE(("%s",path));
++#if 0
++				TRACE(("title lookup: %s", tag_to_string(tag_lookup(md_list,TAG_TITLE,NULL))));
++				TRACE(("MIME lookup: %s", tag_to_string(tag_lookup(md_list,TAG_,NULL))));
++//				meta_dump(md_list);
++#endif
++				break;
++			}
++
++			/* remove any partial data we may have got before giving up */
++			if (md_list)
++				meta_free (md_list);
++			md_list=NULL;
++		}
++		fclose (fh);
++	}
++	return md_list;
++}
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/id.h	Fri Mar 29 14:45:51 2002
+@@ -0,0 +1,6 @@
++#include "gift.h"
++#include "list.h"
++
++typedef int (*IdFunc) (FILE *fh, List **md_list);
++
++List *id_file(char *path);
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/id_vorbis.c	Sun Mar 31 21:04:57 2002
+@@ -0,0 +1,227 @@
++#include "id.h"
++#include "meta.h"
++
++#define READ(ptr,size) if (!fread (ptr, size, 1, fh)) return 0;
++
++#define WORD_LE(ptr) ((ptr)[0]+((ptr)[1]<<8)+((ptr)[2]<<16)+((ptr)[3]<<24))
++
++static FILE *fh;
++static int packets, packet, pcount;
++static int split_packet;
++static int csize;
++static int freq;
++static int packet_len[255];
++
++static struct
++{
++	int tag;
++	char *name;
++}
++vorbis_tags[]=
++{
++	{ TAG_ARTIST, "ARTIST" },
++	{ TAG_TITLE, "TITLE" },
++	{ TAG_ALBUM, "ALBUM" },
++	{ TAG_TRACK, "TRACKNUMBER" }
++};
++
++#define NUM_VORBIS_TAGS  4
++
++static int read_page (void)
++{
++	unsigned char ph[27], segtable[255];
++	int i, nsegs;
++     
++	READ (ph,27);
++	if (strcmp (ph,"OggS"))
++		return 0;
++	nsegs = ph[26];
++	packets = 0; /* FIXME */
++	packet = 0;
++	READ (segtable,nsegs);
++	for(i=0; i<nsegs; i++)
++	{
++		csize += segtable[i];
++		split_packet = (segtable[i]==255);
++		if (!split_packet)
++		{
++/*	       printf("packet: %d\n",csize); */
++			packet_len[packets++]=csize;
++			csize=0;
++		}
++	}
++	return 1;
++}
++
++static int ogg_read (char *buf, int size)
++{
++	while (size)
++	{
++		if (!packets && !read_page ())
++			return 0;
++		if (size<=packet_len[packet])
++		{
++			READ (buf, size);
++			if (!(packet_len[packet]-=size))
++			{
++				packet++;
++				packets--;
++				pcount++;
++			}
++			size=0;
++		}
++		else
++			return 0;
++	}
++	return 1;
++}
++
++static int skip_packet (void)
++{
++	if (!packets && !read_page ())
++		return 0;
++	if (fseek (fh,packet_len[packet],SEEK_CUR))
++		return 0;
++	packets--;
++	packet++;
++	pcount++;
++	return 1;
++}
++
++static int read_duration (List **md_list)
++{
++	unsigned char *buf, *ptr;
++	int len;
++	int flag=0;
++
++	unsigned long long duration;
++
++	if (freq<0)
++		return 0;
++
++	fseek (fh,0, SEEK_END);
++	len = ftell(fh);
++	if (len>65307)
++		len=65307; /* maximum page size */
++	if (len<27)
++		return 0;
++	fseek (fh,-len,SEEK_END);
++	buf = malloc (len);
++	if (!buf)
++		return 0;
++
++	if (fread (buf, len, 1, fh))
++	{
++		/* TODO: optimize this */
++		for(ptr=buf+len-27;ptr>=buf;ptr--)
++		{
++			if (!strcmp (ptr, "OggS"))
++			{
++#if 0
++				if (!(ptr[5] & 4))
++					printf("stream is possibly incomplete\n");
++#endif
++
++				duration=WORD_LE(ptr+6)+((unsigned long long)(WORD_LE(ptr+10))<<32);
++				(void) meta_add_integer (md_list, TAG_DURATION, (unsigned long)(duration/freq));
++				flag=1;
++				break;
++			}
++		}
++	}
++	free (buf);
++	return flag;
++}
++
++int id_vorbis (FILE *f, List **md_list)
++{
++	unsigned char buf[256];
++	fh = f;
++	split_packet = 0;
++	packets = 0;
++	pcount = 0;
++	freq = -1;
++	for(;;)
++	{
++		if (!ogg_read (buf, 7))
++			return 0;
++	  
++		if (strncmp (buf+1,"vorbis",6))
++/*	       printf ("mismatch: %s\n", buf+1); */
++			return 0;
++		switch (*buf)
++		{
++		case 1:
++			if (!ogg_read (buf, 21))
++				return 0;
++			freq=WORD_LE (buf+5);
++
++			(void) meta_add_integer (md_list,TAG_CHANNELS,buf[4]);
++			(void) meta_add_integer (md_list, TAG_FREQ, freq);
++			(void) meta_add_integer (md_list,TAG_BITRATE,WORD_LE(buf+13)/1000);
++			break;
++		case 3:
++		{
++			unsigned char *str, *val;
++			int len, comments;
++			if (!ogg_read (buf, 4))
++				return 0;
++			len=WORD_LE(buf);
++			if (!(str=malloc (len+1)))
++				return 0;
++			if (!ogg_read (str, len))
++			{
++				free (str);
++				return 0;
++			}
++			str[len]=0;
++			/*printf ("ver: %s\n",str);*/
++			if (!ogg_read (buf, 4))
++				return 0;
++			for(comments=WORD_LE (buf);comments;comments--)
++			{
++				int tag;
++				if (!ogg_read (buf, 4))
++					return 0;
++				len=WORD_LE(buf);
++				if (!(str=malloc (len+1)))
++					return 0;
++				if (!ogg_read (str, len))
++				{
++					free (str);
++					return 0;
++				}
++				str[len] = 0;
++				val = strchr (str,'=');
++				if (!val)
++				{
++					free(str);
++					continue;
++				}
++				*val++=0;
++
++				/* FIXME: utf-8 conversion */
++				for(tag=0;tag<NUM_VORBIS_TAGS;tag++)
++				{
++					if (!strcasecmp (str,vorbis_tags[tag].name))
++					{
++						(void) meta_add_string (md_list, vorbis_tags[tag].tag, strdup (val));
++						break;
++					}
++				}
++
++				free(str);
++			}
++	       
++			break;
++		}
++		default:
++			TRACE(("unknown: %d", *buf));
++		}
++		if (pcount)
++			break;
++		skip_packet ();
++	}
++	(void) meta_add_string (md_list, TAG_MIME, strdup ("application/x-ogg"));
++	return read_duration (md_list);
++}
+--- /dev/null	Mon Apr 19 20:26:10 1999
++++ src/id_vorbis.h	Sat Mar 30 01:06:18 2002
+@@ -0,0 +1,4 @@
++#include "gift.h"
++#include "meta.h"
++
++int id_vorbis(FILE *fh, List **md_list);

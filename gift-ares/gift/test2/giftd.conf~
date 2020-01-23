@@ -1,0 +1,25 @@
+# gift.conf
+
+[main]
+setup = 1
+hosts_allow = LOCAL
+client_port = 31213
+plugins = ../libAres.la
+#:Gnutella
+
+[download]
+incoming = ./incoming
+completed = /home/HEx/.giFT/completed
+
+[sharing]
+max_peruser_uploads = 1
+hide_dot_files = 1
+root = /tmpfs/foo
+#/mnt/media/share/ogg albumen:/mnt/media/share/oggtastic classical stuff
+#:/mnt/hdc5/images/share/images:/mnt/mp3
+max_uploads = 3
+share_completed=0
+
+[bandwidth]
+#downstream = 1000
+#upstream = 5000

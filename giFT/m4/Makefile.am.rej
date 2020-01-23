@@ -1,0 +1,15 @@
+***************
+*** 3,7 ****
+  
+  EXTRA_DIST = \
+  	giftconfig.m4 \
+  	oggvorbis.m4 \
+  	winsock.m4
+--- 3,9 ----
+  
+  EXTRA_DIST = \
+  	giftconfig.m4 \
++ 	gift-ltdl.m4 \
+  	oggvorbis.m4 \
++ 	va_copy.m4 \
+  	winsock.m4

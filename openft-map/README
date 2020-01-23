@@ -1,0 +1,37 @@
+Set of scripts capable of producing visualizations of the OpenFT network.
+Please note that daily spider.pl maps are produced at
+http://jasta.gotlinux.org/openft/.  The daily generated png images are
+available at http://fnord.csbnet.se/openft/.  Please use these instead of
+creating your own.
+
+Intended usage:
+
+ # ./spider.pl < nodes_list > map
+
+Will start from the search node(s) described in the file `nodes_list' and dump
+data to file `map'.  The format of the nodes_list is as follows:
+
+{host}         {port} {http_port} {class} {version}
+68.116.100.143 1215   1216        7       0x00020101
+
+ # ./draw.py < map
+
+Try "./draw.py --help" for options
+
+draw.py Requires the Python Imaging Library: "python-imaging" on Debian.
+
+World map notes:
+
+ - Requires xplanet.
+ - The map is saved as a JPEG (PNG resulted in 1.1MB file), so the text will
+   get blurred and lines may look weird.  So, avoid resolving names for search
+   nodes, ie. use the -n switch.
+ - Make sure you have the geo-cache file in place, so you don't hammer
+   netgeo.caida.org asking for locations the way I did.  Note that this cache
+   is map {ip:(lat,long)} saved using Python's pickle module, so don't try
+   to edit it.
+
+-------------------------------------------------------------------------------
+
+spider.pl written by Josh Guilfoyle <jasta at gotlinux dot org>
+draw.py   written by Ricardo Niederberger Cabral <nieder at mail dot ru>

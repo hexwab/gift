@@ -1,0 +1,17 @@
+Index: src/if_share.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/if_share.c,v
+retrieving revision 1.13
+diff -u -r1.13 if_share.c
+--- src/if_share.c	10 Jul 2003 15:32:05 -0000	1.13
++++ src/if_share.c	12 Jul 2003 18:36:19 -0000
+@@ -95,6 +95,9 @@
+ 			free (path);
+ 		}
+ 
++		if ((path = share_get_hpath (file)))
++			interface_put (cmd, "hpath", path);
++
+ 		INTERFACE_PUTI (cmd, "size", file->size);
+ 		interface_put  (cmd, "mime", file->mime);
+ 

@@ -1,0 +1,404 @@
+2004-01-11 21:14  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* Makefile.am: Distribute the roff source files.
+
+2004-01-11 20:58  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS: Note release date of 0.6.2.
+
+2004-01-11 20:56  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* configure.in: Bump version number to 0.6.2.
+
+2004-01-11 20:49  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/: ca.po, da.po, de.po, en.po, es.po, fr.po, it.po, nl.po,
+	  pl.po, pt_BR.po: make update-po...
+
+2004-01-11 20:35  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* README, README.ms: Added a short introductory section.
+
+2004-01-09 08:16  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/sv.po: Fixed errors in the Swedish translation, reencoded it
+	  to UTF-8, and used some typography unicode gives us.
+
+2004-01-09 06:28  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/da.po: Make gettext happy.
+
+2004-01-07 20:30  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/control: Updates to the extended description suggested by
+	  DanielS.
+
+2004-01-07 20:29  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/menu: Better(?) formatting.
+
+2004-01-01 17:14  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* configure.in, po/en.po: Added some UTF-8 enhanced strings for the
+	  English audience.
+
+2004-01-01 17:12  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* giFTcurs.conf.5: Replaced empty lines with single dots.
+
+2004-01-01 17:11  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* Makefile.am, TODO, TODO.ms: Roffized the TODO file, mostly so we
+	  can keep some history as comments.
+
+2004-01-01 17:07  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* INSTALL, INSTALL.ms, README, README.ms, giftcurs.tmac: Added
+	  copyright notices to the roff source files, moved macros to
+	  giftcurs.tmac and wrote a macro to underline headers.
+
+2004-01-01 17:04  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/changelog: Released 0.6.1-2 before 0.6.2.
+
+2004-01-01 17:01  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS: Noted the fixed SIGBUS error.
+
+2004-01-01 16:45  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: More fixes from Stefano Palmeri.
+
+2004-01-01 16:22  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/da.po: Updated Danish translation from Andreas Kleist
+	  Svendsen.
+
+2003-11-30 20:32  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* INSTALL, INSTALL.ms: Documented some of our configure flags.
+
+2003-11-30 20:04  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* acinclude.m4, configure.in, src/Makefile.am: Wrote a macro that
+	  checks what flags gcc accepts and adds them to CFLAGS. Added
+	  status output at the end of configure, and cleaned up some stuff.
+
+2003-11-30 13:43  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/fr.po: Updated French translation from Alexandre Bourget.
+
+2003-11-29 13:20  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* TODO: Note that some strings aren't marked for translation, and
+	  remove the line about UTF-8 support.
+
+2003-11-29 13:11  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Small fix for the Italian translation of the help
+	  screen.
+
+2003-11-28 22:31  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Fixes for the Italian help screen translation.
+
+2003-11-28 21:01  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Updated Italian translation from Stefano Palmeri.
+
+2003-11-27 21:29  Christian Häggström <chm@c00.info>
+
+	* src/: list.c, list.h: Revert a misbehaving CLAMP, and add some
+	  GNUC attributes
+
+2003-11-22 22:59  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/: changelog, control, rules, watch: Build with ncursesw
+	  and gpm support. Add a watchfile.
+
+2003-11-22 18:49  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* acinclude.m4: Check for wadd_wch instead of add_wch and don't
+	  cache the results.
+
+2003-11-22 13:21  Christian Häggström <chm@c00.info>
+
+	* src/ui_main.c: Prevent compiler warning
+
+2003-11-22 11:16  Christian Häggström <chm@c00.info>
+
+	* src/ui_main.c: Also rerender the infobox if screen width changes
+
+2003-11-22 11:15  Christian Häggström <chm@c00.info>
+
+	* src/format.c: Substitute a wide char with space if it don't fit
+
+2003-11-20 16:32  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/test_utf8.c: Include locale.h.
+
+2003-11-16 17:50  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS: Add news about UTF-8 and the Italian translation.
+
+2003-11-16 17:39  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_transfer.c: Fix a visual defect.
+
+2003-11-16 17:31  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/sv.po: Updated Swedish translation.
+
+2003-11-16 17:15  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: .indent.pro, Makefile.am, giftcurs.h, list.c, main.c,
+	  parse.c, ui.c, ui.h, ui_draw.c, ui_draw.h, ui_input.c,
+	  ui_input.h, ui_main.c: The input fields are now dealt with in
+	  ui_input.c, and now work with UTF-8.
+
+2003-11-15 22:46  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* INSTALL, INSTALL.ms: Added a blurb about PKG_CONFIG_PATH, and
+	  changed some - to \-.
+
+2003-11-08 16:12  Christian Häggström <chm@c00.info>
+
+	* src/format.c: Unaligned write generates Bus Error on some
+	  architectures (sparc). Use memcpy instead.
+
+2003-11-07 00:36  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: parse.c, parse.h, ui.c: Fixed handling of combining
+	  characters in the query field.
+
+2003-11-06 01:18  Christian Häggström <chm@c00.info>
+
+	* src/transfer.c: Oops. Should be AND instead of OR here
+
+2003-11-05 00:56  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/parse.c: Woops.
+
+2003-11-05 00:40  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: Makefile.am, main.c, parse.c, screen.c, screen.h,
+	  test_utf8.c, ui_console.c: Use HAS_WIDE_CURSES to conditionally
+	  compile wcwidth.c and the utf8 test suite. Other minor fixes
+	  included as a bonus.
+
+2003-11-05 00:38  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* acinclude.m4, configure.in: Move WIDE_NCURSES into config.h and
+	  define the xopen stuff there. Add a HAS_WIDE_CURSES automake
+	  conditional.
+
+2003-11-05 00:29  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_draw.c: Draw wide characters with add_wch(), and calculate
+	  the width of what we've drawn with mk_wcwidth().
+
+2003-11-05 00:29  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/wcwidth.h: Small header file for wcwidth.c
+
+2003-11-05 00:25  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui.c: Only treat the query field as utf8 if it validates as
+	  such.
+
+2003-11-05 00:16  Christian Häggström <chm@c00.info>
+
+	* src/test_list.c: Fix the integer compare route to handle all 32
+	  bits
+
+2003-11-05 00:01  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/test_list.c: Make test_list use glib's random routines.
+
+2003-11-04 16:55  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, parse.c, test_utf8.c, parse.h: Made the inverse
+	  of vstrlen, called str_occupy (in search for a better name).
+	  Complete test suite included :)
+
+2003-11-04 16:37  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/parse.c: Return NULL if NULL is passed to convert_to_locale()
+
+2003-11-04 07:58  Christian Häggström <chm@c00.info>
+
+	* src/: parse.c, wcwidth.c: Use Markus Kuhn's wcwidth
+	  implementation to determine how UTF-8 look on screen
+
+2003-11-01 01:11  Christian Häggström <chm@c00.info>
+
+	* src/: Makefile.am, test_utf8.c, parse.c, parse.h, ui_draw.c,
+	  ui_draw.h: test module for utf-8 handling
+
+2003-10-21 17:38  Eelco Lempsink <eelco@33lc0.net>
+
+	* po/nl.po: Updated Dutch translation.
+
+2003-10-18 15:20  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, misc.c, screen.h, ui_draw.c, ui_main.c,
+	  ui_transfer.c: Made the \v color changer char to a symbolic
+	  constant instead.
+
+2003-10-17 18:38  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, format.h, parse.c, parse.h: Format strings now
+	  utf-8 clean, almose Wide characters on a boundary are not handled
+	  yet
+
+2003-10-17 02:59  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_main.c: Use bold again on the slashes in the statbox.
+
+2003-10-16 03:37  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: get.c, search.c, transfer.c: Try to convert metadata and
+	  filenames to the current locale.
+
+2003-10-16 03:35  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/screen.h: Define _XOPEN_SOURCE_EXTENDED to get the wide
+	  ncurses stuff.
+
+2003-10-15 00:06  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Updated Italian translation from Stefano Palmeri.
+
+2003-10-14 21:49  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: parse.c, parse.h: New function convert_to_locale() which
+	  tries to convert a string to the current locale's charset.
+
+2003-10-14 21:47  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* giFTcurs.conf.5, src/giftcurs.h, src/main.c, src/ui_draw.c: Add a
+	  setting to have rounded corners if we're using utf8.
+
+2003-10-13 23:47  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/screen.h: Removed obsolete UTF8_CBYTE() macro.
+
+2003-10-13 23:42  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/: ui.c, ui.h, ui_draw.c, ui_main.c: Fixes for input in utf8.
+	  ui_input_handler() should be OK now.
+
+2003-10-13 21:50  Christian Häggström <chm@c00.info>
+
+	* acinclude.m4: Removed more quotation marks
+
+2003-10-13 21:37  Christian Häggström <chm@c00.info>
+
+	* acinclude.m4: Remove quotation marks from ncurses messages
+
+2003-10-13 19:19  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_draw.c: Don't verify the whole string at once, but do it
+	  later for each char.
+
+2003-10-13 18:22  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_draw.c: Some cleanups for better utf-8 support.
+
+2003-10-11 21:16  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* README, README.ms: Fixed a typo.
+
+2003-09-23 21:54  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/transfer.c: Indent.
+
+2003-09-23 21:50  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_transfer.c: Add a short message to our translators.
+
+2003-09-23 21:38  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/: de.po, nl.po: Fixed a minor problem found by Volker Grabsch.
+
+2003-09-17 14:30  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* debian/: changelog, control, copyright:
+	  debian/{control,changelog}: Recoded to ASCII, since the tools
+	  can't handle UTF-8.
+
+2003-09-15 23:51  Christian Häggström <chm@c00.info>
+
+	* src/ui_help.c: Use format strings for help screen.
+
+2003-09-15 23:28  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, giftcurs.h, list.c, list.h, ui.c, ui.h,
+	  ui_draw.c, ui_draw.h, ui_main.c: Use format string for stats data
+
+2003-09-15 23:26  Christian Häggström <chm@c00.info>
+
+	* src/search.c: Redraw all hits when an user is ignored
+
+2003-09-15 23:24  Christian Häggström <chm@c00.info>
+
+	* src/parse.c: fix memory leak on protocol: parsing
+
+2003-09-15 19:17  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Updated Italian translation from Stefano Palmeri.
+
+2003-09-15 00:13  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/it.po: Updated Italian translation from Stefano Palmeri.
+
+2003-09-13 23:21  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/: ca.po, da.po, de.po, es.po, fr.po, it.po, nl.po, pl.po,
+	  pt_BR.po, sv.po: Perform some maintenance on the translations.
+	  (Mostly made (C) into a real copyright glyph.)
+
+2003-09-13 23:18  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/ui_transfer.c: Added some notes to translators.
+
+2003-09-13 23:16  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* autogen.sh: Make MSGID_BUGS_ADDRESS point to the giftcurs-devel
+	  list, to please newer gettext versions.
+
+2003-09-13 22:49  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* AUTHORS, configure.in, po/it.po: Added an Italian translation
+	  from Stefano Palmeri.
+
+2003-09-11 01:05  Eelco Lempsink <eelco@33lc0.net>
+
+	* po/nl.po: Updated Dutch translation
+
+2003-09-09 22:06  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* src/gift.c: Grammar fix.
+
+2003-09-08 19:52  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, giftcurs.h, screen.c, settings.c: indent
+	  preprocessor directives, fix typos
+
+2003-09-08 19:50  Christian Häggström <chm@c00.info>
+
+	* src/transfer.c: reset bandwidth on detach
+
+2003-09-08 19:47  Christian Häggström <chm@c00.info>
+
+	* src/: get.c, gift.c, gift.h, protocol.c, protocol.h, test_gift.c,
+	  ui_main.c: Try to reconnect _before_ allocating an ID
+
+2003-08-31 22:21  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* NEWS: Preparing for 0.6.1.
+
+2003-08-31 22:19  Göran Weinholt <weinholt@dtek.chalmers.se>
+
+	* po/: ca.po, da.po, de.po, es.po, fr.po, nl.po, pl.po, pt_BR.po,
+	  sv.po: Run make update-po.

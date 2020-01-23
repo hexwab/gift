@@ -1,0 +1,1 @@
+./autogen.sh --enable-gnutella --disable-id3lib --disable-imagemagick --enable-perl --enable-libdb

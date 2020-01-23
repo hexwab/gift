@@ -1,0 +1,13 @@
+gift-fasttrack for Debian
+-------------------------
+
+To enable the FastTrack plugin, modify the plugins line in ~/.giFT/giftd.conf:
+
+plugins = OpenFT:FastTrack
+
+This enables the OpenFT and FastTrack plugins. To test the plugin without
+modifying the configuration file, run "giftd -p FastTrack".
+
+If you have installed giFT in /usr/local, you might need to run this instead:
+$ giftd -p /usr/lib/giFT/libFastTrack.la
+

@@ -1,0 +1,71 @@
+#!/bin/sh
+#
+# $Id: gift-update-nodes,v 1.2 2005/09/15 21:53:44 hexwab Exp $
+
+VERSION=0.1
+
+case $1 in
+    -h|--help)
+    echo "Usage: $0 [plugins...]"
+    exit 0 ;;
+    -v|-V|--version)
+    echo gift-update-nodes version $VERSION
+    exit 0
+esac
+
+error() { echo Error: $@ 1>&2; exit 1; }
+
+# check a few prerequisites
+which wget >/dev/null 2>/dev/null || error "\`wget' not found"
+which giftd >/dev/null 2>/dev/null || error "\`giftd' not found"
+which perl >/dev/null 2>/dev/null || error "\`perl' not found"
+
+[ -d ~/.giFT ] || error "directory \`~/.giFT' not found (run gift-setup first?)"
+
+if [ "$*" = "" ] ; then 
+# get plugins list
+    PLUGINS=`giftd -V|perl -lne '(/Available plugins:/..1) and /^\t(\S+) / and print $1'` || error failed to get plugins list from giFT
+    INTER=1
+    echo "WARNING: Only update plugins which do not connect currently!  Updating"
+    echo "working plugins could easily make things worse."
+    echo
+else
+    # plugins were specified explicitly; be non-interactive
+    PLUGINS=$@
+    INTER=''
+fi
+
+CGI=
+
+for i in $PLUGINS; do
+    [ -f ~/.giFT/$i/$i.conf ] ||
+       if [ $INTER ] ; then continue; else error "plugin \`$i' not found" ; fi
+    lc=`echo $i|tr A-Z a-z`
+    if [ $INTER ] ; then
+    echo -n Update plugin \`$i\'? [yN]\ 
+    read line
+    else
+	line=y # ewww
+    fi
+    case $line in
+	[Yy]*)
+	echo Updating files in ~/.giFT/$i... 1>&2
+	if [ ! $CGI ] ; then
+	    # grab and ignore the list of files, so that usage can be tracked
+	    wget -O - "http://update.kceasy.com/cgi-bin/nodes.cgi?app=gift-update-nodes&version="$VERSION >/dev/null 2>/dev/null
+	    CGI=1
+	fi
+	(
+	    rm -rf ~/.giFT/$i/.update 2>/dev/null
+	    mkdir ~/.giFT/$i/.update &&
+	    cd  ~/.giFT/$i/.update &&
+	    wget -r -R '??=?' -nH -nd -np http://update.kceasy.com/update/$lc/ &&
+	    cd .. &&
+	    mv -f .update/* ..
+	    rmdir .update
+	    echo
+	) ;;
+    esac
+done
+
+exit 0

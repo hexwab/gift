@@ -1,0 +1,990 @@
+[05:57:40] (main.c           242) DBG: Logging subsystem started
+[05:57:40] (../lib/as_ares.c 88) DBG: Initializing Ares library...
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 81.181.45.24
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 172.167.73.224
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 68.14.134.184
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 80.109.9.35
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 172.213.39.71
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 84.9.48.208
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 83.165.1.200
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 67.84.67.121
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 24.161.107.179
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 172.215.80.9
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 69.192.139.95
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 172.131.166.176
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 24.186.30.119
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 24.186.249.34
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 67.20.58.221
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 66.176.95.112
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 67.166.165.200
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 84.13.133.226
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 67.71.35.9
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 81.190.42.143
+[05:57:40] (main.c           258) DBG: Entering event loop
+[05:57:40] (main.c           100) DBG: CRAWLER: Failed 24.186.249.34
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 71.98.143.219
+[05:57:40] (main.c           100) DBG: CRAWLER: Failed 67.166.165.200
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 69.112.11.101
+[05:57:40] (main.c           100) DBG: CRAWLER: Failed 66.176.95.112
+[05:57:40] (main.c           69) DBG: CRAWLER: Connecting 68.101.178.16
+[05:57:43] (main.c           100) DBG: CRAWLER: Failed 80.109.9.35
+[05:57:43] (main.c           69) DBG: CRAWLER: Connecting 24.253.231.164
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 81.181.45.24
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 69.221.4.22
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 172.167.73.224
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 83.67.3.246
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 68.14.134.184
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 24.110.117.44
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 172.213.39.71
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 207.6.12.227
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 84.9.48.208
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 24.46.149.34
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 83.165.1.200
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 70.52.20.53
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 67.84.67.121
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 68.34.30.25
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 24.161.107.179
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 84.68.44.219
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 172.215.80.9
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 24.23.17.246
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 69.192.139.95
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 65.185.40.125
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 172.131.166.176
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 84.82.52.135
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 24.186.30.119
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 69.228.7.2
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 67.20.58.221
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 65.50.47.30
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 84.13.133.226
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 82.35.15.31
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 67.71.35.9
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 151.201.14.52
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 81.190.42.143
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 24.170.42.18
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 71.98.143.219
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 67.22.17.44
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 69.112.11.101
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 161.184.13.152
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 68.101.178.16
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 62.194.29.146
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 24.46.149.34
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 84.27.16.123
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 65.50.47.30
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 69.156.149.192
+[05:58:00] (main.c           100) DBG: CRAWLER: Failed 69.228.7.2
+[05:58:00] (main.c           69) DBG: CRAWLER: Connecting 69.107.51.177
+[05:58:03] (main.c           100) DBG: CRAWLER: Failed 24.253.231.164
+[05:58:03] (main.c           69) DBG: CRAWLER: Connecting 217.44.13.164
+[05:58:03] (main.c           100) DBG: CRAWLER: Failed 217.44.13.164
+[05:58:03] (main.c           69) DBG: CRAWLER: Connecting 82.28.3.209
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 69.221.4.22
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.178.252.183
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 83.67.3.246
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 12.210.7.254
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 24.110.117.44
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 65.26.3.121
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 207.6.12.227
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 172.212.175.7
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 70.52.20.53
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 69.245.145.97
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 68.34.30.25
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 67.49.229.177
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 84.68.44.219
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.222.41.45
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 24.23.17.246
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 85.230.8.174
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 65.185.40.125
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 62.44.209.179
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 84.82.52.135
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 201.135.8.191
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 82.35.15.31
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 86.128.15.106
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 151.201.14.52
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 66.61.5.39
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 24.170.42.18
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.188.100.187
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 67.22.17.44
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 172.200.75.186
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 86.128.15.106
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.25.53.18
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 161.184.13.152
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.219.253.100
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 62.194.29.146
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 69.221.6.3
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 84.27.16.123
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.217.231.92
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 69.245.145.97
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.225.254.164
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 24.188.100.187
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 172.213.152.113
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 201.135.8.191
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 67.8.5.99
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 69.156.149.192
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 209.107.106.174
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 69.107.51.177
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.62.176.223
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 69.221.6.3
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 70.26.27.66
+[05:58:20] (main.c           100) DBG: CRAWLER: Failed 24.219.253.100
+[05:58:20] (main.c           69) DBG: CRAWLER: Connecting 24.200.44.14
+[05:58:23] (main.c           100) DBG: CRAWLER: Failed 82.28.3.209
+[05:58:23] (main.c           69) DBG: CRAWLER: Connecting 24.186.225.34
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.178.252.183
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 70.81.247.133
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 12.210.7.254
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 68.41.186.87
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 65.26.3.121
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 65.49.219.196
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 172.212.175.7
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 62.45.0.156
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 67.49.229.177
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 83.215.1.205
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.222.41.45
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 124.215.217.43
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 85.230.8.174
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 208.149.59.104
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 62.44.209.179
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 66.233.24.241
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 66.61.5.39
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 69.224.42.0
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 172.200.75.186
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 124.30.85.230
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.25.53.18
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 170.225.24.18
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.217.231.92
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 67.101.0.107
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.225.254.164
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 66.25.32.242
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 65.49.219.196
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 144.233.67.114
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 172.213.152.113
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 142.126.24.70
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 67.8.5.99
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 24.41.69.158
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 209.107.106.174
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 15.225.24.149
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.62.176.223
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 156.187.67.82
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 70.26.27.66
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 82.33.72.231
+[05:58:40] (main.c           100) DBG: CRAWLER: Failed 24.200.44.14
+[05:58:40] (main.c           69) DBG: CRAWLER: Connecting 24.115.95.136
+[05:58:43] (main.c           100) DBG: CRAWLER: Failed 24.186.225.34
+[05:58:43] (main.c           69) DBG: CRAWLER: Connecting 86.56.1.6
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 70.81.247.133
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 54.180.69.86
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 68.41.186.87
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 67.101.0.74
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 62.45.0.156
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 80.87.4.42
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 83.215.1.205
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 201.124.68.89
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 124.215.217.43
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 201.137.67.181
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 208.149.59.104
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.163.48.58
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 66.233.24.241
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 80.186.19.167
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 69.224.42.0
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.193.148.62
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 124.30.85.230
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 201.128.29.39
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 170.225.24.18
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.6.23.89
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 67.101.0.107
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 66.24.0.132
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 66.25.32.242
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 68.63.3.154
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 144.233.67.114
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.222.90.134
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 142.126.24.70
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 68.108.10.164
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 24.41.69.158
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 70.118.39.254
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 15.225.24.149
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.189.4.84
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 24.193.148.62
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 12.207.4.90
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 156.187.67.82
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 69.104.41.112
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 24.163.48.58
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.193.34.221
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 82.33.72.231
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 172.215.205.232
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 201.137.67.181
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 68.150.219.205
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 66.24.0.132
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 217.43.7.180
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 201.128.29.39
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 151.196.124.48
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 24.115.95.136
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 66.31.250.29
+[05:59:00] (main.c           100) DBG: CRAWLER: Failed 69.104.41.112
+[05:59:00] (main.c           69) DBG: CRAWLER: Connecting 24.44.19.21
+[05:59:03] (main.c           100) DBG: CRAWLER: Failed 86.56.1.6
+[05:59:03] (main.c           69) DBG: CRAWLER: Connecting 70.34.26.164
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 54.180.69.86
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.17.52.246
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 67.101.0.74
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 68.191.10.252
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 80.87.4.42
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 71.105.51.199
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 201.124.68.89
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 66.69.6.205
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 80.186.19.167
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.171.43.40
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.6.23.89
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.110.19.189
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 68.63.3.154
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.190.0.248
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.222.90.134
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.55.9.36
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 68.108.10.164
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 58.99.46.82
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 70.118.39.254
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 82.47.2.43
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.189.4.84
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 24.205.18.122
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 12.207.4.90
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 65.94.0.50
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.193.34.221
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 67.182.6.42
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.55.9.36
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 154.5.33.224
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 172.215.205.232
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 172.188.225.121
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 68.150.219.205
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 65.93.1.246
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 67.182.6.42
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 85.124.59.178
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 217.43.7.180
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 83.113.17.166
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 151.196.124.48
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 68.50.15.198
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 66.31.250.29
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 216.68.208.90
+[05:59:20] (main.c           100) DBG: CRAWLER: Failed 24.44.19.21
+[05:59:20] (main.c           69) DBG: CRAWLER: Connecting 67.83.173.50
+[05:59:23] (main.c           100) DBG: CRAWLER: Failed 70.34.26.164
+[05:59:23] (main.c           69) DBG: CRAWLER: Connecting 65.189.20.215
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 24.17.52.246
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 82.149.20.36
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 68.191.10.252
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 82.37.60.161
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 71.105.51.199
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 66.69.1.41
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 66.69.6.205
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 65.75.72.231
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 24.171.43.40
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 81.105.231.38
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 24.110.19.189
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 68.0.87.243
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 24.190.0.248
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 71.115.142.194
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 58.99.46.82
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 82.233.115.178
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 82.47.2.43
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 84.66.3.216
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 24.205.18.122
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 24.21.5.184
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 65.94.0.50
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 65.93.23.253
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 154.5.33.224
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 24.167.16.89
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 172.188.225.121
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 66.24.22.252
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 65.93.1.246
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 217.211.28.107
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 85.124.59.178
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 80.240.4.130
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 83.113.17.166
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 82.75.30.58
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 68.50.15.198
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 142.163.153.178
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 216.68.208.90
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 81.204.252.38
+[05:59:40] (main.c           100) DBG: CRAWLER: Failed 67.83.173.50
+[05:59:40] (main.c           69) DBG: CRAWLER: Connecting 84.30.99.107
+[05:59:41] (main.c           100) DBG: CRAWLER: Failed 65.93.23.253
+[05:59:41] (main.c           69) DBG: CRAWLER: Connecting 67.175.74.24
+[05:59:41] (main.c           100) DBG: CRAWLER: Failed 24.21.5.184
+[05:59:41] (main.c           69) DBG: CRAWLER: Connecting 24.222.196.189
+[05:59:43] (main.c           100) DBG: CRAWLER: Failed 65.189.20.215
+[05:59:43] (main.c           69) DBG: CRAWLER: Connecting 68.60.56.252
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 82.149.20.36
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 68.234.24.166
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 82.37.60.161
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 67.165.48.45
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 66.69.1.41
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 68.8.29.209
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 65.75.72.231
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 142.167.49.143
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 81.105.231.38
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 69.209.198.17
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 68.0.87.243
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 24.70.5.102
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 71.115.142.194
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 81.231.106.211
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 82.233.115.178
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 69.86.88.242
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 84.66.3.216
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 12.220.118.243
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 24.167.16.89
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 67.81.169.215
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 66.24.22.252
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 82.40.7.82
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 217.211.28.107
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 142.177.169.0
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 80.240.4.130
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 70.34.4.165
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 82.75.30.58
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 24.95.50.172
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 142.163.153.178
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 67.84.30.231
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 81.204.252.38
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 84.65.123.75
+[06:00:00] (main.c           100) DBG: CRAWLER: Failed 84.30.99.107
+[06:00:00] (main.c           69) DBG: CRAWLER: Connecting 70.28.146.146
+[06:00:01] (main.c           100) DBG: CRAWLER: Failed 67.165.48.45
+[06:00:01] (main.c           69) DBG: CRAWLER: Connecting 69.242.36.35
+[06:00:01] (main.c           100) DBG: CRAWLER: Failed 67.175.74.24
+[06:00:01] (main.c           69) DBG: CRAWLER: Connecting 82.49.58.165
+[06:00:01] (main.c           100) DBG: CRAWLER: Failed 24.222.196.189
+[06:00:01] (main.c           69) DBG: CRAWLER: Connecting 82.238.34.46
+[06:00:01] (main.c           100) DBG: CRAWLER: Failed 24.70.5.102
+[06:00:01] (main.c           69) DBG: CRAWLER: Connecting 198.166.23.80
+[06:00:01] (main.c           100) DBG: CRAWLER: Failed 70.28.146.146
+[06:00:01] (main.c           69) DBG: CRAWLER: Connecting 24.210.86.177
+[06:00:03] (main.c           100) DBG: CRAWLER: Failed 68.60.56.252
+[06:00:03] (main.c           69) DBG: CRAWLER: Connecting 24.57.242.253
+[06:00:04] (main.c           100) DBG: CRAWLER: Failed 24.57.242.253
+[06:00:04] (main.c           69) DBG: CRAWLER: Connecting 217.44.37.253
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 68.234.24.166
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 24.42.109.218
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 68.8.29.209
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 69.137.244.149
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 142.167.49.143
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 67.83.23.14
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 69.209.198.17
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 67.163.2.112
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 81.231.106.211
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 213.10.48.61
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 69.86.88.242
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 70.118.169.15
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 12.220.118.243
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 80.60.212.7
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 67.81.169.215
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 70.25.2.104
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 82.40.7.82
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 66.108.61.31
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 142.177.169.0
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 81.59.2.206
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 70.34.4.165
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 82.74.2.186
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 24.95.50.172
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 81.69.236.153
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 67.84.30.231
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 65.175.179.59
+[06:00:20] (main.c           100) DBG: CRAWLER: Failed 84.65.123.75
+[06:00:20] (main.c           69) DBG: CRAWLER: Connecting 68.38.35.212
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 69.242.36.35
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 63.135.0.234
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 82.49.58.165
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 212.187.35.42
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 82.238.34.46
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 24.155.37.91
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 67.83.23.14
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 69.199.2.203
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 198.166.23.80
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 67.162.1.159
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 24.210.86.177
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 69.175.0.148
+[06:00:21] (main.c           100) DBG: CRAWLER: Failed 68.38.35.212
+[06:00:21] (main.c           69) DBG: CRAWLER: Connecting 81.204.80.96
+[06:00:24] (main.c           100) DBG: CRAWLER: Failed 217.44.37.253
+[06:00:24] (main.c           69) DBG: CRAWLER: Connecting 24.188.104.127
+[06:00:25] (main.c           100) DBG: CRAWLER: Failed 24.155.37.91
+[06:00:25] (main.c           69) DBG: CRAWLER: Connecting 62.194.1.160
+[06:00:25] (main.c           100) DBG: CRAWLER: Failed 24.188.104.127
+[06:00:25] (main.c           69) DBG: CRAWLER: Connecting 24.41.0.107
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 24.42.109.218
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 172.186.0.115
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 69.137.244.149
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 81.70.121.61
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 67.163.2.112
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 80.217.146.230
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 213.10.48.61
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 24.103.1.232
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 70.118.169.15
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 24.252.93.148
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 80.60.212.7
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 68.144.0.21
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 70.25.2.104
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 24.88.0.9
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 66.108.61.31
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 24.82.0.183
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 81.59.2.206
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 24.187.4.13
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 82.74.2.186
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 68.97.0.169
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 81.69.236.153
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 68.195.2.33
+[06:00:40] (main.c           100) DBG: CRAWLER: Failed 65.175.179.59
+[06:00:40] (main.c           69) DBG: CRAWLER: Connecting 69.201.1.210
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 63.135.0.234
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 67.81.0.32
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 212.187.35.42
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 24.36.0.122
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 69.199.2.203
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 216.196.152.141
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 67.162.1.159
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 70.185.125.133
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 69.175.0.148
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 24.102.81.5
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 69.201.1.210
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 69.132.53.13
+[06:00:41] (main.c           100) DBG: CRAWLER: Failed 81.204.80.96
+[06:00:41] (main.c           69) DBG: CRAWLER: Connecting 24.231.40.162
+[06:00:45] (main.c           100) DBG: CRAWLER: Failed 62.194.1.160
+[06:00:45] (main.c           69) DBG: CRAWLER: Connecting 216.211.6.251
+[06:00:45] (main.c           100) DBG: CRAWLER: Failed 24.41.0.107
+[06:00:45] (main.c           69) DBG: CRAWLER: Connecting 69.145.71.25
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 172.186.0.115
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 70.25.51.134
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 81.70.121.61
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 24.236.216.80
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 80.217.146.230
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 67.150.94.211
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 24.103.1.232
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 68.106.63.52
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 24.252.93.148
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 69.198.120.18
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 68.144.0.21
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 24.42.114.96
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 24.88.0.9
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 69.241.138.61
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 24.82.0.183
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 68.230.145.236
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 24.187.4.13
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 66.222.241.237
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 68.97.0.169
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 65.32.246.201
+[06:01:00] (main.c           100) DBG: CRAWLER: Failed 68.195.2.33
+[06:01:00] (main.c           69) DBG: CRAWLER: Connecting 70.112.254.232
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 24.236.216.80
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 24.174.2.75
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 67.81.0.32
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 24.90.24.224
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 70.25.51.134
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 68.224.39.128
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 24.36.0.122
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 24.100.75.113
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 216.196.152.141
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 67.180.136.23
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 70.185.125.133
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 24.139.6.223
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 24.102.81.5
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 65.185.41.207
+[06:01:01] (main.c           100) DBG: CRAWLER: Failed 69.132.53.13
+[06:01:01] (main.c           69) DBG: CRAWLER: Connecting 24.220.185.227
+[06:01:02] (main.c           100) DBG: CRAWLER: Failed 24.231.40.162
+[06:01:02] (main.c           69) DBG: CRAWLER: Connecting 66.130.43.20
+[06:01:05] (main.c           100) DBG: CRAWLER: Failed 216.211.6.251
+[06:01:05] (main.c           69) DBG: CRAWLER: Connecting 68.224.82.147
+[06:01:05] (main.c           100) DBG: CRAWLER: Failed 69.145.71.25
+[06:01:05] (main.c           69) DBG: CRAWLER: Connecting 24.245.51.68
+[06:01:06] (main.c           100) DBG: CRAWLER: Failed 68.224.82.147
+[06:01:06] (main.c           69) DBG: CRAWLER: Connecting 24.224.208.141
+[06:01:06] (main.c           100) DBG: CRAWLER: Failed 24.245.51.68
+[06:01:06] (main.c           69) DBG: CRAWLER: Connecting 69.196.17.234
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 67.150.94.211
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 24.197.130.1
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 68.106.63.52
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 68.237.193.81
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 69.198.120.18
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 70.80.52.109
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 24.42.114.96
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 69.158.74.32
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 69.241.138.61
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 69.63.34.29
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 68.230.145.236
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 67.160.19.110
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 66.222.241.237
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 69.148.27.252
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 65.32.246.201
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 70.24.38.233
+[06:01:20] (main.c           100) DBG: CRAWLER: Failed 70.112.254.232
+[06:01:20] (main.c           69) DBG: CRAWLER: Connecting 70.50.48.216
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.174.2.75
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 69.208.92.29
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.90.24.224
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 24.2.51.212
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 68.224.39.128
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 70.28.14.221
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.100.75.113
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 24.3.221.174
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 67.180.136.23
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 68.227.137.207
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.139.6.223
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 67.191.90.195
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 67.160.19.110
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 65.191.29.30
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 69.148.27.252
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 69.156.48.96
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 65.185.41.207
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 65.94.84.232
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.2.51.212
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 69.165.144.83
+[06:01:21] (main.c           100) DBG: CRAWLER: Failed 24.220.185.227
+[06:01:21] (main.c           69) DBG: CRAWLER: Connecting 69.167.96.120
+[06:01:22] (main.c           100) DBG: CRAWLER: Failed 66.130.43.20
+[06:01:22] (main.c           69) DBG: CRAWLER: Connecting 24.184.70.155
+[06:01:26] (main.c           100) DBG: CRAWLER: Failed 24.224.208.141
+[06:01:26] (main.c           69) DBG: CRAWLER: Connecting 70.33.34.148
+[06:01:26] (main.c           100) DBG: CRAWLER: Failed 69.196.17.234
+[06:01:26] (main.c           69) DBG: CRAWLER: Connecting 70.178.172.199
+[06:01:27] (main.c           100) DBG: CRAWLER: Failed 70.33.34.148
+[06:01:27] (main.c           69) DBG: CRAWLER: Connecting 65.25.89.57
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 24.197.130.1
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 209.107.110.206
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 68.237.193.81
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 70.16.9.94
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 70.80.52.109
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 24.34.11.117
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 69.158.74.32
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 68.126.39.96
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 69.63.34.29
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 68.188.190.7
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 70.24.38.233
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 68.2.61.170
+[06:01:40] (main.c           100) DBG: CRAWLER: Failed 70.50.48.216
+[06:01:40] (main.c           69) DBG: CRAWLER: Connecting 70.179.18.171
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 69.208.92.29
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 83.180.77.216
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 70.28.14.221
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 64.231.91.27
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 24.3.221.174
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 70.28.83.164
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 68.227.137.207
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 69.137.201.64
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 67.191.90.195
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 24.156.20.41
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 65.191.29.30
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 12.214.59.154
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 69.156.48.96
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 69.250.236.31
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 68.2.61.170
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 68.37.15.93
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 65.94.84.232
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 62.194.17.150
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 69.165.144.83
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 66.117.215.164
+[06:01:41] (main.c           100) DBG: CRAWLER: Failed 69.167.96.120
+[06:01:41] (main.c           69) DBG: CRAWLER: Connecting 68.95.23.153
+[06:01:42] (main.c           100) DBG: CRAWLER: Failed 24.184.70.155
+[06:01:42] (main.c           69) DBG: CRAWLER: Connecting 68.231.33.85
+[06:01:42] (main.c           100) DBG: CRAWLER: Failed 24.156.20.41
+[06:01:42] (main.c           69) DBG: CRAWLER: Connecting 132.177.54.248
+[06:01:43] (main.c           100) DBG: CRAWLER: Failed 69.137.201.64
+[06:01:43] (main.c           69) DBG: CRAWLER: Connecting 66.97.239.49
+[06:01:46] (main.c           100) DBG: CRAWLER: Failed 70.178.172.199
+[06:01:46] (main.c           69) DBG: CRAWLER: Connecting 142.68.74.247
+[06:01:47] (main.c           100) DBG: CRAWLER: Failed 65.25.89.57
+[06:01:47] (main.c           69) DBG: CRAWLER: Connecting 67.82.5.227
+[06:01:48] (main.c           100) DBG: CRAWLER: Failed 67.82.5.227
+[06:01:48] (main.c           69) DBG: CRAWLER: Connecting 69.112.1.78
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 209.107.110.206
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 24.45.83.170
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 70.16.9.94
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 65.78.10.127
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 24.34.11.117
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 68.102.1.25
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 68.126.39.96
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 129.2.202.172
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 68.188.190.7
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 24.150.19.61
+[06:02:00] (main.c           100) DBG: CRAWLER: Failed 70.179.18.171
+[06:02:00] (main.c           69) DBG: CRAWLER: Connecting 69.200.247.71
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 83.180.77.216
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 24.57.2.133
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 64.231.91.27
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 24.58.59.49
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 70.28.83.164
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 68.232.153.46
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 12.214.59.154
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 69.162.61.218
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 69.250.236.31
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 70.162.99.174
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 68.37.15.93
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 71.96.9.11
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 62.194.17.150
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 24.193.14.177
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 66.117.215.164
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 24.236.74.151
+[06:02:01] (main.c           100) DBG: CRAWLER: Failed 68.95.23.153
+[06:02:01] (main.c           69) DBG: CRAWLER: Connecting 24.86.68.9
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 68.231.33.85
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 68.85.75.110
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 68.232.153.46
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 66.173.147.58
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 69.162.61.218
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 69.209.145.107
+[06:02:02] (../lib/as_session.c 219) DBG: Connected to 70.162.99.174:26502
+[06:02:02] (main.c           72) DBG: CRAWLER: Handshaking 70.162.99.174
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 132.177.54.248
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 71.65.0.131
+[06:02:02] (../lib/as_session.c 219) DBG: Connected to 71.96.9.11:18519
+[06:02:02] (main.c           72) DBG: CRAWLER: Handshaking 71.96.9.11
+[06:02:02] (../lib/as_session.c 219) DBG: Connected to 24.236.74.151:64366
+[06:02:02] (main.c           72) DBG: CRAWLER: Handshaking 24.236.74.151
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 68.85.75.110
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 67.71.8.169
+[06:02:02] (main.c           100) DBG: CRAWLER: Failed 24.86.68.9
+[06:02:02] (main.c           69) DBG: CRAWLER: Connecting 84.178.109.75
+[06:02:03] (../lib/as_session.c 219) DBG: Connected to 71.65.0.131:30675
+[06:02:03] (main.c           72) DBG: CRAWLER: Handshaking 71.65.0.131
+[06:02:03] (../lib/as_session.c 592) DBG: Handshake with 70.162.99.174:26502 complete. ACK: 0x33, seeds: 0xCA34 and 0xD0
+[06:02:03] (main.c           75) DBG: CRAWLER: Connected 70.162.99.174
+[06:02:03] (main.c           55) DBG: CRAWLER: Added supernode 70.162.99.174
+[06:02:03] (main.c           69) DBG: CRAWLER: Connecting 67.177.230.205
+[06:02:03] (../lib/as_session.c 592) DBG: Handshake with 71.96.9.11:18519 complete. ACK: 0x33, seeds: 0xECB2 and 0x33
+[06:02:03] (main.c           75) DBG: CRAWLER: Connected 71.96.9.11
+[06:02:03] (main.c           55) DBG: CRAWLER: Added supernode 71.96.9.11
+[06:02:03] (main.c           69) DBG: CRAWLER: Connecting 24.224.164.115
+[06:02:03] (../lib/as_session.c 592) DBG: Handshake with 24.236.74.151:64366 complete. ACK: 0x33, seeds: 0x1202 and 0x76
+[06:02:03] (main.c           75) DBG: CRAWLER: Connected 24.236.74.151
+[06:02:03] (main.c           55) DBG: CRAWLER: Added supernode 24.236.74.151
+[06:02:03] (main.c           69) DBG: CRAWLER: Connecting 66.253.131.83
+[06:02:03] (main.c           100) DBG: CRAWLER: Failed 66.97.239.49
+[06:02:03] (main.c           69) DBG: CRAWLER: Connecting 61.229.164.96
+[06:02:04] (main.c           100) DBG: CRAWLER: Failed 24.193.14.177
+[06:02:04] (main.c           69) DBG: CRAWLER: Connecting 24.224.155.202
+[06:02:04] (../lib/as_session.c 592) DBG: Handshake with 71.65.0.131:30675 complete. ACK: 0x33, seeds: 0x3F3B and 0xAB
+[06:02:04] (main.c           75) DBG: CRAWLER: Connected 71.65.0.131
+[06:02:04] (main.c           55) DBG: CRAWLER: Added supernode 71.65.0.131
+[06:02:04] (main.c           69) DBG: CRAWLER: Connecting 24.14.158.40
+[06:02:04] (main.c           100) DBG: CRAWLER: Failed 24.224.164.115
+[06:02:04] (main.c           69) DBG: CRAWLER: Connecting 66.75.6.251
+[06:02:05] (main.c           100) DBG: CRAWLER: Failed 61.229.164.96
+[06:02:05] (main.c           69) DBG: CRAWLER: Connecting 70.124.125.108
+[06:02:05] (main.c           100) DBG: CRAWLER: Failed 24.224.155.202
+[06:02:05] (main.c           69) DBG: CRAWLER: Connecting 66.75.20.156
+[06:02:05] (main.c           100) DBG: CRAWLER: Failed 24.14.158.40
+[06:02:05] (main.c           69) DBG: CRAWLER: Connecting 65.94.173.32
+[06:02:05] (../lib/as_session.c 219) DBG: Connected to 66.253.131.83:24208
+[06:02:05] (main.c           72) DBG: CRAWLER: Handshaking 66.253.131.83
+[06:02:06] (main.c           100) DBG: CRAWLER: Failed 142.68.74.247
+[06:02:06] (main.c           69) DBG: CRAWLER: Connecting 128.36.54.29
+[06:02:07] (../lib/as_session.c 219) DBG: Connected to 128.36.54.29:58900
+[06:02:07] (main.c           72) DBG: CRAWLER: Handshaking 128.36.54.29
+[06:02:08] (main.c           100) DBG: CRAWLER: Failed 69.112.1.78
+[06:02:08] (main.c           69) DBG: CRAWLER: Connecting 24.71.179.95
+[06:02:08] (../lib/as_session.c 592) DBG: Handshake with 66.253.131.83:24208 complete. ACK: 0x33, seeds: 0x0021 and 0xEF
+[06:02:08] (main.c           75) DBG: CRAWLER: Connected 66.253.131.83
+[06:02:08] (main.c           55) DBG: CRAWLER: Added supernode 66.253.131.83
+[06:02:08] (main.c           69) DBG: CRAWLER: Connecting 70.24.224.207
+[06:02:09] (../lib/as_session.c 219) DBG: Connected to 24.71.179.95:35902
+[06:02:09] (main.c           72) DBG: CRAWLER: Handshaking 24.71.179.95
+[06:02:09] (../lib/as_session.c 219) DBG: Connected to 70.24.224.207:48638
+[06:02:09] (main.c           72) DBG: CRAWLER: Handshaking 70.24.224.207
+[06:02:10] (../lib/as_session.c 592) DBG: Handshake with 24.71.179.95:35902 complete. ACK: 0x33, seeds: 0xBE48 and 0x52
+[06:02:10] (main.c           75) DBG: CRAWLER: Connected 24.71.179.95
+[06:02:10] (main.c           55) DBG: CRAWLER: Added supernode 24.71.179.95
+[06:02:10] (main.c           69) DBG: CRAWLER: Connecting 67.85.34.80
+[06:02:10] (../lib/as_session.c 592) DBG: Handshake with 70.24.224.207:48638 complete. ACK: 0x33, seeds: 0xFBFE and 0x22
+[06:02:10] (main.c           75) DBG: CRAWLER: Connected 70.24.224.207
+[06:02:10] (main.c           55) DBG: CRAWLER: Added supernode 70.24.224.207
+[06:02:10] (main.c           69) DBG: CRAWLER: Connecting 68.104.90.11
+[06:02:11] (../lib/as_session.c 219) DBG: Connected to 67.85.34.80:22138
+[06:02:11] (main.c           72) DBG: CRAWLER: Handshaking 67.85.34.80
+[06:02:11] (main.c           100) DBG: CRAWLER: Failed 68.104.90.11
+[06:02:11] (main.c           69) DBG: CRAWLER: Connecting 209.23.206.195
+[06:02:12] (../lib/as_session.c 592) DBG: Handshake with 67.85.34.80:22138 complete. ACK: 0x33, seeds: 0x6086 and 0x3C
+[06:02:12] (main.c           75) DBG: CRAWLER: Connected 67.85.34.80
+[06:02:12] (main.c           55) DBG: CRAWLER: Added supernode 67.85.34.80
+[06:02:12] (main.c           69) DBG: CRAWLER: Connecting 68.41.1.82
+[06:02:13] (main.c           100) DBG: CRAWLER: Failed 68.41.1.82
+[06:02:13] (main.c           69) DBG: CRAWLER: Connecting 67.85.150.102
+[06:02:14] (../lib/as_session.c 219) DBG: Connected to 67.85.150.102:24309
+[06:02:14] (main.c           72) DBG: CRAWLER: Handshaking 67.85.150.102
+[06:02:14] (../lib/as_session.c 592) DBG: Handshake with 128.36.54.29:58900 complete. ACK: 0x33, seeds: 0xE3BF and 0xF8
+[06:02:14] (main.c           75) DBG: CRAWLER: Connected 128.36.54.29
+[06:02:14] (main.c           55) DBG: CRAWLER: Added supernode 128.36.54.29
+[06:02:14] (main.c           69) DBG: CRAWLER: Connecting 207.6.37.183
+[06:02:15] (../lib/as_session.c 592) DBG: Handshake with 67.85.150.102:24309 complete. ACK: 0x33, seeds: 0xE622 and 0xD5
+[06:02:15] (main.c           75) DBG: CRAWLER: Connected 67.85.150.102
+[06:02:15] (main.c           55) DBG: CRAWLER: Added supernode 67.85.150.102
+[06:02:15] (main.c           69) DBG: CRAWLER: Connecting 142.162.45.18
+[06:02:15] (../lib/as_session.c 219) DBG: Connected to 207.6.37.183:36800
+[06:02:15] (main.c           72) DBG: CRAWLER: Handshaking 207.6.37.183
+[06:02:16] (../lib/as_session.c 219) DBG: Connected to 142.162.45.18:31744
+[06:02:16] (main.c           72) DBG: CRAWLER: Handshaking 142.162.45.18
+[06:02:16] (../lib/as_session.c 592) DBG: Handshake with 207.6.37.183:36800 complete. ACK: 0x33, seeds: 0x7AA0 and 0xF2
+[06:02:16] (main.c           75) DBG: CRAWLER: Connected 207.6.37.183
+[06:02:16] (main.c           55) DBG: CRAWLER: Added supernode 207.6.37.183
+[06:02:16] (main.c           69) DBG: CRAWLER: Connecting 65.190.32.67
+[06:02:17] (../lib/as_session.c 592) DBG: Handshake with 142.162.45.18:31744 complete. ACK: 0x33, seeds: 0xB652 and 0xEA
+[06:02:17] (main.c           75) DBG: CRAWLER: Connected 142.162.45.18
+[06:02:17] (main.c           55) DBG: CRAWLER: Added supernode 142.162.45.18
+[06:02:17] (main.c           69) DBG: CRAWLER: Connecting 24.170.3.204
+[06:02:17] (../lib/as_session.c 219) DBG: Connected to 65.190.32.67:17859
+[06:02:17] (main.c           72) DBG: CRAWLER: Handshaking 65.190.32.67
+[06:02:18] (main.c           100) DBG: CRAWLER: Failed 24.170.3.204
+[06:02:18] (main.c           69) DBG: CRAWLER: Connecting 220.2.116.35
+[06:02:18] (../lib/as_session.c 592) DBG: Handshake with 65.190.32.67:17859 complete. ACK: 0x33, seeds: 0x1E40 and 0xDB
+[06:02:18] (main.c           75) DBG: CRAWLER: Connected 65.190.32.67
+[06:02:18] (main.c           55) DBG: CRAWLER: Added supernode 65.190.32.67
+[06:02:18] (main.c           69) DBG: CRAWLER: Connecting 216.86.113.226
+[06:02:19] (main.c           100) DBG: CRAWLER: Failed 216.86.113.226
+[06:02:19] (main.c           69) DBG: CRAWLER: Connecting 68.228.51.121
+[06:02:19] (main.c           100) DBG: CRAWLER: Failed 220.2.116.35
+[06:02:19] (main.c           69) DBG: CRAWLER: Connecting 164.58.77.223
+[06:02:19] (../lib/as_session.c 219) DBG: Connected to 68.228.51.121:63520
+[06:02:19] (main.c           72) DBG: CRAWLER: Handshaking 68.228.51.121
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 24.45.83.170
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 24.55.25.204
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 65.78.10.127
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 69.207.98.0
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 68.102.1.25
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 24.23.149.254
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 129.2.202.172
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 68.112.125.129
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 24.150.19.61
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 65.93.154.185
+[06:02:20] (../lib/as_session.c 592) DBG: Handshake with 68.228.51.121:63520 complete. ACK: 0x33, seeds: 0xEB53 and 0xDE
+[06:02:20] (main.c           75) DBG: CRAWLER: Connected 68.228.51.121
+[06:02:20] (main.c           55) DBG: CRAWLER: Added supernode 68.228.51.121
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 66.229.130.116
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 69.200.247.71
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 68.42.67.245
+[06:02:20] (main.c           100) DBG: CRAWLER: Failed 24.55.25.204
+[06:02:20] (main.c           69) DBG: CRAWLER: Connecting 69.245.34.21
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 24.57.2.133
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 67.166.96.186
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 24.58.59.49
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 24.77.64.134
+[06:02:21] (../lib/as_session.c 219) DBG: Connected to 68.112.125.129:59110
+[06:02:21] (main.c           72) DBG: CRAWLER: Handshaking 68.112.125.129
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 24.23.149.254
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 70.187.39.219
+[06:02:21] (../lib/as_session.c 219) DBG: Connected to 65.93.154.185:48283
+[06:02:21] (main.c           72) DBG: CRAWLER: Handshaking 65.93.154.185
+[06:02:21] (../lib/as_session.c 219) DBG: Connected to 68.42.67.245:13576
+[06:02:21] (main.c           72) DBG: CRAWLER: Handshaking 68.42.67.245
+[06:02:21] (../lib/as_session.c 219) DBG: Connected to 66.229.130.116:25069
+[06:02:21] (main.c           72) DBG: CRAWLER: Handshaking 66.229.130.116
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 69.207.98.0
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 24.254.32.94
+[06:02:21] (../lib/as_session.c 219) DBG: Connected to 69.245.34.21:19819
+[06:02:21] (main.c           72) DBG: CRAWLER: Handshaking 69.245.34.21
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 67.166.96.186
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 70.113.12.229
+[06:02:21] (main.c           100) DBG: CRAWLER: Failed 70.187.39.219
+[06:02:21] (main.c           69) DBG: CRAWLER: Connecting 24.115.151.84
+[06:02:22] (../lib/as_session.c 592) DBG: Handshake with 68.112.125.129:59110 complete. ACK: 0x33, seeds: 0x01D0 and 0x47
+[06:02:22] (main.c           75) DBG: CRAWLER: Connected 68.112.125.129
+[06:02:22] (main.c           55) DBG: CRAWLER: Added supernode 68.112.125.129
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 69.207.182.160
+[06:02:22] (../lib/as_session.c 219) DBG: Connected to 24.77.64.134:24796
+[06:02:22] (main.c           72) DBG: CRAWLER: Handshaking 24.77.64.134
+[06:02:22] (main.c           100) DBG: CRAWLER: Failed 66.173.147.58
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 64.231.166.60
+[06:02:22] (../lib/as_session.c 592) DBG: Handshake with 65.93.154.185:48283 complete. ACK: 0x33, seeds: 0x2919 and 0xCD
+[06:02:22] (main.c           75) DBG: CRAWLER: Connected 65.93.154.185
+[06:02:22] (main.c           55) DBG: CRAWLER: Added supernode 65.93.154.185
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 69.137.168.14
+[06:02:22] (main.c           100) DBG: CRAWLER: Failed 69.209.145.107
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 24.20.219.44
+[06:02:22] (../lib/as_session.c 592) DBG: Handshake with 68.42.67.245:13576 complete. ACK: 0x33, seeds: 0x6851 and 0xF4
+[06:02:22] (main.c           75) DBG: CRAWLER: Connected 68.42.67.245
+[06:02:22] (main.c           55) DBG: CRAWLER: Added supernode 68.42.67.245
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 68.68.152.52
+[06:02:22] (../lib/as_session.c 592) DBG: Handshake with 66.229.130.116:25069 complete. ACK: 0x33, seeds: 0x2C5D and 0xB2
+[06:02:22] (main.c           75) DBG: CRAWLER: Connected 66.229.130.116
+[06:02:22] (main.c           55) DBG: CRAWLER: Added supernode 66.229.130.116
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 68.100.53.70
+[06:02:22] (../lib/as_session.c 592) DBG: Handshake with 69.245.34.21:19819 complete. ACK: 0x33, seeds: 0x5D66 and 0x93
+[06:02:22] (main.c           75) DBG: CRAWLER: Connected 69.245.34.21
+[06:02:22] (main.c           55) DBG: CRAWLER: Added supernode 69.245.34.21
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 67.158.25.238
+[06:02:22] (main.c           100) DBG: CRAWLER: Failed 67.71.8.169
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 68.74.10.215
+[06:02:22] (../lib/as_session.c 219) DBG: Connected to 69.207.182.160:39472
+[06:02:22] (main.c           72) DBG: CRAWLER: Handshaking 69.207.182.160
+[06:02:22] (main.c           100) DBG: CRAWLER: Failed 84.178.109.75
+[06:02:22] (main.c           69) DBG: CRAWLER: Connecting 142.51.49.126
+[06:02:23] (../lib/as_session.c 219) DBG: Connected to 64.231.166.60:40354
+[06:02:23] (main.c           72) DBG: CRAWLER: Handshaking 64.231.166.60
+[06:02:23] (../lib/as_session.c 592) DBG: Handshake with 24.77.64.134:24796 complete. ACK: 0x33, seeds: 0xEED4 and 0xAE
+[06:02:23] (main.c           75) DBG: CRAWLER: Connected 24.77.64.134
+[06:02:23] (main.c           55) DBG: CRAWLER: Added supernode 24.77.64.134
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 68.23.170.13
+[06:02:23] (main.c           100) DBG: CRAWLER: Failed 69.137.168.14
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 66.131.16.48
+[06:02:23] (main.c           100) DBG: CRAWLER: Failed 24.20.219.44
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 84.28.32.53
+[06:02:23] (main.c           100) DBG: CRAWLER: Failed 68.68.152.52
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 24.15.46.225
+[06:02:23] (main.c           100) DBG: CRAWLER: Failed 67.177.230.205
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 67.169.31.202
+[06:02:23] (../lib/as_session.c 219) DBG: Connected to 67.158.25.238:8198
+[06:02:23] (main.c           72) DBG: CRAWLER: Handshaking 67.158.25.238
+[06:02:23] (../lib/as_session.c 219) DBG: Connected to 68.100.53.70:27761
+[06:02:23] (main.c           72) DBG: CRAWLER: Handshaking 68.100.53.70
+[06:02:23] (../lib/as_session.c 219) DBG: Connected to 68.74.10.215:29145
+[06:02:23] (main.c           72) DBG: CRAWLER: Handshaking 68.74.10.215
+[06:02:23] (../lib/as_session.c 592) DBG: Handshake with 69.207.182.160:39472 complete. ACK: 0x33, seeds: 0xE46B and 0xC0
+[06:02:23] (main.c           75) DBG: CRAWLER: Connected 69.207.182.160
+[06:02:23] (main.c           55) DBG: CRAWLER: Added supernode 69.207.182.160
+[06:02:23] (main.c           69) DBG: CRAWLER: Connecting 131.247.220.96
+[06:02:24] (../lib/as_session.c 592) DBG: Handshake with 64.231.166.60:40354 complete. ACK: 0x33, seeds: 0xC826 and 0xDA
+[06:02:24] (main.c           75) DBG: CRAWLER: Connected 64.231.166.60
+[06:02:24] (main.c           55) DBG: CRAWLER: Added supernode 64.231.166.60
+[06:02:24] (main.c           69) DBG: CRAWLER: Connecting 70.119.211.78
+[06:02:24] (../lib/as_session.c 219) DBG: Connected to 68.23.170.13:47391
+[06:02:24] (main.c           72) DBG: CRAWLER: Handshaking 68.23.170.13
+[06:02:24] (../lib/as_session.c 219) DBG: Connected to 66.131.16.48:56834
+[06:02:24] (main.c           72) DBG: CRAWLER: Handshaking 66.131.16.48
+[06:02:24] (../lib/as_session.c 219) DBG: Connected to 67.169.31.202:17209
+[06:02:24] (main.c           72) DBG: CRAWLER: Handshaking 67.169.31.202
+[06:02:24] (main.c           100) DBG: CRAWLER: Failed 66.75.6.251
+[06:02:24] (main.c           69) DBG: CRAWLER: Connecting 83.27.101.74
+[06:02:24] (../lib/as_session.c 592) DBG: Handshake with 67.158.25.238:8198 complete. ACK: 0x33, seeds: 0x9B43 and 0xE0
+[06:02:24] (main.c           75) DBG: CRAWLER: Connected 67.158.25.238
+[06:02:24] (main.c           55) DBG: CRAWLER: Added supernode 67.158.25.238
+[06:02:24] (main.c           69) DBG: CRAWLER: Connecting 68.33.189.241
+[06:02:24] (../lib/as_session.c 592) DBG: Handshake with 68.74.10.215:29145 complete. ACK: 0x33, seeds: 0xCF37 and 0xC1
+[06:02:24] (main.c           75) DBG: CRAWLER: Connected 68.74.10.215
+[06:02:24] (main.c           55) DBG: CRAWLER: Added supernode 68.74.10.215
+[06:02:24] (main.c           69) DBG: CRAWLER: Connecting 64.52.62.187
+[06:02:24] (../lib/as_session.c 219) DBG: Connected to 131.247.220.96:23737
+[06:02:24] (main.c           72) DBG: CRAWLER: Handshaking 131.247.220.96
+[06:02:25] (../lib/as_session.c 219) DBG: Connected to 70.119.211.78:7258
+[06:02:25] (main.c           72) DBG: CRAWLER: Handshaking 70.119.211.78
+[06:02:25] (../lib/as_session.c 592) DBG: Handshake with 66.131.16.48:56834 complete. ACK: 0x33, seeds: 0x090F and 0x61
+[06:02:25] (main.c           75) DBG: CRAWLER: Connected 66.131.16.48
+[06:02:25] (main.c           55) DBG: CRAWLER: Added supernode 66.131.16.48
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 205.206.8.224
+[06:02:25] (../lib/as_session.c 592) DBG: Handshake with 68.23.170.13:47391 complete. ACK: 0x33, seeds: 0x97FA and 0x71
+[06:02:25] (main.c           75) DBG: CRAWLER: Connected 68.23.170.13
+[06:02:25] (main.c           55) DBG: CRAWLER: Added supernode 68.23.170.13
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 68.21.134.36
+[06:02:25] (main.c           100) DBG: CRAWLER: Failed 70.124.125.108
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 24.186.117.79
+[06:02:25] (main.c           100) DBG: CRAWLER: Failed 66.75.20.156
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 65.95.163.30
+[06:02:25] (main.c           100) DBG: CRAWLER: Failed 65.94.173.32
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 70.188.183.69
+[06:02:25] (../lib/as_session.c 219) DBG: Connected to 83.27.101.74:37980
+[06:02:25] (main.c           72) DBG: CRAWLER: Handshaking 83.27.101.74
+[06:02:25] (../lib/as_session.c 592) DBG: Handshake with 67.169.31.202:17209 complete. ACK: 0x33, seeds: 0x30C6 and 0x30
+[06:02:25] (main.c           75) DBG: CRAWLER: Connected 67.169.31.202
+[06:02:25] (main.c           55) DBG: CRAWLER: Added supernode 67.169.31.202
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 67.185.117.76
+[06:02:25] (../lib/as_session.c 219) DBG: Connected to 68.33.189.241:44279
+[06:02:25] (main.c           72) DBG: CRAWLER: Handshaking 68.33.189.241
+[06:02:25] (main.c           100) DBG: CRAWLER: Failed 64.52.62.187
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 204.38.206.140
+[06:02:25] (../lib/as_session.c 592) DBG: Handshake with 131.247.220.96:23737 complete. ACK: 0x33, seeds: 0x5066 and 0x56
+[06:02:25] (main.c           75) DBG: CRAWLER: Connected 131.247.220.96
+[06:02:25] (main.c           55) DBG: CRAWLER: Added supernode 131.247.220.96
+[06:02:25] (main.c           69) DBG: CRAWLER: Connecting 69.143.44.0
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 68.21.134.36:57629
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 68.21.134.36
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 205.206.8.224:33032
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 205.206.8.224
+[06:02:26] (../lib/as_session.c 592) DBG: Handshake with 70.119.211.78:7258 complete. ACK: 0x33, seeds: 0xFEAC and 0x5C
+[06:02:26] (main.c           75) DBG: CRAWLER: Connected 70.119.211.78
+[06:02:26] (main.c           55) DBG: CRAWLER: Added supernode 70.119.211.78
+[06:02:26] (main.c           69) DBG: CRAWLER: Connecting 24.7.7.39
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 24.186.117.79:21203
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 24.186.117.79
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 65.95.163.30:48599
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 65.95.163.30
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 70.188.183.69:24244
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 70.188.183.69
+[06:02:26] (../lib/as_session.c 592) DBG: Handshake with 83.27.101.74:37980 complete. ACK: 0x33, seeds: 0xEB98 and 0xF2
+[06:02:26] (main.c           75) DBG: CRAWLER: Connected 83.27.101.74
+[06:02:26] (main.c           55) DBG: CRAWLER: Added supernode 83.27.101.74
+[06:02:26] (main.c           69) DBG: CRAWLER: Connecting 69.114.49.199
+[06:02:26] (../lib/as_session.c 592) DBG: Handshake with 68.33.189.241:44279 complete. ACK: 0x33, seeds: 0x8133 and 0x1C
+[06:02:26] (main.c           75) DBG: CRAWLER: Connected 68.33.189.241
+[06:02:26] (main.c           55) DBG: CRAWLER: Added supernode 68.33.189.241
+[06:02:26] (main.c           69) DBG: CRAWLER: Connecting 24.127.157.243
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 204.38.206.140:16942
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 204.38.206.140
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 67.185.117.76:53319
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 67.185.117.76
+[06:02:26] (main.c           100) DBG: CRAWLER: Failed 69.143.44.0
+[06:02:26] (main.c           69) DBG: CRAWLER: Connecting 24.149.3.239
+[06:02:26] (../lib/as_session.c 219) DBG: Connected to 142.51.49.126:15133
+[06:02:26] (main.c           72) DBG: CRAWLER: Handshaking 142.51.49.126
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 68.21.134.36:57629 complete. ACK: 0x33, seeds: 0xB09B and 0x2D
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 68.21.134.36
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 68.21.134.36
+[06:02:27] (main.c           69) DBG: CRAWLER: Connecting 65.60.194.45
+[06:02:27] (../lib/as_session.c 219) DBG: Connected to 24.7.7.39:42239
+[06:02:27] (main.c           72) DBG: CRAWLER: Handshaking 24.7.7.39
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 24.186.117.79:21203 complete. ACK: 0x33, seeds: 0x7215 and 0x52
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 24.186.117.79
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 24.186.117.79
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 67.175.168.50
+[06:02:27] (main.c           69) DBG: CRAWLER: Connecting 145.116.6.63
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 65.95.163.30:48599 complete. ACK: 0x33, seeds: 0x9730 and 0x1A
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 65.95.163.30
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 65.95.163.30
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 205.206.8.224:33032 complete. ACK: 0x33, seeds: 0xB1DE and 0x36
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 205.206.8.224
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 205.206.8.224
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 71.109.36.175
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 70.188.183.69:24244 complete. ACK: 0x33, seeds: 0x0EE9 and 0xB5
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 70.188.183.69
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 70.188.183.69
+[06:02:27] (../lib/as_session.c 219) DBG: Connected to 69.114.49.199:37445
+[06:02:27] (main.c           72) DBG: CRAWLER: Handshaking 69.114.49.199
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 68.100.53.70:27761 complete. ACK: 0x33, seeds: 0xB995 and 0xB5
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 68.100.53.70
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 68.100.53.70
+[06:02:27] (../lib/as_session.c 219) DBG: Connected to 24.127.157.243:40659
+[06:02:27] (main.c           72) DBG: CRAWLER: Handshaking 24.127.157.243
+[06:02:27] (../lib/as_session.c 592) DBG: Handshake with 204.38.206.140:16942 complete. ACK: 0x33, seeds: 0xCE64 and 0x63
+[06:02:27] (main.c           75) DBG: CRAWLER: Connected 204.38.206.140
+[06:02:27] (main.c           55) DBG: CRAWLER: Added supernode 204.38.206.140
+[06:02:28] (../lib/as_session.c 592) DBG: Handshake with 67.185.117.76:53319 complete. ACK: 0x33, seeds: 0xD3D9 and 0xBC
+[06:02:28] (main.c           75) DBG: CRAWLER: Connected 67.185.117.76
+[06:02:28] (main.c           55) DBG: CRAWLER: Added supernode 67.185.117.76
+[06:02:28] (../lib/as_session.c 219) DBG: Connected to 145.116.6.63:35202
+[06:02:28] (main.c           72) DBG: CRAWLER: Handshaking 145.116.6.63
+[06:02:28] (main.c           100) DBG: CRAWLER: Failed 65.60.194.45
+[06:02:28] (main.c           100) DBG: CRAWLER: Failed 24.149.3.239
+[06:02:28] (../lib/as_session.c 592) DBG: Handshake with 69.114.49.199:37445 complete. ACK: 0x33, seeds: 0x9B20 and 0xA7
+[06:02:28] (main.c           75) DBG: CRAWLER: Connected 69.114.49.199
+[06:02:28] (main.c           55) DBG: CRAWLER: Added supernode 69.114.49.199
+[06:02:28] (../lib/as_session.c 592) DBG: Handshake with 24.127.157.243:40659 complete. ACK: 0x33, seeds: 0xD961 and 0x6A
+[06:02:28] (main.c           75) DBG: CRAWLER: Connected 24.127.157.243
+[06:02:28] (main.c           55) DBG: CRAWLER: Added supernode 24.127.157.243
+[06:02:28] (main.c           55) DBG: CRAWLER: Added supernode 205.251.120.182
+[06:02:29] (../lib/as_session.c 592) DBG: Handshake with 24.7.7.39:42239 complete. ACK: 0x33, seeds: 0x2C5A and 0x1F
+[06:02:29] (main.c           75) DBG: CRAWLER: Connected 24.7.7.39
+[06:02:29] (main.c           55) DBG: CRAWLER: Added supernode 24.7.7.39
+[06:02:29] (main.c           55) DBG: CRAWLER: Added supernode 65.34.208.179
+[06:02:29] (../lib/as_session.c 592) DBG: Handshake with 145.116.6.63:35202 complete. ACK: 0x33, seeds: 0x97BB and 0x3A
+[06:02:29] (main.c           75) DBG: CRAWLER: Connected 145.116.6.63
+[06:02:29] (main.c           55) DBG: CRAWLER: Added supernode 145.116.6.63
+[06:02:31] (main.c           100) DBG: CRAWLER: Failed 209.23.206.195
+[06:02:33] (../lib/as_session.c 592) DBG: Handshake with 142.51.49.126:15133 complete. ACK: 0x33, seeds: 0x5B21 and 0x7E
+[06:02:33] (main.c           75) DBG: CRAWLER: Connected 142.51.49.126
+[06:02:33] (main.c           55) DBG: CRAWLER: Added supernode 142.51.49.126
+[06:02:39] (main.c           100) DBG: CRAWLER: Failed 164.58.77.223
+[06:02:41] (main.c           100) DBG: CRAWLER: Failed 24.254.32.94
+[06:02:41] (main.c           100) DBG: CRAWLER: Failed 70.113.12.229
+[06:02:41] (main.c           100) DBG: CRAWLER: Failed 24.115.151.84
+[06:02:43] (main.c           100) DBG: CRAWLER: Failed 84.28.32.53
+[06:02:43] (main.c           100) DBG: CRAWLER: Failed 24.15.46.225
+[06:02:43] (main.c           170) DBG: CRAWLER: Saved 48 nodes
+[06:02:43] (main.c           171) DBG: CRAWLER: 356 of 400 sourece nodes were down
+[06:02:43] (../lib/as_event.c 118) DBG: Forcing event loop to quit. Better had removed all events for this!
+[06:02:43] (../lib/as_event.c 108) DBG: Event loop terminated gracefully.
+[06:02:43] (main.c           260) DBG: Left event loop
+[06:02:43] (../lib/as_ares.c 226) DBG: Cleaning up Ares library...
+[06:02:43] (../lib/as_session_man.c 78) DBG: Requested: 0, connected: 0, connecting: 0

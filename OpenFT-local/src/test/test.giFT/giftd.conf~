@@ -1,0 +1,30 @@
+# gift.conf
+
+[main]
+setup = 1
+hosts_allow = LOCAL
+#plugins = OpenFT/.libs/libOpenFT.so
+plugins = OpenFT:FastTrack:Gnutella
+#plugins = FastTrack
+
+
+#:FastTrack
+#plugins = libeDonkey.so
+client_port = 1213
+
+[download]
+incoming = /home/HEx/.giFT/incoming
+completed = /home/HEx/.giFT/completed
+
+[sharing]
+max_peruser_uploads = 1
+hide_dot_files = 1
+root = /mnt/mp3:/home/HEx/.giFT/completed:/home/HEx/dgeln/audio:/mnt/dosback/ogg:/mnt/dosback/futurama:/home/HEx/dgeln/video:/mnt/hdb7/divx:/mnt/hdc5/docmp3:/mnt/hdc5/ripped:/mnt/media/share:/mnt/hdd7/divx:/mnt/2/dvdrips:/mnt/hdc5/docmp3new:/mnt/hdc5/completed:/mnt/hdc5/images/share/images
+#root = /mnt/media/share:/mnt/mp3/gnut
+#root=/mnt/dosback/ogg
+max_uploads = 6
+share_completed=0
+
+[bandwidth]
+#downstream = 1000
+#upstream = 5000

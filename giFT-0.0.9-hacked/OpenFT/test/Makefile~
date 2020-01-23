@@ -1,0 +1,5 @@
+db_bench: db_bench.c ../ft_search_db.c
+	gcc -g -Wall -DHAVE_CONFIG_H -DBENCHMARK db_bench.c -I. -I.. -I../.. -I../../lib -I../../src -I../../plugin ../md5.o ../ft_share_file.o ../../src/share_file.o ../../src/share_hash.o ../../src/meta*.o ../../src/mime.c ../ft_shost.o -logg -lvorbis -lvorbisfile -I/usr/include -ldb -lgiFT -o db_bench
+
+queries: ~/.giFT/gift.log
+	perl -pe '$$_=/ft_search_request.*'\''(.*)'\''/ && $$1.$$/' ~/.giFT/gift.log >queries

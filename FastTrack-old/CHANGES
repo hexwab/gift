@@ -1,0 +1,25 @@
+
+03/05/07
+--------
+
+- Fix source search bug
+
+03/05/05
+--------
+
+- Fixed serious file corruption bug
+
+
+03/05/04
+--------
+
+- Removed removal of unavailable sources until proper interface is implemented
+- Adapted to changes in giFT's hashing interface
+- Added IP address to user names
+
+
+03/05/01
+--------
+
+Initial Release
+

@@ -1,0 +1,27 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.138
+diff -u -r1.138 ft_search_db.c
+--- ft_search_db.c	11 Oct 2004 22:13:21 -0000	1.138
++++ ft_search_db.c	14 Jan 2005 19:36:04 -0000
+@@ -674,8 +674,8 @@
+ 
+ 	if (ret)
+ 		return ret;
+-
+-	return a_rec->id - b_rec->id;
++	
++	return memcmp (&a_rec->id, &b_rec->id, sizeof (a_rec->id));
+ }
+ 
+ static DB *db_md5idx (void)
+@@ -700,7 +700,7 @@
+ 	assert (b->size == a->size);
+ 
+ 	/* first compare id */
+-	if ((ret = a_rec->id - b_rec->id))
++	if ((ret = memcmp (&a_rec->id, &b_rec->id, sizeof (a_rec->id))))
+ 		return ret;
+ 
+ 	/*

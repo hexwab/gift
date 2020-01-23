@@ -1,0 +1,65 @@
+# $Id: Makefile.msvc,v 1.9 2002/10/17 09:10:16 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../src
+LIBGIFTAPI_DEF ="../win32/libgift_api.def"
+
+OBJECTS = \
+	conf$(O) \
+	connection$(O) \
+	dataset$(O) \
+	event$(O) \
+	file$(O) \
+	if_event$(O) \
+	interface$(O) \
+	list$(O) \
+	list_lock$(O) \
+	list_queue$(O) \
+	tree$(O) \
+	log$(O) \
+	nb$(O) \
+	network$(O) \
+	parse$(O) \
+	platform$(O) \
+	protocol$(O) \
+	queue$(O) \
+	stopwatch$(O)
+	
+TARGETDLL = $(LIBGIFT_DLL)
+TARGETLIB = $(LIBGIFT_LIB)
+TARGETLIBSTATIC = $(LIBGIFT_STATIC)
+
+!if defined(static) || defined(STATIC)
+all: $(TARGETLIBSTATIC)
+install:
+!else
+
+all: $(TARGETDLL) $(TARGETLIBSTATIC)
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+
+!endif
+
+!if !defined(static) && !defined(STATIC)
+$(TARGETDLL): $(OBJECTS) $(LIBGIFTAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(LIBGIFTAPI_DEF) $(LIBS) $(OBJECTS)
+!endif
+
+$(TARGETLIBSTATIC): $(OBJECTS)
+	$(LT) -nologo -out:$(TARGETLIBSTATIC) $(OBJECTS)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(TARGETLIBSTATIC)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

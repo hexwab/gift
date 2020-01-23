@@ -1,0 +1,13 @@
+*.aps
+*.idb
+*.ilk
+*.ncb
+*.opt
+*.pdb
+*.plg
+*.res
+*.tws
+Debug
+DebugDLL
+Release
+ReleaseDLL

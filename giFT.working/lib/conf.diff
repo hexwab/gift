@@ -1,0 +1,45 @@
+Index: conf.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/conf.c,v
+retrieving revision 1.23
+diff -u -r1.23 conf.c
+--- conf.c	13 Feb 2003 19:27:04 -0000	1.23
++++ conf.c	6 Apr 2003 00:39:10 -0000
+@@ -209,14 +209,33 @@
+ 
+ int config_get_int (Config *conf, char *keypath)
+ {
+-	char *value;
++	char *strvalue, *endptr;
++	long value;
+ 
+-	value = config_get_str (conf, keypath);
++	strvalue = config_get_str (conf, keypath);
+ 
+-	if (!value)
++	if (!strvalue)
+ 		return 0;
+ 
+-	return atoi (value);
++	value = strtol (strvalue, &endptr, 0);
++
++	switch (*endptr) {
++	case 'k':
++	case 'K':
++		value <<= 10;
++		break;
++	case 'm':
++	case 'M':
++		value <<= 20;
++		break;
++	case 'g':
++	case 'G':
++		value <<= 30;
++		break;
++		/* for stuff beyond this we'd need a long long */
++	}
++
++	return value;
+ }
+ 
+ /*****************************************************************************/

@@ -1,0 +1,31 @@
+Index: lib/as_ares.c
+===================================================================
+RCS file: /cvsroot/gift-ares/gift-ares/lib/as_ares.c,v
+retrieving revision 1.22
+diff -u -r1.22 as_ares.c
+--- lib/as_ares.c	6 Jan 2005 16:07:31 -0000	1.22
++++ lib/as_ares.c	17 Jan 2005 00:17:51 -0000
+@@ -59,17 +59,17 @@
+ static const ASConfVal default_conf[] =
+ {
+ 	/* id, name, type, data, callback, udata */
+-	{ AS_LISTEN_PORT,                 "main/port",      AS_CONF_INT, 59049,
++	{ AS_LISTEN_PORT,                 "main/port",      AS_CONF_INT, {59049},
+ 	                                  port_change_cb,   NULL },
+-	{ AS_USER_NAME,                   "main/username",  AS_CONF_STR, "antares",
++	{ AS_USER_NAME,                   "main/username",  AS_CONF_STR, {"antares"},
+ 	                                  NULL,             NULL },
+-	{ AS_DOWNLOAD_MAX_ACTIVE,         NULL,             AS_CONF_INT, 6,
++	{ AS_DOWNLOAD_MAX_ACTIVE,         NULL,             AS_CONF_INT, {6},
+ 	                                  NULL,             NULL },
+-	{ AS_DOWNLOAD_MAX_ACTIVE_SOURCES, NULL,             AS_CONF_INT, 10,
++	{ AS_DOWNLOAD_MAX_ACTIVE_SOURCES, NULL,             AS_CONF_INT, {10},
+ 	                                  NULL,             NULL },
+-	{ AS_UPLOAD_MAX_ACTIVE,           NULL,             AS_CONF_INT, 3,
++	{ AS_UPLOAD_MAX_ACTIVE,           NULL,             AS_CONF_INT, {3},
+ 	                                  NULL,             NULL },
+-	{ AS_SEARCH_TIMEOUT,              "search/timeout", AS_CONF_INT, 3*60,
++	{ AS_SEARCH_TIMEOUT,              "search/timeout", AS_CONF_INT, {3*60},
+ 	                                  NULL,             NULL }
+ };
+ 

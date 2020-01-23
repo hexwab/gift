@@ -1,0 +1,34 @@
+AM_CFLAGS = $(GIFT_CFLAGS) $(LIBDB_CFLAGS)
+
+INCLUDES = -I$(top_srcdir)/lib -I$(top_srcdir)/src $(LIBDB_CFLAGS)
+
+plugin_LTLIBRARIES = libOpenFT.la
+
+libOpenFT_la_SOURCES = \
+	ft_openft.c      ft_openft.h \
+	ft_node.c        ft_node.h \
+	ft_packet.c      ft_packet.h \
+	ft_protocol.c    ft_protocol.h \
+	ft_utils.c       ft_utils.h \
+	ft_version.c     ft_version.h \
+	ft_share.c       ft_share.h \
+	ft_share_file.c  ft_share_file.h \
+	ft_stats.c       ft_stats.h \
+	ft_shost.c       ft_share_host.h \
+	ft_event.c       ft_event.h \
+	ft_search.c      ft_search.h \
+	ft_search_exec.c ft_search_exec.h \
+	ft_html.c        ft_html.h \
+	ft_netorg.c      ft_netorg.h \
+	ft_xfer.c        ft_xfer.h \
+	ft_http_client.c ft_http_client.h \
+	ft_http_server.c ft_http_server.h \
+	ft_stream.c      ft_stream.h \
+	ft_session.c     ft_session.h
+
+libOpenFT_la_LIBADD = \
+	$(top_builddir)/lib/libgiFT.la \
+	$(LIBDB_LIBS)
+
+# _BIG_ hack
+# libOpenFT_la_LDFLAGS = -module -avoid-version -L$(top_builddir)/lib/.libs

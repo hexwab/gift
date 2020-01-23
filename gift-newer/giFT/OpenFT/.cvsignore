@@ -1,0 +1,12 @@
+*.la
+*.lo
+.deps
+.libs
+Makefile
+Makefile.in
+
+OpenFT*.dll
+OpenFT*.exp
+OpenFT*.ilk
+OpenFT*.lib
+OpenFT*.pdb

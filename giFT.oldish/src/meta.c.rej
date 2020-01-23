@@ -1,0 +1,31 @@
+***************
+*** 71,87 ****
+  
+  /*****************************************************************************/
+  
+- #define TRY_TYPE (f, m) if (f (file)) { file->mime = m; return TRUE; }
+- 
+  /* fills the supplied structure with as much meta data as can be found */
+  int meta_run (FileShare *file)
+  {
+  	if (!file)
+  		return FALSE;
+- 
+- 	TRY_TYPE (meta_mp3_run, "audio/mpeg");
+- 	TRY_TYPE (meta_ogg_run, "application/x-ogg"); /* not just vorbis */
+- 	TRY_TYPE (meta_jpeg_run, "image/jpeg");
+  
+  	/* if file->mime already exists it means that we loaded it from the cache,
+  	 * avoid recalculating it when not necessary */
+--- 76,86 ----
+  
+  /*****************************************************************************/
+  
+  /* fills the supplied structure with as much meta data as can be found */
+  int meta_run (FileShare *file)
+  {
+  	if (!file)
+  		return FALSE;
+  
+  	/* if file->mime already exists it means that we loaded it from the cache,
+  	 * avoid recalculating it when not necessary */

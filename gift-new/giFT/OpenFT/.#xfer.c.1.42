@@ -1,0 +1,1167 @@
+/*
+ * xfer.c - acts as a gateway between giFT and the HTTP implementation
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "openft.h"
+
+#include "mime.h"
+#include "meta.h"
+
+#include "html.h"
+#include "netorg.h"
+
+#include "file.h"
+
+#include "xfer.h"
+
+/*****************************************************************************/
+
+#undef PERSISTENT_HTTP
+
+#ifdef PERSISTENT_HTTP
+/* this list is very misleading...it actually means open connections which
+ * do not have an immediate "use"...they in waiting for some action to need
+ * to be performed but are remaining open anyway */
+static List *open_connections = NULL;
+#endif /* PERSISTENT_HTTP */
+
+/*****************************************************************************/
+
+/* broken down source url for parsing */
+struct _ft_source
+{
+	char *url;
+	ft_uint32 ip;
+	ft_uint16 port;
+	ft_uint32 search_ip;
+	ft_uint16 search_port;
+	char *request;
+};
+
+static HashTable *ref_table = NULL;
+
+/* log_format_time */
+static const char *month_tab =
+	"Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec ";
+
+/*****************************************************************************/
+
+/* we need to evaluate the protocol-specific source-line in the form:
+ *
+ * NORMAL:
+ * OpenFT://node:port/requested/file
+ *
+ *  - or -
+ *
+ * FIREWALLED REQUEST:
+ * OpenFT://node:my_http_port@searchnode:openft_port/requested/file
+ */
+static int parse_request (char *source,
+						  ft_uint32 *ip, ft_uint16 *port,
+						  ft_uint32 *s_ip, ft_uint16 *s_port,
+						  char **r_request)
+{
+	char *ip_str, *port_str;
+	char *s_ip_str, *s_port_str;
+	char *ptr;
+
+	if (!source)
+		return FALSE;
+
+	string_sep (&source, "://");       /* get rid of this useless crap */
+
+	/* divide the string into two sides */
+	if (!(ptr = string_sep (&source, "/")) || !source)
+		return FALSE;
+
+	/* pull off the left-hand operands */
+	ip_str     = string_sep (&ptr, ":");
+	port_str   = string_sep (&ptr, "@");
+	s_ip_str   = string_sep (&ptr, ":");
+	s_port_str = ptr;
+
+	if (!ip_str || !port_str)
+		return FALSE;
+
+	/* return the values we parsed out */
+	if (ip)
+		*ip = inet_addr (ip_str);
+	if (port)
+		*port = ATOI (port_str);
+	if (s_ip)
+		*s_ip = (s_ip_str ? inet_addr (s_ip_str) : 0);
+	if (s_port)
+		*s_port = ATOI (s_port_str);
+
+	/* source is now "request/without/leading/slash", which is wrong.  We
+	 * are going to efficiently (but lacking safety) rewind and put the '/'
+	 * back */
+	source--;
+	*source = '/';
+
+	/* give the source back */
+	if (r_request)
+		*r_request = source;
+
+	/* hooray, we've got a download */
+	return TRUE;
+}
+
+static void ft_source_free (struct _ft_source *src)
+{
+	if (!src)
+		return;
+
+	free (src->url);
+	free (src);
+}
+
+/* wrapper for parse_request */
+static struct _ft_source *ft_source_new (char *url)
+{
+	struct _ft_source *src;
+
+	if (!(src = malloc (sizeof (struct _ft_source))))
+		return NULL;
+
+	if (!(src->url = STRDUP (url)))
+	{
+		free (src);
+		return NULL;
+	}
+
+	if (!parse_request (src->url,
+	                    &src->ip, &src->port,
+	                    &src->search_ip, &src->search_port,
+	                    &src->request))
+	{
+		ft_source_free (src);
+		return NULL;
+	}
+
+	return src;
+}
+
+/*****************************************************************************/
+/* HTTP COMMUNICATION */
+
+/* apparently this creates the log time that goes into access.log's.  i
+ * find it hard to believe ;) */
+static char *log_format_time (time_t log_time)
+{
+	static char buf[30];
+	char *p;
+	struct tm   *t;
+	unsigned int a;
+	int time_offset = 0;
+
+	t = gmtime (&log_time);
+
+	p = buf + 29;
+
+	*p-- = '\0';
+	*p-- = ' ';
+	*p-- = ']';
+	a = abs(time_offset / 60);
+	*p-- = '0' + a % 10;
+	a /= 10;
+	*p-- = '0' + a % 6;
+	a /= 6;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = (time_offset > 0) ? '-' : '+';
+	*p-- = ' ';
+
+	a = t->tm_sec;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = t->tm_min;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = t->tm_hour;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p-- = ':';
+	a = 1900 + t->tm_year;
+	while (a)
+	{
+		*p-- = '0' + a % 10;
+		a /= 10;
+	}
+	/* p points to an unused spot */
+	*p-- = '/';
+	p -= 2;
+	memcpy(p--, month_tab + 4 * (t->tm_mon), 3);
+	*p-- = '/';
+	a = t->tm_mday;
+	*p-- = '0' + a % 10;
+	*p-- = '0' + a / 10;
+	*p = '[';
+
+	/* should be same as returning buf */
+	return p;
+}
+
+/* apache-style access.log */
+static void access_log (FT_Transfer *xfer)
+{
+	Chunk *chunk = NULL;
+	FILE  *f;
+	char  *referer;
+	char  *user_agent;
+
+	if (!xfer || !xfer->request)
+		return;
+
+	ft_transfer_unref (NULL, &chunk, &xfer);
+
+	/* lookup useful HTTP headers */
+	referer    = dataset_lookup (xfer->header, "Referer");
+	user_agent = dataset_lookup (xfer->header, "User-Agent");
+
+	if (!referer)
+		referer = "-";
+
+	if (!user_agent)
+		user_agent = "-";
+
+	/* open the log file */
+	if (!(f = fopen (gift_conf_path ("access.log"), "a")))
+	{
+		GIFT_ERROR (("failed to open %s", gift_conf_path ("access.log")));
+		return;
+	}
+
+	/* write this entry */
+	fprintf (f, "%s ", net_ip_str (xfer->ip));
+	fprintf (f, "- - ");
+	fprintf (f, "%s", log_format_time (time (NULL)));   /* trailing \s */
+	fprintf (f, "\"%s %s HTTP/1.1\" ", xfer->command, xfer->request);
+	fprintf (f, "%i %lu ", xfer->code,
+	         (chunk ? chunk->transmit : xfer->stop - xfer->start));
+	fprintf (f, "\"%s\" ", referer);
+	fprintf (f, "\"%s\"", user_agent);
+	fprintf (f, "\n");
+
+	fclose (f);
+}
+
+/*****************************************************************************/
+
+void ft_transfer_log (FT_Transfer *xfer)
+{
+	Connection *c     = NULL;
+	Chunk      *chunk = NULL;
+
+	if (!xfer || !xfer->request)
+		return;
+
+	ft_transfer_unref (&c, &chunk, &xfer);
+
+	/* check to make sure if this is an upload only if we have enough
+	 * information to do so */
+	if (chunk && chunk->transfer->type != TRANSFER_UPLOAD)
+		return;
+
+	/* dont log stupid requests */
+	if (!strncmp (xfer->request, "/OpenFT/", 8))
+		return;
+
+	/* uhh :) */
+	if (xfer->code == 0)
+		return;
+
+	/* TODO */
+	access_log (xfer);
+}
+
+/*****************************************************************************/
+
+FT_Transfer *ft_transfer_new (FT_TransferCB cb,
+                              unsigned long ip, unsigned short port,
+                              off_t start, off_t stop)
+{
+	FT_Transfer *xfer;
+
+	if (!(xfer = malloc (sizeof (FT_Transfer))))
+		return NULL;
+
+	memset (xfer, 0, sizeof (FT_Transfer));
+
+	xfer->callback = cb;
+
+	/* parsed information about the source */
+	xfer->ip       = ip;
+	xfer->port     = port;
+
+	xfer->start    = start;
+	xfer->stop     = stop;
+
+	return xfer;
+}
+
+/*
+ * Please see below if you think you should be using this function, because
+ * you should not be :)
+ */
+static void ft_transfer_free (FT_Transfer *xfer)
+{
+	if (!xfer)
+		return;
+
+	free (xfer->command);
+	free (xfer->request);
+	free (xfer->request_path);
+
+	if (xfer->header)
+		dataset_clear_free (xfer->header);
+
+	/* uploads use these */
+	free (xfer->open_path);
+	free (xfer->hash);
+
+	if (xfer->f)
+		fclose (xfer->f);
+
+	/* whee */
+	free (xfer);
+}
+
+/*****************************************************************************/
+
+/*
+ * Cancels a possibly active HTTP transfer
+ *
+ * NOTE:
+ * This function may be called recursively if you don't do what giFT expects
+ * of you.  This is a feature, not a bug, trust me.
+ */
+static void ft_transfer_cancel (Chunk *chunk, TransferType type)
+{
+	Connection        *c           = NULL;
+	FT_Transfer       *xfer        = NULL;
+	int                force_close = FALSE;
+	struct _ft_source *src;
+
+	if (!chunk)
+		return;
+
+	ft_transfer_unref (&c, &chunk, &xfer);
+
+	if (chunk->source && (src = ft_source_new (chunk->source->url)))
+	{
+		TRACE (("indirect: %s:%s", net_ip_str (src->ip), src->request));
+		http_server_indirect_remove (src->ip, src->request);
+
+#ifdef DEBUG
+		if (http_server_indirect_lookup (src->ip, src->request))
+			TRACE (("fuck"));
+#endif
+
+		ft_source_free (src);
+	}
+
+	/* each time this function is called we _MUST_ uncouple the transfer
+	 * and the chunk or the code to follow will eventually call this func
+	 * again!! */
+	if (!xfer)
+		return;
+
+#ifdef PERSISTENT_HTTP
+	/* reset connection state */
+	if (type == TRANSFER_DOWNLOAD)
+		http_client_reset (c);
+	else if (type == TRANSFER_UPLOAD)
+		http_server_reset (c);
+#endif /* PERSISTENT_HTTP */
+
+	/* if this chunk completed successfully we should not close the socket,
+	 * otherwise we have some reason to believe giFT wanted this transfer
+	 * closed (or the user did) */
+	force_close =
+		(chunk->start + chunk->transmit >= chunk->stop) ? FALSE : TRUE;
+
+	/* do not emit a callback signal */
+	xfer->callback = NULL;
+	ft_transfer_close (xfer, force_close);
+}
+
+/*****************************************************************************/
+
+/*
+ * This function is very critical to OpenFT's transfer system.  It is called
+ * anytime either the client or server HTTP implementations need to "cleanup"
+ * all data associated.  This includes disconnecting the socket, unlinking
+ * itself from the chunk system and registering this status with giFT, just
+ * in case this is premature.  If anything is leaking or fucking up, blame
+ * this :)
+ */
+void ft_transfer_close (FT_Transfer *xfer, int force_close)
+{
+	Connection *c     = NULL;
+	Chunk      *chunk = NULL;
+
+	if (!xfer)
+		return;
+
+	ft_transfer_unref (&c, &chunk, &xfer);
+
+	assert (xfer != NULL);
+
+	/* get rid of the hacks described in ft_transfer_ref */
+	if (c && c->fd >= 0)
+		hash_table_remove (ref_table, c->fd);
+
+	/* write to the access.log */
+	ft_transfer_log (xfer);
+
+	/* if we have associated a chunk with this transfer we need to make sure
+	 * we remove cleanly detach */
+	if (chunk)
+	{
+		chunk->data = NULL;
+
+		/* make sure that we let the server know that a transfer with
+		 * this name from this user will no longer have been requested */
+		http_server_indirect_remove (xfer->ip, xfer->request);
+
+		/*
+		 * notify the transfer callback that we have terminated this
+		 * connection.  let giFT handle the rest
+		 *
+		 * NOTE:
+		 * see ft_transfer_cancel for some warnings about this code
+		 */
+		if (xfer->callback)
+			(*xfer->callback) (chunk, NULL, 0);
+
+		/* WARNING: chunk is free'd in the depths of xfer->callback! */
+	}
+
+	ft_transfer_free (xfer);
+
+	http_connection_close (c, force_close);
+}
+
+/*****************************************************************************/
+
+#ifdef PERSISTENT_HTTP
+static int find_open (Connection *c, void *ip)
+{
+	char *c_str;
+	char *ip_str;
+	int   ret;
+
+	c_str  = STRDUP (net_peer_ip (c->fd));
+	ip_str = STRDUP (net_ip_str (P_INT (ip)));
+
+	ret = STRCMP (c_str, ip_str);
+
+	free (c_str);
+	free (ip_str);
+
+	return ret;
+}
+
+static Connection *lookup_connection (unsigned long ip, unsigned short port)
+{
+	List       *link;
+	Connection *c = NULL;
+
+	link = list_find_custom (open_connections, I_PTR (ip),
+	                         (CompareFunc) find_open);
+
+	if (link)
+	{
+		c = link->data;
+
+		TRACE (("using previous connection to %s:%hu", net_ip_str (ip), port));
+
+		/* remove from the open list */
+		open_connections = list_remove_link (open_connections, link);
+		input_remove (c);
+	}
+
+	if (!c)
+	{
+		TRACE (("opening new connection to %s:%hu", net_ip_str (ip), port));
+	}
+
+	return c;
+}
+#endif /* PERSISTENT_HTTP */
+
+/*
+ * Handles outgoing HTTP connections.  This function is capable of
+ * retrieving an already connected socket that was left over from a previous
+ * transfer (only with PERSISTENT_HTTP).
+ */
+Connection *http_connection_open (unsigned long ip, unsigned short port)
+{
+	Connection *c;
+
+#ifdef PERSISTENT_HTTP
+	if (!(c = lookup_connection (ip, port)))
+#endif /* PERSISTENT_HTTP */
+		c = connection_open (openft_proto, net_ip_str (ip), port, FALSE);
+
+	return c;
+}
+
+/*****************************************************************************/
+
+void http_connection_close (Connection *c, int force_close)
+{
+	if (!c)
+		return;
+
+#ifdef PERSISTENT_HTTP
+	if (force_close)
+	{
+		open_connections = list_remove (open_connections, c);
+		connection_close (c);
+		return;
+	}
+
+	/* this condition will happen because the server isnt actually supposed
+	 * to be using this code, but does just to cleanup the logic flow */
+	if (list_find (open_connections, c))
+		return;
+
+	/* remove the data associated with this connection */
+	ft_transfer_ref (c, NULL, NULL);
+
+	/* track it */
+	open_connections = list_prepend (open_connections, c);
+#else /* !PERSISTENT_HTTP */
+	connection_close (c);
+#endif /* PERSISTENT_HTTP */
+}
+
+/*****************************************************************************/
+
+/*
+ * Sets up circular references describe by the following graph:
+ *
+ *   Connection --->  Chunk  --->  FT_Transfer
+ *        ^              ^----------|
+ *        `-------------------------'
+ *
+ * Hope this helps :-P
+ *
+ */
+void ft_transfer_ref (Connection *c, Chunk *chunk, FT_Transfer *xfer)
+{
+	/* unlinking the data */
+	if (c && !chunk && !xfer)
+		hash_table_remove (ref_table, c->fd);
+	else if (c && !chunk)
+	{
+		/* this is an incomplete reference, so add it to the global for lookup
+		 * later */
+		if (!ref_table)
+			ref_table = hash_table_new ();
+
+		hash_table_insert (ref_table, c->fd, xfer);
+	}
+
+	if (c)
+		c->data     = chunk;
+
+	if (chunk)
+		chunk->data = xfer;
+
+	if (xfer)
+	{
+		xfer->chunk = chunk;
+		xfer->c     = c;
+	}
+}
+
+/*
+ * Attempt to fill in all values using the reference table described above
+ * for data_ref.  This function assumes all non-NULL values at the addresses
+ * supplied means that it contains valid data that is safe to read here
+ */
+void ft_transfer_unref (Connection **r_c, Chunk **r_chunk,
+                        FT_Transfer **r_xfer)
+{
+	Connection  *c     = NULL;
+	Chunk       *chunk = NULL;
+	FT_Transfer *xfer  = NULL;
+	int          i;
+
+	/* figure out what data we have to work with */
+	if (r_c)
+		c = *r_c;
+	if (r_chunk)
+		chunk = *r_chunk;
+	if (r_xfer)
+		xfer = *r_xfer;
+
+	/* lookup the special unlinked condition */
+	if (c && !xfer)
+		xfer = hash_table_lookup (ref_table, c->fd);
+
+	/* now that we have all readable sections try to extract useful data */
+	for (i = 0; i < 3; i++)
+	{
+		if (c)
+			chunk = c->data;
+
+		if (chunk)
+			xfer = chunk->data;
+
+		if (xfer)
+		{
+			c     = xfer->c;
+			chunk = xfer->chunk;
+		}
+
+		/* we can't get anything or we've already gotten everything */
+		if ((!c && !chunk && !xfer) || (c && chunk && xfer))
+			break;
+	}
+
+	/* we should have absolutely everything we need now, from merely one
+	 * supplied one input value.  Cool huh? */
+	if (r_c)
+		*r_c = c;
+	if (r_chunk)
+		*r_chunk = chunk;
+	if (r_xfer)
+		*r_xfer = xfer;
+}
+
+/*****************************************************************************/
+
+static char *localize_request (FT_Transfer *xfer, int *authorized)
+{
+	static char open_path[PATH_MAX];
+	char       *s_path;
+	int         auth = FALSE;
+
+	if (!xfer || !xfer->request)
+		return NULL;
+
+	/* dont call secure_path if they dont even care if it's a secure
+	 * lookup */
+	s_path =
+	    (authorized ? file_secure_path (xfer->request) : xfer->request);
+
+	/* handle the various OpenFT-specific request forms */
+	if (!strcmp (s_path, "/") || !strcmp (s_path, "/index.html"))
+	{
+		/* /index.html => /home/jasta/.giFT/OpenFT/nodepage.html */
+		snprintf (open_path, sizeof (open_path) - 1, "%s",
+		          html_page_index (gift_conf_path ("OpenFT/nodepage.html")));
+		auth = TRUE;
+	}
+	else if (!strcmp (s_path, "/robots.txt"))
+	{
+		/* /robots.txt => /usr/local/share/giFT/OpenFT/robots.txt */
+		snprintf (open_path, sizeof (open_path) - 1, "%s/%s%s",
+		          platform_data_dir (), "OpenFT", s_path);
+		auth = TRUE;
+	}
+	else if (!strncmp (s_path, "/OpenFT/", 8))
+	{
+		/* /OpenFT/top.jpg => /usr/local/share/giFT/OpenFT/top.jpg */
+		snprintf (open_path, sizeof (open_path) - 1, "%s%s",
+		          platform_data_dir (), s_path);
+		auth = TRUE;
+	}
+	else
+	{
+		char *decoded = url_decode (xfer->request);
+
+		/* /shared/windows%20users%20love%20spaces.jpg =>
+		 * /shared/windows users love spaces.jpg */
+		snprintf (open_path, sizeof (open_path) - 1, "%s", decoded);
+		free (decoded);
+
+		auth = FALSE;
+	}
+
+	/* NOTE: check above */
+	if (authorized)
+	{
+		*authorized = auth;
+		free (s_path);
+	}
+
+	/* we need a unix style path for authorization */
+	return open_path;
+}
+
+/*
+ * request is expected in the form:
+ *   /shared/Fuck%20Me%20Hard.mpg
+ */
+int ft_transfer_set_request (FT_Transfer *xfer, char *request)
+{
+	FileShare *file;
+	char      *shared_path;
+
+	free (xfer->request);
+	xfer->request = NULL;
+
+	/* lets keep this sane shall we */
+	if (!request || *request != '/')
+		return FALSE;
+
+	xfer->request      = STRDUP (request);
+	xfer->request_path = url_decode (request);   /* storing here for opt */
+
+	/* try to fill in the hash */
+	if (!(shared_path = localize_request (xfer, NULL)))
+		return TRUE;
+
+	/* look to see if this file is explicitly shared, if it is, let's
+	 * extract it's MD5 sum so that we can register to giFT with it */
+	if ((file = share_find_file (shared_path)) && file->sdata)
+	{
+		xfer->hash = STRDUP (file->sdata->md5);
+		xfer->content_type = meta_get_string (meta_lookup (file->meta, TAG_MIME, NULL));
+	}
+
+	return TRUE;
+}
+
+/* attempts to open the requested file locally.
+ * NOTE: this handles verification */
+FILE *ft_transfer_open_request (FT_Transfer *xfer, int *code)
+{
+	FILE *f;
+	char *shared_path;
+	char *full_path;
+	char *host_path;
+	int   auth;
+
+	if (code)
+		*code = 404; /* Not Found */
+
+	if (!xfer || !xfer->request)
+		return NULL;
+
+	if (!(shared_path = localize_request (xfer, &auth)))
+		return NULL;
+
+	/* check to see if we matched a special OpenFT condition.  If we did, the
+	 * localized path is in the wrong order, so convert it (just to be
+	 * converted back again...it's easier to maintain this way :) */
+	if (auth)
+		full_path = file_unix_path (shared_path);
+	else
+	{
+		/* we didn't catch a special OpenFT condition, so check giFT's shares
+		 * table for a match */
+		auth = share_auth_upload (net_ip_str (xfer->ip), shared_path, &full_path);
+
+		/* make sure we comply with what giFT wants...it's the boss */
+		if (auth < 0)
+		{
+			/* set error code appropriately */
+			if (code)
+			{
+				switch (auth)
+				{
+				 case -1:
+				 case -2:
+					*code = 503; /* Service Unavailable */
+					break;
+				 case -3:
+					*code = 404; /* Not Found */
+					break;
+				}
+			}
+
+			return NULL;
+		}
+	}
+
+	/* figure out the actual filename that we should be opening */
+	host_path = file_host_path (full_path);
+	free (full_path);
+
+	/* open the complete path */
+	if (!(f = mime_open (host_path, "r",
+			     xfer->content_type ? NULL : &xfer->content_type,
+	                     (off_t *) &xfer->open_path_size)))
+	{
+		GIFT_ERROR (("unable to open %s: %s", host_path, GIFT_STRERROR ()));
+
+		/* this share could not be opened locally...automatically remove it
+		 * from the list so that we dont annoy people trying to access it */
+		share_remove_index (host_path);
+
+		free (host_path);
+		return NULL;
+	}
+
+	/* NOTE: ft_transfer_close will be responsible for freeing this now */
+	xfer->open_path = host_path;
+
+	if (code)
+		*code = 200; /* OK */
+
+	return f;
+}
+
+/*****************************************************************************/
+/* COMMUNICATION OF TRANSFERS BACK TO GIFT */
+
+/* the callbacks here are from within the HTTP system, centralized here
+ * for maintainability */
+
+/* report back the progress of this download chunk */
+void ft_download (Chunk *chunk, char *segment, size_t len)
+{
+#if 0
+	int finishing;
+
+	/* finishing means that after this chunk_write, the download will be
+	 * complete.  the giFT protocol dictates that we must handle this in
+	 * protocol space, as the data we have right now will be freed once
+	 * chunk_write is called */
+	finishing = (chunk->start + chunk->transmit + len >= chunk->stop);
+
+	if (finishing)
+	{
+		ft_transfer_cancel (chunk);
+		/* WARNING!  xfer is free'd now! */
+	}
+#endif
+
+	/* write the data...
+	 * NOTE: if finishing is true, all of this data will be freed once this
+	 * is executed */
+	chunk_write (chunk, segment, len);
+}
+
+/* report back the progress of this upload chunk */
+void ft_upload (Chunk *chunk, char *segment, size_t len)
+{
+	assert (chunk != NULL);
+
+#if 0
+	/* just for the fun of it */
+	ft_transfer_unref (NULL, &chunk, &xfer);
+#endif
+
+	chunk_write (chunk, segment, len);
+}
+
+/*****************************************************************************/
+/* removes the directional duplication */
+
+static void throttle_suspend (Chunk *chunk, int s_opt, void *data)
+{
+	Connection  *c    = NULL;
+	FT_Transfer *xfer = NULL;
+	float        factor;
+
+	if (!chunk)
+		return;
+
+	ft_transfer_unref (&c, &chunk, &xfer);
+
+	if (!xfer || !xfer->c)
+	{
+		TRACE (("no connection found to suspend"));
+		return;
+	}
+
+	input_suspend (xfer->c);
+
+	if (data)
+	{
+		factor = *((float *)data);
+		net_sock_adj_buf (xfer->c->fd, s_opt, factor);
+	}
+}
+
+static void throttle_resume (Chunk *chunk, int s_opt, void *data)
+{
+	Connection  *c    = NULL;
+	FT_Transfer *xfer = NULL;
+
+	if (!chunk)
+		return;
+
+	ft_transfer_unref (&c, &chunk, &xfer);
+
+	if (!xfer || !xfer->c)
+	{
+		TRACE (("no connection found to resume"));
+		return;
+	}
+
+	input_resume (xfer->c);
+}
+
+/*****************************************************************************/
+
+static void download_cancel (Chunk *chunk, void *data)
+{
+#if 0
+	assert (chunk->source == NULL);
+
+	if (chunk->source)
+	{
+		TRACE (("chunk->source = %s!?!?", chunk->source->url));
+		return;
+	}
+#endif
+
+	ft_transfer_cancel (chunk, TRANSFER_DOWNLOAD);
+}
+
+static void download_start (Chunk *chunk, void *data)
+{
+	FT_Transfer   *xfer;
+	char          *source;
+	ft_uint32      ip;
+	ft_uint16      port;
+	ft_uint32      search_ip;
+	ft_uint16      search_port;
+	char          *request;
+	unsigned long  start;
+	unsigned long  stop;
+
+	if (!(source = STRDUP (chunk->source->url)))
+		return;
+
+	start = chunk->start + chunk->transmit;
+	stop  = chunk->stop;
+
+	TRACE (("%s (%lu - %lu)", source, start, stop));
+
+	if (!parse_request (source, &ip, &port, &search_ip, &search_port, &request))
+	{
+		free (source);
+		return;
+	}
+
+	/* firewalled download, relay the request to the search node
+	 * NOTE: lookup_connection is called to check if we already have an
+	 * active (persisting) connection to this firewalled user.  If we do then
+	 * we can fall through and use http_client_get directly as it will
+	 * succeed in locating the active connection in the same way */
+	if (search_port
+#ifdef PERSISTENT_HTTP
+		&& !lookup_connection (ip, port)
+#endif /* PERSISTENT_HTTP */
+		)
+	{
+		/* if we are our own search node in this case, don't involve the socket
+		 * routing, just send directly to the user we want */
+		if (search_ip == 0)
+		{
+			/* we are the node that controls the shares of this user.  send
+			 * the message directly to them, asking a connect back to this
+			 * node, which is designated by ip and port as 0 in this case */
+			ft_packet_send_indirect (ip, FT_PUSH_REQUEST, "%lu%hu%s%lu%lu",
+			                         0, 0, request, start, stop);
+		}
+		else
+		{
+			/* send this message to the search node that controls the shares
+			 * of the user we wish to download.  the node receiving this will
+			 * then relay our message to the user we are trying to download
+			 * from */
+			ft_packet_send_indirect (search_ip, FT_PUSH_RESPONSE, "%lu%hu%s%lu%lu",
+			                         ntohl (ip), port, request, start, stop);
+		}
+
+		/* notify the HTTP layer that we're going to be receiving a new
+		 * indirect transfer soon */
+		http_server_indirect_add (chunk, ip, request);
+		free (source);
+
+		return;
+	}
+
+	/* create the transfer structure */
+	if (!(xfer = ft_transfer_new (ft_download, ip, port, start, stop)))
+	{
+		free (source);
+		return;
+	}
+
+	if (!ft_transfer_set_request (xfer, request))
+	{
+		TRACE (("UI made an invalid request for '%s'", request));
+		free (source);
+		ft_transfer_close (xfer, TRUE);
+		return;
+	}
+
+	free (source);
+
+	http_client_get (chunk, xfer);
+}
+
+static void source_remove (Chunk *chunk, Source *source)
+{
+	ft_uint32     ip;
+	char         *request;
+	char         *url;
+
+	if (!(url = STRDUP (source->url)))
+		return;
+
+	TRACE (("%s", url));
+
+	if (!parse_request (url, &ip, NULL, NULL, NULL, &request))
+	{
+		free (url);
+		return;
+	}
+
+	http_server_indirect_remove (ip, request);
+	free (url);
+}
+
+static void download_suspend (Chunk *chunk, void *data)
+{
+	throttle_suspend (chunk, SO_RCVBUF, data);
+}
+
+static void download_resume (Chunk *chunk, void *data)
+{
+	throttle_resume (chunk, SO_RCVBUF, data);
+}
+
+/*
+ * giFT wants us to manipulate a download transfer
+ */
+void ft_daemon_download (Chunk *chunk, ProtocolCommand command, void *data)
+{
+	switch (command)
+	{
+	 case PROTOCOL_TRANSFER_CANCEL:    download_cancel (chunk, data);  break;
+	 case PROTOCOL_TRANSFER_START:     download_start (chunk, data);   break;
+	 case PROTOCOL_SOURCE_REMOVE:      source_remove (chunk, data);    break;
+	 case PROTOCOL_CHUNK_SUSPEND:      download_suspend (chunk, data); break;
+	 case PROTOCOL_CHUNK_RESUME:       download_resume (chunk, data);  break;
+	 default:                                                          break;
+	}
+}
+
+/*****************************************************************************/
+
+/* cancel the transfer associate with the chunk giFT gave us */
+static void upload_cancel (Chunk *chunk, void *data)
+{
+#if 0
+	assert (chunk->source == NULL);
+
+	if (chunk->source)
+	{
+		TRACE (("chunk->source = %s!?!?", chunk->source->url));
+		return;
+	}
+#endif
+
+	ft_transfer_cancel (chunk, TRANSFER_UPLOAD);
+}
+
+static Connection *submit_uploads (Connection *c, Node *node, int *uploads)
+{
+	ft_packet_send (c, FT_MODSHARE_REQUEST, "%hu%hu",
+					4 /* SUBMIT UPLOAD REPORT */, *uploads);
+
+	return NULL;
+}
+
+static void upload_register (Chunk *chunk, void *data)
+{
+	int uploads;
+
+	uploads = upload_length (NULL);
+
+	TRACE (("%i", uploads));
+
+	conn_foreach ((ConnForeachFunc) submit_uploads, &uploads,
+				  NODE_PARENT, NODE_CONNECTED, 0);
+}
+
+static void upload_unregister (Chunk *chunk, void *data)
+{
+	upload_register (chunk, data);
+}
+
+/* suspend processing of this transfer */
+static void upload_suspend (Chunk *chunk, void *data)
+{
+	throttle_suspend (chunk, SO_SNDBUF, data);
+}
+
+/* resume it */
+static void upload_resume (Chunk *chunk, void *data)
+{
+	throttle_resume (chunk, SO_SNDBUF, data);
+}
+
+/*
+ * giFT wants us to manipulate an upload transfer
+ */
+void ft_daemon_upload (Chunk *chunk, ProtocolCommand command, void *data)
+{
+	switch(command)
+	{
+	 case PROTOCOL_TRANSFER_CANCEL:     upload_cancel (chunk, data);     break;
+	 case PROTOCOL_TRANSFER_REGISTER:   upload_register (chunk, data);   break;
+	 case PROTOCOL_TRANSFER_UNREGISTER: upload_unregister (chunk, data); break;
+	 case PROTOCOL_CHUNK_SUSPEND:       upload_suspend (chunk, data);    break;
+	 case PROTOCOL_CHUNK_RESUME:        upload_resume (chunk, data);     break;
+	 default:                                                            break;
+	}
+}
+
+/*****************************************************************************/
+
+int ft_daemon_source_cmp (Source *a, Source *b)
+{
+	struct _ft_source *ft_a = NULL;
+	struct _ft_source *ft_b = NULL;
+	int ret = 0;
+
+	if (!(ft_a = ft_source_new (a->url)) ||
+	    !(ft_b = ft_source_new (b->url)))
+	{
+		ft_source_free (ft_a);
+		ft_source_free (ft_b);
+		return -1;
+	}
+
+	if (ft_a->ip > ft_b->ip)
+		ret =  1;
+	else if (ft_a->ip < ft_b->ip)
+		ret = -1;
+
+	/* TODO -- check the hash */
+
+	if (ret == 0)
+		ret = strcmp (ft_a->request, ft_b->request);
+
+	ft_source_free (ft_a);
+	ft_source_free (ft_b);
+
+	return ret;
+}

@@ -1,0 +1,11 @@
+[transfer]
+uniq = E9E100052ADB0082F324.Kenny Loggins - Top Gun - Soundtrack - Danger Zone.mp3
+filename = Kenny Loggins - Top Gun - Soundtrack - Danger Zone.mp3
+hash = SHA1:W6BJYWPG33FGUEZH6ZJYCD3EA5FSI55P
+path = ./incoming/E9E100052ADB0082F324.Kenny Loggins - Top Gun - Soundtrack - Danger Zone.mp3
+transmit = 460096
+total = 8581924
+max_seek = 6888347
+paused = 0
+chunks = 0-1072741 4290962-6436443 2153673-4290962 6888347-8581924 1072741-2145481 
+

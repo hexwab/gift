@@ -1,0 +1,156 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.83
+diff -u -r1.83 ft_search_db.c
+--- ft_search_db.c	11 Sep 2003 04:02:52 -0000	1.83
++++ ft_search_db.c	10 Oct 2003 01:41:52 -0000
+@@ -37,11 +37,33 @@
+      (DB_VERSION_MINOR << 8) | \
+      (DB_VERSION_PATCH))
+ 
++
++#ifdef BENCHMARK
++
++#undef FT_CFG_SEARCH_ENV_CACHE
++#undef FT_CFG_SEARCH_ENV_PRIV 
++#undef FT_CFG_SEARCH_ENV_TXN
++
++#define FT_CFG_SEARCH_ENV_CACHE 83886080
++#define FT_CFG_SEARCH_ENV_PRIV  0
++#define FT_CFG_SEARCH_ENV_TXN 0
++
++#define BLOCKING_REMOVE
++
++/* this is for consistency checking; don't enable for speed testing :) */
++#define DB_STATS
++
++#else /* BENCHMARK */
++
+ /*
+  * Sync all databases after changes have been made to ease debugging.  This
+  * greatly hurts performance and should not be enabled for every day usage.
+  */
+-/* #define SEARCH_DB_SYNC */
++
++/*#define SEARCH_DB_SYNC*/
++/*#define BLOCKING_REMOVE*/
++
++#endif /*BENCHMARK*/
+ 
+ /*
+  * Apply a custom hash function for the child data so that a well distributed
+@@ -185,6 +207,23 @@
+ 
+ /*****************************************************************************/
+ 
++#ifdef BENCHMARK
++static int db_stats (DB *dbp, const char *info)
++{
++#ifdef DB_STATS
++        DB_BTREE_STAT *stats;
++        if (!dbp->stat(dbp, &stats, 0))
++                FT->DBGFN(FT, "db %s contains %d keys, %d records", info, stats->bt_nkeys, stats->bt_ndata);
++        else
++        {
++                FT->err(FT, "failed to get %s db stats", info);
++                return 1;
++        }
++#endif
++        return 0;
++}
++#endif
++
+ static int open_db (DB *dbp, char *path, char *database,
+                     DBTYPE type, u_int32_t flags, int mode)
+ {
+@@ -393,6 +432,11 @@
+ 		return NULL;
+ 	}
+ 
++#ifdef BENCHMARK
++//	db_sync (NULL);
++	db_stats(db_sec(), "master sec");
++#endif
++
+ 	return dbp;
+ }
+ 
+@@ -895,7 +939,12 @@
+ 	for (; tokens && *tokens; tokens++)
+ 	{
+ 		if (!(ret = db_remove_sec_token (dbcp, sdb, md5, *tokens)))
++		{
++			FT->dbg(FT, "tok=%d (%x), node=%s (%p)", *tokens, *tokens, ft_node_fmt (sdb->node), sdb);
++			db_sync (sdb);
++			abort ();
+ 			break;
++		}
+ 	}
+ 
+ 	dbcp->c_close (dbcp);
+@@ -1176,6 +1225,8 @@
+ 	{
+ 		FT->DBGFN (FT, "%s: cursor stability can no longer be guaranteed",
+ 		           ft_node_fmt (sdb->node));
++		db_sync (sdb);
++		abort ();
+ 	}
+ 
+ 	/* delete the current position to minimize the possibility of a race
+@@ -1198,8 +1249,12 @@
+ 
+ 	/* clean up the actual db */
+ 	db_close (sdb, TRUE);
++#ifdef SEARCH_DB_SYNC
+ 	db_sync (NULL);
+-
++#endif
++#ifdef BENCHMARK
++	db_stats (db_sec(), "master sec");
++#endif
+ 	/* clean up the memory we allocated and attached to the node structure */
+ 	search_db_free (sdb);
+ }
+@@ -1224,7 +1279,6 @@
+ 
+ static BOOL db_sync (FTSearchDB *sdb)
+ {
+-#ifdef SEARCH_DB_SYNC
+ 	DB *pri_local;
+ 	DB *pri;
+ 	DB *sec;
+@@ -1240,7 +1294,6 @@
+ 
+ 	if ((sec = db_sec()))
+ 		sec->sync (sec, 0);
+-#endif /* SEARCH_DB_SYNC */
+ 
+ 	return TRUE;
+ }
+@@ -1955,10 +2008,14 @@
+ 
+ 		if (!sdb->db)
+ 			db_remove_host_finish (sdb);
+-		else
++		else 
+ 		{
++#ifdef BLOCKING_REMOVE
++			while (db_remove_host_timer (sdb));
++#else
+ 			/* initiate the timer to handle resource scheduling for us */
+ 			timer_add (100 * MSEC, (TimerCallback)db_remove_host_timer, sdb);
++#endif /* BLOCKING_REMOVE */
+ 		}
+ 	}
+ #endif /* USE_LIBDB */
+@@ -1971,7 +2028,9 @@
+ 	BOOL ret = TRUE;
+ 
+ #ifdef USE_LIBDB
++#ifdef SEARCH_DB_SYNC
+ 	ret = db_sync (FT_SEARCH_DB(node));
++#endif /* SEARCH_DB_SYNC */
+ #endif /* USE_LIBDB */
+ 
+ 	return ret;

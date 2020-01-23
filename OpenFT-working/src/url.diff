@@ -1,0 +1,16 @@
+Index: ft_http.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http.c,v
+retrieving revision 1.9
+diff -u -r1.9 ft_http.c
+--- ft_http.c	23 Dec 2003 04:53:52 -0000	1.9
++++ ft_http.c	5 Feb 2004 15:43:39 -0000
+@@ -191,7 +191,7 @@
+ 		if (chr >= 0 && chr < sizeof (encode_safe) && encode_safe[chr])
+ 			string_appendc (encoded, (char)(chr));
+ 		else
+-			string_appendf (encoded, "%%%02x", (unsigned int)(chr));
++			string_appendf (encoded, "%%%02x", (unsigned char)(chr));
+ 
+ 		unencoded++;
+ 	}

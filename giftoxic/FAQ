@@ -1,0 +1,36 @@
+1.) INSTALLATION
+
+	Q I'm getting "macro 'AM_PATH_GTK_2_0' not found in library" when
+	  running autogen.sh. How can I get rid of this error?
+
+	A Edit autogen.sh; you have to replace "aclocal" with
+	  "aclocal -I $PREFIX/share/aclocal", where $PREFIX is the prefix
+	  you installed pkg-config in.
+
+	
+	Q giFToxic doesn't compile, I only get a weird error!
+
+	A Update giFT and try again. If that doesn't fix your problem,
+	  report a bug.
+
+2.) RUNTIME
+
+	Q giFToxic tells me I need to specify a host and port to connect to,
+	  how do I do that?
+	
+	A Run giFToxic with the --server parameter, e.g.
+	  giFToxic --server=127.0.0.1:1213
+
+
+	Q I can't see umlauts or other special characters in search results
+	  or transfers!
+
+	A Set LC_CTYPE to a locale that supports those characters!
+
+
+	Q giFToxic segfaults if I ...
+
+	A Please send us (see AUTHORS) a GDB backtrace so we can see what's
+	  going on. Run "gdb giFToxic" and when it crashes, type "bt" and send
+	  us the output.
+	  

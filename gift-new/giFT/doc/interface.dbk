@@ -1,0 +1,420 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<!--
+vim:softtabstop=2:filetype=xml:
+-*- html -*-
+-->
+<article>
+<articleinfo>
+  <title>giFT's Interface Protocol -- Draft</title>
+  <authorgroup>
+    <author><firstname>Josh</firstname><surname>Guilfoyle</surname></author>
+    <author><firstname>Eelco</firstname><surname>Lempsink</surname></author>
+  </authorgroup>
+  <abstract>
+    <para>
+      This document is a draft of the specifications of giFT's new Interface
+      Protocol.
+    </para>
+  </abstract>
+</articleinfo>
+<sect1 id="abstract">
+  <title>ABSTRACT</title>
+  <sect2>
+    <title>Session-Specific Event Identifiers</title>
+    <para>
+      Event identifiers are now requested by the client and will be considered
+      session-specific.  This completely eliminates the need to wait on the
+      servers event response, and consequently the command completely.  All
+      session-specific id's must still be unique (to that session) and must not
+      overlap.
+    </para>
+  </sect2>
+  <sect2>
+    <title>Tree Structure</title>
+    <para>
+      The protocol is designed in such a way that requires parsers to organize
+      (recursively) a list of keys and their values.  A key value may include a
+      list of other keys, therefore constructing a tree-like parsing method is
+      ideal.
+    </para>
+  </sect2>
+  <sect2>
+    <title>Encoding</title>
+    <para>
+      Each value and modifying attribute in the protocol must be url encoded to
+      ensure that only cleanly parsable text is present.  Commands and their
+      respective keys must match the pattern <literal>\w[\d\w_]*</literal> or
+      they will be considered invalid.
+    </para>
+  </sect2>
+  <sect2>
+    <title>Whitespace</title>
+    <para>
+      Is not important.
+    </para>
+  </sect2>
+  <sect2>
+    <title>Notation</title>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <literal><command>(SUB)COMMAND</command></literal>.          
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal><replaceable>replaceable text</replaceable></literal>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <literal><optional>optional
+          subcommands/arguments/attributes</optional></literal>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <synopsis label="client">Data that must be send by the client</synopsis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <synopsis label="server">Data sent by the server</synopsis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <synopsis>Data that can be sent by both the client and the server</synopsis> 
+        </para>
+      </listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+<sect1 id="syntax">
+  <title>SYNTAX</title>
+  <sect2>
+    <title>Commands</title>
+    <para>
+      The interface protocol works by sending specific command's over a
+      socket.  The basic syntax of both queries and responses is the same.
+      Commands are uppercase.  A complete command block ends with a
+      <literal>;</literal>:
+      <synopsis>  <command>COMMAND</command>;</synopsis>
+    </para>
+    <para>
+      Some commands require an id.  You need to send this as an argument
+      (between parenthesis) to the command:
+      <synopsis>  <command>COMMAND</command>(argument);</synopsis>
+      The response of the server will use the same id as the client
+      requested.  This way you can have two searches running at the same
+      time, and assign results to the right query, for example.  Id's may not
+      overlap, so don't use them twice.
+    </para>
+  </sect2>
+  <sect2>
+    <title>Keys</title>
+    <para>
+      Most commands have a set of keys.  A key always has a value, in the
+      form of an argument.  Keys are most often lowercase.
+      <synopsis>
+  <command>COMMAND</command>
+     key1(argument)
+     key2(argument)
+  ;</synopsis>
+      Whitespace isn't important, so that command could have also been
+      written as: 
+      <synopsis>  <command>COMMAND</command> key1 (argument) key2 (argument);</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Subcommands</title>
+    <para>
+      Besides keys (or you could say "as a special key") there are
+      subcommands.  A subcommand has a set of keys (with arguments) between
+      braces ({ and }) as a argument.  The keys of a subcommand have the same
+      syntax as keys of a normal command. A subcommand can have a normal
+      argument itself too.
+      <synopsis>
+  <command>COMMAND</command>
+     key1(argument)
+     <command>SUBCOMMAND</command> (argument) {
+        subkey1(argument)
+        subkey1(argument)
+     }
+  ;</synopsis>
+    </para>
+    <para>
+      A subcommand can even have a subcommand itself (that would make it a
+      subsubcommand). Like said, you should parse commands in a tree-like
+      fashion. A little recursion does magic sometimes ;-)
+    </para>
+  </sect2>
+  <sect2>
+    <title>Modifiers</title>
+    <para>
+      A modifier is like an option.  It tells something about how to
+      interpret the data of a command, key or subcommand.  Modifiers are
+      surrounded by brackets ([ and ]).
+      <synopsis>
+  <command>COMMAND</command> [mod]
+     <command>SUBCOMMAND</command> [mod] {
+        key [mod] (argument)
+     }
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Order and whitespace</title>
+    <para>
+      Order and whitespace are two things that don't really matter. Of
+      course, giFT will send responses in a defined order and with appropriate
+      whitespace, but it doesn't really care how the client sends data to it.
+      It is advised to 'keep it clean' though (for your own sake :-).
+    </para>
+    <para>
+      For example, it doesn't really matter in what the order is of the keys,
+      and, less trivial, you can send the modifier, argument and the set of
+      keys (for subcommands) in any order. Time for an example. This:
+      <synopsis>
+  <command>SEARCH</command>(4)
+     query (foo bar)
+     realm (  audio  )  [==]
+     <command>META</command> {
+           bitrate[ >=](192)foo[bar ](bla)
+     } [c owns]
+       (me)
+     bla      (       blum!   )     ;</synopsis>
+      Is actually just the same as this:
+      <synopsis>
+  <command>SEARCH</command> (4) 
+     query (foo bar)
+     realm [==] (audio)
+     <command>META</command> [c owns] (me) {
+         bitrate [>=] (192)
+         foo [bar] (bla)
+     }
+     bla (blum!)
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Definitions</title>
+    <para>
+      As an overview, here are the definitions of all used objects (bottom-up).
+      The <literal>*</literal>, <literal>+</literal> and <literal>?</literal>
+      are used a special chars, and have the same meaning as they would have in
+      a regular expression (namely "zero or more times", "one or more times",
+      "zero times or one time" respectively.) Remember again, order and
+      whitespace don't matter. The only time you'll actually need whitespace
+      is when the command is directly followed by a key. 
+    </para>
+    <sect3>
+      <title>Key</title>
+      <synopsis>
+  key [modifier]? (argument)</synopsis>
+    </sect3>
+    <sect3>
+      <title>Subcommand</title>
+      <synopsis>
+  <command>SUBCOMMAND</command> [modifier]? (argument)? { key+ SUBCOMMAND* }</synopsis>
+    </sect3>
+    <sect3>
+      <title>Command</title>
+      <synopsis>
+  <command>COMMAND</command> [modifier]? (argument)? key* SUBCOMMAND* ;</synopsis>    
+    </sect3>
+  </sect2>
+</sect1>
+<sect1 id="protocol">
+  <title>PROTOCOL</title>
+  <sect2>
+    <title>Attaching Connections</title>
+    <para>
+      In order to take advantage of the event identifiers (and therefore
+      multiple events per socket), giFT clients are expected to register this
+      as an active single-socket session with the daemon.  This is done via the
+      ATTACH request, described below:
+      <synopsis label="client">
+  <command>ATTACH</command>
+     <optional>client(<replaceable>CLIENT</replaceable>)</optional>
+     <optional>version(<replaceable>CLIENT VERSION</replaceable>)</optional>
+  ;</synopsis>
+    </para>
+    <para>
+      Client and version are expected to be your formal client name and version
+      identifier.  Upon seeing this request, the server will reply with:
+      <synopsis label="server">
+  <command>ATTACH</command>
+     server(<replaceable>SERVER</replaceable>)
+     version(<replaceable>SERVER VERSION</replaceable>)
+  ;</synopsis>
+    </para>
+    <para>
+      You may also request an explicit detach from the session which will
+      result in the connections closure from the server.  Please note that this
+      request is ignored if the session is not attached.  This request is
+      simply:
+      <synopsis label="client">
+  <command>DETACH</command>;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Searching / Browsing</title>
+    <para>
+      The search command carries the same options and basic structure as the
+      browse and locate command.  The server may safely treat both searches and
+      browses identically except when presenting the request to the protocol,
+      which should assume these operations are quite different.  The data
+      received from the querying requests is identical in form.
+    </para>
+    <para>
+      Valid options for a search are as follows:
+      <synopsis label="client">
+  <command>SEARCH</command>(<optional><replaceable>session-id</replaceable></optional>)
+     query(<replaceable>TOKENS</replaceable>)
+     <optional>exclude(<replaceable>TOKENS</replaceable>)</optional>
+     <optional>protocol(<replaceable>PROTOCOL</replaceable>)</optional>
+     ...
+  ;</synopsis>
+      Reply from the server:
+      <synopsis label="server">
+  <command>ITEM</command>(<replaceable>session-id</replaceable>)
+     user(<replaceable>USERNAME</replaceable>)
+     node(<replaceable>SERVER</replaceable>)
+     url(<replaceable>URL</replaceable>)
+     ...
+     <command>META</command> {
+       &lt;name&gt;[&lt;attribute&gt;](<replaceable>&lt;value&gt;</replaceable>)
+       ...
+     }
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Downloading</title>
+    <note><para>
+      Little blurb about transferring files, possibly suggest how best to
+      implement transfer lists.  Add text here later.
+    </para></note>
+    <para>
+      When initiating transfers you must send all sources that are to be used
+      in the form described below.  You should note that a download will be
+      instantiated when the first source is seen.  Protocols which do not
+      support hashes will always create a new transfer when an addsource
+      command is given.
+      <synopsis label="client">
+  <command>ADDSOURCE</command>
+     user(<replaceable>username</replaceable>)
+     <optional>hash(<replaceable>hash</replaceable>)</optional>
+     size(<replaceable>size</replaceable>)
+     url(<replaceable>url</replaceable>)
+     <optional>save(<replaceable>save</replaceable>)</optional>
+  ;</synopsis>
+      Each addsource will immediately dump a new download report in the
+      following form:
+      <synopsis label="server">
+  <command>DOWNLOADS</command>
+     <command>DOWNLOAD</command>(<replaceable>session-id</replaceable>) {
+        <optional>hash(<replaceable>hash</replaceable>)</optional>
+        size(<replaceable>size</replaceable>)
+        <command>SOURCE</command> {
+           user(<replaceable>username</replaceable>)
+           url(<replaceable>url</replaceable>)
+           file(<replaceable>file</replaceable>)
+           status(<replaceable>status</replaceable>)
+           start(<replaceable>chunk start</replaceable>)
+           transmit(<replaceable>chunk transmit</replaceable>)
+           total(<replaceable>chunk total</replaceable>)
+        }
+        ...
+     }
+     ...
+  ;</synopsis>
+    </para>
+    <para>
+      To cancel a transfer (both directions):
+      <synopsis>
+  <command>TRANSFER</command>(<replaceable>session-id</replaceable>)
+     action(stop)
+     pause(<replaceable>pause state</replaceable>)
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Uploading</title>
+    <para>
+      Uploads work very similar to downloads except that you may not directly add
+      or remove sources.  Upload dumps are in the form:
+      <synopsis label="server">
+  <command>UPLOADS</command>
+     <command>UPLOAD</command>(<replaceable>session-id</replaceable>) {
+        <optional>hash(<replaceable>hash</replaceable>)</optional>
+        size(<replaceable>size</replaceable>)
+        <command>SOURCE</command> {                     only one source ever
+           user(<replaceable>username</replaceable>)
+           file(<replaceable>file</replaceable>)
+           start(<replaceable>chunk start</replaceable>)
+           transmit(<replaceable>chunk transmit</replaceable>)
+           total(<replaceable>chunk total</replaceable>)
+        }
+     }
+     ...
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Shared Files</title>
+    <para>
+      To manipulate the shares index you may use:
+      <synopsis label="client">
+  <command>SHARE</command>
+     action(<replaceable>sync | hide | show</replaceable>)
+  ;</synopsis>
+      The server will return the action that is currently processing on ALL
+      share changes.  I'll explain myself later.
+      <synopsis label="server">
+  <command>SHARE</command>
+     action(<replaceable>none | sync | hide | show</replaceable>)
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Protocol Statistics</title>
+    <para>
+      Request stats dump explicitly:
+      <synopsis label="client">
+  <command>STATS</command>
+     <optional>protocol(<replaceable>protocol</replaceable>)</optional>
+  ;</synopsis>
+      Stats response:
+      <synopsis label="server">
+  <command>STATS</command>
+     protocol(<replaceable>protocol</replaceable>)
+     <optional>users(<replaceable>users</replaceable>)</optional>
+     ...
+  ;</synopsis>
+    </para>
+  </sect2>
+  <sect2>
+    <title>Configuration File Manipulation</title>
+    <para>TODO</para>
+  </sect2>
+  <sect2>
+    <title>Notification Requests</title>
+    <para>
+      Any client may optionally request that certain events be simulated and
+      delivered without request under predetermined conditions.  This includes
+      statistics gathering, automatic transfer list dumping, etc.  The syntax
+      for creating a notify object is:
+      <synopsis>
+  <command>NOTIFY</command>
+     interval(<replaceable>update interval in seconds</replaceable>)
+     <command><replaceable>COMMAND</replaceable></command> {
+        <optional>command key(<replaceable>command value</replaceable>)</optional>
+     }
+  ;</synopsis>
+      Notify updates will be identical in form to the above command.
+    </para>
+  </sect2>
+</sect1>
+</article>

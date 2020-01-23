@@ -1,0 +1,18 @@
+gift-fasttrack (0.8.2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Göran Weinholt <weinholt@dtek.chalmers.se>  Mon, 14 Jul 2003 22:20:54 +0200
+
+gift-fasttrack (0.8.1-2) unstable; urgency=low
+
+  * Clean up the package a bit.
+
+ -- Göran Weinholt <weinholt@dtek.chalmers.se>  Sun,  6 Jul 2003 18:40:59 +0200
+
+gift-fasttrack (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Knoppix User <knoppix@mirrorlynx.com>  Sat,  7 Jun 2003 13:50:27 -0400
+

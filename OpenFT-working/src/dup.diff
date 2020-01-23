@@ -1,0 +1,194 @@
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.105
+diff -u -r1.105 ft_search_db.c
+--- ft_search_db.c	27 Dec 2003 18:37:51 -0000	1.105
++++ ft_search_db.c	18 Mar 2004 21:17:19 -0000
+@@ -246,8 +250,11 @@
+ 	if (!(sdb = MALLOC (sizeof (FTSearchDB))))
+ 		return NULL;
+ 
++	FT->DBGFN (FT, "%s (%p)", ft_node_fmt (sdb->node), sdb);
++
+ 	node->session->search_db = sdb;
+ 	sdb->node = node;
++	sdb->dups = NULL;
+ 
+ 	return sdb;
+ }
+@@ -747,8 +754,10 @@
+ 		return FALSE;
+ 	}
+ 
++#ifndef SEARCH_DB_BENCHMARK
+ 	if (!(remove_queue = array_new (NULL)))
+ 		return FALSE;
++#endif
+ 
+ 	return TRUE;
+ }
+@@ -761,6 +770,24 @@
+ 	clean_db_path (envpath);
+ }
+ 
++static void free_dups (FTSearchDB *sdb)
++{
++	void *elem;
++	int count = 0;
++	
++	while ((elem = array_pop (&sdb->dups)))
++	{
++		free (elem);
++		count++;
++	}
++
++	if (count)
++		FT->DBGFN (FT, "%s: %d duplicates freed",
++			   sdb->share_idx_name, count);
++
++	array_unset (&sdb->dups);
++}
++
+ /*****************************************************************************/
+ 
+ static u_int16_t serialize_fld (struct sharedata_data *datarec,
+@@ -954,11 +981,12 @@
+ 	 * this key */
+ 	if ((ret = dbp->put (dbp, NULL, &key, &data, DB_NOOVERWRITE)))
+ 	{
+-		ERR_DB_SDB("DB->put", ret, sdb);
+-
+ 		assert (ret == DB_KEYEXIST);
++#ifndef SEARCH_DB_BENCHMARK
+ 		FT->DBGFN (FT, "duplicate MD5 %s (%s)",
+ 		           md5_fmt (keyrec.md5), sdb->share_idx_name);
++#endif
++		array_push (&sdb->dups, md5_dup (keyrec.md5));
+ 
+ 		return FALSE;
+ 	}
+@@ -1272,6 +1300,35 @@
+ 	if (!db_md5idx() || !db_tokenidx())
+ 		return FALSE;
+ 
++	/* dup lookup first; yes, this is horribly inefficient,
++	 * and despite it probably being safe to check only if lookup
++	 * fails, I'm being cautious for now
++	 */
++	if (sdb->dups)
++	{
++		int i, len;
++		len = array_count (&sdb->dups);
++		for (i=0; i<len; i++)
++		{
++			unsigned char *dup;
++			dup = array_index (&sdb->dups, i);
++			assert (dup);
++			if (!memcmp (md5, dup, 16))
++			{
++				unsigned char *dup2;
++				/* Now remove this dup, and don't touch the db */
++				free (dup);
++				dup2 = array_splice (&sdb->dups, i, 1, NULL);
++				assert (dup == dup2);
++
++				FT->DBGFN (FT, "%s: removed duplicate %s", 
++					   sdb->share_idx_name, md5_fmt (md5));
++
++				return TRUE;
++			}
++		}
++	}
++
+ 	/*
+ 	 * Grab the per-user data entry at the supplied key, which will contain
+ 	 * enough information to get the token list for removal from the
+@@ -1363,6 +1420,8 @@
+ 	/* close and remove db_shareidx */
+ 	db_close (sdb, TRUE);
+ 
++	free_dups (sdb);
++
+ 	/* clean up the search database handle allocated to the node structure */
+ 	search_db_free (sdb);
+ }
+@@ -1661,6 +1720,29 @@
+ 
+ 	if ((ret = dbp->get (dbp, NULL, &key, &data, 0)))
+ 	{
++		assert (ret == DB_NOTFOUND);
++
++		/* make sure we actually have some dups */
++		if (!sdb->dups)
++			db_abort (sdb);
++
++		{
++			int i, len;
++			len = array_count (&sdb->dups);
++			for (i=0; i<len; i++)
++			{
++				unsigned char *dup;
++				dup = array_index (&sdb->dups, i);
++				assert (dup);
++				if (!memcmp (md5, dup, 16))
++					break;
++			}
++			
++			/* abort if we didn't find it in the dups list either */
++			if (i == len)
++				db_abort (sdb);
++		}
++
+ 		ERR_DB_SDB("DB->get", ret, sdb);
+ 		return NULL;
+ 	}
+@@ -1939,8 +2021,12 @@
+ 	assert (data->size == sizeof (*datarec));
+ 	datarec = data->data;
+ 
++#ifndef SEARCH_DB_BENCHMARK
+ 	if (datarec->sdb->node == NULL)
+ 		assert (remove_active == TRUE);
++#else
++	assert (datarec->sdb->node != NULL);
++#endif
+ 
+ 	/* if node is NULL, stale is TRUE */
+ 	return BOOL_EXPR (datarec->sdb->node == NULL);
+@@ -2313,6 +2400,8 @@
+ 		env_search_path = NULL;
+ 	}
+ #endif /* USE_LIBDB */
++
++	db_initialized = FALSE;
+ }
+ 
+ /*****************************************************************************/
+@@ -2381,6 +2470,11 @@
+ 	if (!sdb)
+ 		return TRUE;
+ 
++#ifndef SEARCH_DB_BENCHMARK
++	if (openft->shutdown)
++		return TRUE;
++#endif
++
+ 	/*
+ 	 * Schedule the removal and leave.  We cannot block for the entire
+ 	 * duration of this operation, but we can disassociate the FTSearchDB
+Index: ft_search_db.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.h,v
+retrieving revision 1.21
+diff -u -r1.21 ft_search_db.h
+--- ft_search_db.h	26 Oct 2003 13:15:43 -0000	1.21
++++ ft_search_db.h	18 Mar 2004 21:17:29 -0000
+@@ -111,6 +112,7 @@
+ 
+ 	unsigned long shares;              /**< total files currently shared */
+ 	double        size;                /**< total size (MB) */
++	Array   *dups;                     /* duplicated hashes */
+ } FTSearchDB;
+ 
+ /* shorthand */

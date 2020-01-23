@@ -1,0 +1,977 @@
+$Id: PROTOCOL,v 1.7 2004/03/04 12:41:04 mkern Exp $
+
+                       The FastTrack Protocol
+                       ======================
+
+This document attempts to describe what's currently known of the
+FastTrack protocol.
+
+Contents
+========
+
+  * Network overview
+  * Session establishment
+  * Message types
+  * UDP messages
+  * Transfers
+  * Listing shared files
+  * Tag types
+  * Hash format
+  * A few words about encryption
+  * About this document
+
+All integers are in network byte order (big-endian) unless noted
+otherwise. "Packed integers" are BER compressed, as produced by
+pack("w") in perl. From TFM: "its bytes represent an unsigned integer
+in base 128, most significant digit first, with as few digits as
+possible. Bit eight (the high bit) is set on each byte except the
+last."
+
+Network overview
+================
+
+FastTrack nodes are either normal "user" nodes, or "supernodes".
+
+Supernodes are responsible for indexing users' shares and for
+performing search queries on them; possibly for other tasks such as
+statistics too.
+
+User nodes do not communicate with each other. Instead, user nodes
+connect to a supernode, and supernodes forward traffic between
+themselves as required.
+
+The user node:supernode ratio is about 100:1. (FIXME: verify this.)
+
+User nodes can be "promoted" to supernode status if network conditions
+require this. Promotion is autonomous (i.e. a supernode will believe
+you if you tell it you're also a supernode).  The conditions for
+promotion are unknown, although it's reasonable to assume one or more
+of high bandwidth, low latency, and plenty of CPU/RAM are sought
+after.
+
+Little is currently known about supernode-supernode communication,
+thus we will be concerned only with user nodes connecting to a
+supernode. (However, KaZaA has a configuration option to force
+supernode status which appears very useful for analysis; expect more
+information on supernodes in the near future.)
+
+The default KaZaA port is 1214, although recent versions (>=2.0
+apparently) use a random port; some also listen on port 80.
+
+Transfers take place over the KaZaA port too, but use HTTP. Thus,
+it's necessary to check whether an incoming connection looks like an
+HTTP request before attempting a session handshake. (Having said that,
+user nodes do not usually receive anything other than HTTP
+connections.)
+
+Kazaa also listens for UDP packets on the same port as it uses for TCP.
+
+Session establishment
+=====================
+
+-> is client-to-server traffic, <- is server-to-client traffic.
+= is traffic sent between supernodes.
+
+1. Initial handshake [->]
+
+  Bytes	Desc
+  4     unknown ("rand")
+  4     outgoing cipher seed
+  4     requested encryption type (encoded)
+
+  "rand" is not entirely random. Kazaa clients seem to use random-like
+  numbers here, and their traffic is still decryptable. giFT-FastTrack
+  uses a constant (0xFA00B62B), and experiments have shown that changing
+  this will produce connection failures. (TODO: can giFT-FastTrack
+  connect using Kazaa's numbers?)
+
+  Cipher seed can be any number.
+
+  It's suggested to set requested encryption type to zero.
+
+2. Handshake response [<-]
+
+  Bytes Desc
+  4     incoming cipher seed
+  4     encryption type (encoded)
+
+  I *think* cipher seed can again be any number.
+
+  Outgoing cipher seed is xor'd with the incoming cipher seed to produce
+  the final outgoing seed for encryption initialization.
+
+  The returned encryption type is authoritative for both incoming and
+  outgoing cipher streams; Kazaa sends ((requested_enc_type &
+  supported_enc_type) | minimum_enc_type). Current values for
+  supported_enc_type and minimum_enc_type are 0xBF and 0x29
+  respectively. See also network config.
+
+
+All communication from this point forth is encrypted.
+
+3. Server network name [<-]
+
+  Bytes	Desc
+  n     zero-terminated network name
+
+  Observed network names are "KaZaA", "fileshare" (as used by iMesh),
+  "Grokster", "MusicCity" (defunct?)...
+
+4. Client network name [->]
+
+  Bytes Desc
+  n     zero-terminated network name
+
+  Kazaa tends to drop the connection if the two network names do not
+  match. I'm not entirely sure why. giFT-FastTrack (which sends
+  "KaZaA" as its network name) appears to do the same.
+
+
+At this point, the session is established. Either side can send traffic.
+
+Communication consists of one of the following:
+
+5. Ping request [->, <-]
+
+  Bytes Desc
+  1     0x50
+
+  This is for testing the aliveness of the connection, as used by
+  every P2P network on the planet. Elicits a Pong response. Unknown:
+  Kazaa always sends a pong for each ping received; but is it possible
+  to send *any* traffic to keep the connection alive?
+
+6. Pong response [->, <-]
+
+  Bytes Desc
+  1     0x52
+
+  See ping above.
+
+7. Packet [->, <-]
+
+  Bytes Desc
+  1     0x4B
+  4     encoded message type and length
+
+  Message type is two bytes (of which one is used for flags); length
+  is a two-byte integer. Those four bytes are stored in one of
+  three orders, according to a variable that historically has been
+  called "xinu_state".
+
+  xinu_state is a 32-bit unsigned integer. For each side of the
+  connection, it is initialized as 0x51. The order is determined by
+  xinu_state mod 3:
+
+           xinu_state % 3
+  Bytes   0       1       2
+  1      type_lo type_hi type_hi
+  1      type_hi len_hi  len_lo
+  1      len_hi  type_lo len_hi
+  1      len_lo  len_lo  type_lo
+
+  Where "len_hi" and "len_lo" are the high and low bytes of the
+  message length respectively, and similarly for "type_hi" and
+  "type_lo".
+
+  After each packet, xinu_state is xor'd with the sum of the message
+  type (both bytes of it) and message length, then all bits are
+  inverted. (FIXME: there must be a better way to calculate this...)
+
+
+
+Message types
+=============
+
+0x00 Supernode list [<-]
+
+  Bytes Desc
+  4	IPv4 address
+  2	port
+  1	"last seen"
+  1	"load"
+
+  "Last seen" and "load" are from giFT-FastTrack. Last seen is in
+  minutes, load is a percentage. Allegedly.
+
+  This 8 bytes structure can be repeated several times within a single
+  message. Kazaa appears always to send 200 nodes (i.e. a 1600 byte
+  message) when a connection has just been established, but it's
+  probably unwise to rely on this.
+
+0x01 Extended supernode information(?) [=]
+
+  Repeate as many times as necessary:
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+  20    unknown
+
+  This is used to tell the remote node that we are a supernode, and
+  henceforth for other supernode-related stuff.
+
+0x02 User information [->]
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+  1     bandwidth
+  1     unknown (zero?)
+  n     user name (no terminator)
+
+  From giFT: "This next byte [bandwidth] represents the
+  user's advertised bandwidth, on a logarithmic scale.  0xd1
+  represents "infinity" (actually, 1680 kbps). The value is
+  approximately 14*log_2(x)+59, where x is the bandwidth in kbps."
+
+0x03 ??? [<-]
+
+  Always has a length of 0?
+
+0x04 Share file [->]
+
+  Defunct?
+
+0x05 Unshare file [->]
+
+  Bytes Desc
+  20    file hash
+  n     checksum (packed integer)
+  n     file size (packed integer)
+  n     number of tags (packed integer)
+
+  Then for each tag:
+
+  Bytes Desc
+  n     tag type (packed integer)
+  n     tag length (packed integer)
+  n     tag contents
+
+0x06 Search query [->]
+
+  Bytes Desc
+  2     unknown (0x00 0x01)
+  2     maximum number of search results (0x32 in kazaa, 0x10 for hash queries)
+  2     search id
+  1     unknown (0x01)
+  1     search realm
+  1     number of search terms
+
+  Search id is a unique identifier to refer to this search. Realm may
+  be one of:
+    0xA1  Audio
+    0xA2  Video
+    0xA3  Images
+    0xA4  Documents
+    0xA5  Software
+    0xBF  Everything
+
+  Then, for each search term:
+
+  Bytes Desc
+  1     comparison type
+  n     comparison field tag type (packed integer?)
+  n     query length (packed integer)
+  n     query (non-terminated)
+
+  Comparison type is one of:
+    0x00  equals
+    0x02  at most
+    0x03  "approx"
+    0x04  at least
+    0x05  substring
+    0x06  unknown
+
+0x07 Search reply [<-]
+
+  Bytes Desc
+  4     supernode IPv4 address
+  2     supernode port
+  2     search id
+  2     number of results
+
+  Contains search results from a single supernode.
+
+  For each result:
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+  1     bandwidth
+  n     user and network name
+  20    file hash
+  n     checksum (packed integer)
+  n     file size (packed integer)
+  n     number of tags
+
+  User and network name are separated by 0x01 and terminated by
+  0x00. A special value of 0x02 somehow refers to earlier replies
+  (just uses the user from the previous result? compares the IP with
+  previous ones? FIXME!).
+
+  Then for each tag:
+
+  Bytes Desc
+  n     tag type (packed integer)
+  n     tag length (packed integer)
+  n     tag contents
+
+0x08 Search finished [<-]
+
+  Bytes Desc
+  2     search id
+
+0x09 Network stats [<-]
+
+  Bytes Desc
+  4     Number of users
+  4     Number of files
+  2     Mantissa of total file size
+  2     Exponent of total file size
+
+  Then repeated 6 times, once for each media type (misc, audio, video,
+  images, documents, software) (FIXME: check ordering):
+
+  Bytes Desc
+  4     Number of files
+  2     Mantissa of total file size
+  2     Exponent of total file size
+
+  Then *optionally* (earlier versions of Kazaa were limited
+  to the 60 bytes shown above), repeated once for each network:
+
+  Bytes Desc
+  n     zero-terminated network name
+  4     Number of users
+
+0x0A Search forward request? [=]
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+  4     IPv4 address
+  2     port
+  1     unknown (0x02)
+  4     unknown (some kind of ID?)
+  1     unknown (0x00)
+  1     unknown
+  1     unknown (0x01?)
+  1     search realm
+  1     number of search terms
+
+  Then follows a query in the usual format. See search query.
+
+0x800A Search forward request 2? [=]
+
+  Bytes Desc
+  4     unknown
+  1     unknown (0x00)
+  1     unknown
+  1     unknown (0x01?)
+  1     search realm
+  1     number of search terms
+
+  Then follows a query in the usual format. See search query.
+
+  (Seemingly this is the same as the previous message except without
+  the addresses and ports.)
+
+0x0B ??? [=]
+
+0x0C ??? [=]
+
+0x0D Push request [->, <-]
+
+  User->supernode version:
+
+  Bytes Desc
+  4     push ID
+  4     local IPv4 address
+  2     local port
+  4     private IPv4 address of remote user
+  2     remote user's port (unused?)
+  4     IPv4 address of remote user's supernode?
+  2     port of remote user's supernode?
+  n     remote user name (not terminated)
+
+  Requests that the given user connects to us.
+
+  Supernode->user version:
+
+  Bytes Desc
+  4     push ID
+  4     requester's IPv4 address
+  2     requester's port
+
+  Requests that we connect to the given user.
+
+0x15 Attempt UDP connection [->, <-]
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+
+  For supernodes(?):
+
+  Bytes Desc
+  4     unknown
+
+  This should elicit a UDP packet of type 0xC0 from the recipient to
+  the specified address, which is usually (always?) the address of the
+  sender.
+
+0x16 ??? [->, <-]
+
+  Bytes Desc
+  4     unknown (0xC7 0xDA 0x08 0xC9)
+  4     unknown (0x0F 0x7B 0x6B 0x75)
+  3     unknown (0x58 0xC3)
+
+  Values observed from supernode to client.
+
+0x17 ??? [<-]
+
+  Zero length.
+
+0x1D Network name [->, <-]
+
+  Bytes Desc
+  n     Network name, no terminator
+
+  Why this message exists is unclear, given that network names are
+  exchanged are part of handshaking.
+
+0x1E ??? [->, <-]
+
+  Bytes Desc
+  2     unknown (0x00 0x00)
+  2     unknown (0x00 0x7B from kazaa, 0x00 0x00 from imesh)
+
+  This is sent after connecting by the supernode and the client replies
+  with the same type.
+
+0x1F Network update [<-]
+
+  Bytes Desc
+  4     unknown
+
+  For each:
+  Bytes Desc
+  1     config type
+  4     length, including these 5 bytes
+  n     zero-terminated network name, or 0x00 for all networks
+
+  Then config-type-specific data.
+
+  Type 0x00 (network config):
+
+    As many times as required:
+
+    Bytes Desc
+    n     colon separated field:value, zero-terminated
+
+    Field names are:
+  
+      ConnectedNetworks
+	a space-separated list of networks connected to this network.
+        This appears to be the only network-specific field.
+
+      RequiredClientEncryptionBits
+        minimum encryption type for user-supernode communication.
+
+      RequiredSupernodeEncryptionBits
+        minimum encryption type for supernode-supernode communication.
+
+      ConnectionProtocolHeaderVersion
+        unknown
+
+      BroadcastStatsInterval
+        unknown
+
+      AuthUrlMask
+        unknown (currently 5)
+
+      HTTPAuthBits
+        minimum encryption type for shares listing (currently 38 (0x26))
+
+      MinSupernodeLibVersion
+        unknown (currently 26)
+
+      MinSupernodeSoftwareVersion
+        unknown
+
+      SearchIndirectNodesMin
+        unknown (currently 6)
+
+      SearchIndirectNodesMax
+        unknown (currently 10)
+     	
+      SearchIndirectEndResults
+        unknown (currently 10)
+
+      SearchResultsMax
+        maximum number of search results returned (currently 200)
+
+      DownloadSearchStep
+        unknown (currently 1)
+
+      DownloadSearchCount
+        unknown (currently 12)
+
+      UDPMode
+        unknown (currently 7)
+
+      InfoCode
+        unknown (16-byte hash as hex digits - an md5sum?)
+
+   Type 0x02 (client upgrade message):
+
+      Bytes Desc
+      n     unknown
+      20    file hash
+      n     file size (packed integer)
+      n     number of tags (packed integer)
+
+      Bytes Desc
+      n     tag type (packed integer)
+      n     tag length (packed integer)
+      n     tag contents
+
+      This requests that a client download the specified new version
+      of Kazaa.
+
+  256   unknown (some kind of hash?)
+  16    "<KaZaASignature>"
+
+0x20 Random files request [->]
+
+  Bytes Desc
+  2     ID(?)
+  1     unknown (0x32?)
+  2     unknown (0x02 0x00)
+
+  Requests a list of the files the remote node is sharing(?). FIXME.
+
+0x21 Random files [<-]
+
+  Bytes Desc
+  2     ID from request message
+  1     unknown
+  4     user's IPv4 address
+  2     user's port
+  4     IPv4 address of user's parent supernode
+  2     port of user's parent supernode
+  3     unknown
+  n     user and network name, separated by 0x01, zero-terminated
+
+  Repeated:
+  Bytes Desc
+  2     unknown (0x01 0xFF)
+  n     genre, zero terminated
+  n     artist, zero terminated
+  n     title, zero terminated
+
+0x22 Share file [->]
+
+  Bytes Desc
+  1     unknown (0x00)
+  1     media type(?)
+  2     unknown (0x00, 0x00)
+  20    file hash
+  n     checksum (packed integer)
+  n     file size (packed integer)
+  n     number of tags (packed integer)
+
+  Media type is one of:
+    0  Unknown
+    1  Audio
+    2  Video
+    3  Images
+    4  Documents
+    5  Software
+
+  Then for each tag:
+
+  Bytes Desc
+  n     tag type (packed integer)
+  n     tag length (packed integer)
+  n     tag contents
+
+0x23 ??? [<-]
+
+  Bytes Desc
+  4     unknown (0x00 0x00 0x00 0x01)
+
+  Sent after connect by supernode.
+
+0x24 ??? [=?]
+
+0x26 ??? [->, <-]
+
+  Bytes Desc
+  2     unknown (0x00 0x00 from kazaa, 0x00 0x00 from imesh)
+  2     unknown (0x00 0x22 from kazaa, 0x00 0x1A from imesh)
+
+  Sent by supernode, client replies with same type.
+
+0x2C External IP [<-]
+
+  Bytes Desc
+  4     IPv4 address
+
+  Your globally-visible IP.
+
+UDP messages
+============
+
+The first byte is the message type:
+
+0x27 Node ping [->]
+
+  Bytes Desc
+  1     0x27
+  4     minimum encryption type
+  1     unknown (0x80)
+  n     zero-terminated network name
+
+  Kazaa "pings" supernodes before attempting a TCP connection.
+
+0x28 Node pong [<-]
+
+  Bytes Desc
+  1     0x28
+  4     minimum encryption type
+  1     unknown (0x00)
+  1     ???
+  4     unknown
+  n     zero-terminated network name
+
+  Kazaa only seems to connect to nodes that return 0x28 in response to a ping,
+  never nodes that return 0x29.
+
+0x29 Node pong 2 (?) [<-]
+
+  Bytes Desc
+  1     0x29
+  4     minimum encryption type
+  1     unknown (0x01 or 0x02)
+  1     flag (0x00 or 0x01)
+  2     unknown (0x00 0x00)
+  4     unknown ID
+
+  If "flag" is 1:
+
+  Bytes Desc
+  4     sender's IPv4 address
+  2     port
+  2     unknown
+
+  Flag means "available for incoming connections"?
+
+0x2A ??? [->]
+
+  Bytes Desc
+  1     0x2A
+  4     ID
+
+  Seems to be sent in response to a 0x29 (but only if flag was set?).
+  Often (but not always) results in a 0xC0.
+
+0xC0 ??? [->,<-?]
+
+  Bytes Desc
+  1     0xC0
+  1     unknown (0x28?)
+  n     unknown
+
+0xC1 ???
+
+  Bytes Desc
+  1     0xC1
+  1     unknown
+  1     unknown
+  4     IPv4 address of destination(?!)
+
+0xC2 ???
+
+0xC3 ???
+
+Transfers
+=========
+
+Transfers use non-persistent HTTP/1.1. There are two forms of
+requests: hash-based:
+
+"GET /.hash=8e0cda92da564448da5ec5070f3231907abac2a6 HTTP/1.1"
+
+where the hexadecimal number is the 20-byte hash; and the older
+filename-based:
+
+"GET /13609/filename.ext HTTP/1.1"
+
+where the decimal number is the file checksum. Note that, unlike
+Gnutella, the requested filename must match the shared filename.
+
+Kazaa can also serve an HTML page containing a list of shared files;
+this used to be globally available but is now restricted to loopback
+connections (i.e. 127.0.0.1 only; even other local interfaces won't
+work).
+
+Other possible Kazaa path formats include "/.download/%u.%s",
+"/.supernode%s", "/.status%s", "/.network%s", "/.files". See below for
+information on "/.files"; not sure what the rest do, or even if they
+still work. Some (all?) of them seem to require some kind of
+authentication.
+
+Standard HTTP headers used:
+  
+  Host [->]
+  Range [->]
+  Connection [->]
+
+  Content-Type [<-]
+  Last-Modified [<-]
+  Server [<-]
+  Date [<-]
+  Content-Length [<-]
+  Accept-Ranges [<-]
+
+See RFC 2616.
+
+Nonstandard HTTP headers used:
+
+  X-Kazaa-Username [->, <-]
+       user name
+
+  X-Kazaa-Network [->, <-]
+       network name
+
+  X-Kazaa-IP [->, <-]
+
+  X-Kazaa-SupernodeIP [->, <-]
+
+  UserAgent (note misspelling) [->]
+
+  X-Kazaa-XferId [->]
+      ???
+
+  X-Kazaa-XferUid [->]
+      Apparently something to do with participation level. FIXME.
+
+  X-KazaaTag [<-]
+      in the format "%d=%s"
+      integers are converted to decimal first. Hashes (tag type 3) are
+      sent in base64, with a preceding '='. Filename (tag type 2) is
+      omitted, even for hash-based requests.
+
+For push transfers, the remote user connects and sends 
+"GIVE 4253679545\r\n", where the integer is the 4-byte push ID.
+There then follows a normal HTTP connection with roles reversed.
+
+
+Listing shared files
+====================
+
+Sending an HTTP GET request with a path of "/.files" results in the
+following pseudo-HTTP response (connection is left open):
+
+"HTTP/1.0 403 Forbidden 38 2273515777\r\n\r\n"
+
+Where 38 is the encryption type (decimal), and 2273515777 is the
+4-byte challenge (again decimal).
+
+The 4-byte challenge response (details as yet unknown; FIXME) is sent
+as raw binary, followed by two binary zeros. The server then sends a
+full HTTP response (including headers), and a body in the usual shares
+format:
+
+Repeated for each file:
+
+  Bytes Desc
+  20    file hash
+  n     checksum (packed integer)
+  n     file size (packed integer)
+  n     number of tags
+
+  Then for each tag:
+
+  Bytes Desc
+  n     tag type (packed integer)
+  n     tag length (packed integer)
+  n     tag contents
+
+
+Tag types
+=========
+
+Most of these need verifying.
+
+<<<<<<< PROTOCOL
+  Field Type   Desc
+  0x00  N/A    any
+  0x01  int    year
+  0x02  string filename
+  0x03  hash   hash
+  0x04  string title
+  0x05  int    duration (seconds)
+  0x06  string artist
+  0x08  string album
+  0x0A  string language (two-letter country code?)
+  0x0C  string keywords
+  0x0D  intint resolution
+  0x0E  string genre
+  0x10  ?      OS
+  0x11  int    bitdepth
+  0x12  ?      "type"?
+  0x15  int    quality (bitrate in kbps?)
+  0x18  ?      version
+  0x1A  string comment
+  0x1C  string codec?
+  0x1D  ?      rating
+  0x21  ?      size?
+  0x25  ???
+  0x2D  ???
+  0x31  ???
+  0x35  ?      ??? (0x02 witnessed)
+=======
+  Field    Type    Desc
+  0x00     N/A     any
+  0x01     int     year
+  0x02     string  filename
+  0x03     hash    hash
+  0x04     string  title
+  0x05     int     duration (seconds)
+  0x06     string  artist
+  0x08     string  album
+  0x0A     string  language (two-letter country code?)
+  0x0C     string  keywords
+  0x0D     intint  resolution
+  0x0E     string  genre
+  0x10     ?       OS
+  0x11     int     bitdepth
+  0x12     ?       "type"?
+  0x15     int     quality (bitrate in kbps?)
+  0x18     ?       version
+  0x1A     string  comment
+  0x1C     string  codec?
+  0x1D     ?       rating
+  0x21     ?       size?
+  0x25     ???     Sent with every kazaa query. Comparison type always 0x06.
+                   Observed values are 0x00 and 0x02.
+  0x2D     ???     Sent by imesh with hash query. Comparison type 0x06. 
+                   Length always 0.
+  0x35     ?       ??? (0x02 witnessed)
+  0x10003  kzhash  Used by kazaa when searching based on magnet links. Note
+                   that kazaa does _not_ submit this hash together with the
+                   shares to the supernode.
+>>>>>>> 1.7
+
+All integers are packed. Strings are not terminated. Type "intint" is
+two consecutive packed integers.
+
+hash is the old 16 byte md5 + 4 byte smallhash.
+kzhash is the old 20 byte hash + 16 byte md5 tree.
+
+The "any" tag is not a real tag, and is used for searching only.
+
+
+Hash format
+===========
+
+Hashes are 20 bytes long, and consist of a 16-byte MD5 and a 4-byte
+CRC. The MD5 is of the first 300K (i.e. 307200 bytes) of the file.
+The CRC is reflected, has a generator polynomial of 0x04C11DB7 and an
+initial value of 0xFFFFFFFF.
+
+The CRC is generated sparsely; not all the file is read. It starts at
+an offset of 1MB (i.e. 1048576 bytes), a complete 300K chunk is hashed
+(partial chunks are ignored), the offset is doubled and the process is
+repeated until there are no chunks left. Then the final 300K of
+the file is hashed, except where this would overlap with a previous
+chunk, in which case only the not-previously-hashed part is hashed.
+
+Finally, the CRC is xor'd with the lower 32 bits of the file size.
+And, unusually, it is stored little-endian.
+
+(FIXME: verify all this.)
+  
+There is also a 2-byte "checksum", which is simply a CRC of the full
+20-byte hash. Non-reflected, polynomial 0x1021, initial value zero.
+The top two bits are masked off (i.e. and with 0x3FFF), which I can
+only presume is so that a packed checksum is guaranteed to fit into
+two bytes...
+
+
+A few words about encryption
+============================
+
+This is *not* a detailed description of the encryption algorithms,
+merely a high-level overview.
+
+Each side of the connection has a 63-byte pad, which is initialized
+based upon a seed that is sent in the clear. Encryption type is a
+bitfield; each bit represents an algorithm that may or not be applied
+to mangle the initial pad.
+
+Once the pad has been initialized, a stream of pseudo-random bytes is
+produced. These are xor'd with each byte sent to produce the encrypted
+stream.
+
+The actual details of the pad initialization, and even the stream
+cipher, are unimportant: providing both sides of the connection
+generate the same stream, they can talk to each other. Hence most of
+the pad mangling algorithms appear to have no pattern, and I think
+it's probable that they've been created randomly.
+
+Note that the fact that all the information required for
+initialization is sent in the clear (rather than using a public-key
+algorithm) means that decryption of sniffed sessions is easy.
+
+There are many details omitted here that are, frankly, uninteresting,
+and easier to describe in code in any case.
+
+
+About this document
+===================
+
+Written by Tom Hargreaves <hex@freezone.co.uk>.
+
+Thanks to "the givers" (the anonymous bunch behind the original giFT);
+Markus Kern (pretender), author of giFT-FastTrack; Göran Weinholt, and
+everyone else involved in the reverse-engineering effort.
+
+No thanks to Sharman Networks Ltd, for attempting to exert such tight
+control over their network.
+
+BUGS
+====
+
+* A lot of the information here is second- or third-hand. I've
+  attempted to verify what I can, but it's not always been
+  possible. Much is still unknown.
+
+* This document should probably have been started a couple of years
+  ago...
+
+
+Links
+=====
+
+http://www.kazaa.com/
+   KaZaA, the program that started this whole messy business.
+
+http://www.k-lite.tk/
+   KaZaA Lite, a hacked-about version of KaZaA.
+
+http://www.giftproject.org/
+   The giFT project, home of the very first open source FastTrack
+   client. (It hasn't worked for a *long* time, but is interesting for
+   historical purposes.)
+
+http://developer.berlios.de/projects/gift-fasttrack/
+   giFT-FastTrack, a FastTrack plugin for giFT. (No, this doesn't
+   contradict what I said above... :)
+
+
+[EOF]

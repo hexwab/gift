@@ -1,0 +1,1 @@
+for i in  ../oldmaps/* ../maps/*;do echo $i 1>&2;bzcat $i;done| perl -lne '/host:(\d+)\.(\d+)\.(\d+)\.(\d+) port:(\d+) http_port:(\d+)/;next if $5==0 || $6==0;$packed=pack"C4nn",$1,$2,$3,$4,$5,$6;$hash{$packed}++;END{for (sort {$hash{$b} <=> $hash{$a}} keys %hash) {printf "%d\t%d.%d.%d.%d %d %d\n",$hash{$_},unpack"C4nn",$_}}' |tee nodeslist

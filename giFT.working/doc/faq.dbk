@@ -1,0 +1,362 @@
+<?xml version="1.0"?>
+<!--
+###############################################################################
+##
+## vim: set ts=2 sts=2 ft=xml tw=90 sw=2: -*- html -*-
+##
+## $Id: faq.dbk,v 1.11 2004/04/25 00:34:01 jasta Exp $
+##
+## Module:         Frequently Asked Questions
+## Description:    All the questions you should have read before you asked them
+##
+## Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+  -->
+<!DOCTYPE article PUBLIC '-//OASIS//DTD DocBook XML V4.2//EN'
+  'file:///usr/share/sgml/docbook/dtd/xml/4.2/docbookx.dtd'>
+<article class="faq">
+	<articleinfo>
+		<title>Frequently Asked Questions</title>
+		<author><firstname>Eelco</firstname><surname>Lempsink</surname></author>
+		<author><firstname>Josh</firstname><surname>Guilfoyle</surname></author>
+		<abstract>
+			<para>
+				This document is a collection of the most common questions found on
+				the mailing lists and in our IRC channel.  Please review the answers
+				carefully before posting a
+				<ulink url="http://gift.sourceforge.net/contact.php">support request</ulink>.
+			</para>
+		</abstract>
+	</articleinfo>
+	<sect1>
+		<title>Generic</title>
+		<qandaset defaultlabel="qanda">
+			<qandaentry>
+				<question><para>What is giFT?</para></question>
+				<answer>
+					<para>
+						<application>giFT</application> is a system of components that
+						work together to provide an elegant, easy-to-use framework for the
+						development and usage of popular peer-to-peer networks.  The
+						system's core component, <application>giftd</application>, is
+						the central bridge between the backend protocol plugins and the
+						<ulink url="http://gift.sourceforge.net/clients.php">user interfaces</ulink>
+						(sometimes referred to as "giFT clients").
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question><para>How do I get giFT?</para></question>
+				<answer>
+					<para>
+						You can download the latest release from our
+						<ulink url="http://sourceforge.net/project/showfiles.php?group_id=34618">Sourceforge file list</ulink>,
+						and (for most UNIX platforms) follow the instructions from the
+						<ulink url="http://gift.sourceforge.net/docs.php?document=install-unix.html">Installation Guide</ulink>.
+					</para>
+
+					<para>
+						Please note that <application>giFT</application> alone (that is
+						<application>giftd</application>,
+						<application>libgift</application>, and
+						<application>libgiftproto</application>) will not actually provide
+						a fully functional peer-to-peer client.  You will need to download
+						at least one <link linkend="plugins">protocol plugin</link> and a
+						<ulink url="http://gift.sourceforge.net/clients.php">client</ulink>.
+					</para>
+
+					<para>
+						There are also packages available in the
+						<ulink url="http://www.debian.org">Debian GNU/Linux</ulink>
+						distribution for those of you that have been blessed with
+						<emphasis>Super Cow Powers</emphasis>.  Simply install
+						the <application>gift</application> meta package which will
+						provide most of the components that you will need.  Other
+						platforms may also independently provide their own packages for
+						the <application>giFT</application> framework.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry id="plugins">
+				<question><para>What protocol plugins are available?</para></question>
+				<answer>
+					<para>
+						The following plugins are currently known to exist (please note
+						that only some of these plugins are actually considered supported
+						by this project):
+					</para>
+
+					<variablelist>
+						<varlistentry>
+							<term><ulink url="http://sourceforge.net/project/showfiles.php?group_id=34618&lt;package_id=89836">gift-openft</ulink> *</term>
+							<listitem>
+								<para>
+									Implements the OpenFT network, an open source alternative
+									to FastTrack built completely from scratch for the
+									<application>giFT</application> framework.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><ulink url="http://sourceforge.net/project/showfiles.php?group_id=34618&lt;package_id=89837">gift-gnutella</ulink> *</term>
+							<listitem>
+								<para>
+									Implements a large portion of the Gnutella network (not
+									version 2).
+								</para>
+
+								<para>
+									<todo>
+										The author of this document knows little about the
+										implementation details of this plugin, and so little
+										information is provided at this time.
+									</todo>
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><ulink url="http://gift-fasttrack.berlios.de">gift-fasttrack</ulink></term>
+							<listitem>
+								<para>
+									Implements the hugely popular FastTrack network used by
+									<ulink url="http://www.kazaa.com">KaZaA</ulink> (and
+									formerly <ulink url="http://www.morpheus.com">Morpheus</ulink>
+									and <ulink url="http://www.grokster.com">Grokster</ulink>).
+								</para>
+
+								<para>
+									Please note that this network plugin was produced through
+									reverse-engineering and is
+									<emphasis role="strong">NOT</emphasis> the same as other
+									popular clients utilizing this network.
+								</para>
+							</listitem>
+						</varlistentry>
+						<varlistentry>
+							<term><ulink url="http://gift-opennap.berlios.de">gift-opennap</ulink></term>
+						</varlistentry>
+						<varlistentry>
+							<term><ulink url="http://gift-soulseek.sourceforge.net">gift-soulseek</ulink></term>
+						</varlistentry>
+					</variablelist>
+					<para>
+						* - Officially supported by the upstream developers.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question><para>Can I use multiple plugins at once?</para></question>
+				<answer>
+					<para>
+						Certainly.  Simply run <command>gift-setup</command> (or
+						alternatively, edit <filename>$HOME/.giFT/giftd.conf</filename>)
+						and take a look at the documentation for the
+						<emphasis>/main/plugins</emphasis> configuration option.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question><para>Why do you use a daemon?</para></question>
+				<answer>
+					<para>
+						It creates an easy way for people to focus their development
+						efforts on the particular component that interests them most. That
+						is, GUI developers do not need to worry about protocol details,
+						and protocol developers do not need to worry about
+						display/interface details.
+					</para>
+				</answer>
+			</qandaentry>
+		</qandaset>
+	</sect1>
+	<sect1>
+		<title>Troubleshooting</title>
+		<qandaset defaultlabel="qanda">
+			<qandaentry>
+				<question>
+					<para>
+						When I try to start <application>giftd</application> it tells me
+						that my setup is "incomplete", what should I do?
+					</para>
+				</question>
+				<answer>
+					<para>
+						Make sure that you have used the
+						<application>gift-setup</application> utility to properly
+						configure the software.  If you have already done this, make
+						sure that you have answered the first question correctly (it
+						was intentionally worded in a manner to force new users
+						to actually read the configuration documentation before
+						answering the questions!).
+					</para>
+					<para>
+						After your initial run of <application>gift-setup</application>,
+						you may omit this step in the future when you wish to change or
+						update your configuration by simply descending the
+						<filename>$HOME/.giFT</filename> directory and poking around at the
+						<filename>.conf</filename> files found there.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question>
+					<para>
+						Why do I get startup errors trying to load specific protocol
+						plugins?
+					</para>
+				</question>
+				<answer>
+					<para>
+						By an overwhelming margin, the two most common reasons for this
+						are that the user (that's you) has either specified the name of
+						the plugin incorrectly, or the plugin has not been completely or
+						correctly configured prior to <application>giftd</application>
+						invocation.
+					</para>
+					<para>
+						If you are receiving errors actually opening/executing the
+						protocol plugin, make sure that the name of the plugin you
+						specified in the configuration file matches the name of the
+						plugin that you downloaded
+						(<emphasis role="strong">case matters!</emphasis>).  If you are
+						still having problems, I recommend running
+						<command>giftd -V | grep PLUGIN_DIR</command> to determine
+						where <application>giftd</application> is actually searching for
+						the plugins.  Examine the contents of the directory, and make
+						sure that you have correctly installed the plugin (you should see
+						a <filename>libPLUGIN.so</filename> file in this directory).
+					</para>
+					<para>
+						If it appears that the log file and/or error output is suggesting
+						that the plugin has not been configured correctly, you should
+						make sure to run <command>gift-setup</command>
+						<emphasis>after</emphasis> installing the plugin.  Please note that
+						some plugins do not use the <application>gift-setup</application>
+						configuration system and must be manually setup.  The most
+						common example of this is <application>gift-fasttrack</application>,
+						which requires that the user (in some cases) manually run
+						<command>mkdir $HOME/.giFT/FastTrack</command> before the
+						plugin will start.  Hopefully this behaviour will be corrected in
+						future releases of <application>gift-fasttrack</application>.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question>
+					<para>
+						Protocol <emphasis>X</emphasis> cannot connect, what's wrong?
+					</para>
+				</question>
+				<answer>
+					<para>
+						This is perhaps the most frequent (and most annoying) question
+						that we receive, so I'm going to force you to choke on a little
+						background information before I even attempt an answer.
+					</para>
+
+					<para>
+						First, it is important to understand that <application>giftd</application>
+						provides a framework for third-party plugins in which to nest, but
+						it does not actually control how those plugins work, or develop.
+						For this reason, the upstream <application>giFT</application>
+						developers often have no idea why some unknown/foreign protocol
+						plugin is not working exactly as you might expect.  Naturally, you
+						should contact the appropriate development team when attempting to
+						request support.  For example, if <application>gift-fasttrack</application>
+						isn't working, contact the <application>gift-fasttrack</application>
+						developers -- it is as simple as that.
+					</para>
+					<para>
+						Second, a common property of most peer-to-peer networks is the
+						extremely limited availability of peers and peer resources.  This
+						often means that new users will be devalued and may require
+						additional time to connect, or may not even be able to connect at
+						all when the most localized group of nodes is unable to accept
+						connections.  This is especially true with smaller networks like
+						OpenFT which do not have a large probabilistic network to poll
+						from when certain sections become stressed.  Yes, it sucks, we
+						know this.  What few things we can do to improve the situation are
+						constantly being explored and worked on, but as is a common theme
+						with most open source projects, <emphasis>we simply don't have the
+						time to do everything</emphasis>!
+					</para>
+					<para>
+						And now finally, your answer.  Each protocol plugin has its own
+						method of node discovery and propogation (as do most networks,
+						independent of their <application>giFT</application>
+						implementations), which means that there is no one unified
+						answer to this question.  For <application>gift-openft</application>,
+						you can often find a more up-to-date <filename>nodes</filename>
+						file to replace the default
+						<ulink url="http://jasta.gotlinux.org/openft/nodes">here</ulink>.
+						To install this file, simply close <application>giftd</application>,
+						copy to <filename>$HOME/.giFT/OpenFT/nodes</filename>, then
+						restart.  Please note that this method does <emphasis>not</emphasis>
+						guarantee a network connection!  For other plugins, you should
+						consult the appropriate documentation (if any exists) and find
+						the answer in the context of that plugin.
+					</para>
+				</answer>
+			</qandaentry>
+		</qandaset>
+	</sect1>
+	<sect1>
+		<title>Usage</title>
+		<qandaset defaultlabel="qanda">
+			<qandaentry>
+				<question>
+					<para>
+						Why does <command>giftd</command> bog down my system so much?
+					</para>
+				</question>
+				<answer>
+					<para>
+						For new <application>giFT</application> users, the system will
+						attempt to calculate a hash (MD5, SHA-1, etc) for each file
+						that you are sharing for each of the hashing algorithms
+						registered by your loaded plugins.  This often requires a great
+						deal of disk and CPU resources that may cause your computer to
+						run sluggish while it's working.
+					</para>
+
+					<para>
+						Once you have allowed this process to complete successfully,
+						the calculated hashes will be stored in a local shares file and
+						will be read in at the next startup.  The shared directories
+						will be scanned for new entries, but for the most part, the
+						disk and CPU usage will be substantially lower.
+					</para>
+				</answer>
+			</qandaentry>
+			<qandaentry>
+				<question>
+					<para>
+						I run <command>giftd</command>, but nothing happens.  What gives?
+					</para>
+				</question>
+				<answer>
+					<para>
+						<application>giftd</application> does not use direct input/output
+						to the user in the conventional user interface sense.  You will
+						want to use a <application>giftd</application>
+						<ulink url="http://gift.sourceforge.net/clients.php">client</ulink>
+						to interface with the system.  Also make sure that you have
+						downloaded, installed, and configured your preferred protocol
+						plugin before running <command>giftd</command>.
+					</para>
+				</answer>
+			</qandaentry>
+		</qandaset>
+	</sect1>
+</article>

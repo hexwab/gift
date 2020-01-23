@@ -1,0 +1,22 @@
+A lot of people seem to arrive here in search of an up-to-date nodes
+file for OpenFT.  That isn't originally what I put this directory up
+for (it contains mainly scripts for autogenerating the distributed
+nodes file from spider output), but seeing as how you're here, I have
+a few suggestions:
+
+1. Make sure you're running the latest OpenFT release (0.2.1.4 at the
+time of writing). Check giftd --version to be sure.
+
+2. Try stopping giftd, removing ~/.giFT/OpenFT/nodes, and
+restarting. Also make sure that location is writable by giftd.
+
+3. Give it 20 minutes to connect.
+
+If all that fails, you could try "nodes.current" in this directory,
+which is a symlink to the nodes file of my running node.  But you
+should make absolutely sure it doesn't work after the suggestions
+above, first, and you should also inform people on #gift (we'd like to
+know if the distributed nodes file really is completely stale, so it
+can be fixed).
+
+HEx.

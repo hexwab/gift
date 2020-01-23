@@ -1,0 +1,132 @@
+/* giFTcurs - curses interface to giFT
+ * Copyright (C) 2001-2002 Göran Weinholt <weinholt@linux.nu>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,  USA.
+ *
+ * $Id: transfer.c,v 1.3 2002/03/18 14:28:59 weinholt Exp $
+ */
+#include "giftcurs.h"
+
+#include <stdlib.h>
+
+#include "get.h"
+#include "transfer.h"
+#include "parse.h"
+#include "gift.h"
+#include "screen.h"
+
+#define __USE_GNU
+#include <string.h>
+
+#if __GNUC__
+# define ADD(args...)		strncatf(kallisti, sizeof kallisti, ## args)
+#else
+# define ADD(...)			strncatf(kallisti, sizeof kallisti, __VA_ARGS__)
+#endif
+
+void pretty_transfer(transfer * t)
+{
+	int fwidth = max_x - 40;
+	char kallisti[1024];
+	float ratio;
+
+	if (t->pretty)
+		return;
+
+	ratio = (float) t->transferred / t->filesize;
+
+	snprintf(kallisti, sizeof kallisti, "\\4%*.*s | ", fwidth, fwidth, t->filename);
+
+	if (t->transferred == -1) {
+		ratio = 0.0;
+		ADD("???? [ ??%%] ");
+	} else
+		ADD("%s [%3d%%] ", humanify(t->transferred), (int) (ratio * 100));
+
+	if (t->type == TRANSFER_UPLOAD) {
+		if (t->id != -1)
+			ADD(" @ %sB/s", humanify(t->bandwidth));
+		/* When someone just download one chunk from us, it's wrong to
+		 * call it cancelled. */
+		else
+			ADD(_(" Done"));
+	} else {
+		if (t->specific.d.sources.num == 0 && t->specific.d.user_queue.num) {
+			ADD(_("Queued"));
+		} else if (t->id != -1) {
+			ADD("%dx ", t->specific.d.sources.num);
+			if (!t->specific.d.sources.num && t->specific.d.user_queue.num) {
+				ADD(_("Queued"));
+			} else if (!t->transferred) {
+				ADD(_("Waiting"));
+			} else if (t->transferred == -1) {
+				ADD(_("No status"));
+			} else {
+				if (t->bandwidth == -1) {
+					ADD("@ ????B/s ?s");
+				} else if (t->bandwidth == 0) {
+					ADD(_("Stalled"));
+				} else {
+					ADD(_("@ %sB/s %s"),
+						humanify(t->bandwidth),
+						humanify_time((t->filesize - t->transferred) / t->bandwidth));
+				}
+			}
+			if (t->specific.d.search_id != -1)
+				ADD(_(" Searching"));
+		} else if (t->transferred == t->filesize) {
+			ADD(_("Completed"));
+		} else {
+			ADD(_("Cancelled"));
+		}
+	}
+	insert_at_ratio(kallisti + 2, "\\0", ratio,
+					(max_x > sizeof kallisti ? sizeof kallisti : max_x) - 4);
+	kallisti[sizeof kallisti - 1] = '\0';
+	t->pretty = strndup(kallisti, sizeof kallisti);
+}
+
+void transfer_touch(transfer * t)
+{
+	if (t->pretty) {
+		free(t->pretty);
+		t->pretty = NULL;
+	}
+}
+
+void transfer_detach(transfer * t)
+{
+	int i;
+
+	transfer_touch(t);
+	if (t->id != -1) {
+		/* FIXME: send something to giFT to cancel this transfer */
+		gift_unregister_id(t->id);
+		t->id = -1;
+	}
+
+	if (t->type != TRANSFER_DOWNLOAD)
+		return;
+	if (t->specific.d.search_id != -1) {
+		gift_search_stop(t->specific.d.search_id);
+		t->specific.d.search_id = -1;
+	}
+	list_free_entries(&t->specific.d.href_queue);
+	list_free_entries(&t->specific.d.user_queue);
+
+	for (i = 0; i < t->specific.d.sources.num; i++)
+		queue_release_user(t->specific.d.sources.entries[i]);
+
+	list_free_entries(&t->specific.d.sources);
+}

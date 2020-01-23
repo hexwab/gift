@@ -1,0 +1,21 @@
+Source: giftcurs
+Section: net
+Priority: optional
+Maintainer: Göran Weinholt <weinholt@dtek.chalmers.se>
+Build-Depends: debhelper (>= 4), libncurses5-dev, gettext, libglib2.0-dev
+Standards-Version: 3.5.9
+
+Package: giftcurs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Text-based interface to the giFT file-sharing system
+ A curses frontend to the giFT filesharing system (http://giftproject.org/).
+ It allows the user to perform searches and control downloads and uploads.
+ .
+ giFTcurs is the recommended frontend to giFT. It is feature rich, very fast,
+ stable, and is being actively developed. It seems to bring out memories of
+ lost BBS days, and it looks really good.
+ .
+ The CVS version of giFT is required. giFT 0.9.x will _never_ work.
+ .
+  Homepage: http://giftcurs.sourceforge.net/

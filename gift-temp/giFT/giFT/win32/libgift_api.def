@@ -1,0 +1,174 @@
+; $Id: libgift_api.def,v 1.15 2002/10/04 18:56:08 rossta Exp $
+
+EXPORTS
+ATOI				; parse.h
+ATOUL				; parse.h
+config_free			; conf.h
+config_get_int			; conf.h
+config_get_str			; conf.h
+config_new			; conf.h
+config_set_int			; conf.h
+config_set_str			; conf.h
+config_write			; conf.h
+connection_accept		; connection.h
+connection_bind			; connection.h
+connection_close		; connection.h
+connection_free			; connection.h
+connection_new			; connection.h
+connection_open			; connection.h
+dataset_clear
+dataset_clear_free
+dataset_find
+dataset_flatten
+dataset_foreach
+dataset_foreach_ex
+dataset_insert
+dataset_length
+dataset_lookup			; dataset.h
+dataset_lookup_node
+dataset_new			; dataset.h
+dataset_remove			; dataset.h
+event_loop			; event.h
+event_quit			; event.h
+file_basename			; file.h
+file_closedir			; file.h
+file_cp
+file_create_path		; file.h
+file_dirname			; file.h
+file_dump			; file.h
+file_exists			; file.h
+file_expand_path		; file.h
+file_host_path			; file.h
+file_mv				; file.h
+file_opendir			; file.h
+file_read_line			; file.h
+file_readdir			; file.h
+file_rmdir			; file.h
+file_secure_path		; file.h
+file_slurp			; file.h
+file_stat			; file.h
+file_temp			; file.h
+file_unix_path			; file.h
+gift_conf_path			; conf.h
+gift_config_new			; conf.h
+if_connection_get_event		; if_event.h
+if_connection_get_id		; if_event.h
+if_event_attach			; if_event.h
+if_event_data			; if_event.h
+if_event_detach			; if_event.h
+if_event_finish			; if_event.h
+if_event_lookup			; if_event.h
+if_event_new			; if_event.h
+if_event_send			; if_event.h
+input_add			; event.h
+input_remove			; event.h
+input_remove_full		; event.h
+input_resume			; event.h
+input_suspend			; event.h
+interface_append		; interface.h
+interface_close			; interface.h
+interface_dup			; interface.h
+interface_free			; interface.h
+interface_lookup		; interface.h
+interface_lookup_mod		; interface.h
+interface_parse			; interface.h
+interface_send			; interface.h
+ITOA				; parse.h
+list_append			; list.h
+list_copy			; list.h
+list_find			; list.h
+list_find_custom		; list.h
+list_foreach			; list.h
+list_foreach_remove		; list.h
+list_free			; list.h
+list_insert			; list.h
+list_insert_sorted		; list.h
+list_last			; list.h
+list_length			; list.h
+list_lock			; list_lock.h
+list_lock_append		; list_lock.h
+list_lock_free			; list_lock.h
+list_lock_new			; list_lock.h
+list_lock_prepend		; list_lock.h
+list_lock_remove		; list_lock.h
+list_nth			; list.h
+list_nth_data			; list.h
+list_prepend			; list.h
+list_queue_free			; list_queue.h
+list_queue_new			; list_queue.h
+list_queue_pop			; list_queue.h
+list_queue_push			; list_queue.h
+list_queue_shift		; list_queue.h
+list_queue_unshift		; list_queue.h
+list_remove			; list.h
+list_remove_link		; list.h
+list_sort			; list.h
+list_unlock			; list_lock.h
+log_cleanup			; log.h
+log_debug			; log.h
+log_dump_memory			; log.h
+log_error			; log.h
+log_fatal			; log.h
+log_info			; log.h
+log_init			; log.h
+log_trace			; log.h
+log_trace_pfx			; log.h
+log_warn			; log.h
+nb_active			; nb.h
+nb_finish			; nb.h
+nb_read				; nb.h
+net_accept			; network.h
+net_bind			; network.h
+net_close			; network.h
+net_connect			; network.h
+net_ip_str			; network.h
+net_local_ip			; network.h
+net_mask			; network.h
+net_match_host			; network.h
+net_peer_ip			; network.h
+net_send			; network.h
+net_set_blocking		; network.h
+net_sock_adj_buf		; network.h
+net_sock_error			; network.h
+platform_child_proc		; platform.h
+platform_cleanup		; platform.h
+platform_data_dir		; platform.h
+platform_errno			; platform.h
+platform_error			; platform.h
+platform_gettimeofday		; platform.h
+platform_init			; platform.h
+platform_local_dir		; platform.h
+platform_net_errno		; platform.h
+platform_net_error		; platform.h
+platform_plugin_dir		; platform.h
+platform_version		; platform.h
+protocol_add			; protocol.h
+protocol_destroy		; protocol.h
+protocol_find			; protocol.h
+protocol_list			; protocol.h
+protocol_new			; protocol.h
+protocol_remove			; protocol.h
+protocol_send			; protocol.h
+queue_add			; queue.h
+queue_add_single		; queue.h
+queue_flush			; queue.h
+queue_free			; queue.h
+stopwatch_elapsed
+stopwatch_free
+stopwatch_new
+stopwatch_start
+stopwatch_stop
+STRCMP				; parse.h
+STRDUP				; parse.h
+STRDUP_N			; parse.h
+string_isempty			; parse.h
+string_lower			; parse.h
+string_move			; parse.h
+string_sep			; parse.h
+string_sep_set			; parse.h
+string_trim			; parse.h
+stringf				; parse.h
+stringf_dup			; parse.h
+timer_add			; event.h
+timer_remove			; event.h
+timer_reset			; event.h

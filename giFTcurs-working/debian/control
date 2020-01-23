@@ -1,0 +1,17 @@
+Source: giftcurs
+Section: net
+Priority: optional
+Maintainer: Christian Haggstrom <chm@c00.info>
+Build-Depends: debhelper (>> 3.0.0), libncurses5-dev
+Standards-Version: 3.5.2
+
+Package: giftcurs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: curses interface to the giFT daemon
+ A cursed frontend to giFT (http://giftproject.org/).
+ .
+ The CVS version of giFT is required. giFT 0.9.x will NOT work
+ with the current version.
+ .
+ For the latest information, see http://giftcurs.sourceforge.net/.

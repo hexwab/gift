@@ -1,0 +1,4 @@
+?package(giftcurs):needs=text section=Apps/Net title="giFTcurs"\
+	icon=/usr/share/pixmaps/giFTcurs.xpm\
+    longtitle="curses giFT filesharing client" command="/usr/bin/giFTcurs"
+

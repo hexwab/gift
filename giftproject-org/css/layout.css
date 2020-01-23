@@ -1,0 +1,152 @@
+/*
+ * $Id: layout.css,v 1.5 2004/08/28 02:46:57 jasta Exp $
+ *
+ * Copyright (C) 2004 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*****************************************************************************/
+
+body
+{
+	background-color:  #788897;
+	font-family:       "sans-serif";
+}
+
+h1, h2
+{
+	font-family:       "Trebuchet MS",
+	                   "Verdana",
+	                   "Lucida Sans",
+	                   "Arial",
+	                   "Geneva",
+	                   "Helvetica",
+	                   "Helv",
+	                   "Myriad Web",
+	                   "Syntax",
+	                   "sans-serif";
+}
+
+/*****************************************************************************/
+
+#siteHeader
+{
+	border:            2px solid black;
+	background-color:  white;
+
+	margin-bottom:     5px;
+	padding:           5px 10px;
+}
+
+#siteHeader h1
+{
+	margin:            0px;
+	color:             #394966
+}
+
+/*****************************************************************************/
+
+#pageContent
+{
+	margin:            0px 0px 0px 190px;
+	padding:           10px;
+
+	background-color:  white;
+
+	border:            2px solid black;
+}
+
+#pageFooter
+{
+	text-align:        right;
+}
+
+#pageFooter p
+{
+	margin-bottom:     0px;
+}
+
+/*****************************************************************************/
+
+#siteSideBar
+{
+	float:             left;
+	width:             160px;
+
+	margin:            0px;
+	padding:           0px;
+}
+
+#siteSideBar div
+{
+	border:            2px solid black;
+	background-color:  white;
+	padding:           10px;
+	width:             100%;
+	margin-bottom:     5px;
+}
+
+#siteNavigation
+{
+	border:            2px solid black;
+	background-color:  white;
+	padding:           10px;
+	width:             100%;
+}
+
+#siteNavigation a
+{
+	color:             #394966;
+	text-decoration:   none;
+}
+
+#siteNavigation a:hover
+{
+	color:             #999900;
+	border-bottom:     1px solid #999900;
+}
+
+#siteNavigation ul
+{
+	list-style-type:   none;
+	padding:           0px;
+	margin:            0px;
+}
+
+#siteNavigation #menu > li
+{
+	background-image:    url("../images/bullet.png");
+	background-repeat:   no-repeat;
+	background-position: 0px 0.5em;
+	padding:             4px 0px 4px 16px;
+	border-bottom:       1px dashed #336699;
+}
+
+#siteNavigation #menu > li:first-child
+{
+	border-top:        1px dashed #336699;
+}
+
+#siteNavigation #menu ul
+{
+	margin:            0px;
+	padding:           0px;
+}
+
+#siteNavigation #menu ul > li
+{
+	background-image:    url("../images/bullet-mini.png");
+	background-repeat:   no-repeat;
+	background-position: 0px 0.5em;
+	padding-left:        20px;
+	font-size:           80%;
+}

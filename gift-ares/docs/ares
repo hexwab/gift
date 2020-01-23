@@ -1,0 +1,460 @@
+TCP port 45544
+
+supernode 68.188.233.253 45544
+
+uses zlib!
+"TMD4Family", "TSHA1", "SHA-1"?
+#FileEncryptionStatusW
+
+"CHAT CONNECT/0.1\r\n\r\n"
+"CHAT/0.1 200 OK\r\n\r\n"
+"CHAT PUSH/1.0 " "OK\?"
+
+has HTTP server support! content-length, transfer-encoding
+HTTP path "/ares"? 
+uses HTTP for transfers!!!
+
+"Ares Supernode"
+"Network.SupernodePort"
+
+extremely intolerant of HTTP syntax. terminator must be \r\n.
+HTTP version must be 1.1 if specified.
+All headers optional.
+Connection is closed on all errors.
+Default chunk size is 2Mb.
+X-MyLIP is a hex-encoded local IP address.
+X-B6MI is base64-encoded 12 unknown bytes.
+X-B6St is base64-encoded 23 (always?) unknown bytes.
+Connection is always kept alive.
+
+Example:
+GET sha1:KUYYF5+kYQwVwqFksupoBFnI4dU= http/1.1
+User-Agent: Ares 1.8.1.2942
+X-My-Nick: 
+X-B6MI: SyhAfiKok8UgaL1l
+X-MyLIP: C0A80080
+X-B6St: sgUBDCZxFYUAydN0PT6a3RFbI6O3Oog=
+Range: bytes=0-2097151
+
+HTTP/1.1 206 OK
+Server: Ares 1.8.1.2941
+X-My-Nick: anon_18e66da4
+X-B6MI: Sg91Ill6mIXNOrLR
+X-MyLIP: 18E66DA4
+Connection: Keep-Alive
+Content-range: bytes=0-2097151/7012480
+Content-Length: 2097152
+
+
+Decoded X-B6MI:
+
+Bytes Desc
+4     ip_1
+2     port_1?
+4     ip_2
+2     port_2?
+
+E..*#kQ..q..     | 45 0e 1c 2a 23 6b 51 06 e7 71 d6 83
+
+
+Decoded X-B6St:
+
+Bytes Desc
+1     flag, either 0x00 or 0x01
+2     unknown 00 00
+2     (unknown / 0x64) 00 00
+1     unknown dword capped to 0xFF if larger
+1     0-100, calculated by division of two dwords, maybe percentage of file completed?
+4     hardcoded 00 00 00 00
+4     unknown 00 00 00 00
+2     unknown 00 00
+1     hardcoded 11
+2     unknown 02 00
+1     unknown 00
+1     unknown 00
+1     unknown 80
+
+................ | 01 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00
+.......          | 00 11 02 00 00 00 80
+
+Supernode connection.
+Packet format
+
+Bytes Desc
+2     content length, exc this header
+1     message type
+
+
+Message types:
+
+Type Len Desc
+0x5a   3 initial handshake ->
+3   unknown (04 03 05)
+
+0x46    1 nodelist request? ->
+1   unknown (01)
+
+Index nodes will only respond to this and not 0x5a.
+
+0x33  27 handshake? <-
+
+len 27 (1 IP), 141 (20 IPs) <-- most common
+        then 21 (no IPs?), 33, 39, 69, 87, 93...
+288 (from index nodes, still unknown, maybe just IPs and nothing else)
+
+2   child count? (disconnect if >350)
+16  GUID??
+2   enc_state_16
+1   enc_state_8
+
+repeated:
+4   IPv4 address
+2   port
+
+Either 1 IP or 20 IPs are sent, seemingly.
+
+....}.[.]$.V.gT. | 0d 00 9f 02 7d 1f 5b 92 5d 24 f1 56 8f 67 54 b1 
+.c..#.....B.\.~. | af 63 a1 bd 23 98 07 09 0c f2 42 18 5c 0c 7e 00 
+9.].Q.j.`....C.. | 39 18 5d 10 51 9a 6a 90 60 13 b7 f6 a5 43 aa 13 
+h..?..k..F.&W..Q | 68 0a fa 3f 87 19 6b f2 82 46 18 26 57 8d c1 51 
+.'9O&C.).,k.=/7+ | 98 27 39 4f 26 43 14 29 ab 2c 6b 80 3d 2f 37 2b 
+../0N.iE.5p%...8 | cf 18 2f 30 4e be 69 45 c2 35 70 25 b3 18 a8 38 
+.....<.....=x.2E | de f6 ce 18 e2 3c cd f7 e0 98 03 3d 78 08 32 45 
+.?.....@.j.E.B<. | a5 3f 9e f0 f3 18 05 40 dc 6a 84 45 17 42 3c 86 
+...D2.GD.F...    | b5 ac a2 44 32 9e 47 44 96 46 b5 08 db 
+
+0x00  61 handshake ->
+
+1   unknown 00
+22  challenge response
+2   unknown integer
+1   current upload count
+1   total upload slots
+1   unknown (download-related?)
+1   upload queue length
+2   listening port
+1   nickname, zero terminated
+16  GUID for this installation
+2   00 00 ?
+4   client name, zero terminated
+4   local IP addr
+
+
+.|..6.T....... j | 00 7c a7 86 36 18 54 b7 aa cc fd f4 be 0f 20 6a 
+Zm... .......... | 5a 6d e8 d3 08 20 92 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+.....P.8M.....?p | 00 ac 19 fc be 50 10 38 4d 92 9a f6 f8 bf 3f 70 
+B`.............. | 42 60 c1 f7 03 ab bd 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+..W..w0}..L.u.J. | 00 98 57 07 d1 77 30 7d 8f ed 4c fb 75 1c 4a 83 
+................ | b1 08 15 08 1f f2 92 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+....{...b.s..q.V | 00 19 a1 ed 7b cf f5 8d 62 08 73 d0 85 71 9b 56 
+F............... | 46 8c 85 ea 87 a7 df 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+..A?...^.....|.: | 00 d7 41 3f aa 8f b1 5e 92 d6 84 ec a3 7c 1e 3a 
+..f.h.<......... | 14 f5 66 03 68 e7 3c 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+.$M.|..J.\Zo.<.. | 00 24 4d 16 7c c9 d0 4a ee 5c 5a 6f 00 3c 8a ea 
+DG.M............ | 44 47 bb 4d d0 06 ce 00 00 00 04 00 00 d6 83 00 
+CqWD...A._...... | 43 71 57 44 e2 b9 bc 41 85 5f 97 bd d4 82 7f 09 
+..Ares.....      | 00 00 41 72 65 73 00 c0 a8 00 80 
+
+.U....B...@..ZM. | 00 55 d7 0a 05 db 42 9a c8 cd 40 03 d7 5a 4d 81 
+..O............. | 06 ec 4f fb 1e 00 15 00 00 00 04 00 00 9b aa 00 
+sf(...KG....f-oH | 73 66 28 d8 1a ce 4b 47 a4 c4 0f 18 66 2d 6f 48 
+..AresLite.....  | 00 00 41 72 65 73 4c 69 74 65 00 c0 a8 00 80 
+
+0x01  14 stats? similar to 1e <-
+4  number of users
+4  number of files
+4  filesize in Gb
+2  unknown (small integer between 15 and 21)
+
+00000000  0c 00 00 00 5a 40 09 00  2d c1 cb 07 f9 a4 10 00  |....Z@..-.......|
+
+Why are there two stats messages?!
+
+0x05  16 your nickname, zero-terminated <-
+00000000  0e 00 00 00 61 6e 6f 6e  5f 33 65 30 33 66 63 38  |....anon_3e03fc8|
+00000010  34 00                                             |4...|
+
+
+0x1c     share files ->
+
+2  record length, excluding length bytes and terminating zero
+record:
+1  unknown
+2  length of tokens, in bytes
+
+tokens:
+ for each token:
+  1  source metadata type
+  2  tokenized
+  1  token length
+  n  token string
+
+4  bitrate
+4  frequency
+4  duration
+1  realm
+4  filesize
+20 SHA1
+n  ext, inc dot, zero-terminated
+metadata follows, see 0x12
+
+
+0x25   7 local IP <-
+4  IP address
+1  unknown (small integer between 1 and 10?)
+00000000  05 00 00 00 3e 03 fc 84  03                       |....>.......|
+
+0x1e      stats
+Two varieties of this, one length 7, one length 20.
+
+7: keepalive? ->
+1  current upload count
+1  total upload slots
+1  unknown (download-related?)
+1  upload queue length
+2  unknown integer
+optional:
+1  unknown (00?), only sent by warez, not ares
+
+Used to keep the connection alive. Remote node responds either with
+stats (see below) or 0x3a.
+
+20: stats <-
+4  number of users
+4  number of files
+4  filesize in Gb
+8, 10 or 12  2 IP addresses or IP:port combos
+(does this make it impossible to determine how to split one of each?)
+
+00000000  14 00 00 00 5e 3c 09 00  b4 f6 c3 07 53 99 10 00  |....^<......S...|
+00000010  0c 0b 5c b2 44 00 f7 95                           |..\.D...|
+00000000  14 00 00 00 41 ec 06 00  97 db cc 05 ed 79 0c 00  |....A........y..|
+00000010  9c 22 5c 22 42 5b 3e e2                           |."\"B[>.|
+
+$)..V.......D..\ | 24 29 09 00 56 e2 b9 07 e9 90 10 00 44 fe 14 5c 
+D8l.~.           | 44 38 6c a1 7e a3 
+
+....S4-.;...E... | a1 0b 07 00 53 34 2d 06 3b e8 0d 00 45 8d 1f d9 
+.i..l'..         | 10 69 18 0d 6c 27 d4 b2 
+....c.-.....E... | 0d 09 07 00 63 90 2d 06 9e e7 0d 00 45 8d 1f d9 
+.i..l'..         | 10 69 18 0d 6c 27 d4 b2 
+
+0x09     search
+
+d.......britney  | 64 0f 02 00 14 07 04 b1 62 72 69 74 6e 65 79 
+
+d......4met..L.a | 64 0f 03 00 14 03 02 34 6d 65 74 14 03 4c e7 61 
+rt               | 72 74 
+
+d.......abra..%[ | 64 0f 04 00 14 04 c6 0d 61 62 72 61 14 05 25 5b 
+moore            | 6d 6f 6f 72 65 
+
+d......Bdave...5 | 64 0f 05 00 14 04 cd 42 64 61 76 65 14 08 12 35 
+matthews         | 6d 61 74 74 68 65 77 73 
+
+e....title..arti | 65 01 02 00 01 74 69 74 6c 65 00 02 61 72 74 69 
+st..album..genre | 73 74 00 03 61 6c 62 75 6d 00 04 67 65 6e 72 65 
+..date.....      | 00 05 64 61 74 65 00 07 06 a0 00 
+
+e....haydn.      | 65 01 02 00 14 68 61 79 64 6e 00 
+but also:
+e....haydn.      | 65 00 02 00 14 68 61 79 64 6e 00 
+
+d....heather nov | 64 00 05 00 14 68 65 61 74 68 65 72 20 6e 6f 76 
+a.               | 61 00 
+
+
+1  100+realm? 0x64=everything, 0x65=audio, 0x69=video, 0x6b=image...
+1  ? (0x0f if tokenized, 0x00 or 0x01 otherwise?)
+2  search id
+
+if tokenized:
+  repeated:
+  1  meta type, see below
+  1  token length
+  2  tokenization
+  n  token string (not terminated)
+else
+  repeated:
+  1  meta type, 0x14 for "everything"
+  1  search string (zero terminated)
+endif
+
+meta types:
+1,2,3: title, artist, album as usual.
+4: genre. 5: date. 0x14: "everything"
+all zero-terminated.
+
+6: "length" (duration), 7: "quality" (bitrate), 8: size?:
+1  06, 07 or 08
+1  comparator (06: greater than?)
+2? value
+
+FIXME: how are duration/bitrate encoded when tokenized?
+
+single-char tokens are ignored (but search is still sent with no
+tokens!)
+
+FIXME: Warez and ares seem to tokenize differently?!
+FIXME: Tokens seem to be maximum of 12 chars... does tokenization
+include the missing chars? Is the tokenization actually used at all?
+
+0x12     search result
+
+hash search results:
+1   01
+4   supernode IP addr
+2   supernode port
+4   IP addr
+2   port
+1   unknown (0x61?)
+n   username, zero-terminated
+20  SHA1
+4   unknown (local IP address??) {7f 00 00 01, c0 a8 01 2f}
+
+token search results:
+1   00
+2   search id
+4   supernode IP addr
+2   supernode port
+4   IP addr (big endian)
+2   port (little endian)
+1   unknown (0x61?)
+n   username, zero-terminated
+5   unknown {18 00 00 01 05, 0f 00 00 02 00} ?
+1   realm (1=audio, 5=video, 6=document, 7=image)
+4   filesize
+20  SHA1
+n   extension, with preceding dot, zero-terminated
+
+metadata:
+
+01 Title, zero terminated
+02 Artist, zero terminated
+03 Album, zero terminated
+
+04 depends on realm:
+04 80 00 cd 00 00 00 (audio)
+audio: 04:
+2 bitrate
+4 duration (seconds)
+
+04 cb 01 bc 02 18 00 00 00 (image)
+image: 04:
+2 width
+2 height
+1 ? (02)
+1 depth? (24)
+3 zero?
+
+
+04 68 01 20 01 dc 01 00 00 (video)
+video: 04:
+2 width
+2 height
+4 bitrate?
+
+video: 07:
+n codec name, zero terminated
+e.g. "MPEG" or "AVI [fourcc]"
+
+06 year, ASCII, zero terminated
+0x10 filename, zero terminated
+
+
+
+0x32     compressed packets
+
+
+0x50     hash search
+20  SHA1
+1   unknown (00)
+
+
+
+0x36 +   node list??
+no ports though
+E..GD.0.D...C... | 45 f4 8b 47 44 c8 30 99 44 ff 96 18 43 17 ee 06 
+...+BC......DPN. | d9 d7 b4 2b 42 43 91 b0 8e b1 8b cc 44 50 4e c4 
+@...D.T`BL..B.a. | 40 92 e1 87 44 d8 54 60 42 4c d6 e3 42 a9 61 e2 
+D..zDf.TB...."1. | 44 04 b9 7a 44 66 e4 54 42 bd d6 bb 9c 22 31 03 
+..2.D'..DV...... | 96 c9 32 b7 44 27 c8 9d 44 56 ad c5 cd fb f6 9d 
+A`..C...A...A.gl | 41 60 9f de 43 ab f6 ac 41 1f a1 1f 41 1d 67 6c 
+D5Y.P<G......... | 44 35 59 1b 50 3c 47 d7 8d a6 e1 ca 8e b3 8c 1d 
+Ev..D+2..K..C.S. | 45 76 1e 9f 44 2b 32 94 c8 4b fe b8 43 15 53 84 
+D...D1..E.....<. | 44 b9 e4 d6 44 31 dd 0a 45 9c de 16 cf be 3c f6 
+D...D..eE...D.HT | 44 17 df cf 44 fd b5 65 45 8f fb d6 44 07 48 54 
+Dd..             | 44 64 ac d6 
+De.)BD.mE...D".. | 44 65 98 29 42 44 8d 6d 45 c3 a7 10 44 22 d7 ee 
+B.|.D1.....(Dj.. | 42 1f 7c 9e 44 31 9a 93 18 bb 17 28 44 6a 97 e5 
+Ds..BC..B.S.A.iG | 44 73 fb 8f 42 43 91 b0 42 1e 53 9d 41 ae 69 47 
+D,..D'.XE..WB.0. | 44 2c f6 d6 44 27 9a 58 45 f2 08 57 42 1a 30 95 
+D1.fA...D...."3G | 44 31 d1 66 41 1f a1 1f 44 17 df cf 9c 22 33 47 
+..G].e,..6.A.... | d5 c7 47 5d c6 65 2c 12 18 36 83 41 18 bc 0e 0a 
+D'..D0..D.U.A`.. | 44 27 ca 9d 44 30 96 db 44 c2 55 93 41 60 1e 0c 
+C...?.([...f.._. | 43 17 ee 06 3f a8 28 5b 0c d7 c2 66 d8 d3 5f a5 
+....D..8Da.8CT.B | cd fb ac fc 44 2e 12 38 44 61 0c 38 43 54 03 42 
+Dm.zA...D..eBB.0 | 44 6d e0 7a 41 1d 8a 11 44 fd b5 65 42 42 f8 30 
+....             | 88 a7 c2 92 
+
+These are index nodes I think.
+
+0x3a  6  supernode info??
+2  small integer <=70 (saturated at 70?) - peer count?
+2  small integer <=300 or so - same as first 2 bytes of 0x33: child count?
+2  small integer 79<=x<=280 or so - usually between 130 and 250
+
+connect to target supernode and send this message only.
+0x07  35  push request ->
+4  target's IP address
+2  your listening port
+20 SHA1
+8  ASCII-encoded hex string (you get to choose this, so I assume it has no significance)
+1  0x61 (bandwidth?)
+
+D...gE....J-.I.. | 44 a6 0c bb 67 45 f2 f7 cd d3 4a 2d 87 49 82 af 
+....}<..y.553CB4 | cf ee 86 00 7d 3c d8 8b 79 b7 35 35 33 43 42 34 
+6Ea              | 36 45 61 
+
+0x08  35  push request <-
+4  IP addr
+2  port
+20 SHA1
+1  00?
+8  ASCII-encoded hex string (IP addr?)
+.....F..&0;e..A. | d8 aa 92 d1 90 46 de e1 26 30 3b 65 01 10 41 0b 
+.....i.f.P.3A314 | e2 c6 1f 0c ec 69 1f 66 84 50 00 33 41 33 31 34 
+EE7              | 45 45 37 
+...\*.[..q.den.. | d1 f0 e2 5c 2a 95 5b ca b4 71 d3 64 65 6e aa 0b 
+..b.."...*.4F8B2 | f2 0a 62 bc 15 22 c3 df c0 2a 00 34 46 38 42 32 
+020              | 30 32 30 
+
+Connect to IP:port and send:
+"PUSH SHA1:[base16-encoded hash][8-byte hex string]\n\n"
+Then follows a HTTP connection with roles reversed.
+
+node caches at:
+http://www.areslite.com/ares/gc/
+http://www.aresgalaxy.org/ares/gc/ (same as above)
+http://data.warezclient.com/gcache
+
+Compressed with zlib, contains signed ASCII integers representing
+index IPs (no ports).
+
+connects to multiple supernodes (4) by default!
+guessing that means no search forwarding.

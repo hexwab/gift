@@ -1,0 +1,14 @@
+src/get.c
+src/gift.c
+src/main.c
+src/misc.c
+src/screen.c
+src/search.c
+src/settings.c
+src/transfer.c
+src/ui.c
+src/ui_help.c
+src/ui_main.c
+src/ui_settings.c
+src/ui_transfer.c
+src/format.c

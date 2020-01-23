@@ -1,0 +1,73 @@
+[19:31:49] giftd 0.11.8 (Nov 12 2004 01:02:19) started
+[19:31:50] Plugin OpenFT (0.2.1.5) successfully loaded and initialized
+[19:31:50] OpenFT: ft_openft.c:257(openft_start): Booya! OpenFT in the house!
+[19:31:50] *** GIFT-WARNING: OpenFT: guessing max_active=600
+[19:31:50] *** GIFT-ERROR: OpenFT: setrlimit(4096): Invalid argument
+[19:31:50] OpenFT: ft_node_cache.c:129(read_cache): opening nodes cache from /home/HEx/gift/OpenFT/test/OpenFT/nodes...
+[19:31:50] OpenFT: ft_node_cache.c:152(read_cache): successfully read 1 nodes
+[19:31:50] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 10.0.0.1:1217
+[19:31:50] OpenFT: ft_conn.c:523(start_connection): 10.0.0.1:1217: costs 4
+[19:31:50] OpenFT: ft_conn.c:643(ft_conn_initial): began 1 connections (remaining weight: 86)
+[19:31:50] giFT: giftd.c:744(init_transfer): recovered 0 state transfers
+[19:31:50] *** GIFT-WARNING: updating index...
+[19:31:50] OpenFT: 10.0.0.1:1217 (SEARCH) -> FINAL: 
+[19:31:50] giFT: share_cache.c:855(share_write_index): entered
+[19:31:50] giFT: share_cache.c:562(share_build_index): entered
+[19:31:50] giFT: share_cache.c:893(share_write_index): descending root: /home/HEx/gift/OpenFT/src...
+[19:31:50] giFT: share_cache.c:465(path_traverse): descending /home/HEx/gift/OpenFT/src...
+[19:31:50] giFT: share_cache.c:465(path_traverse): descending /home/HEx/gift/OpenFT/src/CVS...
+[19:31:50] giFT: share_cache.c:465(path_traverse): descending /home/HEx/gift/OpenFT/src/proto...
+[19:31:50] giFT: share_cache.c:465(path_traverse): descending /home/HEx/gift/OpenFT/src/proto/CVS...
+[19:31:52] giFT: share_cache.c:1141(share_read_index): entered
+[19:31:52] giFT: share_cache.c:562(share_build_index): entered
+[19:31:52] OpenFT: ft_share.c:315(openft_share_sync): beginning share sync...
+[19:31:52] OpenFT: ft_share.c:315(openft_share_sync): finishing share sync...
+[19:31:52] giFT: share_cache.c:1157(share_read_index): total shares: 164 (1.34MB)
+[19:31:57] reaped child process 19490
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 66.183.234.109:1985
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 82.75.229.108:2046
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 221.233.227.51:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 172.136.132.51:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 67.87.238.201:2034
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 80.4.212.204:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 24.190.125.112:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 69.167.109.107:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 24.113.98.95:1215
+[19:32:02] OpenFT: ft_session.c:635(ft_session_connect): attempting connection to 69.201.18.70:1215
+[19:32:03] OpenFT: 80.4.212.204:1215 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 24.190.125.112:1215 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 67.87.238.201:2034 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 69.167.109.107:1215 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 172.136.132.51:1215 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 66.183.234.109:1985 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 69.201.18.70:1215 (SEARCH) -> FINAL: 
+[19:32:03] OpenFT: 10.0.0.1:1217            PARENT (+PARENT)
+[19:32:03] OpenFT: [10.0.0.1]: ft_share.c:196(ft_share_local_submit): submitting shares...
+[19:32:04] OpenFT: 82.75.229.108:2046 (INDEX) -> FINAL: 
+[19:32:04] OpenFT: 221.233.227.51:1215 (SEARCH) -> FINAL: 
+[19:32:04] OpenFT: 80.4.212.204:1215 (SEARCH) -> DISCO: EOF from socket
+[19:32:04] OpenFT: 24.190.125.112:1215 (SEARCH) -> DISCO: EOF from socket
+[19:32:04] OpenFT: 69.167.109.107:1215 (SEARCH) -> DISCO: Connection reset by peer
+[19:32:04] OpenFT: 172.136.132.51:1215 (SEARCH) -> DISCO: EOF from socket
+[19:32:04] OpenFT: 69.201.18.70:1215 (SEARCH) -> DISCO: EOF from socket
+[19:32:04] OpenFT: 66.183.234.109:1985 (SEARCH) -> DISCO: EOF from socket
+[19:32:05] OpenFT: 82.75.229.108:2046 (INDEX) -> DISCO: EOF from socket
+[19:32:05] OpenFT: 221.233.227.51:1215 (SEARCH) -> DISCO: EOF from socket
+[19:32:06] OpenFT: 24.113.98.95:1215 (SEARCH) -> FINAL: 
+[19:32:07] OpenFT: 67.87.238.201:2034 (SEARCH) -> DISCO: EOF from socket
+[19:32:10] OpenFT: 24.113.98.95:1215 (SEARCH) -> DISCO: EOF from socket
+[19:33:16] if_event.c:472(if_event_attach): 127.0.0.1
+[19:33:16] giFT: daemon.c:482(dcmd_share): entered
+[19:33:31] OpenFT: ft_search.c:433(search_parents): 6cc5ff7561c73f7aaeb28564f42ea419: searched 1 nodes (ttl=2)
+[19:33:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:35:50] OpenFT: ft_session.c:568(ft_session_tidy_streams): cleaned up 0 of 0 autoflushed streams
+[19:35:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:37:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:39:50] OpenFT: ft_session.c:568(ft_session_tidy_streams): cleaned up 0 of 0 autoflushed streams
+[19:39:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:40:39] OpenFT: ft_search.c:433(search_parents): f859397e75df2d01fd17297814ebad68: searched 1 nodes (ttl=2)
+[19:41:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:42:36] if_event.c:478(if_event_detach): 127.0.0.1
+[19:43:50] OpenFT: ft_session.c:568(ft_session_tidy_streams): cleaned up 0 of 0 autoflushed streams
+[19:43:50] OpenFT: ft_conn.c:324(keep_alive): kept 1 connections alive
+[19:44:11] OpenFT: ft_openft.c:305(openft_destroy): flushed 1 nodes

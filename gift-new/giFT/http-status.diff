@@ -1,0 +1,173 @@
+Index: src/sharing.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.c,v
+retrieving revision 1.37
+diff -u -r1.37 sharing.c
+--- src/sharing.c	16 Apr 2002 06:35:20 -0000	1.37
++++ src/sharing.c	20 Apr 2002 22:56:44 -0000
+@@ -661,14 +668,20 @@
+  *
+  * return:
+  *   on success, the fully qualified local pathname is returned.  NULL is
+- *   returned if this file is not authorized for upload
++ *   returned if this file is not authorized for upload, and reason is set
++ *   accordingly
+  */
+-char *share_auth_upload (char *user, char *filename)
++char *share_auth_upload (char *user, char *filename, int *reason)
+ {
+ 	FileShare *file;
+ 
+ 	if (!filename)
++	{
++		if (reason)
++			*reason=SHARE_AUTH_NOT_FOUND;
++
+ 		return NULL;
++	}
+ 
+ 	/* anything requested in the data dir is ok */
+ 	if (!strncmp (filename, platform_data_dir (),
+@@ -680,16 +693,34 @@
+ 	/* this user has reached his limit ... force his client to queue the
+ 	 * extra files */
+ 	if (MAX_PERUSER_UPLOADS > 0 && upload_length (user) >= MAX_PERUSER_UPLOADS)
+-		return FALSE;
++	{
++		if (reason)
++			*reason=SHARE_AUTH_NO_SLOTS;
++
++		return NULL;
++	}
+ 
+ 	/* before we authorize a legitimate file share, check total upload count */
+ 	if (max_uploads != -1 && upload_length (NULL) >= max_uploads)
+-		return FALSE;
++	{
++		if (reason)
++			*reason=SHARE_AUTH_NO_SLOTS;
++
++		return NULL;
++	}
+ 
+ 	/* check to make sure we will actually share this file */
+ 	file = share_find_file (filename);
+ 
+-	return (file ? file->path : NULL);
++	if (!file)
++	{
++		if (reason)
++			*reason=SHARE_AUTH_NOT_FOUND;
++
++		return NULL;
++	}
++
++	return file->path;
+ }
+ 
+ /*****************************************************************************/
+Index: src/sharing.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.h,v
+retrieving revision 1.15
+diff -u -r1.15 sharing.h
+--- src/sharing.h	16 Apr 2002 00:57:27 -0000	1.15
++++ src/sharing.h	20 Apr 2002 22:56:46 -0000
+@@ -64,11 +66,15 @@
+ void       share_foreach      (HashFunc foreach_func, void *data);
+ 
+ FileShare *share_find_file    (char *filename);
+-char      *share_auth_upload  (char *user, char *filename);
++char      *share_auth_upload  (char *user, char *filename, int *reason);
+ void       share_disable      ();
+ void       share_enable       ();
+ int        share_status       ();
+ 
+ /*****************************************************************************/
++
++#define SHARE_AUTH_NOT_FOUND  1
++#define SHARE_AUTH_NO_SLOTS   2
++
+ 
+ #endif /* __SHARING_H */
+Index: OpenFT/http.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/http.c,v
+retrieving revision 1.241
+diff -u -r1.241 http.c
+--- OpenFT/http.c	18 Apr 2002 02:58:38 -0000	1.241
++++ OpenFT/http.c	20 Apr 2002 22:56:52 -0000
+@@ -565,7 +565,8 @@
+ 	char *range;
+ 	char *true_path;
+ 	char *content_type = "";
+-	int	  http_status_code = 200;
++	int   http_status_code = 200;
++	int   reason;
+ 
+ 	/* check whether the file is among those shared */
+ 	if (verify_share)
+@@ -573,10 +574,27 @@
+ 		if (!nodepage)
+ 		{
+ 			true_path =
+-				share_auth_upload (net_ip_str (xfer->ip), xfer->filename);
++				share_auth_upload (net_ip_str (xfer->ip), xfer->filename, &reason);
+ 
+ 			if (!true_path)
+-				http_status_code = 404;
++			{
++				switch (reason)
++				{
++				case SHARE_AUTH_NOT_FOUND:
++					http_status_code = 404;
++					break;
++
++				case SHARE_AUTH_NO_SLOTS:
++					http_status_code = 503;
++					break;
++					
++				default:
++					/* can't happen */
++					http_status_code = 404;
++					break;
++				}
++			}
++
+ 			else
+ 			{
+ 				/* TODO - this will be cleaned up in the future */
+@@ -587,7 +605,7 @@
+ 			}
+ 		}
+ 
+-		if (http_status_code != 404)
++		if (http_status_code / 100 == 2)
+ 		{
+ 			xfer->f = mime_open (xfer->filename, "rb",
+ 			                     &content_type, &length);
+@@ -599,11 +617,22 @@
+ 
+ 	}
+ 
+-	if (http_status_code == 404)
++	if (http_status_code / 100 != 2)
+ 	{
+ 		/* log this error */
+ 		access_log (xfer, http_status_code, length);
+-		net_send (xfer->c->fd, "HTTP/1.0 404 Not Found\r\n\r\n", 0);
++
++		switch (http_status_code)
++		{
++		case 404:
++			net_send (xfer->c->fd, "HTTP/1.0 404 Not Found\r\n\r\n", 0);
++			break;
++
++		case 503:
++			net_send (xfer->c->fd, "HTTP/1.0 503 Service Unavailable\r\n\r\n", 0);
++			break;
++		}
++			
+ 		return FALSE;
+ 	}
+ 

@@ -1,0 +1,32 @@
+Index: download.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/download.c,v
+retrieving revision 1.264
+diff -u -r1.264 download.c
+--- download.c	23 Dec 2003 21:57:01 -0000	1.264
++++ download.c	3 Jan 2004 17:09:59 -0000
+@@ -1338,6 +1338,12 @@
+ 		return -1;
+ 	}
+ 
++	if ((fflush (transfer->f)) != 0)
++	{
++		GIFT_ERROR (("fflush: %s", GIFT_STRERROR()));
++		return -1;
++	}		
++
+ 	chunk->transmit    += len; /* this chunk */
+ 	chunk->tmp_recv    += len; /* temporary transmit recording */
+ 	transfer->transmit += len; /* total transfer stats */
+@@ -1385,9 +1391,11 @@
+ 		GIFT_TRACE (("pausing %s: %s", transfer->filename,
+ 		             GIFT_STRERROR ()));
+ 
++#if 0
+ 		/* there is no fallback solution to this problem, so die rather than
+ 		 * corrupt data */
+ 		abort();
++#endif
+ 
+ 		download_pause (transfer);
+ 		return;

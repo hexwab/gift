@@ -1,0 +1,9 @@
+? g.diff
+? gnutella.spec
+? src/encoding/.deps
+? src/encoding/.libs
+? src/encoding/Makefile
+? src/encoding/Makefile.in
+? src/encoding/base32.lo
+? src/encoding/libgt_encoding.la
+? src/encoding/url.lo

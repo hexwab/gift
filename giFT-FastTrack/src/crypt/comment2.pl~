@@ -1,0 +1,17 @@
+#!/usr/bin/perl -w
+@a=split/\n/, `cat mini2.c`;
+
+s/^.*\/\//g for @a;
+
+for (0..$#a) {
+    $temp=$a[$_];
+    $a[$_]="// ".$a[$_];
+    open(F,">mini2temp.c");
+    print F,join"\n",@a;
+    $r=system("tcc mini2temp.c test2.o .libs/fst_crypt.o -I.. .libs/enc_type_*.o ../.libs/md5.o -o test2 && ./test2");
+    if ($r) {
+	$a[$_]=$temp;
+    } else {
+	print "$_ OK\n";
+    }
+}

@@ -1,0 +1,390 @@
+#include <ctype.h>
+
+#include "openft.h"
+#include "opt.h"
+
+#include "http.h"
+#include "search.h"
+
+#include "parse.h"
+
+/*****************************************************************************/
+
+/**/extern List       *ft_shares;
+/**/extern Connection *ft_self;
+
+unsigned long search_unique_id = 0;
+
+#define TOKEN_PUNCT ",`'!?"
+#define TOKEN_DELIM "\\/ _-.[]()\t"
+
+typedef int (*SearchFunc) (FileShare *file, char *query, void *contains);
+
+static HashTable *active_searches = NULL;
+
+/*****************************************************************************/
+
+static void token_remove_punct (char *token)
+{
+	char *ptr;
+
+	if (!token[0])
+		return;
+
+	while ((ptr = string_sep_set (&token, TOKEN_PUNCT)))
+	{
+		if (!token)
+			continue;
+
+		strmove (token - 1, token);
+		token--;
+	}
+}
+
+/*
+ * tokens are delimited by the set TOKEN_DELIM
+ * tokens are stripped of all punctuation
+ */
+ft_uint32 *search_tokenize (char *string)
+{
+	char      *token, *string0;
+	ft_uint32 *tokens;
+	int        tok = 0, tok_alloc = 32;
+
+	/* allocate the initial buffer */
+	tokens = malloc (tok_alloc * sizeof (ft_uint32));
+
+	string0 = string = strdup (string);
+
+	while ((token = string_sep_set (&string, TOKEN_DELIM)))
+	{
+		/* leave room for the null termination */
+		if (tok >= (tok_alloc - 1))
+		{
+			tok_alloc *= 2;
+			tokens = realloc (tokens, tok_alloc * sizeof (ft_uint32));
+			continue;
+		}
+
+		token_remove_punct (token);
+
+		if (*token)
+			tokens[tok++] = hash_string (string_lower (token));
+	}
+
+	free (string0);
+
+	/* null terminate */
+	tokens[tok++] = 0;
+
+	/* this is evil and wrong, but squeezes the best perf out of the RAM */
+	tokens = realloc (tokens, tok * sizeof (ft_uint32));
+
+	return tokens;
+}
+
+/*****************************************************************************/
+
+static int match_filename (FileShare *file, char *query, ft_uint32 *contains)
+{
+	ft_uint32 *tokens;
+	ft_uint32 *ptr;
+
+	if (!file || !contains)
+		return FALSE;
+
+	if (!file->tokens)
+		file->tokens = search_tokenize (file->file);
+
+	/* TODO - optimize this again ;) */
+	for (ptr = contains; *ptr; ptr++)
+	{
+		int matched = 0;
+
+		for (tokens = file->tokens; *tokens; tokens++)
+		{
+			if (*tokens == *ptr)
+				matched = 1;
+		}
+
+		if (!matched)
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
+static int match_md5 (FileShare *file, char *query, void *contains)
+{
+	return (strcmp (file->md5, query) == 0);
+}
+
+static int match_host (FileShare *file, char *query, unsigned long ip_data)
+{
+	return (file->host == ip_data);
+	/* return (strcmp (file->host, query) == 0); */
+}
+
+/*****************************************************************************/
+
+static int search_local (unsigned long key, FileShare *file, Dataset *dataset)
+{
+	List       **results;
+	SearchFunc   match_func;
+	char        *query;
+	ft_uint32   *contains;
+
+	results    = dataset_lookup (dataset, "results");
+	match_func = dataset_lookup (dataset, "match_func");
+	query      = dataset_lookup (dataset, "query");
+	contains   = dataset_lookup (dataset, "contains");
+
+	if ((*match_func) (file, query, contains))
+		*results = list_append (*results, file);
+
+	return TRUE;
+}
+
+static SearchFunc search_match_func (int search_type)
+{
+	SearchFunc match_func = NULL;
+
+	if (search_type & SEARCH_FILENAME)
+		match_func = (SearchFunc) match_filename;
+	else if (search_type & SEARCH_MD5)
+		match_func = (SearchFunc) match_md5;
+	else if (search_type & SEARCH_HOST)
+		match_func = (SearchFunc) match_host;
+
+	return match_func;
+}
+
+List *ft_search (int search_type, char *query)
+{
+	ft_uint32  *contains;
+	List       *ptr;
+	List       *results = NULL;
+	SearchFunc  match_func;
+	int         local = 0;
+
+	trace();
+	/* this cant happen */
+	if (!query)
+		return NULL;
+
+	if (search_type & SEARCH_LOCAL)
+	{
+		search_type &= ~SEARCH_LOCAL;
+		local = 1;
+	}
+
+	if (!(match_func = search_match_func (search_type)))
+		return NULL;
+
+	if (search_type & SEARCH_HOST)
+		contains = (void *) inet_addr (query);
+	else
+		contains = search_tokenize (query);
+
+	/* sigh, optimize this with our own special data structure later */
+	for (ptr = ft_shares; ptr; ptr = list_next (ptr))
+	{
+		FileShare *file = ptr->data;
+
+		if (!file)
+			continue;
+
+		if ((*match_func) (file, query, contains))
+			results = list_append (results, file);
+	}
+
+	if (local)
+	{
+		Dataset *dataset = NULL;
+
+		dataset_insert (dataset, "query",      query);
+		dataset_insert (dataset, "match_func", match_func);
+		dataset_insert (dataset, "results",    &results);
+		dataset_insert (dataset, "contains",   contains);
+
+		share_local_foreach ((HashFunc) search_local, dataset);
+
+		dataset_clear (dataset);
+	}
+
+	/* TODO - come up w/ more readable logic for this */
+	if (!(search_type & SEARCH_HOST))
+		free (contains);
+
+	return results;
+}
+
+/*****************************************************************************/
+
+void search_id_new (unsigned long id, Connection *dc, int search_type,
+					char *query)
+{
+	SearchID *search;
+
+	if (!(search = hash_table_lookup (active_searches, id)))
+	{
+		search = malloc (sizeof (SearchID));
+
+		search->id     = id;
+		search->dc     = dc;
+		search->type   = search_type;
+		search->query  = STRDUP (query);
+		search->tokens = search_tokenize (query);
+		search->ref    = 0;
+
+		if (!active_searches)
+			active_searches = hash_table_new ();
+
+		hash_table_insert (active_searches, id, search);
+	}
+
+	/* increment the number of hosts this search relies on */
+	search->ref++;
+}
+
+static void search_id_free (SearchID *search)
+{
+	dc_connection_close (NULL, search->dc);
+
+	free (search->query);
+	free (search->tokens);
+	free (search);
+}
+
+void search_id_remove (unsigned long id)
+{
+	SearchID *search;
+
+	if (!(search = hash_table_lookup (active_searches, id)))
+		return;
+
+	search_id_free (search);
+	hash_table_remove (active_searches, id);
+}
+
+static int search_id_locate_conn (unsigned long key, SearchID *search,
+								  void **udata)
+{
+	if (search->dc == *udata)
+	{
+		*udata = search;
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+void search_id_remove_by_conn (Connection *c)
+{
+	void *data;
+
+	/* data is used as a bidirectional input for the hashtable callback */
+	data = c;
+	hash_table_foreach (active_searches,
+						(HashFunc) search_id_locate_conn, &data);
+
+	if (data != c)
+	{
+		SearchID *search = data;
+
+		search_id_remove (search->id);
+	}
+}
+
+/*****************************************************************************/
+
+void search_reply (Protocol *p, Connection *c, unsigned long id,
+                   Connection *search_node, FileShare *file)
+{
+	SearchID *search = NULL;
+	char     *host;
+	char     *href;
+	char     *file_enc;
+
+	trace();
+	/* this function has overloaded behavior...if c is NULL, references it by
+	 * id */
+	if (!c)
+	{
+		SearchFunc match_func;
+
+		search = hash_table_lookup (active_searches, id);
+
+		/* TODO - search results are simply ignored from closed dc connections
+		 * but the search should actually be cancelled and cleaned up */
+		if (!search) {
+		  trace();
+			return;
+		}
+		c = search->dc;
+
+		/* verify that this wasnt a faulty search */
+		if (file && (match_func = search_match_func (search->type)))
+		{
+			if (!((*match_func) (file, search->query, search->tokens)))
+			{
+				/* verbosity that will soon be removed */
+				printf ("[%s] bogus match dropped for %s\n",
+						net_ip_str (NODE (c)->ip), file->file);
+				return;
+			}
+		}
+	} else {
+	  trace();
+	}
+
+	/* end of search */
+	if (!file)
+	{
+		if (search)
+		{
+			search->ref--;
+
+			if (!search->ref)
+				search_id_remove (search->id);
+		}
+
+		trace();
+		return;
+	}
+
+	file_enc = url_encode (file->file);
+	href = malloc (2048 + strlen (file_enc));
+
+	host = STRDUP (net_ip_str (file->host));
+
+	/* if the file was shared from a firewalled host, we need to construct
+	 * a special URL with the search node */
+	if (file->port == 0 && search_node)
+	{
+		sprintf (href,
+				 "http://%s:%hu/?listen_port=%hu&request_host=%s&"
+				 "request_file=%s",
+				 net_ip_str (NODE (search_node)->ip),
+				 NODE (search_node)->port + 1, NODE (ft_self)->port + 1,
+				 host, file_enc);
+	}
+	else
+	{
+		sprintf (href, "http://%s:%hu%s", net_ip_str (file->host),
+				 file->port + 1, file_enc);
+	}
+
+	free (file_enc);
+
+	trace();
+	dc_connection_send (p, c, 5, "ITEM",
+						"USER",     OPT_TYPE_STRING, host,
+						"NODE",     OPT_TYPE_STRING, net_ip_str (NODE (search_node)->ip),
+						"HREF",     OPT_TYPE_STRING, href,
+						"FILESIZE", OPT_TYPE_INT,    file->size,
+						"HASH",     OPT_TYPE_STRING, file->md5);
+
+	free (href);
+	free (host);
+}

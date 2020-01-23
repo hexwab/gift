@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+#
+# Main 
+# Written by Bart Verwilst <verwilst@gentoo.org>
+#
+
+import sys, os, time
+from declare import *   ## inherit all base instances
+from qt import *
+from ThreadLib import *
+
+T1 = ThreadExec("Connect", "")
+T2 = ThreadExec("ScanSockets", "")
+
+
+T3 = ThreadExec("UpdateStats", "")
+T4 = ThreadExec("FindgiFTexec", "")
+T5 = ThreadExec("CheckRunninggiFT", "")
+
+
+if not os.access(config.OptionList["giFTexecLoc"], os.X_OK): ## giFT binary not found
+	T4.start() ## Then find it
+
+if config.OptionList["StartgiFT"] == "True": ## If giFT autostart is active
+	## Autostart giFT if not already
+	T5.start()
+
+if config.OptionList["ShutdowngiFT"] == "True": ## Shutdown giFT on exit
+	win.chkShutdowngiFT.setChecked(True)
+
+
+if config.OptionList["WinMaximized"] == "True":
+	win.showMaximized()
+else:
+	win.resize(int(config.OptionList["Width"]), int(config.OptionList["Height"]))
+
+win.lblOpenFTStatus.setText("Not Connected")
+win.lblOpenFTUsers.setText("0")
+win.lblOpenFTFiles.setText("0")
+win.lblOpenFTSize.setText("0 Gb")
+
+T1.start()
+T2.start()
+T3.start()
+#sock.AutoUpdateLokiPoki()
+
+
+##  app Triggers go here ##
+app.connect(app, SIGNAL("lastWindowClosed()"), app, SLOT("quit()"))
+app.connect(app, SIGNAL("aboutToQuit()"), config.SaveAll)
+#app.connect(app, SIGNAL("aboutToQuit()"), T1.Stop)
+#app.connect(app, SIGNAL("aboutToQuit()"), T3.Stop)
+app.connect(app, SIGNAL("aboutToQuit()"), syslib.KillAll)
+
+##  win Triggers go here ##
+win.connect(win.cmdSearch, SIGNAL("clicked()"), sock.SubmitSearch)
+## Make sure the Popupmenu works in the listview ##
+win.connect(win.lstSearch, SIGNAL("mouseButtonClicked(int, QListViewItem*, const QPoint&, int)"), widlib.ShowMenu)
+win.connect(win.lstSearch, SIGNAL("doubleClicked(QListViewItem*)"), sock.StartDownload)
+
+win.show()
+app.exec_loop()

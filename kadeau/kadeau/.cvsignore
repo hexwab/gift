@@ -1,0 +1,7 @@
+.deps
+.libs
+Makefile
+Makefile.in
+*.moc.cpp
+*meta_unload.cpp
+kadeau

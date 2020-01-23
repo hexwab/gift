@@ -1,0 +1,32 @@
+# $Id: Makefile.msvc,v 1.8 2003/05/16 16:02:38 rossta Exp $
+
+!include ../Make.msvc
+
+OBJECTS = \
+	getopt$(O)
+
+TARGET = win32.lib
+
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CFLAGS)
+
+all : $(TARGET)
+
+install : $(TARGET)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+$(TARGET) : $(OBJECTS)
+	@lib -nologo -out:$(TARGET) $(OBJECTS)
+
+.c$(O):
+	$(COMPILE) -Fo$@ -c $<
+
+#eof

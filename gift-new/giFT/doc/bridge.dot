@@ -1,0 +1,9 @@
+digraph g {
+	graph [bb="0,0,650,52"];
+        node [fontname="Helvetica" shape="box"];
+	a [label="File Sharing Protocol (Backend)", width="3.28", pos="135,19", height="0.50"];
+	b [label="giFT ('Bridge')", width="1.53", pos="135,90", height="0.50"];
+	c [label="Graphical User Interface (Frontend)", width="3.72", pos="135,162", height="0.50"];
+	c -> b [pos="e,135,108 135,144 135,135 135,127 135,118"];
+	a -> b [pos="e,135,72 135,37 135,47 135,56 135,65"];
+}

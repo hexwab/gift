@@ -1,0 +1,160 @@
+# $Id: Make.msvc,v 1.9 2005/04/18 11:12:35 mkern Exp $
+
+OPENFT_MAJOR = 0
+OPENFT_MINOR = 2
+OPENFT_MICRO = 1
+OPENFT_REV = 6
+VERSION = $(OPENFT_MAJOR).$(OPENFT_MINOR).$(OPENFT_MICRO).$(OPENFT_REV)
+
+O = .obj
+
+# dynamic by default
+!if !defined(static) && !defined(STATIC)
+DYNAMIC=1
+!endif
+
+
+##########################
+# release / debug
+##########################
+
+!if defined(release) || defined(RELEASE)
+
+D=
+DEXT=
+DEBUG_OR_RELEASE=Release
+
+CFLAGS  = $(CFLAGS)  -Ox -G6
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+#DEFS    = $(DEFS)    -DNDEBUG -UDEBUG -U_DEBUG
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+
+!else # !defined(release) && !defined(RELEASE)
+
+D=d
+DEXT=d
+DEBUG_OR_RELEASE=Debug
+
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+!endif # defined(release) || defined(RELEASE)
+
+##########################
+# static / dynamic linking
+##########################
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+CFLAGS	= $(CFLAGS) -MD$(D) -DUSE_LTDL
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_LTDL
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+##########################
+# libdb support
+##########################
+
+!if defined(db) || defined(DB) || defined(libdb) || defined(LIBDB)
+
+
+!if "$(LIBDB_ROOT)" == ""
+
+LIBDB_ROOT=$(BUILD_ROOT)\libdb
+
+!endif # "$(LIBDB_ROOT)" == ""
+
+!if !exists($(LIBDB_ROOT))
+
+!error Directory $(LIBDB_ROOT) not found!
+
+!endif # !exists($(LIBDB_ROOT))
+
+
+INCLUDES = $(INCLUDES) -I$(LIBDB_ROOT)\BUILD_WIN32
+DEFS     = $(DEFS)     -DUSE_LIBDB -DHAVE_DB_H
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\$(DEBUG_OR_RELEASE)$(_STATIC_OR_NULL)"
+LIBS     = $(LIBS)      libdb41$(D)$(S_IF_STATIC).lib
+
+!endif # defined(db) || defined(DB) || defined(libdb) || defined(LIBDB)
+
+
+
+##########################
+# zlib support
+##########################
+
+!if defined(zlib) || defined(ZLIB)
+
+
+!if "$(ZLIB_ROOT)" == ""
+
+ZLIB_ROOT=$(BUILD_ROOT)\zlib
+
+!endif # "$(ZLIB_ROOT)" == ""
+
+
+!if !exists($(ZLIB_ROOT))
+
+!error Directory $(ZLIB_ROOT) not found!
+
+!endif # !exists($(ZLIB_ROOT))
+
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib.lib
+
+!endif # defined(zlib) || defined(ZLIB)
+
+##########################
+# general
+##########################
+
+# temporary till OpenFT doesn'T requires giFT symbols anymore
+GIFT_LIB      		= giFT$(DEXT).lib
+GIFT_DLL      		= giFT$(DEXT).dll
+GIFT_EXE   		= giFT$(DEXT).exe
+
+LIBGIFT_LIB      	= libgiFT$(DEXT).lib
+LIBGIFT_DLL      	= libgiFT$(DEXT).dll
+LIBGIFT_STATIC   	= libgiFTstatic$(DEXT).lib
+LIBGIFTPROTO_LIB	= libgiFTproto$(DEXT).lib
+LIBGIFTPROTO_DLL	= libgiFTproto$(DEXT).dll
+LIBGIFTPROTO_STATIC	= libgiFTprotostatic$(DEXT).lib
+OPENFT_LIB         	= OpenFT$(DEXT).lib
+OPENFT_DLL         	= OpenFT.dll
+OPENFT_STATIC       = OpenFTstatic$(DEXT).lib
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT
+DEFS     = $(DEFS) -DOPENFT_MAJOR=$(OPENFT_MAJOR) \
+                   -DOPENFT_MINOR=$(OPENFT_MINOR) \
+                   -DOPENFT_MICRO=$(OPENFT_MICRO)\
+                   -DOPENFT_REV=$(OPENFT_REV)
+
+INCLUDES = -I$(BUILD_ROOT) -I$(BUILD_ROOT)\libgift\win32 $(INCLUDES)
+
+LDFLAGS  = $(LDFLAGS) -nologo -version:$(VERSION)
+LDFLAGS  = $(LDFLAGS) -libpath:"$(BUILD_ROOT)\libgift" -libpath:"$(BUILD_ROOT)\libgift\proto"
+
+LIBS     = $(LIBS) wsock32.lib
+
+DEFS     = $(DEFS) -D_WINDOWS -U_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+
+##########################
+# tools
+##########################
+
+
+CC = cl
+LD = link
+LT = lib

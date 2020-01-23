@@ -1,0 +1,11 @@
+[transfer]
+uniq = 3FAC0000B3B30033E1A1.Scooter - Fire.mp3
+filename = Scooter - Fire.mp3
+hash = SHA1:cYjyQP9wgT4AxMrDmjGcZiFbybc=
+path = ./incoming/3FAC0000B3B30033E1A1.Scooter - Fire.mp3
+transmit = 2125061
+total = 3400097
+max_seek = 3400097
+paused = 0
+chunks = 850025-1275037 2125061-2550073 1275037-1700049 
+

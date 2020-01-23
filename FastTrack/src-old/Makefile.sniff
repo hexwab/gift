@@ -1,0 +1,2 @@
+sniff: sniff.c
+	gcc -g -Wall -o sniff sniff.c -I. -Icrypt crypt/enc_type_*.c md5.c -lnids -lnet -lpcap

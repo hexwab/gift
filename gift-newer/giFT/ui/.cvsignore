@@ -1,0 +1,12 @@
+*.o
+*core*
+.deps
+.libs
+giFT-fe
+Makefile
+Makefile.in
+
+*.obj
+giFTfe*.exe
+giFTfe*.ilk
+giFTfe*.pdb

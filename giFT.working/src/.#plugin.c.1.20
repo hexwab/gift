@@ -1,0 +1,322 @@
+/*
+ * $Id: plugin.c,v 1.20 2003/03/14 09:03:50 jasta Exp $
+ *
+ * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gift.h"
+
+#include "protocol.h"
+#include "if_event.h"
+
+#include "event.h"
+#include "plugin.h"
+
+/* protocol functbl */
+#include "share_hash.h"
+#include "share_file.h"
+#include "if_search.h"
+#include "if_message.h"
+#include "transfer.h"
+
+/*****************************************************************************/
+
+#ifndef USE_LTDL
+int OpenFT_init (Protocol *p);
+int Gnutella_init (Protocol *p);
+#endif /* !USE_LTDL */
+
+/*****************************************************************************/
+
+/*
+ * This is just terrible.  Please make me fix this.
+ */
+#define LOGMSG(fmt,pfx)                                                  \
+	char    msg[4096];                                                   \
+	size_t  msgwr = 0;                                                   \
+	va_list args;                                                        \
+	if (pfx)                                                             \
+		msgwr += snprintf (msg, sizeof (msg) - 1, "%s: ", (char *)pfx);  \
+	va_start (args, fmt);                                                \
+	vsnprintf (msg + msgwr, sizeof (msg) - msgwr - 1, fmt, args);        \
+	va_end (args);
+
+static int dbg_wrapper (Protocol *p, char *fmt, ...)
+{
+	LOGMSG (fmt, p->name);
+	log_print (LOG_DEBUG, msg);
+
+	return TRUE;
+}
+
+static int trace_wrapper (Protocol *p, char *file, int line, char *func,
+						  char *fmt, ...)
+{
+	LOGMSG (fmt, NULL);
+
+	return dbg_wrapper (p, "%s:%i(%s): %s", file, line, func, msg);
+}
+
+static int err_wrapper (Protocol *p, char *fmt, ...)
+{
+	LOGMSG (fmt, p->name);
+	log_print (LOG_ERR, msg);
+
+	return TRUE;
+}
+
+/*****************************************************************************/
+
+#if 0
+static int hash_set_wrapper (Protocol *p, char *type,
+                             unsigned char* (*algo) (char *path, char *type,
+                                                     int *len),
+                             char* (*human) (unsigned char *hash, int *len))
+{
+	return hash_algo_register (p, type, (HashAlgorithm)algo, (HashHuman)human);
+}
+#endif
+
+static void support_wrapper (Protocol *p, char *feature, int spt)
+{
+	dataset_insert (&p->features, feature, STRLEN_0 (feature),
+	                &spt, sizeof (spt));
+}
+
+static void search_result_wrapper (Protocol *p, IFEvent *event, char *user,
+                                   char *node, char *href, unsigned int avail,
+                                   FileShare *file)
+{
+	if_search_result (event, user, node, href, avail, file);
+}
+
+static void search_complete_wrapper (Protocol *p, IFEvent *event)
+{
+	if_search_remove (event, p);
+}
+
+static void chunk_write_wrapper (Protocol *p, Transfer *transfer,
+                                 Chunk *chunk, Source *source,
+                                 unsigned char *data, size_t len)
+{
+	chunk_write (chunk, data, len);
+}
+
+static void message_wrapper (Protocol *p, char *message)
+{
+	if_message_send (NULL, p, message);
+}
+
+/*****************************************************************************/
+
+static void source_status_default (Protocol *p, Source *source,
+                                   unsigned short klass, char *disptxt)
+{
+	source_status_set (source, (SourceStatus)klass, disptxt);
+}
+
+static int user_cmp_default (Protocol *p, char *a, char *b)
+{
+	return STRCMP (a, b);
+}
+
+static int source_cmp_default (Protocol *p, Source *a, Source *b)
+{
+	int ret;
+
+	assert (a != NULL);
+	assert (b != NULL);
+
+	if ((ret = STRCMP (a->url, b->url)))
+		return ret;
+
+	if ((ret = STRCMP (a->hash, b->hash)))
+		return ret;
+
+	return user_cmp_default (p, a->user, b->user);
+}
+
+/*****************************************************************************/
+
+static char *parse_proto (char *file, char **i_func)
+{
+	char *proto;
+	char *init_func;
+
+	/* construct the init function name */
+	if ((proto = strrchr (file, '/')))
+		proto++;
+	else
+		proto = file;
+
+	if (!strncmp (proto, "lib", 3))
+		proto += 3;
+
+	proto = strdup (proto);
+
+	if ((init_func = strchr (proto, '.')))
+		*init_func = 0;
+
+	init_func = malloc (strlen (proto) + 6); /* _init\0 */
+	sprintf (init_func, "%s_init", proto);
+
+	if (i_func)
+		*i_func = init_func;
+
+	return proto;
+}
+
+static void setup_functbl (Protocol *p, int (*init) (Protocol *p))
+{
+	p->init            = init;
+	p->trace           = trace_wrapper;
+	p->dbg             = dbg_wrapper;
+	p->err             = err_wrapper;
+#if 0
+	p->hash_set        = hash_set_wrapper;
+#endif
+	p->support         = support_wrapper;
+	p->search_result   = search_result_wrapper;
+	p->search_complete = search_complete_wrapper;
+	p->chunk_write     = chunk_write_wrapper;
+	p->source_status   = source_status_default;
+	p->source_cmp      = source_cmp_default;
+	p->user_cmp        = user_cmp_default;
+	p->message         = message_wrapper;
+}
+
+static Protocol *plugin_init (char *file, char *proto, char *i_func)
+{
+	Protocol    *p;
+	int        (*init) (Protocol *p);
+#ifdef USE_LTDL
+	lt_dlhandle  handle;
+#endif /* USE_LTDL */
+
+	init = NULL;
+
+#ifdef USE_LTDL
+	if (!(handle = lt_dlopen (file)))
+	{
+		GIFT_FATAL (("couldn't load protocol in file %s: %s\n",
+		             file, lt_dlerror ()));
+		return NULL;
+	}
+
+	init = lt_dlsym (handle, i_func);
+#else /* !USE_LTDL */
+	if (!strcmp (proto, "OpenFT"))
+		init = OpenFT_init;
+	else if (!strcmp (proto, "Gnutella"))
+		init = Gnutella_init;
+#endif /* USE_LTDL */
+
+	if (!init)
+	{
+#ifdef USE_LTDL
+		GIFT_FATAL (("couldn't load protocol %s in file %s: %s",
+		             proto, file, (char *)lt_dlerror ()));
+#else
+		GIFT_FATAL (("couldn't load protocol %s: protocol not supported by this binary",
+			    proto));
+#endif
+
+		return NULL;
+	}
+
+	/* create the protocol structure and store this data */
+	if (!(p = protocol_new (proto)))
+		return NULL;
+
+#ifdef USE_LTDL
+	p->handle = handle;
+#endif /* USE_LTDL */
+
+	setup_functbl (p, init);
+
+
+
+	/* initialize the plugin */
+	if (!(p->init (p)))
+	{
+		GIFT_FATAL (("%s (%s): init func failed\n",
+		             proto, file));
+
+#ifdef USE_LTDL
+		lt_dlclose (handle);
+#endif /* LTDL */
+
+		protocol_free (p);
+		return NULL;
+	}
+
+	/* this is a hack to maintain the old p->hash_set internals without
+	 * the cumbersome API to plugins */
+	if (p->hash_type)
+	{
+		hash_algo_register (p, p->hash_type,
+		                    (HashAlgorithm)p->hash, (HashHuman)p->hash_dsp);
+	}
+
+	return p;
+}
+
+void plugin_load (char *file)
+{
+	Protocol *p;
+	char     *proto;
+	char     *i_func;
+	int       ret;
+
+	/* retrieve the protocol name and initialization function */
+	if (!(proto = parse_proto (file, &i_func)))
+		return;
+
+	/* call the plugin's init function */
+	if ((p = plugin_init (file, proto, i_func)))
+	{
+		/* attempt to start the protocol's connections */
+		if (!(ret = p->start (p)))
+		{
+			GIFT_FATAL (("unable to start '%s', no idea why (hopefully "
+			             "the protocol provided some info)", p->name));
+			protocol_free (p);
+		}
+	}
+
+	free (i_func);
+	free (proto);
+}
+
+/*****************************************************************************/
+
+void plugin_unload (Protocol *p)
+{
+	if (!p)
+		return;
+
+	/* get the protocol to kill itself */
+	p->destroy (p);
+
+#if 0
+	/* remove all inputs from this protocol */
+	input_remove_full (p, NULL, 0, NULL);
+#endif
+
+#ifdef USE_LTDL
+	if (p->handle)
+		lt_dlclose (p->handle);
+#endif /* USE_LTLD */
+
+	protocol_free (p);
+}

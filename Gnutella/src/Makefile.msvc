@@ -1,0 +1,115 @@
+# $Id: Makefile.msvc,v 1.18 2004/03/27 00:36:20 mkern Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I. -Iio
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS       = $(LIBS) $(LIBGIFT_LIB) $(LIBGIFTPROTO_LIB) $(GIFT_LIB)
+TARGET     = $(GNUTELLA_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+LIBS       = $(LIBS) $(LIBGIFT_STATIC) $(LIBGIFTPROTO_STATIC) $(GIFT_LIB)
+TARGET     = $(GNUTELLA_STATIC)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+OBJECTS = \
+	dns$(O) \
+	file_cache$(O) \
+	gt_accept$(O) \
+	gt_ban$(O) \
+	gt_bind$(O) \
+	gt_conf$(O) \
+	gt_connect$(O) \
+	gt_gnutella$(O) \
+	gt_guid$(O) \
+	gt_http_client$(O) \
+	gt_http_server$(O) \
+	gt_netorg$(O) \
+	gt_node$(O) \
+	gt_node_cache$(O) \
+	gt_node_list$(O) \
+	gt_packet$(O) \
+	gt_query_route$(O) \
+	gt_search$(O) \
+	gt_search_exec$(O) \
+	gt_share$(O) \
+	gt_share_file$(O) \
+	gt_share_state$(O) \
+	gt_stats$(O) \
+	gt_urn$(O) \
+	gt_utils$(O) \
+	gt_version$(O) \
+	gt_web_cache$(O) \
+	gt_xfer$(O) \
+	gt_xfer_obj$(O) \
+	http_request$(O) \
+	sha1$(O) \
+	trie$(O) \
+	xml$(O) \
+	encoding\base32$(O) \
+	encoding\url$(O) \
+	io\io_buf$(O) \
+	io\rx_inflate$(O) \
+	io\rx_layer$(O) \
+	io\rx_link$(O) \
+	io\rx_packet$(O) \
+	io\rx_stack$(O) \
+	io\tx_deflate$(O) \
+	io\tx_layer$(O) \
+	io\tx_link$(O) \
+	io\tx_packet$(O) \
+	io\tx_stack$(O) \
+	message\bye$(O) \
+	message\gt_message$(O) \
+	message\ping$(O) \
+	message\ping_reply$(O) \
+	message\push$(O) \
+	message\query$(O) \
+	message\query_reply$(O) \
+	message\query_route$(O) \
+	message\vendor$(O) \
+	transfer\download$(O) \
+	transfer\push_proxy$(O) \
+	transfer\source$(O)
+
+
+all : $(TARGET)
+
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(GNUTELLA_LIB)
+	@-del /Q /F $(GNUTELLA_DLL)
+	@-del /Q /F $(GNUTELLA_STATIC)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+	@-del /Q /F io\*$(O)
+	@-del /Q /F transfer\*$(O)
+	@-del /Q /F message\*$(O)
+	@-del /Q /F encoding\*$(O)
+
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET)  $(LIBS) $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

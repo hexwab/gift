@@ -1,0 +1,17 @@
+Log times in seconds
+Index: lib/log.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/log.c,v
+retrieving revision 1.48
+diff -u -r1.48 log.c
+--- lib/log.c	11 Jul 2003 08:13:01 -0000	1.48
++++ lib/log.c	13 Jan 2004 18:49:32 -0000
+@@ -145,7 +145,7 @@
+ 	t  = time (NULL);
+ 	lt = localtime (&t);
+ 
+-	if (strftime (buf, sizeof (buf), "[%H:%M]", lt) > 0)
++	if (strftime (buf, sizeof (buf), "[%H:%M:%S]", lt) > 0)
+ 		fprintf (f, "%s ", buf);
+ }
+ 

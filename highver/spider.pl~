@@ -1,0 +1,208 @@
+#!/usr/bin/env perl
+###############################################################################
+##
+## $Id: spider.pl,v 1.5 2003/05/17 05:23:30 jasta Exp $
+##
+## Copyright (C) 2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+
+use strict;
+use Getopt::Long;
+
+use Openft;
+
+###############################################################################
+
+my $help;
+my $mapin;
+my $mapout;
+my $initnode;
+
+my %opts = ('help'     => \$help,
+            'map=s'    => \$mapin,
+            'output=s' => \$mapout,
+            'node=s'   => \$initnode);
+
+my $nodes = { };
+
+###############################################################################
+
+main (@ARGV);
+
+sub main
+{
+	handle_opts (\%opts);
+
+	# if -m was specified, do not actually spider the network, as the $nodes
+	# data structure will have been loaded from file
+	if (!$mapin)
+	{
+		my $conns = spider_to ($initnode);
+
+		printf STDERR ("Spider finished.  %i node(s) contacted.\n", $conns);
+	}
+
+	dump_nodes();
+}
+
+sub usage
+{
+	my $argv0 = shift;
+
+	print <<"EOF";
+
+$argv0 [options]
+
+  -h, --help             Show this help message
+  -m, --map MAPFILE      Load a previously dumped map file (debugging)
+  -o, --output MAPFILE   Output a constructed mapfile for loading
+  -n, --node HOST:PORT   Initial node to begin the spidering
+
+The -n option is required unless an input MAPFILE has been specified.
+
+EOF
+}
+
+###############################################################################
+
+sub handle_opts
+{
+	my $opts = shift;
+
+	my $ret = GetOptions (%opts);
+
+	if ($ret == 0 || $help || (!$mapin && !$initnode))
+	{
+		usage ($0);
+		exit;
+	}
+
+	if ($mapin)
+	{
+		open (my $maph, $mapin) or
+		  die "cannot open $mapin: $!";
+
+		local $/;
+		my $map = <$maph>;
+
+		close $maph;
+
+		# is there some way to get Dumper to write something more predictable
+		# than $VAR1?
+		my $VAR1;
+		eval $map or die "cannot eval $map: $!";
+		$nodes = $VAR1;
+	}
+}
+
+###############################################################################
+
+sub dump_nodes
+{
+	if ($mapout)
+	{
+		# write the node map that can be loaded in from --map
+		dump_debugmap ($mapout);
+	}
+
+	while (my ($node, $data) = each %{$nodes})
+	{
+		# dump the individual node line to stdout...
+		dump_node ($node, $data);
+	}
+}
+
+sub dump_debugmap
+{
+	my $mapfile = shift;
+
+	open (my $maph, ">$mapfile") or
+	  die "cannot open $mapfile for writing: $!";
+
+	use Data::Dumper;
+	print $maph (Dumper ($nodes));
+
+	close $maph;
+}
+
+sub dump_node
+{
+	my $node = shift;
+	my $data = shift;
+
+	# this node is either off on its own or we couldnt connect, dont consider
+	# it for the map
+	return if (!$data->{peers} || !$data->{children});
+
+	printf ("%s(0x%04x)", $node, 0x02);
+
+	dump_nodelist (@{$data->{peers}});
+	dump_nodelist (@{$data->{children}});
+
+	print "\n";
+}
+
+sub dump_nodelist
+{
+	my @list = @_;
+
+	# hackish logic to avoid leaving trailing commas
+	print ",";
+
+	foreach my $node (@list)
+	{
+		# more hackish logic to avoid trailing spaces
+		printf (" %s:%hu(0x%04x)", $node->{ip}, $node->{port}, $node->{klass});
+	}
+}
+
+###############################################################################
+
+sub spider_to
+{
+	my $node = shift;
+	my $ret = 0;
+
+	# we've already seen this node, ignore it...
+	return 0 if exists $nodes->{$node};
+	$nodes->{$node} = {};
+
+	# establish a new connection to spider
+	my $c = Openft->new ($node);
+
+	printf STDERR "Crawling $node...";
+
+	$c->connect ||
+	  (warn ("error: " . $c->get_err() . "\n"), return 0);
+
+	printf STDERR "Done\n";
+
+	# first assemble a list of all children entries to insert into the map...
+	my @children = $c->get_child_nodes;
+	$nodes->{$node}->{children} = [ @children ];
+
+	# ...then get a list of search node peers to spider to
+	my @peers = $c->get_search_nodes;
+	$nodes->{$node}->{peers} = [ @peers ];
+
+	$c->disconnect;
+
+	foreach my $peer (@peers)
+	{
+		# recursively spider to this new peer node...
+		$ret += spider_to (sprintf ("%s:%i", $peer->{ip}, $peer->{port}));
+	}
+
+	return $ret + 1;
+}

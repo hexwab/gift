@@ -1,0 +1,12 @@
+# OpenFT/OpenFT.conf
+
+[main]
+class = 3
+port = 1217
+http_port = 1216
+alias = HEx
+
+[search]
+children = 800
+max_local_results = 10000
+env_priv = 0

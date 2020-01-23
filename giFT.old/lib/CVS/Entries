@@ -1,0 +1,25 @@
+/.cvsignore/1.1.1.1/Wed Sep 19 22:07:14 2001//
+/Makefile.am/1.2/Fri Sep 21 21:10:58 2001//
+/giFT.h/1.1.1.1/Wed Sep 19 22:07:14 2001//
+/giFTbuffer.c/1.1.1.1/Wed Sep 19 22:07:14 2001//
+/giFTbuffer.h/1.1.1.1/Wed Sep 19 22:07:14 2001//
+/giFTcrypt.c/1.1.1.1/Wed Sep 19 22:07:14 2001//
+/giFTcrypt.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTdescribe.c/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTdescribe.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTdownload.c/1.2/Thu Sep 20 00:01:30 2001//
+/giFTdownload.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFThash.c/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFThash.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTinterval.c/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTinterval.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTmd5.c/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTmd5.h/1.1.1.1/Wed Sep 19 22:07:13 2001//
+/giFTpacket.c/1.2/Fri Sep 21 21:10:58 2001//
+/giFTpacket.h/1.3/Mon Sep 24 21:28:47 2001//
+/giFTproto.c/1.1.1.1/Wed Sep 19 22:07:12 2001//
+/giFTproto.h/1.1.1.1/Wed Sep 19 22:07:12 2001//
+/giFTshare.c/1.1.1.1/Wed Sep 19 22:07:12 2001//
+/giFTshare.h/1.1.1.1/Wed Sep 19 22:07:12 2001//
+/README/1.1/Sun Mar  3 05:51:57 2002//
+D

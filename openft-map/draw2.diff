@@ -1,0 +1,206 @@
+Index: draw.py
+===================================================================
+RCS file: /cvsroot/gift/openft-map/draw.py,v
+retrieving revision 1.22
+diff -u -r1.22 draw.py
+--- draw.py	23 Nov 2003 17:17:07 -0000	1.22
++++ draw.py	14 Dec 2003 04:16:10 -0000
+@@ -32,19 +32,20 @@
+ ageDecay = 40                             # amount of color do decay on each hop
+ ipStart = None                            # ip to draw link depth from
+ xplanetParms = None                       # extra parameters for xplanet map
+-drawUNodes = 1                            # should i draw user nodes too ?
++drawUNodes = 0                            # should i draw user nodes too ?
+ worldMap = 0                              # should i draw a world map and plot nodes ?
+ # Colors
+ snColor = (100,200,200)
+ unColorFire = (200,0,0)
+ unColor = (200,200,200)
+-peerLine = 128
++peerLine = (255,0,0)
+ userLine = (100,100,100)
+ # Fonts
+ try:
+     ifoSmall = ImageFont.load("fonts/courR08.pil")
+-    ifoStats = ImageFont.load("fonts/helvR10.pil")
+-    ifoSearch = ImageFont.load("fonts/helvR14.pil")
++    ifoDate = ImageFont.truetype("fonts/Vera.ttf",28)
++    ifoStats = ImageFont.truetype("fonts/Vera.ttf",20)
++    ifoSearch = ImageFont.truetype("fonts/Vera.ttf",20)
+ except:
+     print "Error loading font files, make sure they are on \"fonts/\""
+     sys.exit()
+@@ -126,53 +127,67 @@
+                 self.peerList[idx]=found # will be None if peer is not on the spider searchnode list
+             idx = idx+1
+ 
+-    def stamp(self,draw):
++    def stamp(self,draw,npass):
+         global drawUNodes
+         """ draw my name (ip) on a surface """
+         # make sure link starts from the center of text, so we move the text left
+         newFont = ifoSearch
+-        self.textSize = draw.textsize(self.name, font = newFont)
+-        self.pos[0] -= self.textSize[0]/2
+-        self.pos[1] -= self.textSize[1]/2
+ 
+-        #draw.rectangle((self.pos[0],self.pos[1],self.pos[0]+self.textSize[0],self.pos[1]+self.textSize[1]),fill = (0,0,0))                # black bounding box
+         nnodes = len(self.nodeList)
++        
++        snColor = (100,200,200)
+         if not drawUNodes:
+-            # use color proportional to child node count
+-            mincolor = 200
+-            maxcolor = 255
+-            bigNode = 500
+-            smallNode = 25
+             # interpolate to find a proper color
++            bigNode = 1000
++            smallNode = 25
+             if not nnodes:
+                 nnodes = 0.000000000001
+-            nvcolor = (maxcolor - mincolor) * (log(nnodes) - log(smallNode)) / (log(bigNode)-log(smallNode)) + mincolor
+-            nvcolor = int(nvcolor)
+-            if nvcolor < mincolor: nvcolor = mincolor
+-            if nvcolor > maxcolor: nvcolor = maxcolor
+-            snColor = (100,nvcolor,nvcolor)
++            scale = (log(nnodes) - log(smallNode)) / (log(bigNode)-log(smallNode))
++            if scale < 0: scale = 0
++            if scale > 1: scale = 1
++
++            # use color proportional to child node count
++            snColor = (100,105+scale*150,180+scale*75)
++
++            xsize = 20 + scale * 120
++            ysize = 15 + scale * 90
++            if (npass==1):
++                draw.ellipse((self.pos[0]-xsize,self.pos[1]-ysize,
++                              self.pos[0]+xsize,self.pos[1]+ysize),
++                             outline=snColor,fill=(0,0,0))
+ 
+             # interpolate to find a proper font size
+-            mincolor = 16
+-            maxcolor = 42
+-            nvcolor = (maxcolor - mincolor) * (log(nnodes) - log(smallNode)) / (log(bigNode)-log(smallNode)) + mincolor
+-            nvcolor = int(nvcolor)
+-            if nvcolor < mincolor: nvcolor = mincolor
+-            if nvcolor > maxcolor: nvcolor = maxcolor
++            minsize = 20
++            maxsize = 40
++            nvsize = (maxsize - minsize) * scale + minsize
+             try:
+-                newFont = ImageFont.truetype("fonts/Vera.ttf", nvcolor)
++                newFont = ImageFont.truetype("fonts/Vera.ttf", nvsize)
+             except:
+                 print "Error loading 'fonts/Vera.ttf'"
+                 raise SystemExit
++
++        if (npass!=1):
+             self.textSize = draw.textsize(self.name, font = newFont)
++            
++            textpos = (self.pos[0] - self.textSize[0]/2, self.pos[1] - self.textSize[1])
++            
++            # FIXME: imgSz should be accessible from here
++            if (textpos[0] + self.textSize[0] > 2100):
++                textpos = (2100 - self.textSize[0], textpos[1])
++            if (textpos[0] < 0):
++                textpos = (0, textpos[1])
++                    
++            #draw.rectangle((self.pos[0],self.pos[1],self.pos[0]+self.textSize[0],self.pos[1]+self.textSize[1]),fill = (0,255,0))                # black bounding box
++        
++            draw.text(textpos,self.name,fill = snColor,font = newFont) # draw ip (or hostname)
++            
++            versText = self.version
++            if not drawUNodes:              # not drawing unodes. Show child count instead
++                versText += " [%d]" % nnodes
++            verSize = draw.textsize(versText, font = newFont)
+ 
+-        draw.text(self.pos,self.name,fill = snColor,font = newFont) # draw ip (or hostname)
+-        versPos = (self.pos[0],self.pos[1]+self.textSize[1])
+-        draw.text(versPos,self.version,fill = snColor,font = newFont) # draw version
+-        if not drawUNodes:              # not drawing unodes. Show child count instead
+-            verSize = draw.textsize(self.version, font = newFont)
+-            versPos = (self.pos[0]+10+verSize[0],self.pos[1]+self.textSize[1])
+-            draw.text(versPos,"[%d]" % nnodes,fill = snColor,font = newFont) # draw version
++            versPos = (self.pos[0]-verSize[0]/2,self.pos[1])
++            draw.text(versPos,versText ,fill = snColor,font = newFont) # draw version
+ 
+     def dump(self):
+         dbg( "ip",self.ip)
+@@ -196,11 +211,11 @@
+ 
+ def stampDate(draw):
+     """ stamp date on the top left corner """
+-    draw.text((5,5),time.asctime(),fill = (10,10,255),font = ifoSearch)
++    draw.text((5,5),time.asctime(),fill = (255,255,255),font = ifoDate)
+     ln = 0
+     for line in getStats():
+-        draw.text((5,25+ln),line,fill = (10,10,255),font = ifoStats)
+-        ln += 20
++        draw.text((5,40+ln),line,fill = (255,255,255),font = ifoStats)
++        ln += 25
+ 
+ def getStats():
+     global searchNodes,userNodes
+@@ -341,6 +356,7 @@
+         slice = 3.14*log(float(nnodes))/snTotal
+ 
+         snIncr=snAngAcc+slice
++        snIncr-=sin(snIncr*2)*.15 # space further apart near the top and bottom
+         snAngAcc = snAngAcc+2*slice
+         sN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(snIncr),imgSzCenter[1]+snRadius*scaleY*sin(snIncr)]
+         # }
+@@ -367,8 +383,9 @@
+             uN.stamp(draw)
+ 
+     # draw search nodes
+-    for uN in searchNodes:
+-        uN.stamp(draw)
++    for npass in (1,2):
++        for uN in searchNodes:
++            uN.stamp(draw,npass)
+ 
+     stampDate(draw)
+     del draw
+@@ -506,8 +523,13 @@
+     # Generic
+     imgSz = (1040,1244)
+     imgSzCenter = (500,600)
+-    scaleX = 1.3
+-    scaleY = 1.7
++    if not drawUNodes:
++        scaleX = 2
++        scaleY = 2
++    else:
++        scaleX = 1.4
++        scaleY = 1.4
++        
+     # User nodes
+     if not len(userNodes):
+         import sys
+@@ -539,16 +561,20 @@
+             unAngAcc = unAngAcc+unStep
+ 
+     # calculate search node position
+-    unAngAcc = 0
+-    for uN in searchNodes:
+-        uN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(unAngAcc),imgSzCenter[1]+snRadius*scaleY*sin(unAngAcc)]
+-        unAngAcc = unAngAcc+snStep
++    snAngAcc = 0
++    for sN in searchNodes:
++        ang=snAngAcc
++        ang-=sin(ang*2)*.25 # space further apart near the top and bottom
++        sN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(ang),imgSzCenter[1]+snRadius*scaleY*sin(ang)]
++        snAngAcc = snAngAcc+snStep
+ 
+     # draw connections
+     drawConnections(draw)
+ 
+     # draw search nodes
+-    for uN in searchNodes: uN.stamp(draw)
++    for npass in (1,2):
++        for sN in searchNodes: sN.stamp(draw,npass)
++            
+ 
+     stampDate(draw)
+     del draw

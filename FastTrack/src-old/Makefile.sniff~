@@ -1,0 +1,2 @@
+sniff: sniff.c
+	gcc -o sniff sniff.c crypt/*.o -lnids -lnet -lpcap

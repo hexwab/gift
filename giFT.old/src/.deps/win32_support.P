@@ -1,0 +1,2 @@
+win32_support.o: win32_support.c
+win32_support.c :

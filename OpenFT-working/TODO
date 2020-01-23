@@ -1,0 +1,21 @@
+$Id: TODO,v 1.5 2003/07/29 00:01:15 jasta Exp $
+
+Probably quite a lot more left to do that isn't listed here.  If you wish to
+implement any of these please contact the authors for advice on how to
+proceed, otherwise you may be surprised when your patch is rejected.
+
+Design:
+
+  * Automatic node promotion.
+  * New transfer protocol, considering using BitTorrent...
+  * Notify search nodes when unusual download problems occur, encourage search
+    node to re-evaluate port information.
+  * New stats management system.
+  * Separate ft_search_request into token query and md5 query.
+  * Introduce a transparent routing layer so that PUSH requests do not need
+    an additional TCP connection to the search node.
+
+Code:
+
+  * Add bandwidth tracking diagnostic systems to gauge bw scalability.
+  * Remove ft_utils.c.

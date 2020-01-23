@@ -1,0 +1,188 @@
+# -*- sh -*-
+
+# Process this file with autoconf to produce a configure script.
+AC_INIT
+
+GIFT_MAJOR=0
+GIFT_MINOR=10
+GIFT_MICRO=0
+GIFT_VERSION=$GIFT_MAJOR.$GIFT_MINOR.$GIFT_MICRO
+
+VERSION=$GIFT_VERSION
+
+AM_INIT_AUTOMAKE(giFT, $VERSION)
+AM_CONFIG_HEADER(config.h)
+
+# AM_MAINTAINER_MODE
+
+
+
+# Checks for programs.
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_PROG_INSTALL
+
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+# Checks for libraries.
+AC_CHECK_LIB(nsl, gethostbyname)
+AC_CHECK_LIB(socket, socket)
+
+# Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS(fcntl.h sys/time.h unistd.h)
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+# Checks for library functions.
+AC_FUNC_MEMCMP
+AC_CHECK_FUNCS(socket select strdup strstr)
+AC_TRY_COMPILE([#include <sys/types.h>
+#include <sys/socket.h>], [socklen_t slen;],[],[AC_DEFINE(NEED_SOCKLEN_T)])
+
+# All of the lovely arguments
+AC_ARG_ENABLE(daemon,[  --disable-daemon        disable compiling the daemon],,[enable_daemon=yes])
+AM_CONDITIONAL(DAEMON, test x$enable_daemon = xyes)
+AC_ARG_ENABLE(openft,[  --disable-openft        disable compiling the OpenFT plugin],,[enable_openft=yes])
+AM_CONDITIONAL(OPENFT, test x$enable_openft = xyes)
+AC_ARG_ENABLE(gtk-client,[  --disable-gtk-client    disable compiling the GTK+ frontend],,[enable_gtk_client=yes])
+AM_CONDITIONAL(GTK_CLIENT, test x$enable_gtk_client = xyes)
+AC_ARG_ENABLE(libdl,[  --disable-libdl         do not use libdl],,[enable_libdl=yes])
+AM_CONDITIONAL(LIBDL, test x$enable_libdl = xyes)
+
+if test x$enable_libdl = xyes; then
+	AC_DEFINE(USE_DLOPEN)
+	AC_SUBST(USE_DLOPEN)
+else
+	GIFT_CFLAGS="-I../OpenFT"
+	GIFT_LDFLAGS="-L../OpenFT -lOpenFT"
+fi
+
+DL_MODULE=
+DL_LIBS=
+DL_LDFLAGS=	
+
+GIFT_ARCH_LIBS=
+
+# Architecture specific stuff
+AC_CANONICAL_HOST
+case "$host_os" in
+	freebsd*)
+		AC_DEFINE(FREEBSD, 1, [This is a FreeBSD system])
+		;;
+	linux*)
+		AC_DEFINE(LINUX, 1, [This is a Linux system])
+		DL_LDFLAGS='-rdynamic'
+		;;
+	netbsd*)
+		AC_DEFINE(NETBSD, 1, [This is a NetBSD system])
+		;;
+	openbsd*)
+		AC_DEFINE(OPENBSD, 1, [This is a OpenBSD system])
+		;;
+	mingw32*)
+		WIN32=yes
+		GIFT_ARCH_LIBS="-lws2_32"
+		GIFT_LDFLAGS="$GIFT_LDFLAGS -mwindows"
+		;;
+	*)
+		;;
+esac
+	
+# libdl checks
+if test x$enable_libdl = xyes; then
+	dnl check for dlopen and dlsym in the native c library
+	AC_CHECK_FUNC(dlopen, 
+		AC_CHECK_FUNC(dlsym, 
+			DL_MODULE=DL_MODULE_DL
+		,)
+	,)
+	
+	dnl check for dlopen and dlsym in libdl
+	AC_CHECK_LIB(dl, dlopen, 
+		AC_CHECK_LIB(dl, dlsym,
+			DL_LIBS=-ldl
+			DL_MODULE=DL_MODULE_DL
+		,)
+		,)
+	
+	dnl TODO - HPUX
+	
+	GIFT_LIBS="$LIBS $DL_LIBS"
+	GIFT_LDFLAGS="$LDFLAGS $DL_LDFLAGS"
+fi
+
+GIFT_LIBS="$GIFT_LIBS $GIFT_ARCH_LIBS"
+	
+# override -g -O2
+CFLAGS="-g -Wall"
+
+AC_SUBST(GIFT_LIBS)
+AC_SUBST(GIFT_LDFLAGS)
+AC_SUBST(GIFT_CFLAGS)
+	
+if test x$prefix = xNONE; then
+	prefix="/usr/local"
+	AC_SUBST(prefix)
+fi
+
+plugindir=${prefix}/lib/giFT
+AC_SUBST(plugindir)
+
+AC_DEFINE_UNQUOTED(PLUGIN_DIR, "${prefix}/lib/giFT")
+
+giftdatadir=${prefix}/share/giFT
+AC_SUBST(giftdatadir)
+
+if test x$WIN32 != xyes; then
+	AC_DEFINE_UNQUOTED(DATA_DIR, "${prefix}/share/giFT")
+fi
+
+giftperldir=${prefix}/bin
+AC_SUBST(giftperldir)
+
+# Checks for GTK+
+if test x$enable_gtk_client = xyes ; then
+#	AM_PATH_GTK(,,[AM_CONDITIONAL(GTK_CLIENT, false); enable_gtk_client=no])
+	AM_PATH_GTK(1.2.0,,AC_MSG_ERROR([*** GTK+ >= 1.2.0 not fully installed - please either install development packages or build with --disable-gtk-client]))
+	GTKCFLAGS="$GTK_CFLAGS"
+	GTKLIBS="$GTK_LIBS"
+	AC_SUBST(GTKCFLAGS)
+	AC_SUBST(GTKLIBS)
+fi
+
+AC_OUTPUT([
+	giFT-setup
+	gift.spec
+	Makefile
+	src/Makefile
+	ui/Makefile
+	OpenFT/Makefile
+	ui/perl/Makefile
+	data/Makefile
+	data/OpenFT/Makefile
+	],[case "$CONFIG_FILES" in
+	*giFT-setup*)chmod +x giFT-setup;;
+	esac])
+
+echo
+echo $PACKAGE $VERSION
+echo
+echo Build Daemon............: $enable_daemon
+echo Build OpenFT............: $enable_openft
+echo Build GTK+ Frontend.....: $enable_gtk_client
+echo Use dlopen..............: $enable_libdl
+echo
+echo $PACKAGE will be installed in $prefix/bin
+echo
+echo configure complete, now type \'make\'
+echo

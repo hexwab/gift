@@ -1,0 +1,58 @@
+# $Id: Makefile.msvc,v 1.1 2003/06/04 14:41:01 rossta Exp $
+
+!include ../../Make.msvc
+
+INCLUDES = -I../../win32 -I../.. -I../../src -I../../lib -I../../OpenFT -I../../Gnutella -I../../plugin $(INCLUDES)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS		= $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+LIBPROTO_DEF	= "../../win32/libproto_api.def"
+TARGET		= $(LIBPROTO_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+TARGET		= $(LIBPROTO_STATIC)
+
+!endif
+
+OBJECTS = \
+	ft_handshake$(O) \
+	ft_sharing$(O) \
+	ft_query$(O) \
+	ft_transfer$(O)
+	
+all : $(TARGET)
+
+install : $(TARGET)
+!if defined(dynamic) || defined(DYNAMIC)
+	@copy /y $(TARGET) ..\..\win32-dist\libproto.dll
+!endif
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS) $(LIBPROTO_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(LIBPROTO_DEF) $(LIBS) \
+	       $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

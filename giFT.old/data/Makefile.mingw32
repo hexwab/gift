@@ -1,0 +1,12 @@
+# -*- makefile -*-
+
+.PHONY: all install clean
+
+all:
+	$(MAKE) -C OpenFT -f Makefile.mingw32
+install:
+	copy /y mime.types ..\win32-dist\data
+	$(MAKE) -C OpenFT -f Makefile.mingw32 install
+
+clean:
+	$(MAKE) -C OpenFT -f Makefile.mingw32 clean

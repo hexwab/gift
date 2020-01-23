@@ -1,0 +1,21 @@
+Index: lib/conf.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/conf.c,v
+retrieving revision 1.36
+diff -u -r1.36 conf.c
+--- lib/conf.c	8 Feb 2004 06:07:49 -0000	1.36
++++ lib/conf.c	16 Mar 2004 04:49:31 -0000
+@@ -605,8 +624,11 @@
+ 	string_set_buf (&sobj, buf, buf_size, 0, FALSE);
+ 
+ 	failure  = ! BOOL_EXPR (string_append (&sobj, ldir));
+-	failure |= ! BOOL_EXPR (string_appendc (&sobj, '/'));
+-	failure |= ! BOOL_EXPR (string_appendvf (&sobj, fmt, args));
++	if (!failure)
++		failure = ! BOOL_EXPR (string_appendc (&sobj, '/'));
++
++	if (fmt && *fmt && !failure)
++		failure = ! BOOL_EXPR (string_appendvf (&sobj, fmt, args));
+ 
+ 	string_finish (&sobj);
+ 

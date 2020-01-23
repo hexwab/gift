@@ -1,0 +1,87 @@
+#!/usr/bin/env perl
+###############################################################################
+##
+## $Id: spider.pl,v 1.5 2003/05/17 05:23:30 jasta Exp $
+##
+## Copyright (C) 2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+
+use Openft;
+
+@Openft::version=(0,2,1,3);
+
+###############################################################################
+
+my @nodes;
+while (<STDIN>) {
+    chomp;
+    my (undef, undef, $ip, $port, undef, $class, $ver)=split' ';
+    $ip=eval'v'.$ip;
+    push @nodes, [$ip,$port,$class] if $class &2;# && $ver>=0x20103;
+}
+#print "$_->[0]\n" for @nodes;
+
+for (@ARGV) {
+    set_up_the_bomb ("$_:1216")
+	unless last_chance_to_survive ("$_:1215");
+}
+
+sub last_chance_to_survive
+{
+	my $node = shift;
+	my $ret = 0;
+
+	# establish a new connection to spider
+	my $c = Openft->new ($node);
+
+	printf STDERR "Crawling $node...";
+
+	$c->connect ||
+	  (warn ("error: " . $c->get_err() . "\n"), return 1);
+
+	printf STDERR "\nVer: %x", $c->{nodever};
+
+
+	my $info=$c->get_node_info();
+	   
+#	print "IP: $info->{ip}, port: $info->{port}, hport: $info->{hport}\n";
+	print STDERR ", class: $info->{class}, alias: $info->{alias}\n";
+
+	$c->send_nodes(@nodes);
+
+	$c->disconnect;
+#	printf STDERR "Done.\n";
+
+	return 1 if $c->{nodever}>=0x20103;
+	return 1 if ($info->{class}&2)==0;
+	return 1 if $info->{alias}=~/^poisoned$/i;
+
+	return 0 if $info->{alias}=~/^www\.kceasy\.com$/i;
+	return 0 if $info->{alias} eq 'MP3MusicSearch';
+	return 1;
+}
+
+sub set_up_the_bomb
+{
+    my $node=shift;
+    print STDERR "Aborting $node...";
+    use IO::Socket::INET;
+    my $sock = IO::Socket::INET->new ('PeerAddr' => $node,
+				      'Timeout'  => 15);
+    return 0 unless defined $sock;
+
+    print $sock "GET your OpenFT version is too old. Please upgrade.\r\n\r\n";
+    close $sock;
+    print STDERR "done.\n";
+}

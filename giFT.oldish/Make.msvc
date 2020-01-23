@@ -1,0 +1,168 @@
+# $Id: Make.msvc,v 1.13 2002/10/17 09:10:15 rossta Exp $
+
+VERSION = 0.10
+
+O = .obj
+
+# release / debug
+!if defined(release) || defined(RELEASE)
+D=
+DEXT=
+CFLAGS  = $(CFLAGS)  -Ox -G6
+
+DEFS    = $(DEFS)    -DNDEBUG -U_DEBUG
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+!else
+# must be lower case:
+D=d
+DEXT=$(DEXT)
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+!endif
+
+
+# static / dynamic linking
+!if defined(static) || defined(STATIC)
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_DLOPEN
+!else
+CFLAGS   = $(CFLAGS) -MD$(D) -DUSE_DLOPEN
+!endif
+
+
+# libdb stuff
+!if defined(db) || defined(DB) || defined(libdb) || defined(LIBDB) || defined (use_libdb) || defined(USE_LIBDB)
+
+!if "$(LIBDB_ROOT)" == ""
+LIBDB_ROOT=d:\pub\src\db-4.0.14
+!endif
+
+!if !exists($(LIBDB_ROOT))
+!error Directory $(LIBDB_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(LIBDB_ROOT)\BUILD_WIN32 -I$(LIBDB_ROOT)\INCLUDE -I$(LIBDB_ROOT)\INCLUDE_AUTO
+DEFS     = $(DEFS)     -DUSE_LIBDB -DHAVE_DB_H
+
+!if defined(static) || defined(STATIC)
+
+!if defined(release) || defined(RELEASE)
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\RELEASE_STATIC"
+!else
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\DEBUG_STATIC"
+!endif
+
+LIBS     = $(LIBS)      libdb40s$(D).lib
+
+!else
+
+!if defined(release) || defined(RELEASE)
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\RELEASE"
+!else
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\DEBUG"
+!endif
+
+LIBS     = $(LIBS)      libdb40$(D).lib
+
+!endif
+
+!endif
+
+# id3lib stuff
+!if defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB) || defined (use_id3lib) || defined(USE_ID3LIB)
+
+!if "$(ID3LIB_ROOT)" == ""
+ID3LIB_ROOT=d:\pub\src\id3lib-3.8.0
+!endif
+
+!if !exists($(ID3LIB_ROOT))
+!error Directory $(ID3LIB_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_ID3LIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\libprj"
+LIBS     = $(LIBS)     id3lib$(D).lib
+
+!if defined(static) || defined(STATIC)
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=1
+!else
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=3
+!endif
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\zlib\include
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\zlib"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!else
+
+
+# zlib stuff
+!if defined(zlib) || defined(ZLIB) || defined (use_zlib) || defined(USE_ZLIB)
+
+!if "$(ZLIB_ROOT)" == ""
+ZLIB_ROOT=d:\pub\src\zlib
+!endif
+
+!if !exists($(ZLIB_ROOT))
+!error Directory $(ZLIB_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!endif
+
+!endif
+
+
+# libvorbis stuff
+!if defined(vorbis) || defined(VORBIS) || defined(libvorbis) || defined(LIBVORBIS) || defined (use_libvorbis) || defined(USE_LIBVORBIS)
+
+!if "$(LIBVORBIS_ROOT)" == ""
+LIBVORBIS_ROOT=d:\pub\src\oggvorbis-win32sdk-1.0
+!endif
+
+!if !exists($(LIBVORBIS_ROOT))
+!error Directory $(LIBVORBIS_ROOT) not found!
+!endif
+
+INCLUDES = $(INCLUDES) -I$(LIBVORBIS_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_LIBVORBIS
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\lib"
+LIBS     = $(LIBS)     vorbis_$(D).lib vorbisfile_$(D).lib
+
+!endif
+
+
+GIFT_LIB = giFT$(DEXT).lib
+GIFT_DLL = giFT$(DEXT).dll
+GIFT_EXE = giFT$(DEXT).exe
+LIBGIFT_LIB = libgiFT$(DEXT).lib
+LIBGIFT_DLL = libgiFT$(DEXT).dll
+LIBGIFT_STATIC = libgiFTstatic$(DEXT).lib
+OPENFT_STATIC	= OpenFTstatic$(DEXT).lib
+OPENFT_DLL	= OpenFT$(DEXT).dll
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT
+INCLUDES = -I../win32 -I../src -I../lib -I../OpenFT $(INCLUDES)
+LDFLAGS  = $(LDFLAGS) -nologo -libpath:"../src" -libpath:"../lib" \
+	   -libpath:"../win32" -version:$(VERSION)
+LIBS     = $(LIBS) advapi32.lib kernel32.lib user32.lib ws2_32.lib \
+           binmode.obj oldnames.lib win32.lib
+
+!if defined(windows) || defined(WINDOWS)
+DEFS     = $(DEFS) -D_WINDOWS
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+!else
+DEFS     = $(DEFS) -D_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:console
+!endif
+
+CC = cl
+LD = link
+LT = lib

@@ -1,0 +1,174 @@
+<html><head><title>giFT: Frequently Asked Questions</title></head><body>
+
+<h1 align="center"><u><font color="#000080">FAQ</font></u></h1>
+<h2 align="center"><font color="#990000"><tt>GNU Internet File Transfer</tt></font></h2>
+<hr width="50%">
+<p><br>
+<font face="Courier New, Courier, mono" color="#333333">
+ Project Name: giFT<br>
+ Submission Date: December 1, 2001<br>
+ Last Update: February 17, 2002<br>
+ Maintainer: eelco<br><br>
+</font></p>
+<p>All the questions you shouldn't have asked in the IRC channel</p>
+<ol>
+ <li><a href="#gen">General</a></li>
+ <li><a href="#help">Contribute</a></li>
+ <li><a href="#ft">KaZaa, Morpheus, Grokster, oh my!</a></li>
+ <li><a href="#oft">OpenFT</a></li>
+ <li><a href="#sft">ShadowFT</a></li>
+</ol>
+
+<hr>
+    
+<ol>
+ <a name="gen"><!-- GENERIC --></a>
+ <li><font size=+1><b>Generic</b></font><br><br>
+  <ul>
+   <li><b>What is giFT?</b><br>
+giFT is a plugin system that can be used to connect to many different
+networks. But for now OpenFT is the only network you can use.
+   </li><br>
+   <li><b>Where is your IRC channel?</b><br>
+<a href="http://www.openprojects.net">irc.openprojects.net</a>, join channel 
+#gift
+   </li><br>
+   <li><b>History</b><br>
+Development to create a Linux client to KaZaA was our initial goal. After a
+lot of reverse engineering and packet sniffing, a group of talented developers
+which became known as &quot;the givers&quot; stumbled onto our project (at the
+time &quot;kazaatux&quot;). Within a few weeks, we had a working daemon that
+could connect to and search the KaZaA network. Shortly after, KaZaA released a
+new version of their client which eventually led to the breaking of what we
+now call giFT. After the permanent departure of the givers, the giFT team
+started moving development into a new direction; foremost was the desire to
+have a completely open, completely free peer to peer network modeled in the
+image of FastTrack. Thus OpenFT was born. giFT was moved to a new plugin
+architecture which would allow the creation of plugins that would make it easy
+for one client to be compatible with any number of networks. The first of
+these plugins were to be OpenFT, and a reimplementation of a working FastTrack
+client.
+   </li><br>
+   <li><b>Why use a daemon?</b><br>
+It creates an easy way for people to focus their time on frontends instead of
+all of so much networking code. Also, if the daemon changes, all of the
+frontends will still function the same as they had before. This also makes it
+so we don&#39;t end up with 20 incompatible protocols flying around as 
+standalone clients.
+   </li><br>
+  </ul>
+ </li>
+
+ <a name="help"><!-- HELP --></a>
+ <li><font size=+1><b>Contribute</b></font><br><br>
+  <ul>
+   <li><b>How can I help speed up development?</b><br>
+You can&#39;t. Well... maybe you can help testing, or make your box available
+as a search node. Just drop into our IRC channel and ask if you can do 
+something.</li><br>
+   <li><b>Front-end Developers</b><br>
+See the <a href="http://sourceforge.net/docman/display_doc.php?docid=9382&group_id=34618">Interface Protocol Documentation</a>
+   </li><br>
+   <li><b>Will giFT be ported to any other hosts?</b><br>
+When the system is stable on Linux/x86, porting to other structures will most
+likely ensue soon after. But if you would like to experiment with the current
+code, you&#39;re more than welcome. Please report it to our IRC channel if you
+are successful.
+   </li><br>
+  
+  </ul>
+ </li>
+
+ <a name="ft"><!-- FASTTRACK --></a>
+ <li><font size=+1><b>KaZaa, Morpheus, Grokster, oh my!</b></font><br><br>
+  <ul>
+   <li><b>What is this &quot;FastTrack&quot;?</b><br>
+FastTrack is the company that licenses the library that
+KaZaA/Morpheus/Grokster operates off of.
+   </li><br>
+   <li><b>Why can&#39;t I connect to KaZaA/Morpheus/Grokster anymore?</b><br>
+The encryption has changed, thanks to FastTrack. We have been unable to 
+reverse engineer it as of yet.
+   </li><br>
+   <li><b>But I could connect to FastTrack with giFT 0.9.7!</b><br>
+When version 1.3.3 of KaZaA was released, it contained a &quot;Security
+Update&quot; which broke our implementation.
+   </li><br>
+   <li><b>Are you working on getting back into FastTrack&#39;s network?</b><br>
+Not actively, no. Although quite a few people made attempts to reverse
+engineer the new encryption, nobody has succeeded, and AFAIK nobody is working
+on it atm.
+   </li><br>
+   <li><b>What about KaZaA&#39;s Linux client?</b><br>
+   After KaZaA moved it became unavailable and the old versions can't connect anymore... whatever, it sucked anyway :)
+   </li><br>
+  </ul>
+ </li>
+ 
+ <a name="oft"><!-- OPENFT --></a>
+ <li><font size=+1><b>OpenFT</b></font><br><br>
+  <ul>
+   <li><b>What&#39;s this OpenFT I&#39;ve been hearing about?</b><br>
+It&#39;s an Open Source ``clone&#39;&#39; of FastTrack currenty being worked
+on by the giFT project.  We welcome anyone with decentralized/p2p experience
+to drop by and poke around at our design.
+   </li><br>
+   <li><b>Oh, cool, where can I check OpenFT out?</b><br>
+You can &#39;check it out&#39; of CVS with these commands:<br><br>
+<tt>
+cvs -z3 -d:pserver:anonymous@cvs.gift.sf.net:/cvsroot/gift co giFT<br>
+cd giFT<br>
+./autogen.sh --enable-maintainer-mode<br>
+make<br>
+su -c &#39;make install&#39;<br>
+giFT<br>
+</tt>
+   </li><br>
+   <li><b>Erm... I would like some more info on installing giFT/OpenFT</b><br>
+Read the <a href="http://sourceforge.net/docman/display_doc.php?docid=9573&group_id=34618">Installation guide</a>
+   </li><br>
+   <li><b>It just sits there, how the heck do I search for stuff?</b><br>
+You need a GUI, doh! :) There are a few GUI&#39;s available ATM,
+<a href="http://sourceforge.net/docman/display_doc.php?docid=9573&group_id=34618">Installation guide</a>
+lists them all. Note: The thing that &quot;just sits there&quot; must be 
+running at all times.
+   </li><br>
+   <li><b>How come I can&#39;t find stuff?</b><br>
+The network (OpenFT) is still being developed. But, with your help and word of
+mouth, when the network is in a usable state, we&#39;ll take over where KaZaA
+left off, and eventually bury them in the dirt. Make sure you share _your_
+stuff!
+   </li><br>
+   <li><b>Is OpenFT eventually going to use features like metadata?</b><br>
+Yes, eventually. It needs to stabalize first before all sorts of fancy
+features will be added.
+   </li><br>
+  </ul>
+ </li>
+
+ <a name="sft"><!-- ShadowFT --></a>
+ <li><font size=+1><b>ShadowFT</b></font><br><br>
+  <ul>
+   <li><b>I heard something about something called ShadowFT, what is it?</b><br>
+It&#39;s a program that lets you &#39;search&#39; for files on the FT network.
+   </li><br>
+   <li><b>Cool, where can I get it?</b><br>
+<a href="http://www.dddi.nl/~costar/shadowFT">http://www.dddi.nl/~costar/shadowFT</a>
+   </li><br>
+   <li><b>It&#39;s neat, how is it doing that? I thought the encryption was changed. How come you guys can&#39;t do this?</b><br>
+It doesn&#39;t really connect to the supernodes or central server. You may
+notice that the real KaZaA client doesn&#39;t sit there and scan for IPs for a
+few hours before you can search. What this program does is scan a ton of IPs
+for an open port 1214 and uses the KaZaA built in web server
+(http://server:1214 in browser) to get a list of currently available files,
+and puts them into a database that it lets you search through locally. Which
+can explain why alot of times your downloads will fail to even start. Check
+out the README file with ShadowFT to figure out how to maximize the programs 
+uses.
+   </li><br>
+  </ul>
+ </li>
+</ol>
+
+</body></html>
+

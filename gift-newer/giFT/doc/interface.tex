@@ -1,0 +1,437 @@
+% $Id: interface.tex,v 1.4 2002/04/26 18:32:07 eelcol Exp $
+% Copyright (c) 2001-2002, The giFT Project
+% written by Eelco Lempsink (eelco@wideview.33lc0.net)
+
+\documentclass[10pt]{article}
+
+\usepackage{url}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+\textsf{\textbf{\Huge{giFT}\\ \huge{Interface Protocol Documentation}\\
+\normalsize{Last update: \today}}}
+\end{center}
+
+\tableofcontents
+
+\addtolength{\parskip}{1.4ex}
+
+\section{Theory}
+The giFT interface protocol was adopted so that the back-end was never a
+required understanding for the user interface developer.  This unique feature
+(jabber who?) allows any giFT UI developer to create a UI that can be used
+unaltered if the user decides to load extra or even a completely different
+protocol plugin.  The giFT project hopes that, in time, this interface protocol
+will become a pseudo standard and will allow truly robust interfaces to be
+built without any requirement on the network protocol it was intended for.
+
+\section{Attached Connections}
+The giFT interface protocol implements a scheme that allows manipulation on a
+single socket via event identifiers or to use a unique socket connection to the
+daemon for each event request. The recommendation is that a full-fledged user
+interface will want to use the single socket interface and will thus require
+the attach command.
+
+Once a connection is properly attached (described below), the following
+transaction will occur between the user interface and the daemon when
+registering any event type:
+
+Send the event:\\
+\verb|  <EVENT_NAME [arg1="value"] [arg2="value" [arg3="value"]]>|
+
+Receive the event identifer:\\ 
+\verb|  <event action="EVENT_NAME" id="n"/>|
+
+Event termination is received as (when the event is completed):\\
+\verb|  <EVENT_NAME id="n"/>|\\
+\emph{NOTE}: the GUI will eventually be able to "cancel" any event by sending
+the above command to the daemon while the event is active. This functionality
+is not currently implemented, however. 
+
+\section{Protocol}
+All commands are sent in the form \verb|<command [option1="value" [...]]/>|.
+Each unique command must strictly send a "\verb|\n|" to indicate processing. It
+is recommended that you use "\verb|\r\n|" (linefeed, linebreak).
+
+Options between square brackets ([ and ]) are optional.
+
+\subsection{attach}
+Establishes an attached connection (see above)
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<attach|          & \\
+\verb|    [profile]|    & Specifies which user profile to load preferences from. Currently unused. \\
+\verb|    [client]|     & Authenticate your client by name. \\
+\verb|    [version]|    & Register your clients version. \\
+\verb|/>|               &
+\end{tabular}
+
+Upon attaching a new connection, you will receive all currently active
+transfers. \emph{NOTE}: If no transfer is available, nothing will be sent back,
+you must simply trust that it was done
+
+\subsection{search}
+Search queries and returned information.
+
+\subsubsection{query}
+Search for files:
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<search|          &  \\
+\verb|    query|            & Search string \\
+\verb|    [exclude]|        & Exclusion list \\
+\verb|    [protocol]|       & Specify the protocol to use for searching. If none are present, all protocols are searched. \\
+\verb|    [type]|    & Modifies search behavior for query (valid options are "user" or "hash". The query string must respectivly be an ip or a md5 hash) \\
+\verb|    [realm]|          & Search realm, audio, video, mime types \\
+\verb|    [csize]|          & Size constraint \\
+\verb|    [ckbps]|          & Kilobits per second constraint \\
+\verb|/>|               &
+\end{tabular}
+
+\subsubsection{result}
+Results will be returned (between \verb|<event action="search" id="n"/>| and
+\verb|<search id="n"/>|, like said above) as \verb|<item arg="val"/>|. Those
+args are:
+
+\begin{tabular}{p{3.1cm}p{8.0cm}}
+\verb|<item|        &  \\
+\verb|    [id]|     & Will only appear if you work with an attached connection. \\
+\verb|    user|     & IP of node which has the file, this will become a name. \\
+\verb|    node|     & IP of the search node which returned this result. \\
+\verb|    href|     & Protocol-specific source string. You need this for \verb|<transfer addsource="string">| (see below). \\
+\verb|    size|     & File size \\
+\verb|    hash|     & Hash of the file \\
+\verb|    availability| & Number of free upload slots the remote host has, can be 0, always 1 when the host has no upload limit. See the Notes for more information.\\
+\verb|/>|           &
+\end{tabular}
+
+\subsection{transfer}
+Downloading and uploading control and progress information.
+
+\subsubsection{download}
+Request a file download:
+
+\begin{tabular}{p{3.9cm}p{7.2cm}}
+\verb|<transfer|        &  \\
+\verb|    action="download"|    & Tell giFT you want to download \\
+\verb|    size|                 & Size of the file in bytes \\
+\verb|    hash|                 & MD5 hash of the file \\
+\verb|    save|                 & Filename to save as, do not include directory path \\
+\verb|/>|           &
+\end{tabular}
+
+An event id will be returned (\verb|<event action="transfer" id="n"/>|). You'll
+need this for the next step, adding sources for the download. This step is
+required and must be handled by the GUI. giFT supports dynamic multiple source
+downloads. Sources must be added or removed like this:
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<transfer|        &  \\
+\verb|    id|           & Event identifer returned from the above transfer request \\
+\verb|    user|         & Username (display name, currently IP) returned from the search request \\
+\verb|    addsource|    & Protocol-specific source string returned from a search (\verb|href|) \\
+\verb|      |\textbf{OR}  & \\
+\verb|    delsource|    & Protocol-specific source string returned from a search (\verb|href|) \\
+\verb|/>|               &
+\end{tabular}
+
+\subsubsection{upload}
+Upon receiving an upload request, the daemon will send a transfer command to
+all attached sockets so that the UI may monitor the progress.
+
+\begin{tabular}{p{3.9cm}p{7.2cm}}
+\verb|<transfer|    &  \\
+\verb|    id|       & Event identifer pre-determined by the daemon \\
+\verb|    action = "upload"| & To tell the GUI this is an upload \\
+\verb|    user|     & Display string from the protocol, use this to show who is being uploaded to \\
+\verb|    size|     & Total length of the requested segment \\
+\verb|    href|     & Protocol-specific source string. Lists the remote host with the path of the requested file. \\
+\verb|/>|               &
+\end{tabular}
+
+\subsubsection{progress}
+During transfers the deamon will output information about the progress in a
+\verb|<transfer/>| tag. The interval is 1 second. Id's are used to reconize
+different tranfers.
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<transfer|    &  \\
+\verb|    id|           & Event identifer \\
+\verb|    transmit|     & Currently transmitted \\
+\verb|    total|        & Total filesize \\
+\verb|/>|           &
+\end{tabular}
+
+After the \verb|<transfer/>| tag, one or more \verb|<chunk/>| tags will follow.
+They provide information about the progress of the different sources.
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<chunk|    &  \\
+\verb|    id|           & Event identifer \\
+\verb|    href|         & Protocol-specific source string \\
+\verb|    start|        & Offset (in bytes) this chunk starts \\
+\verb|    transmit|     & Currently transmitted \\
+\verb|    total|        & Total size of the chunk \\
+\verb|    status|       & Status of the chunk (\verb|Waiting|, \verb|Queued|, \verb|Active| or \verb|Dead|. Read the Notes for more information.) \\
+\verb|/>|           &
+\end{tabular}
+
+When a transfer is finished an event termination tag will be sent \\
+(\verb|<transfer id="n"/>|).
+  
+\subsubsection{cancel}
+Cancel a transfer:
+
+\begin{tabular}{p{3.9cm}p{7.2cm}}
+\verb|<transfer|    &  \\
+\verb|    action = "cancel"| & The transfer will be stopped and all related files removed \\
+\verb|    id|       & Event identifer \\
+\verb|/>|           &
+\end{tabular}
+
+Of course an event termination tag will be sent.
+
+\subsection{share}
+Update, hide, or show your shares.
+
+\subsubsection{update}
+Update your shares with:
+
+\begin{tabular}{p{3.9cm}p{7.2cm}}
+\verb|<share|   & \\
+\verb|    [action="sync"]|    & Default action, not required \\
+\verb|/>|       &
+\end{tabular}
+
+No event identifiers or other notifications will be returned.
+
+\subsubsection{hide and show}
+Hide or show your shares:
+
+\begin{tabular}{p{3.9cm}p{7.2cm}}
+\verb|<share|   & \\
+\verb|    action="hide"|    & Hide your shares, search nodes will no longer return your files in their results. \\
+\verb|      |\textbf{OR}    & \\
+\verb|    action="show"|    & (Re-)show your shares again. \\
+\verb|/>|       &
+\end{tabular}
+
+Again, no event identifiers or other notifications will be returned.
+  
+%\subsection{opt}
+%Read and set options.
+%
+%\subsubsection{query}
+%\begin{tabular}{p{2.6cm}p{8.5cm}}
+%\verb|<opt|   & \\
+%\verb|     [conf|   & Config section \\
+%\verb|     [key|    & Config key (in section) \\
+%\verb|      value]]| & Set key to value \\
+%\verb|/>|     &
+%\end{tabular}
+%
+%\subsubsection{result}
+%\begin{tabular}{p{2.6cm}p{8.5cm}}
+%\verb|<opt|   & \\
+%\verb|     [conf|   & Config section \\
+%\verb|     [key|    & Config key (in section) \\
+%\verb|      value]]| & Value of key \\
+%\verb|/>|     &
+%\end{tabular}
+
+\subsection{stats}
+Statistical information.
+
+\subsubsection{query}
+Show stats:
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<stats|   & \\
+\verb|     |    & No options \\
+\verb|/>|       &
+\end{tabular}
+
+\subsubsection{result}
+Returned information:
+
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<stats|   & \\
+\verb|    id|   & Event identifier, only useful when attached \\
+\verb|    protocol| & Show specific protocol. "local" means your local shares \\
+\verb|    [status]| & (not if \verb|protcol="local"|) "Online" or "Offline" \\
+\verb|    [users]|  & (not if \verb|protcol="local"|) Number of users on the network \\
+\verb|    files|    & Number of shared files \\
+\verb|    size|     & Total size of all shared content, expressed in GB (no floating point precision) \\
+\verb|/>|       &
+\end{tabular}
+
+An event identifier and terminator will be sent when attached.
+
+\subsection{quit}
+Shutdown giFT.
+
+\subsubsection{query}
+\begin{tabular}{p{2.6cm}p{8.5cm}}
+\verb|<quit|   & \\
+\verb|     |    & No options \\
+\verb|/>|       &
+\end{tabular}
+
+\subsubsection{result}
+giFT will be cleanly shutdown.
+
+\section{Notes}
+
+\subsection{Availability}
+The preferred method of displaying availability is to warn users somehow (or
+optionally filter out) when a source has 0 availability.  I know everyone is
+tempted to add up each availability tag but that's simply not a great idea. The
+suggested method is adding "1" for each positive availability hit and ignoring
+0. So if a search returns three sources with availability 3, 1 and 0, the
+prefered reporting is '2' availability.
+
+Keep in mind that if you tell giFT to download a source with availability=0
+it'll keep trying until the source becomes available, so it's not really wise
+to always hide the results from the user.
+
+\subsection{Chunk stati}
+A little more information about the different stati chunks can have.
+\begin{itemize}
+\item\verb|Waiting|\\
+Downloading has not yet begun, no data has been received.
+\item\verb|Queued|\\
+Chunk is queued, local or remote. giFT will keep retrying.
+\item\verb|Active|\\
+Data has been received.
+\item\verb|Dead|\\
+Chunk has been removed (\verb|<transfer delsource/>|).
+\end{itemize}
+
+\section{Examples}
+If you're still a little puzzled about how all this works, here are some
+examples for some commands. Ignore the linebreaks, all commands must be sent as
+one line.
+
+\subsection{attach}
+\begin{verbatim}
+<attach/>
+<attach profile="eelco" client="giFTcurs" version="0.3.2"/>
+\end{verbatim}
+
+\subsection{search}
+Some queries:
+\begin{verbatim}
+<search query="blink 182"/>
+<search query="blink 182" exclude="enema" realm="audio"/>
+<search query="nekkid girls" csize="1048576-5242880"
+    realm="image/jpeg">
+<search query="234.234.234.234" type="user" ckbps="128"/>
+\end{verbatim}
+
+A Result:
+\begin{verbatim}
+<event action="search" id="182"/>
+<item id="182" user="234.234.234.234" node="143.143.143.143"
+    href="OpenFT://234.234.234.234:1357/mp3/good_music.mp3"
+    size="23754241" hash="9edaaf435cf912ee1c31c9cb135942d6"
+    availability="4"/>
+<item id="182" user="214.214.214.214" node="143.143.143.143"
+    href="OpenFT://214.214.214.214:2468/good_stuff.mpeg"
+    size="329837321" hash="bce240de771d4d96e6384d7cd15f314e"
+    availability="0"/>
+<search id="182"/> 
+\end{verbatim}
+
+\subsection{transfer}
+
+Download a file:
+\begin{verbatim}
+<transfer action="download" size="2972359"
+    hash="ba7fb113e9947949d91b5a240983cdc6"
+    save="i_want_this_name.mp3"/>
+\end{verbatim}
+
+An event id will be returned:
+\begin{verbatim}
+<event action="transfer" id="43"/>
+\end{verbatim}
+
+We use that to add sources:
+\begin{verbatim}
+<transfer id="43" user="32.132.32.132"
+    addsource="OpenFT://32.132.32.132:5432/music/obscure.mp3"/>
+<transfer id="43" user="22.12.22.12"
+    addsource="OpenFT://100.10.100.10:1846/?listen_port=2222&
+    request_host=22.12.22.12&
+    request_file=/shares/normal_name.mp3"/>
+\end{verbatim}
+
+The download will start and progress will be reported:
+\begin{verbatim}
+<transfer id="43" transmit="0" total="2972359"/>
+<chunk id="43"
+    href="OpenFT://32.132.32.132:5432/music/obscure.mp3"
+    start="0" transmit="0" total="14861179" status="Waiting"/>
+<chunk id="43"
+    href="OpenFT://100.10.100.10:1846/?listen_port=2222&
+    request_host=22.12.22.12&
+    request_file=/shares/normal_name.mp3" start="14861179"
+    transmit="0" total="14861180" status="Waiting"/>
+\end{verbatim}
+
+The first chunk becomes active, but the second is queued:
+\begin{verbatim}
+<transfer id="43" transmit="4096" total="2972359"/>
+<chunk id="43"
+    href="OpenFT://32.132.32.132:5432/music/obscure.mp3"
+    start="0" transmit="4096" total="14861179" status="Active"/>
+<chunk id="43"
+    href="OpenFT://100.10.100.10:1846/?listen_port=2222&
+    request_host=22.12.22.12&
+    request_file=/shares/normal_name.mp3" start="14861179"
+    transmit="0" total="14861180" status="Queued"/>
+\end{verbatim}
+
+After a while we decide to cancel the queued chunk, so we send:
+\begin{verbatim}
+<transfer id="43" user="22.12.22.12"
+    delsource="OpenFT://100.10.100.10:1846/?listen_port=2222&
+    request_host=22.12.22.12&
+    request_file=/shares/normal_name.mp3"/>
+\end{verbatim}
+
+The reporting will continue like this:
+\begin{verbatim}
+<transfer id="43" transmit="1048576" total="2972359"/>
+<chunk id="43"
+    href="OpenFT://32.132.32.132:5432/music/obscure.mp3"
+    start="0" transmit="1048576" total="14861179"
+    status="Active"/>
+<chunk id="43"
+    href="" start="14861179" transmit="0" total="14861180"
+    status="Dead"/>
+\end{verbatim}
+
+Eventually... the download will finish
+\begin{verbatim}
+<transfer id="43"/> 
+\end{verbatim}
+
+\subsection{stats}
+Request stats:
+\begin{verbatim}
+<stats/>
+\end{verbatim}
+
+Output:
+\begin{verbatim}
+<event action="stats" id="9"/>
+<stats id="9" protocol="local" files="2486" size="9"/>
+<stats id="9" protocol="OpenFT" status="Online" users="182"
+    files="226619" size="2093"/>
+<stats id="9"/>
+\end{verbatim}
+
+\end{document}

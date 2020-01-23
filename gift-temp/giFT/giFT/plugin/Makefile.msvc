@@ -1,0 +1,52 @@
+# $Id: Makefile.msvc,v 1.2 2003/05/04 20:53:51 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../src
+LIBPLUGINAPI_DEF ="../win32/libplugin_api.def"
+
+OBJECTS = \
+	if_event$(O) \
+	protocol$(O)
+	
+TARGETDLL = $(LIBPLUGIN_DLL)
+TARGETLIB = $(LIBPLUGIN_LIB)
+TARGETLIBSTATIC = $(LIBPLUGIN_STATIC)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+all: $(TARGETDLL) $(TARGETLIBSTATIC)
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+all: $(TARGETLIBSTATIC)
+install:
+
+!endif
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGETDLL): $(OBJECTS) $(LIBPLUGINAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(LIBPLUGINAPI_DEF) $(LIBS) $(OBJECTS)
+
+!endif
+
+$(TARGETLIBSTATIC): $(OBJECTS)
+	$(LT) -nologo -out:$(TARGETLIBSTATIC) $(OBJECTS)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(TARGETLIBSTATIC)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

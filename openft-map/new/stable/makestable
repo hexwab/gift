@@ -1,0 +1,1 @@
+perl -lne '(@a)=split" "; print "host:$a[1] port:$a[2] http_port:$a[3]";' stable|while read a; do fgrep "$a" newmap;done >upandstable

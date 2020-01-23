@@ -1,0 +1,10 @@
+
+- Why do so many source go into 'timed out' state and are not removed? should they be?
+  Update: I think it is giFT which times out the sources. Not sure what to do about it.
+
+- Disabled sharing makes other nodes ask us for pushes
+
+- Don't send shares if shares are hidden
+
+- Add download throttling. Difficult due to multiple indirections through downconn
+  and http server. Not very effective in general.

@@ -1,0 +1,23 @@
+***************
+*** 6951,6960 ****
+       AC_SUBST(prefix)
+     fi
+  
+-    plugindir=${prefix}/lib/giFT
+     AC_SUBST(plugindir)
+  
+-    datadir=${prefix}/share/giFT
+     AC_SUBST(datadir)
+    ])
+  
+--- 6951,6960 ----
+       AC_SUBST(prefix)
+     fi
+  
++    plugindir=${libdir}/giFT
+     AC_SUBST(plugindir)
+  
++    datadir=${datadir}/giFT
+     AC_SUBST(datadir)
+    ])
+  

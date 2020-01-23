@@ -1,0 +1,97 @@
+/*
+ * sharing.h
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#ifndef __SHARING_H
+#define __SHARING_H
+
+/*****************************************************************************/
+
+/* the ShareData structure is used so that FileShare structures may flush
+ * the data needed to store root, path, etc etc when moved to disk
+ *
+ * NOTE: this saves ~24 bytes per flushed entry at the cost of 4 per
+ * unflushed */
+typedef struct
+{
+	char         *root;     /* /data/mp3s                               */
+	char         *path;     /* /data/mp3s/file.mp3                      */
+	char         *hpath;    /*           /file.mp3 (memory from path)   */
+
+	/* TODO -- this shouldn't be a string */
+	char         *md5;
+} ShareData;
+
+typedef struct _file_share
+{
+	off_t         flushed;  /* if this data was flushed to disk, this will be
+	                         * > 0 to indicate what it's position is */
+
+	ShareData    *sdata;    /* hold a pointer to the actual data unflushed
+	                         * from disk */
+
+	/* this data is more efficient to be kept here */
+	unsigned long size;
+
+	/* TEMPORARY -- these will move to sdata soon */
+#if 0
+	char         *ext;      /*                .mp3 (memory from path)   */
+#endif
+	char         *type;     /* audio/mpeg          (memory from mime.c) */
+
+	List	     *meta;
+	time_t        mtime;
+
+	/* protocol-specific data
+	 * NOTE: when local is TRUE, data is a Dataset of protocols...otherwise
+	 * its whatever protocol-specific data that is needed */
+	char          local;
+	void         *data;
+} FileShare;
+
+/*****************************************************************************/
+
+int        share_complete     (FileShare *file);
+FileShare *share_new          (char *root, size_t root_len, char *path,
+							   char *md5, unsigned long size, time_t mtime);
+void       share_free         (FileShare *file);
+
+void      *share_lookup_data  (FileShare *file, char *protocol);
+void       share_insert_data  (FileShare *file, char *protocol, void *data);
+void       share_remove_data  (FileShare *file, char *protocol);
+
+void       share_update_index ();
+void       share_add_index    (char *host_path);
+void       share_remove_index (char *host_path);
+void       share_write_index  ();
+Dataset   *share_read_index   ();
+void       share_clear_index  ();
+Dataset   *share_index        (unsigned long *files, double *size);
+List      *share_index_sorted ();
+void       share_foreach      (HashFunc foreach_func, void *data);
+
+FileShare *share_find_file    (char *filename);
+int        share_auth_upload  (char *user, char *filename, char **local_path);
+void       share_disable      ();
+void       share_enable       ();
+int        share_status       ();
+
+/*****************************************************************************/
+
+#define SHARE_AUTH_NOT_FOUND  1
+#define SHARE_AUTH_NO_SLOTS   2
+
+
+#endif /* __SHARING_H */

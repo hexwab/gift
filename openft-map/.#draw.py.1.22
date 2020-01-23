@@ -1,0 +1,669 @@
+#! /usr/bin/env python
+"""
+###############################################################################
+##
+## $Id: draw.py,v 1.22 2003/11/23 17:17:07 jasta Exp $
+##
+## Copyright (C) 2003 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+"""
+import sys,socket,time,traceback
+from string import *
+from math import *
+
+try:
+    import Image, ImageDraw,ImageFont
+except ImportError:
+    print "You need the Python Imaging Library installed. (\"python-imaging\" on Debian, \"Imaging\" on others)"
+
+### Global parameters
+resolveSearch = 1                         # resolve hostname for search nodes
+ageDecay = 40                             # amount of color do decay on each hop
+ipStart = None                            # ip to draw link depth from
+xplanetParms = None                       # extra parameters for xplanet map
+drawUNodes = 0                            # should i draw user nodes too ?
+worldMap = 0                              # should i draw a world map and plot nodes ?
+# Colors
+snColor = (100,200,200)
+unColorFire = (200,0,0)
+unColor = (200,200,200)
+peerLine = (255,0,0)
+userLine = (100,100,100)
+# Fonts
+try:
+    ifoSmall = ImageFont.load("fonts/courR08.pil")
+    ifoDate = ImageFont.truetype("fonts/Vera.ttf",28)
+    ifoStats = ImageFont.truetype("fonts/Vera.ttf",20)
+    ifoSearch = ImageFont.truetype("fonts/Vera.ttf",20)
+except:
+    print "Error loading font files, make sure they are on \"fonts/\""
+    sys.exit()
+
+### Global vars
+global searchNodes,userNodes,visited
+#TODO: refactor these global parms to a "env" container object. It's really annoying to "declare" them global on every function when needed.
+
+searchNodes = []
+userNodes = []
+visited = []                              # list of visited arcs
+fireWalled = 0                            # counts the number of firewalled nodes
+drawDate = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime()) # automatic base file name for png's, using current system time
+drawDateH = time.asctime()
+baseName = None                           # base name for output files
+
+def parseNodeAddr(str):
+    """gets a string like "24.208.234.19:2564(0x0002)" and returns the tuple ("24.208.234.19","2564","0x0002")"""
+    ip = str[:find(str,":")]
+    klstart = find(str,"(")
+    port = str[find(str,":")+1:klstart]
+    klend = find(str,":",klstart)
+    klass = str[klstart+1:klend]
+    versionHex = str[klend+1:find(str,")",klend)][2:]
+    version = ""
+
+    for nmb in range(4):
+        if not versionHex[nmb*2:nmb*2+2]: continue
+	try:
+	    numb = int(versionHex[nmb*2:nmb*2+2])
+	except:
+	    numb = int(versionHex[nmb*2+1:nmb*2+2])
+	version += "%d"%numb
+        version += "."
+    return (ip,port,klass,version[:-1])
+
+class searchNode:
+    def __init__(self,str):
+        """construct searchNode from address+klass string"""
+        self.ip, self.port, self.klass, self.version = parseNodeAddr(str)
+
+        if resolveSearch:
+            ret=None
+            try:
+                ret = socket.gethostbyaddr(self.ip)[0]
+            except:
+                dbg( "Error resolving %s"%self.ip)
+            if not ret:
+                ret = self.ip
+            self.name = ret
+        else:
+            self.name = self.ip
+        splt = split(str,",")
+
+        self.peerList = split(splt[1][1:]," ")
+        nodeListT = split(splt[2][1:]," ")
+
+        self.nodeList = []
+
+        for node in nodeListT:
+            if not node: continue
+            nnode = userNode(node)
+            self.nodeList.append(nnode)
+            userNodes.append(nnode)
+
+    def reParse(self):
+        """after all searchnode objects are created, call this method on every searchnode so it can map it's peers to the right searchnode object"""
+        idx = 0
+        for nd in self.peerList:
+            if type(nd) == type(""):      # is a string
+                ip = parseNodeAddr(nd)[0]
+                found = None
+                for prn in searchNodes:
+                    if prn.ip == ip:
+                        found = prn
+                        break
+                if not found:           # TODO1: possibly a bug parsing data, or a missing node on data
+                    pass
+                self.peerList[idx]=found # will be None if peer is not on the spider searchnode list
+            idx = idx+1
+
+    def stamp(self,draw,npass):
+        global drawUNodes
+        """ draw my name (ip) on a surface """
+        # make sure link starts from the center of text, so we move the text left
+        newFont = ifoSearch
+
+        nnodes = len(self.nodeList)
+        
+        snColor = (100,200,200)
+        if not drawUNodes:
+            # interpolate to find a proper color
+            bigNode = 1000
+            smallNode = 25
+            if not nnodes:
+                nnodes = 0.000000000001
+            scale = (log(nnodes) - log(smallNode)) / (log(bigNode)-log(smallNode))
+            if scale < 0: scale = 0
+            if scale > 1: scale = 1
+
+            # use color proportional to child node count
+            snColor = (100,105+scale*150,180+scale*75)
+
+            xsize = 20 + scale * 120
+            ysize = 15 + scale * 90
+            if (npass==1):
+                draw.ellipse((self.pos[0]-xsize,self.pos[1]-ysize,
+                              self.pos[0]+xsize,self.pos[1]+ysize),
+                             outline=snColor,fill=(0,0,0))
+
+            # interpolate to find a proper font size
+            minsize = 20
+            maxsize = 40
+            nvsize = (maxsize - minsize) * scale + minsize
+            try:
+                newFont = ImageFont.truetype("fonts/Vera.ttf", nvsize)
+            except:
+                print "Error loading 'fonts/Vera.ttf'"
+                raise SystemExit
+
+        if (npass!=1):
+            self.textSize = draw.textsize(self.name, font = newFont)
+            
+            textpos = (self.pos[0] - self.textSize[0]/2, self.pos[1] - self.textSize[1])
+            
+            # FIXME: imgSz should be accessible from here
+            if (textpos[0] + self.textSize[0] > 4100):
+                textpos = (4100 - self.textSize[0], textpos[1])
+            if (textpos[0] < 0):
+                textpos = (0, textpos[1])
+                    
+            #draw.rectangle((self.pos[0],self.pos[1],self.pos[0]+self.textSize[0],self.pos[1]+self.textSize[1]),fill = (0,255,0))                # black bounding box
+        
+            draw.text(textpos,self.name,fill = snColor,font = newFont) # draw ip (or hostname)
+            
+            versText = self.version
+            if not drawUNodes:              # not drawing unodes. Show child count instead
+                versText += " [%d]" % nnodes
+            verSize = draw.textsize(versText, font = newFont)
+
+            versPos = (self.pos[0]-verSize[0]/2,self.pos[1])
+            draw.text(versPos,versText ,fill = snColor,font = newFont) # draw version
+
+    def dump(self):
+        dbg( "ip",self.ip)
+        dbg( "klass",self.klass)
+        dbg( "peerList",self.peerList)
+        dbg( "nodeList",self.nodeList)
+
+class userNode:
+    def __init__(self,str):
+        global fireWalled
+        self.ip,self.port,self.klass,self.version = parseNodeAddr(str)
+        if self.port=="0":
+            fireWalled += 1
+    def stamp(self,draw):
+        if self.port!="0":
+            uColor = unColor
+        else:
+            uColor = unColorFire
+        #draw.rectangle((self.pos[0],self.pos[1],self.pos[0]+self.textSize[0],self.pos[1]+self.textSize[1]),fill = (0,0,0))                # black bounding box
+        draw.text(self.pos,self.ip,fill = uColor,font = ifoSmall) # text
+
+def stampDate(draw):
+    """ stamp date on the top left corner """
+    draw.text((5,5),time.asctime(),fill = (255,255,255),font = ifoDate)
+    ln = 0
+    for line in getStats():
+        draw.text((5,40+ln),line,fill = (255,255,255),font = ifoStats)
+        ln += 25
+
+def getStats():
+    global searchNodes,userNodes
+    outp = [
+        "Search nodes:  %d"  %len(searchNodes),
+        "User nodes:  %d"  %len(userNodes),
+        "Firewalled:  %.2f%%"  %(fireWalled*100.0/len(userNodes)),
+        "User/Search:  %.2f"  %(float(len(userNodes))/float(len(searchNodes))),
+        ]
+    return outp
+
+def htmlStats():
+    """ used on the html report """
+    data = getStats()
+    outp = "<TR>"
+    outp += "<TD><A HREF=\"map-%s-cluster.png\">%s</A></TD>"%(drawDate,drawDateH)
+    for col in data:
+        outp += "<TD>%s</TD>"%col[find(col,":")+1:]
+    outp += "</TR>\n"
+    return outp
+
+def nameArc(n1,n2):
+    """returns a unique name for an arc from node1 to node2 """
+    if n1.ip > n2.ip:
+        return n1.ip+n2.ip
+    else:
+        return n2.ip+n1.ip
+
+def visit(node,age,draw):
+    """visits nodes recursively, drawing connection arcs with a gradient color, reflecting how far we are from the starting node. (-d option)"""
+    global visited
+    age = age-ageDecay
+    tovisit = []
+    for pN in node.peerList:
+        if not pN:continue
+        arcname = nameArc(node,pN)
+        if arcname not in visited:
+            draw.line([(node.pos[0],node.pos[1]),(pN.pos[0],pN.pos[1])], fill = (age,0,0))
+            visited.append(arcname)
+            tovisit.append(pN)
+    for pN in tovisit:
+        visit(pN,age,draw)
+
+def findNodeFromAttr(lst,atr,ip):
+    """returns the search node object with this ip """
+    for sN in lst:
+        if getattr(sN,atr)==ip:
+            return sN
+    return None
+
+def drawConnections(draw):
+    """ draw arcs between nodes """
+    global searchNodes, drawUNodes
+    if not ipStart:                     # do not draw depth
+        for sN in searchNodes:
+            if not sN: continue
+            for pN in sN.peerList:
+                if not pN:continue
+                try:
+                    draw.line([(sN.pos[0],sN.pos[1]),(pN.pos[0],pN.pos[1])], fill = peerLine)
+                except:
+                    dbg("Error plotting %s"%sN.name)
+            if drawUNodes:
+                for cN in sN.nodeList:
+                    if not cN:continue
+                    try:
+                        draw.line([(sN.pos[0],sN.pos[1]),(cN.pos[0],cN.pos[1])], fill = userLine)
+                    except:
+                        dbg("Error plotting %s"%sN.name)
+    else:                               # use arc color to reflect "connection depth"
+        # connect user nodes
+        if drawUNodes:
+            for sN in searchNodes:
+                if not sN: continue
+                for cN in sN.nodeList:
+                    if not cN:continue
+                    try:
+                        draw.line([(sN.pos[0],sN.pos[1]),(cN.pos[0],cN.pos[1])], fill = userLine)
+                    except:
+                        dbg("Error plotting %s"%sN.name)
+        # connect search nodes
+        startNode = findNodeFromAttr(searchNodes,"ip",ipStart)
+        if not startNode:
+            dbg("Unable to find a search node with the supplied ip:%s"%ipStart)
+            return
+        visit(startNode,255,draw)
+
+def renderClusterMap():
+    global searchNodes,userNodes,visited,drawUNodes
+    # Generic
+    imgSz = (4100,4000)
+    imgSzCenter = (2010,2065)
+    # User nodes
+    scaleX = 1
+    scaleY = 1
+    # Search nodes
+    snStep = 2*3.14/len(searchNodes)
+    snRadius = imgSz[0]/2.7
+    visited = []
+
+    im = Image.new("RGB", imgSz)
+    draw = ImageDraw.Draw(im)
+
+    # calculates sum of log(num_nodes) for all search nodes. Used below when placing snodes on the map
+    snTotal = 0
+    for i in range(len(searchNodes)):
+        nnodes = len(searchNodes[i].nodeList)
+        if not nnodes:
+            nnodes = 0.000000000001
+        snTotal+=log(float(nnodes))
+
+    snAngAcc = 0                          # angle accumulator, should increment up to 2*pi
+
+    ### make sure the nth smallest cluster is followed by the nth biggest one  {
+    searchNodes.sort(lambda n1,n2: (len(n1.nodeList)>len(n2.nodeList))-1 )
+    temp = searchNodes[:]
+    for i in range(len(temp)):
+        if i%2:
+            searchNodes[i] = temp[0]
+            del temp[0]
+        else:
+            searchNodes[i] = temp[len(temp)-1]
+            del temp[len(temp)-1]
+    ### }
+
+    # calculate search node position and surrounding unodes positions
+    for sN in searchNodes:
+        # fixed increment {
+        #snAngAcc = snAngAcc+snStep
+        #sN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(snAngAcc),imgSzCenter[1]+snRadius*scaleY*sin(snAngAcc)]
+        # }
+
+        # logarithmic proportion {
+        # slice is the angle to be used on this snode
+        nnodes = len(sN.nodeList)
+        if not nnodes:
+            nnodes = 0.000000000001
+        slice = 3.14*log(float(nnodes))/snTotal
+
+        snIncr=snAngAcc+slice
+        snIncr-=sin(snIncr*2)*.15 # space further apart near the top and bottom
+        snAngAcc = snAngAcc+2*slice
+        sN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(snIncr),imgSzCenter[1]+snRadius*scaleY*sin(snIncr)]
+        # }
+
+        # calculate and draw user node position
+        if not sN.nodeList: continue
+        unStep = 2*3.14/len(sN.nodeList)
+        unAngAcc = 3.14/3.8
+        unRadius = log(len(sN.nodeList))*40
+
+        for uN in sN.nodeList:
+            uN.pos = [sN.pos[0]+unRadius*scaleX*cos(unAngAcc),sN.pos[1]+unRadius*scaleY*sin(unAngAcc)]
+            unAngAcc = unAngAcc+unStep
+
+    # draw connections
+    drawConnections(draw)
+
+    # draw user nodes
+    if drawUNodes:
+        for uN in userNodes:
+            uN.textSize = draw.textsize(uN.ip, font = ifoSmall)
+            uN.pos[0] -= uN.textSize[0]/2
+            uN.pos[1] -= uN.textSize[1]/2
+            uN.stamp(draw)
+
+    # draw search nodes
+    for npass in (1,2):
+        for uN in searchNodes:
+            uN.stamp(draw,npass)
+
+    stampDate(draw)
+    del draw
+
+    try:
+        outFName = baseName+"-cluster"
+        im.resize((imgSz[0]/2,imgSz[1]/2),Image.BICUBIC).save(outFName+"-scaled"+".png", "PNG")
+        dbg(outFName+"-scaled"+".png" + " written.")
+        im.save(outFName+".png", "PNG")
+        dbg( outFName+".png" + " written." )
+    except:
+        import traceback
+        traceback.print_exc()
+        dbg("Error saving image on %s"%outFName)
+
+def getIPLocation(ip):
+    """gets an IP string and returns (lat,long), and stores what it found on a cache between calls"""
+    import urllib,pickle
+    # try to read it from geo cache
+    try:
+        cachef = open("geo-cache","rb")
+        geocache = pickle.load(cachef)    # geocache is map: key=ip, value=(lat,long)
+        cachef.close()
+    except:
+        print "Empty IP cache file."
+        geocache = {}
+
+    if geocache.has_key(ip):            # cache hit
+        return geocache[ip]
+    # cache miss
+    dbg("Locating %s..."%ip)
+    try:
+        data = urllib.urlopen("http://netgeo.caida.org/perl/netgeo.cgi?target=%s&method=getRecord&nonblocking=true"%ip).read()
+    except:
+        traceback.print_exc()
+        return None
+
+    start = find(data,"LAT:")+5
+    end = find(data,"<br>",start)
+    lat = data[start:end]
+
+    start = find(data,"LONG:")+6
+    end = find(data,"<br>",start)
+    long = data[start:end]
+    try:
+        if [float(lat),float(long)]==[0,0]:     # returned lat 0 long 0, probably wrong, so discard
+            return None
+    except:
+        return None
+
+    geocache[ip] = (lat,long)
+
+    try: # save cache
+        cachef = open("geo-cache","wb")
+        pickle.dump(geocache, cachef)
+        cachef.close()
+    except:
+        print "Error saving geo cache"
+
+    return (lat,long)
+
+def renderWorldMap():
+    global searchNodes,userNodes,visited,drawUNodes
+    outFName = baseName+"-world.jpg"
+
+    dbg("Resolving geo location...")
+    markerfile = open("world-marker-file","w")
+    markerfile2 = open("world-marker-file2","w")
+    for uN in searchNodes:
+        uN.pos = None                     # reset plot position from previous maps
+        res = getIPLocation(uN.ip)
+        if not res or [float(res[0]),float(res[1])] == [0,0]:
+            continue            # error locating
+        lat,long = res
+        markerfile.write("%s %s \"%s\" align=right color=red\n"%(lat,long,uN.name))
+        markerfile2.write("%s %s \"%s\" align=right color=red\n"%(lat,long,uN.name))
+    if drawUNodes:
+        for uN in userNodes:
+            uN.pos = None                     # reset plot position from previous maps
+            res = getIPLocation(uN.ip)
+            if not res or [float(res[0]),float(res[1])]==[0,0]:
+                continue            # error locating
+            lat,long = res
+            markerfile.write("%s %s \"%s\" align=right color=white\n"%(lat,long,uN.ip))
+            markerfile2.write("%s %s \" \" align=right color=white\n"%(lat,long))
+    markerfile.close()
+    markerfile2.close()
+    dbg("Finished resolving.")
+
+    dbg("Invoking xplanet (may take a while)...")
+    import commands
+    print commands.getoutput("xplanet -markerfile world-marker-file -output %s -markerbounds world-marker-bounds %s"%(outFName,xplanetParms))
+    # i couldn't figure out how to get the pixel coords for every node without specifying a unique label for it on the markerfile, because I also need
+    # unique labels on the outputed markerbounds file to know where xplanet stamped each node label in order to draw the connections.
+    # so im gonna run xplanet 2 times, the first to get all coords and the second to draw only search node labels. (the first map is then discarded)
+
+    dbg("Drawing connections...")
+    coordsdata = open("world-marker-bounds","r").readlines()
+    globalList = searchNodes+userNodes
+    for line in coordsdata:
+        line = split(line)
+        try:                            # try to find if these coords are for a search or user node
+            sN = findNodeFromAttr(globalList,"name",line[2])
+        except:
+            sN = findNodeFromAttr(globalList,"ip",line[2])
+        if not sN:
+            continue
+        sN.pos = map(lambda f:int(f), split(line[0],","))
+        if sN.pos[1]>1000 :
+            sN.pos = None
+
+    # have xplanet render map again, this time without usernode labels
+    print commands.getoutput("xplanet -markerfile world-marker-file2 -output %s %s"%(outFName,xplanetParms))
+
+    im = Image.open(outFName)
+    draw = ImageDraw.Draw(im)
+
+    # draw connections
+    drawConnections(draw)
+
+    stampDate(draw)
+    del draw
+
+    try:
+        im.save(outFName, "JPEG")
+        dbg(outFName + " written.")
+    except:
+        import traceback
+        traceback.print_exc()
+        dbg("Error saving image on %s"%outFName)
+
+
+def renderGlobalMap():
+    global searchNodes,userNodes,visited,drawUNodes
+    # Generic
+    imgSz = (1040,1244)
+    imgSzCenter = (500,600)
+    if not drawUNodes:
+        scaleX = 2
+        scaleY = 2
+    else:
+        scaleX = 1.4
+        scaleY = 1.4
+        
+    # User nodes
+    if not len(userNodes):
+        import sys
+        print "No nodes returned. ABORTED"
+        sys.exit(0)
+    unStep = 2*3.14/len(userNodes)
+    unRadius = imgSz[0]/3.2
+    unColorFire = (200,0,0)
+    unColor = (200,200,200)
+    unAngAcc = 0
+    # Search nodes
+    snStep = 2*3.14/len(searchNodes)
+    snColor = (100,200,200)
+    snRadius = imgSz[0]/6.7
+    visited = []
+
+    im = Image.new("RGB", imgSz)
+    draw = ImageDraw.Draw(im)
+
+    # calculate and draw user node position
+    if drawUNodes:
+        for uN in userNodes:
+            uN.textSize = draw.textsize(uN.ip, font = ifoSmall)
+            uN.pos = [imgSzCenter[0]+unRadius*scaleX*cos(unAngAcc),imgSzCenter[1]+unRadius*scaleY*sin(unAngAcc)]
+            uN.stamp(draw)
+
+            if cos(unAngAcc) < 0:           # so usernodes on the left-hand side get linked from their right edge
+                uN.pos[0] = uN.pos[0]+uN.textSize[0]
+            unAngAcc = unAngAcc+unStep
+
+    # calculate search node position
+    snAngAcc = 0
+    for sN in searchNodes:
+        ang=snAngAcc
+        ang-=sin(ang*2)*.25 # space further apart near the top and bottom
+        sN.pos = [imgSzCenter[0]+snRadius*scaleX*cos(ang),imgSzCenter[1]+snRadius*scaleY*sin(ang)]
+        snAngAcc = snAngAcc+snStep
+
+    # draw connections
+    drawConnections(draw)
+
+    # draw search nodes
+    for npass in (1,2):
+        for sN in searchNodes: sN.stamp(draw,npass)
+            
+
+    stampDate(draw)
+    del draw
+
+    try:
+        outFName = baseName+"-global.png"
+        im.save(outFName, "PNG")
+        dbg(outFName + " written.")
+    except:
+        import traceback
+        traceback.print_exc()
+        dbg("Error saving image on %s"%outFName)
+
+def dbg(str):
+    sys.stderr.write(str+"\n")
+
+def main():
+    global searchNodes,userNodes, baseName,ageDecay,resolveSearch,ipStart,xplanetParms,worldMap,drawUNodes
+    import getopt
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "uwrho:i:d:s:nx:", ["help", "output=","input="])
+    except getopt.GetoptError:
+        # print help information and exit:
+        dbg("Invalid argument. Try ./draw.py --help")
+        sys.exit(2)
+    baseName = "map-" + drawDate # default unless --output is specified
+    input = None
+    report=None
+    worldMap = 0
+    resolveSearch = 1
+    ipStart = None
+    xplanetParms = "-shade 100 -blend -geometry 1400x1000"
+
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            dbg("""
+Usage: ./draw.py -i mapfile -o base_name
+
+Both are optional. When map is missing, stdin is used. When base_name is
+missing, current time is used.
+
+Other parameters:
+
+  -n     Don't resolve hostname for search nodes
+  -u     Don't draw user nodes
+  -s     Draw search node connections as a decreasing gradient, starting from
+         the node with this ip (xxx.xxx.xxx.xxx)
+  -d     When -s is used, this is the amount of color to decrease on each
+         hop (first link will use color 256)
+  -r     Output HTML data to stdout (used for statistics reports)
+  -x     World map xplanet parameters
+  -w     Generates world map
+""")
+            sys.exit()
+        if o in ("-o", "--output"):  baseName = a
+        if o in ["-r"]:              report = 1
+        if o in ["-w"]:              worldMap = 1
+        if o in ["-n"]:              resolveSearch = 0
+        if o in ["-u"]:              drawUNodes = 0
+        if o in ("-i", "--input"):   input = a
+        if o in ["-s"]:              ipStart = a
+        if o in ["-x"]:              xplanetParms = a
+        if o in ["-d"]:              ageDecay = int(a)
+
+    if input:
+        dbg( "Reading data from %s..."%input )
+        data = open(input,"r").readlines()
+    else:
+        dbg( "Reading data from stdin ...")
+        data = sys.stdin.readlines()
+
+    exmsg = {0:"",1:"and resolving names"}
+    dbg( "Drawing %s..."%exmsg[resolveSearch] )
+
+    for line in data:
+        searchNodes.append(searchNode(line[:-1]))
+    for node in searchNodes: node.reParse()
+    dbg( "Search nodes parsed: %d"%len(searchNodes) )
+
+    renderGlobalMap()
+    renderClusterMap()
+    if worldMap:
+        renderWorldMap()
+    dbg( "Done.")
+
+    if report:
+        sys.stdout.write(htmlStats())
+        sys.stdout.write(drawDate)
+
+if __name__ == "__main__":
+    main()

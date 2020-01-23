@@ -1,0 +1,172 @@
+This document attempts to describe what's currently known of the
+FastTrack protocol.
+
+-> is client-to-server traffic, <- is server-to-client traffic.
+
+All integers are in network byte order (big-endian) unless noted otherwise.
+
+1. Initial handshake [->]
+
+  Bytes	Desc
+  4     unknown ("rand")
+  4     outgoing cipher seed
+  4     outgoing encryption type (encoded)
+
+  "rand" is not entirely random. Kazaa clients seem to use random-like
+  numbers here, and their traffic is still decryptable. giFT-FastTrack
+  uses a constant (0xFA00B62B), and experiments have shown that changing
+  this will produce connection failures.
+
+  Cipher seed can be any number.
+
+  Encryption type and its encoding is not covered here.
+
+2. Handshake response [<-]
+
+  Bytes Desc
+  4     incoming cipher seed
+  4     incoming encryption type (encoded)
+
+  I *think* cipher seed can again be any number.
+
+  Outgoing cipher seed is xor'd with the incoming cipher seed to produce
+  the final outgoing seed for encryption initialization.
+
+  Again, encryption type is not covered here.
+
+
+All communication from this point forth is encrypted.
+
+3. Server network name [<-]
+
+  Bytes	Desc
+  n     zero-terminated network name
+
+  Observed network names are "KaZaA", "fileshare" (as used by iMesh),
+  "Grokster"...
+
+4. Client network name [->]
+
+  Bytes Desc
+  n     zero-terminated network name
+
+  Kazaa tends to drop the connection if the two network names do not
+  match. I'm not entirely sure why. giFT-FastTrack (which sends
+  "KaZaA" as its network name) appears to do the same.
+
+
+
+At this point, the session is established. Either side can send traffic.
+
+Messages consist of one of the following:
+
+5. Ping request [->, <-]
+
+  Bytes Desc
+  1     0x50
+
+  This is for testing the aliveness of the connection, as used by
+  every P2P network on the planet. Elicits a Pong response. Unknown:
+  is the other side free to send *any* traffic to keep the connection alive?
+
+6. Pong response [->, <-]
+
+  Bytes Desc
+  1     0x52
+
+  See ping above.
+
+
+7. Packet [->, <-]
+
+  Bytes Desc
+  1     0x4B
+  4     encoded message type and length
+
+  Message type is a single byte; length is a two-byte integer. Those
+  three bytes, combined with a single zero byte, are stored in one of
+  three orders, according to a variable that historically has been
+  called "xinu_state".
+
+  xinu_state is a 32-bit unsigned integer. For each side of the
+  connection, it is initialized as 0x51. The order is determined by
+  xinu_state mod 3:
+
+            xinu_state % 3
+  Bytes   0       1       2
+  1      type    0x00    0x00
+  1      0x00    len_hi  len_lo
+  1      len_hi  type    len_hi
+  1      len_lo  len_lo  type
+
+  where "type" is the message type, and "len_hi" and "len_lo" are the
+  high and low bytes of the message length respectively.
+
+  After each packet, xinu_state is xor'd with the sum of the message
+  type and message length, then all bits are inverted. (FIXME: there
+  must be a better way to calculate this...)
+
+
+
+Message types
+=============
+
+0x00 Supernode list [<-]
+
+  Bytes Desc
+  4	IPv4 address
+  2	port
+  1	"last seen"
+  1	"load"
+
+  "Last seen" and "load" are from giFT-FastTrack. Last seen is in
+  minutes, load is a percentage. Allegedly.
+
+  This 8 bytes structure can be repeated several times within a single
+  message. Kazaa appears always to send 200 nodes (i.e. a 1600 byte
+  message), but it's probably unwise to rely on this. 
+
+0x02 User information [->]
+
+  Bytes Desc
+  4     IPv4 address
+  2     port
+  1     bandwidth
+  1     unknown
+  n     user name (no terminator)
+
+  From giFT-FastTrack: "This next byte [bandwidth] represents the
+  user's advertised bandwidth, on a logarithmic scale.  0xd1
+  represents "infinity" (actually, 1680 kbps). The value is
+  approximately 14*log_2(x)+59, where x is the bandwidth in kbps."
+
+0x03 ??? [<-]
+
+0x06 Search query [->]
+
+0x07 Search reply [<-]
+
+0x08 Search finished [<-]
+
+0x09 Network stats [<-]
+
+0x15 ??? [->, <-]
+
+0x16 ??? [->, <-]
+
+0x1D Network name [->, <-]
+
+  Bytes Desc
+  n     Network name, no terminator
+
+  Why this message exists is unclear, given that network names are
+  exchanged are part of handshaking.
+
+0x1E ??? [->, <-]
+
+0x23 ??? [<-]
+
+0x26 ??? [->, <-]
+
+0x2C ??? [<-]
+

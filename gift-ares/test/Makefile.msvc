@@ -1,0 +1,41 @@
+# $Id: Makefile.msvc,v 1.4 2004/08/25 19:46:14 mkern Exp $
+
+
+!include ../Make.msvc
+
+MAKEOPTS=-nologo -C BUILD_ROOT=$(BUILD_ROOT)
+
+INCLUDES = -I. $(INCLUDES)
+DEFS     = $(DEFS) -D_CONSOLE -U_WINDOWS
+LDFLAGS  = $(LDFLAGS) /subsystem:console
+LIBS     = $(LIBS) $(ASLIB_LIB)
+
+OBJECTS = \
+	main$(O) \
+	cmd$(O) \
+	testing$(O)
+	
+
+all: $(OBJECTS)
+	$(LD) $(LDFLAGS) -out:$(TEST_EXE) $(LIBS) $(OBJECTS)
+
+
+install: all
+	@copy /y $(TEST_EXE) $(BIN_ROOT)\$(TEST_EXE)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TEST_EXE)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<
+
+

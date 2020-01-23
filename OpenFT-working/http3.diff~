@@ -1,0 +1,98 @@
+Index: src/ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.65
+diff -u -r1.65 ft_http_server.c
+--- src/ft_http_server.c	15 Apr 2004 22:28:12 -0000	1.65
++++ src/ft_http_server.c	19 Apr 2004 20:31:14 -0000
+@@ -36,6 +36,22 @@
+ 
+ /*****************************************************************************/
+ 
++static char *version_string = NULL;
++
++char *ft_http_server_version (void)
++{
++	if (!version_string)
++	{
++		version_string = stringf_dup ("OpenFT/%i.%i.%i.%i (%s)",
++			     OPENFT_MAJOR, OPENFT_MINOR,
++			     OPENFT_MICRO, OPENFT_REV,
++			     platform_version ()
++			     );
++	}
++
++	return version_string;
++}
++
+ /*
+  * Accept a new incoming HTTP connection.  Please note that this does not
+  * necessarily mean this is a download or an upload, merely that it is an
+@@ -350,7 +366,17 @@
+ 			 * need to actually ask giFT for authorization.
+ 			 */
+ 			if ((share = FT->share_lookup (FT, SHARE_LOOKUP_HPATH, reqstr)))
++			{
++				FTNode *node;
+ 				ret = FT->upload_auth (FT, net_ip_str (c->host), share, auth_info);
++				
++				/* allow our parent a free slot */
++				if (ret == UPLOAD_AUTH_MAX &&
++				    (node = ft_netorg_lookup (c->host)) &&
++				    (node->state & FT_NODE_CONNECTED) &&
++				    (node->ninfo.klass & FT_NODE_PARENT))
++				ret = UPLOAD_AUTH_ALLOW;
++			}
+ 			else
+ 				ret = UPLOAD_AUTH_NOTSHARED;
+ 		}
+@@ -406,6 +432,7 @@
+ 	char *md5str;
+ 	char *buf_range;
+ 	char *buf_length;
++	char *server;
+ 	off_t start = 0;
+ 	off_t stop  = 0;
+ 	off_t entity;
+@@ -434,10 +461,21 @@
+ 	md5str = hash->algo->dspfn (hash->data, hash->len);
+ 	assert (md5str != NULL);
+ 
++	server = ft_http_server_version ();
++	assert (server != NULL);
++
+ 	dataset_insertstr (&reply->keylist, "Content-Range",  buf_range);
+ 	dataset_insertstr (&reply->keylist, "Content-Length", buf_length);
+ 	dataset_insertstr (&reply->keylist, "Content-Type",   share->mime);
+ 	dataset_insertstr (&reply->keylist, "Content-MD5",    md5str);
++	dataset_insertstr (&reply->keylist, "Server",         server);
++
++	if (strcmp (req->request, "/nodes") == 0)
++	{
++		dataset_insertstr (&reply->keylist, "X-Class", stringf ("%d", openft->ninfo.klass));
++		dataset_insertstr (&reply->keylist, "X-ClassMin", stringf ("%d", openft->klass_min));
++		dataset_insertstr (&reply->keylist, "X-ClassMax", stringf ("%d", openft->klass_max));
++	}
+ 
+ 	if (openft->ninfo.alias)
+ 		dataset_insertstr (&reply->keylist, "X-OpenftAlias", openft->ninfo.alias);
+@@ -461,11 +499,16 @@
+ 	 * protocol as the protocol-specific status.
+ 	 */
+ 	buf_retry = stringf_dup ("%u", (60 * SECONDS));
+-	buf_pos   = stringf_dup ("%u of %u",
+-	                         auth_info->queue_pos, auth_info->queue_ttl);
++
++	if (auth_info->queue_pos && auth_info->queue_ttl)
++	{
++		buf_pos = stringf_dup ("%u of %u",
++				       auth_info->queue_pos,
++				       auth_info->queue_ttl);
++		dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
++	}
+ 
+ 	dataset_insertstr (&reply->keylist, "X-ShareStatus",   "Queued");
+-	dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
+ 	dataset_insertstr (&reply->keylist, "X-QueueRetry",    buf_retry);
+ 
+ 	free (buf_retry);

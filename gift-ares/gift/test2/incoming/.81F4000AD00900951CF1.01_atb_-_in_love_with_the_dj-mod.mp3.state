@@ -1,0 +1,10 @@
+[transfer]
+uniq = 81F4000AD00900951CF1.01_atb_-_in_love_with_the_dj-mod.mp3
+filename = 01_atb_-_in_love_with_the_dj-mod.mp3
+hash = SHA1:MIXKBHX3FGAHGCGFZKY2HOT3LBQRXJNL
+transmit = 0
+total = 9772273
+max_seek = 0
+paused = 0
+chunks = 0-2443069 4886137-9772273 2443069-4886137 
+

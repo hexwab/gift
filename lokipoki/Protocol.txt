@@ -1,0 +1,14 @@
+ATTACH:
+
+ATTACH server(giFT) version(0.10.0);
+
+{'name': 'ATTACH', 'children': [{'name': 'server', 'arg': 'giFT'}, {'name': 'version', 'arg': '0.10.0'}]}
+
+------------------------
+STATS:
+
+STATS giFT { users(0) files(0) size(0.00) } OpenFT { users(304) files(438772) size(2824.00) };
+
+{'name': 'STATS', 'children': [{'name': 'giFT', 'children': [{'name': 'users', 'arg': '0'}, {'name': 'files', 'arg': '0'}, 
+{'name': 'size', 'arg': '0.00'}]}, {'name': 'OpenFT', 'children': [{'name': 'users', 'arg': '302'}, 
+{'name': 'files', 'arg': '438616'}, {'name': 'size', 'arg': '2815.00'}]}]}

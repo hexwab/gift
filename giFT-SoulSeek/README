@@ -1,0 +1,67 @@
+
+Last update: 03/06/19
+---------------------
+
+This includes a SoulSeek for giFT (http://giftproject.org). Hopefully this will make the
+SoulSeek protocol widely available on Linux (and other platforms people wish to port this
+to).
+
+- Arend van Beelen jr.
+
+Compilation & Installation
+--------------------------
+
+First put the sources you got somewhere outside the giFT source tree.
+
+Then run './autogen.sh' in the top source dir.
+
+Mac OS X users should run sh -c 'LIBTOOL=glibtool LIBTOOLIZE=glibtoolize ./autogen.sh'
+(or if use fink to install it, if you have it)
+
+The next step is to run 'make' and 'make install' which will compile
+and install the plugin.
+
+Finally add 'SoulSeek' to your gift.conf file like so:
+
+old: 'plugins = OpenFT:FastTrack'
+new: 'plugins = OpenFT:FastTrack:SoulSeek'
+
+
+There is currently one configure option, --disable-ltdl, if you do not
+want to build libtool libs.
+
+
+Common Problems
+---------------
+
+As a general rule, if you get errors that aren't mentioned below, first get
+fresh sources from cvs before trying anything else. It may be that something
+about giFT has changed and we fixed it in cvs but haven't released yet.
+
+Problem:  You're using an outdated version of automake.
+Symptoms: During ./autogen.sh you get errors like:
+          "automake: src/Makefile.am: not supported: source file `crypt/fst_crypt.c' is in subdirectory"
+Solution: Update to automake 1.5 or higher.
+          For example, on Debian do a 'apt-get intsall automake1.5'
+
+Problem:  You put the plugin into the giFT source tree.
+Symptoms: During ./autogen.sh you get the error:
+          "libtoolize failed to generate ltmain.sh"
+Solution: Move the plugin somewhere outside the giFT source tree.
+
+
+Contact
+-------
+
+Project Page:   http://sourceforge.net/projects/gift-soulseek
+
+Email:          Arend van Beelen jr. (arend@auton.nl) [Main developer and project leader]
+
+Mailing Lists:  gift-soulseek-devel@lists.sourceforge.net [Developer discussion]
+
+Credits
+-------
+
+The foundation of the project is based on giFT-FastTrack. I basically copied everything from giFT-FastTrack
+and started working and modifying from there. Thanks to the giFT-FastTrack developers for going through
+that stage before me.

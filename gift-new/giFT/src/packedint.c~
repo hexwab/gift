@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <assert.h>
+
+
+unsigned char *pack_integer (unsigned char *buf, int buflen, unsigned long value)
+{
+	unsigned long i;
+	unsigned char *ptr=buf;
+	int len=1;
+	i=value;
+
+	while (i>127)
+	{
+		len++;
+		i>>=7;
+	}
+
+	if (len>buflen)
+		return 0;
+	
+	ptr+=len;
+	i=value;
+	while (i>127)
+	{
+		*(--ptr)=(i &0x7f)|0x80;
+		i>>=7;
+	}
+
+	*(--ptr)=i |0x80;
+	ptr[len-1]&=0x7f;
+	
+//	TRACE (("packed int 0x%x, len %d",value, len));
+	return ptr+len;
+}
+
+unsigned char *unpack_integer(unsigned char *buf, int buflen, unsigned long *value)
+{
+	unsigned char *buf;
+	unsigned long v;
+        while (buflen-- > 0)
+        {
+                v <<= 7;
+                v |= (*ptr & 0x7f);
+                if (!(*ptr++ & 0x80))
+                        break;
+        }
+	
+        if (buflen <= 0)
+		return 0;
+	
+	*value = v;
+	return buf;
+}
+
+int main(void)
+{
+	char buf[8],ptr;
+	unsigned long i;
+	
+	for(i=0;;i++)
+	{
+		unsigned char *ptr = pack_integer (buf, 8, i);
+
+		assert (ptr);
+		
+		{
+			unsigned long j;
+			unsigned char *ptr2;
+			
+			ptr2 = unpack_integer (buf, ptr-buf, &j);
+
+			assert (ptr2==ptr);
+			
+			assert (i==j);
+			assert(0);
+		}
+	}
+}

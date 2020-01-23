@@ -1,0 +1,21 @@
+$Id: ChangeLog,v 1.25 2004/11/12 00:20:23 jasta Exp $
+
+Each giFT components maintains its own separate ChangeLog.  See the following
+alternate files:
+
+src/ChangeLog
+lib/ChangeLog
+plugin/ChangeLog
+
+0.11.9:
+       
+	* gift-setup no longer ignores responses of '0'.
+
+	* Added gift-update-nodes, a nodes auto-updater, and have
+	  gift-setup run it.
+
+	* Set plugin dir to $LIBDIR instead of $PREFIX/lib (see also
+	  bugzilla.redhat.com/210114)
+
+	* Default template includes main/setup=1 by default.
+	

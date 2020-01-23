@@ -1,0 +1,1 @@
+oldmap=; while :; do map=`cat latest-map`; if [ "$map" != "$oldmap" ]; then echo "map: $map"; bzcat maps/$map |grep -v 131331|grep -v 131332|grep kceasy|grep 'class:[37]'|grep -v 'spidered:0' |~/gift/openft-map/new/abort;oldmap=$map; fi; sleep 10; done

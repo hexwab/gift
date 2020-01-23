@@ -1,0 +1,1110 @@
+
+config.h,813
+#define HAVE_DB_H 11,333
+#define HAVE_DLFCN_H 14,411
+#define HAVE_INTTYPES_H 17,495
+#define HAVE_LIBZ 20,575
+#define HAVE_MEMORY_H 23,654
+#define HAVE_STDINT_H 26,737
+#define HAVE_STDLIB_H 29,820
+#define HAVE_STRINGS_H 32,904
+#define HAVE_STRING_H 35,988
+#define HAVE_SYS_RESOURCE_H 38,1077
+#define HAVE_SYS_STAT_H 41,1168
+#define HAVE_SYS_TYPES_H 44,1256
+#define HAVE_UNISTD_H 47,1342
+#define OPENFT_MAJOR 50,1379
+#define OPENFT_MICRO 53,1415
+#define OPENFT_MINOR 56,1451
+#define OPENFT_REV 59,1490
+#define PACKAGE 62,1534
+#define PACKAGE_BUGREPORT 65,1644
+#define PACKAGE_NAME 68,1721
+#define PACKAGE_STRING 71,1816
+#define PACKAGE_TARNAME 74,1921
+#define PACKAGE_VERSION 77,2005
+#define STDC_HEADERS 80,2095
+#define USE_LIBDB 82,2119
+#define USE_ZLIB 84,2140
+#define VERSION 87,2192
+
+src/ft_conf.c,86
+int ft_cfg_get_int 23,746
+char *ft_cfg_get_str 28,833
+char *ft_cfg_get_path 33,922
+
+src/ft_conf.h,1086
+#define __FT_CONF_H18,640
+#define FT_CFG_INITIAL_WEIGHT 37,1151
+#define FT_CFG_MAINT_TIMER 38,1190
+#define FT_CFG_LOCAL_MODE 40,1239
+#define FT_CFG_LOCAL_ALLOW 41,1308
+#define FT_CFG_SEARCH_PARENTS 43,1385
+#define FT_CFG_SEARCH_MINPEERS 44,1454
+#define FT_CFG_SEARCH_MAXPEERS 45,1524
+#define FT_CFG_SEARCH_TTL 46,1592
+#define FT_CFG_SEARCH_RESULTS 47,1665
+#define FT_CFG_SEARCH_RESULTS_REQ 48,1740
+#define FT_CFG_MAX_TTL 49,1819
+#define FT_CFG_MAX_RESULTS 50,1888
+#define FT_CFG_MAX_CHILDREN 51,1944
+#define FT_CFG_MAX_CONNECTIONS 52,2016
+#define FT_CFG_MAX_ACTIVE 53,2055
+#define FT_CFG_SEARCH_ENV_PATH 55,2134
+#define FT_CFG_SEARCH_ENV_CACHE 56,2216
+#define FT_CFG_SEARCH_ENV_PRIV 57,2294
+#define FT_CFG_SEARCH_ENV_TXN 58,2364
+#define FT_CFG_NODE_PORT 60,2434
+#define FT_CFG_NODE_HTTP_PORT 61,2501
+#define FT_CFG_NODE_CLASS 62,2573
+#define FT_CFG_NODE_CLASS_ALLOW 63,2638
+#define FT_CFG_NODE_ALIAS 64,2710
+#define FT_CFG_NODES_CACHE_MAX 66,2774
+#define FT_CFG_SEARCH_VFY 68,2815
+#define FT_CFG_SEARCH_VFY_NOISY 69,2853
+#define FT_CFG_SEARCH_NOISY 71,2892
+
+src/ft_conn.c,1013
+#	define RLIMIT_OFILE 32,980
+#	define RLIMIT_OFILE 34,1045
+static unsigned int timer_cnt 50,1471
+static int max_active 55,1583
+static BOOL drop_notalive 59,1693
+static int set_keep 111,3086
+static int send_heartbeat 117,3182
+BOOL ft_conn_need_parents 135,3629
+BOOL ft_conn_need_peers 144,3783
+BOOL ft_conn_need_index 160,4091
+int ft_conn_children_left 178,4533
+static BOOL gather_stats 197,4864
+static BOOL get_nodes 203,4998
+static BOOL new_parents 211,5213
+static BOOL make_conn_purpose 222,5453
+static BOOL make_conn 246,6111
+static BOOL make_conn_for_new_parents 251,6222
+static BOOL make_conn_get_nodes 259,6413
+static int keep_alive 266,6615
+static int acquire_new_stuff 323,8396
+int ft_conn_maintain 399,10721
+static int math_dist 452,12386
+static int get_cost 474,12639
+static int start_connection 491,13090
+static int get_fd_limit 515,13709
+static int get_max_active 573,15008
+BOOL ft_conn_initial 607,15626
+static int check_local_allow 634,16509
+BOOL ft_conn_auth 647,16774
+
+src/ft_conn.h,27
+#define __FT_CONN_H18,640
+
+src/ft_guid.c,168
+static unsigned int seed 23,746
+ft_guid_t *ft_guid_new 27,858
+void ft_guid_free 54,1214
+ft_guid_t *ft_guid_dup 61,1350
+char *ft_guid_fmt 77,1621
+int main 98,2016
+
+src/ft_guid.h,106
+#define __FT_GUID_H18,639
+#define FT_GUID_SIZE 22,741
+typedef unsigned char ft_guid_t;ft_guid_t23,765
+
+src/ft_http.c,725
+static unsigned char encode_safe[43,1274
+char *http_code_string 75,3218
+BOOL http_check_sentinel 103,4007
+static int dec_value_from_hex 125,4349
+char *http_url_decode 138,4575
+char *http_url_encode 178,5432
+static unsigned int http_parse_keylist 204,5967
+FTHttpReply *ft_http_reply_new 228,6387
+void ft_http_reply_free 242,6667
+FTHttpReply *ft_http_reply_unserialize 251,6789
+static void add_keylist 284,7734
+char *ft_http_reply_serialize 289,7872
+int ft_http_reply_send 314,8413
+FTHttpRequest *ft_http_request_new 336,8828
+void ft_http_request_free 350,9120
+FTHttpRequest *ft_http_request_unserialize 361,9281
+char *ft_http_request_serialize 386,9897
+int ft_http_request_send 406,10309
+int main 429,10732
+
+src/ft_http.h,101
+#define __FT_HTTP_H18,639
+} FTHttpReply;FTHttpReply47,1636
+} FTHttpRequest;FTHttpRequest58,2022
+
+src/ft_http_client.c,340
+BOOL ft_http_client_push 35,1242
+static void tidy_push 57,1727
+static void push_complete_connect 67,1854
+BOOL ft_http_client_get 112,2890
+static int client_send_get_request 136,3388
+void get_complete_connect 180,4776
+static void get_server_reply 216,5765
+static void handle_server_reply 267,6868
+static void get_read_file 340,9279
+
+src/ft_http_client.h,34
+#define __FT_HTTP_CLIENT_H18,654
+
+src/ft_http_server.c,876
+void ft_http_server_incoming 44,1507
+void get_client_request 67,1972
+static BOOL write_node 131,3294
+static BOOL create_nodes_share 147,3732
+static Share *access_nodes_share 167,4094
+static int auth_http_code 240,5619
+static Share *auth_get_request 260,6114
+static BOOL get_request_range 328,7893
+static void add_reply_success 355,8496
+static void add_reply_503_queued 405,10048
+static void add_reply_503_hidden 433,10881
+static FTHttpReply *construct_reply 441,11200
+static Share *head_get_and_write 465,11930
+static BOOL method_head 487,12472
+static BOOL method_get 496,12669
+static BOOL method_push 538,13782
+static BOOL method_unsupported 564,14523
+static FILE *open_share 579,14834
+static Transfer *get_gift_transfer 593,15034
+static FTTransfer *get_openft_transfer 617,15719
+static FTTransfer *prep_upload 640,16204
+static void send_file 686,17292
+
+src/ft_http_server.h,34
+#define __FT_HTTP_SERVER_H18,654
+
+src/ft_netorg.c,1012
+struct conn_listconn_list30,1115
+static struct conn_list final;37,1343
+static struct conn_list limbo;38,1406
+static struct conn_list disco;39,1470
+static Dataset *nodes 46,1736
+#define STATE_MAX 54,1984
+#define KLASS_MAX 55,2059
+static unsigned int nodes_len[70,2757
+#define STATE_INDEX(STATE_INDEX77,3010
+#define KLASS_INDEX(KLASS_INDEX78,3052
+static BOOL netorg_valid 83,3223
+static struct conn_list *get_conn_list 93,3417
+static int add_sorted 123,4221
+static int add_conn_list 141,4555
+static void update_nodes_len 162,5135
+void ft_netorg_add 193,6189
+static void rem_conn_list 213,6693
+void ft_netorg_remove 237,7335
+void ft_netorg_change 250,7673
+FTNode *ft_netorg_lookup 270,8167
+static int conn_list_iter 280,8373
+static int foreach_list 363,10782
+static int iter_state 403,12003
+int ft_netorg_foreach 421,12334
+int ft_netorg_length 449,13115
+static void free_conn_list 494,14426
+void ft_netorg_clear 500,14562
+static int dump_node 515,14917
+void ft_netorg_dump 521,15052
+
+src/ft_netorg.h,138
+#define __FT_NETORG_H18,644
+typedef BOOL (*FTNetorgForeach)FTNetorgForeach45,1506
+#define FT_NETORG_FOREACH(FT_NETORG_FOREACH46,1567
+
+src/ft_node.c,1216
+FTNode *ft_node_new 27,818
+static void flush_queue 42,1072
+void ft_node_free 52,1227
+FTNode *ft_node_register 74,1666
+FTNode *ft_node_register_full 79,1765
+void ft_node_unregister 107,2547
+void ft_node_unregister_ip 116,2662
+void ft_node_err 123,2835
+char *ft_node_geterr 134,3019
+static void node_set_indirect 165,3912
+void ft_node_set_port 175,4119
+void ft_node_set_http_port 192,4519
+static BOOL is_valid_alias 201,4687
+char *ft_node_set_alias 222,5060
+void ft_node_queue 251,5793
+char *ft_node_classstr 275,6542
+static void add_class 295,6885
+char *ft_node_classstr_full 305,7047
+char *ft_node_statestr 337,7782
+static void handle_state_change 362,8158
+void ft_node_set_state 379,8704
+static int submit_to_index 410,9527
+static void handle_class_loss 422,9788
+static BOOL submit_digest_child 444,10616
+static void handle_class_gain 465,11188
+static void log_class_change 504,12506
+static void handle_class_change 543,13320
+void ft_node_set_class 579,14279
+void ft_node_add_class 613,15204
+void ft_node_remove_class 618,15319
+ft_class_t ft_node_class 623,15438
+char *ft_node_fmt 641,15779
+char *ft_node_user 655,16029
+char *ft_node_user_host 663,16161
+BOOL ft_node_fw 676,16387
+
+src/ft_node.h,547
+#define __FT_NODE_H18,640
+} ft_state_t;ft_state_t56,2142
+#define FT_NODE_STATE_MASK 58,2157
+} ft_class_t;ft_class_t106,4331
+#define FT_NODE_CLASS_MASK 108,4346
+#define FT_NODE_CLASSPRI_MASK 109,4385
+#define FT_NODE_CLASSMOD_MASK 110,4424
+} ft_error_t;ft_error_t123,4907
+typedef struct ft_nodeinfoft_nodeinfo130,5113
+} ft_nodeinfo_t;ft_nodeinfo_t140,5595
+typedef struct ft_nodeft_node150,6046
+} FTNode;FTNode190,7725
+#define FT_NODE(FT_NODE197,7913
+#define FT_NODE_INFO(FT_NODE_INFO198,7959
+#define FT_CONN(FT_CONN203,8083
+
+src/ft_node_cache.c,324
+static time_t nodes_mtime 30,1075
+static int import_cache 34,1188
+static int read_cache 92,2823
+static int write_node_cache 140,4034
+static BOOL write_node_index 182,5329
+static BOOL write_node_search 187,5423
+static BOOL write_node_user 195,5575
+static int rewrite_cache 203,5726
+int ft_node_cache_update 250,7059
+
+src/ft_node_cache.h,33
+#define __FT_NODE_CACHE_H18,651
+
+src/ft_openft.c,601
+#define __FT_OPENFT_C17,622
+Protocol *FT 38,1049
+struct openft_data *openft 39,1070
+static struct openft_data *alloc_udata 43,1187
+static void free_udata 53,1359
+static TCPC *openft_bind 60,1513
+static TCPC *http_bind 82,2215
+static unsigned char *openft_md5 97,2530
+static BOOL handle_test_suite 119,3249
+static BOOL openft_start 130,3449
+static BOOL clamp_openft_params 137,3556
+static BOOL init_openft_obj 192,4999
+static BOOL openft_start 244,6839
+static BOOL cleanup_conn 276,7647
+static void openft_destroy 282,7740
+static void setup_functbl 316,8591
+BOOL OpenFT_init 376,10358
+
+src/ft_openft.h,330
+#define __FT_OPENFT_H18,644
+#define EVIL_DDOS_NODE36,1075
+#define OPENFT_0_2_0_1 48,1341
+#define  OPENFT_DEBUG53,1482
+#define LIBGIFT_DEBUG54,1504
+#define GIFT_PLUGIN56,1527
+struct openft_dataopenft_data94,2556
+extern Protocol *FT;122,3606
+extern struct openft_data *openft;123,3627
+# define GIFT_PLUGIN_EXPORT133,3902
+
+src/ft_packet.c,1674
+#define FT_COMMAND_MASK 25,816
+#define FT_FLAGS_MASK 26,874
+#define FT_PACKET_INITIAL 29,946
+static int packet_resize 34,1121
+FTPacket *ft_packet_new 83,2209
+FTPacket *ft_packet_dup 108,2652
+void ft_packet_free 134,3264
+unsigned char *ft_packet_serialize 150,3635
+FTPacket *ft_packet_unserialize 185,4654
+void ft_packet_set_command 220,5462
+void ft_packet_set_flags 226,5610
+void ft_packet_set_length 232,5756
+uint16_t ft_packet_command 240,5877
+uint16_t ft_packet_flags 248,6000
+uint16_t ft_packet_length 256,6119
+size_t ft_packet_remaining 264,6217
+size_t ft_packet_overrun 273,6376
+static BOOL packet_append 283,6558
+BOOL ft_packet_put_uint 310,7300
+BOOL ft_packet_put_uint8 338,7848
+BOOL ft_packet_put_uint16 341,7976
+BOOL ft_packet_put_uint32 344,8127
+BOOL ft_packet_put_uarray 347,8278
+BOOL ft_packet_put_ip 362,8640
+BOOL ft_packet_put_ustr 375,8896
+BOOL ft_packet_put_str 393,9199
+BOOL ft_packet_put_raw 396,9321
+static BOOL check_overrun 401,9522
+uint32_t ft_packet_get_uint 414,9718
+uint8_t ft_packet_get_uint8 451,10310
+uint16_t ft_packet_get_uint16 454,10417
+uint32_t ft_packet_get_uint32 457,10548
+in_addr_t ft_packet_get_ip 460,10669
+static int array_range 480,11046
+static void array_ho 496,11456
+void *ft_packet_get_array 515,11865
+static int array_sentinel 545,12432
+void *ft_packet_get_arraynul 552,12587
+unsigned char *ft_packet_get_ustr 583,13148
+char *ft_packet_get_str 586,13270
+unsigned char *ft_packet_get_raw 589,13368
+int ft_packet_send 611,13786
+static int locate_to 638,14353
+int ft_packet_sendto 647,14666
+void put_uint32_array 690,16074
+int ft_packet_sendva 698,16260
+char *ft_packet_fmt 752,17419
+
+src/ft_packet.h,154
+#define __FT_PACKET_H18,644
+#define FT_PACKET_STREAM 26,857
+#define FT_PACKET_MAX 28,894
+#define FT_PACKET_HEADER 29,971
+} FTPacket;FTPacket50,1909
+
+src/ft_protocol.c,438
+typedef void (*HandlerFn)HandlerFn32,1035
+#define PROTOCOL_HANDLERS 35,1165
+static HandlerFn handlers[36,1195
+static int handlers_init 37,1241
+static struct handler_enthandler_ent42,1411
+handler_table[47,1480
+static void init_handlers 90,3403
+static HandlerFn get_handler 108,3871
+static BOOL handle_command 120,4054
+static void handle_stream_pkt 145,4615
+static BOOL handle_stream 150,4733
+BOOL ft_protocol_handle 167,5125
+
+src/ft_protocol.h,108
+#define __FT_PROTOCOL_H18,648
+#define FT_HANDLER(FT_HANDLER91,2503
+} ft_command_t;ft_command_t262,7672
+
+src/ft_search.c,670
+struct search_resultsearch_result32,1003
+static char *build_openft_url 50,1626
+static BOOL deliver_result 108,3159
+static BOOL search_reply_term 153,4631
+static BOOL search_reply 168,5096
+static BOOL search_reply_logic 222,6683
+BOOL ft_search_reply 238,7054
+BOOL ft_search_reply_self 254,7421
+BOOL ft_browse_reply 260,7621
+static int send_search 285,8401
+static BOOL result_reply 364,10963
+static void search_children 396,11588
+static int search_parents 405,11825
+static int exec_search 432,12648
+int openft_search 470,13669
+static int exec_browse 477,13899
+int openft_browse 513,14758
+int openft_locate 550,15689
+void openft_search_cancel 555,15838
+
+src/ft_search.h,29
+#define __FT_SEARCH_H18,644
+
+src/ft_search_db.c,4904
+static BOOL db_initialized 33,955
+#define DB_VERSION 42,1141
+#define SEARCH_DB_DIRHASH81,2607
+#define SEARCH_DB_REMOVE_INTERVAL 90,2939
+#define SEARCH_DB_REMOVE_COUNT 98,3260
+#define SEARCH_DB_SEPARATE_INDICES107,3567
+static DB_ENV *env_search 117,3927
+static char   *env_search_path 118,3966
+static DB     *db_md5_idx 119,4005
+static DB     *db_token_idx 120,4044
+static DB     *db_share_data 121,4083
+static Array  *remove_queue 124,4151
+static BOOL    remove_active 125,4190
+struct md5idx_keymd5idx_key130,4345
+struct md5idx_datamd5idx_data135,4393
+struct tokenidx_keytokenidx_key142,4517
+struct tokenidx_datatokenidx_data148,4674
+struct sharedata_keysharedata_key156,4878
+struct sharedata_datasharedata_data162,5001
+struct shareidx_keyshareidx_key180,5628
+struct shareidx_datashareidx_data186,5684
+# define DB_COMPARE_HAS_DBP195,5845
+# define DB_COMPAREFN(DB_COMPAREFN199,5928
+# define DB_COMPAREFN(DB_COMPAREFN201,6011
+typedef int (*DBCompareFn)DBCompareFn204,6087
+#define ERR_DB_NODE(ERR_DB_NODE212,6325
+#define ERR_DB_SDB(ERR_DB_SDB216,6470
+#define ERR_DB_PATH(ERR_DB_PATH221,6610
+#define ERR_DB(ERR_DB224,6732
+static FTSearchDB *search_db_new 239,7388
+static void search_db_free 252,7586
+static int open_db 274,8244
+static int remove_db 303,8924
+static int close_db 336,9649
+static int allow_dups 368,10349
+static BOOL delete_key_data 387,10701
+static u_int32_t direct_md5_hash 411,11192
+static DB *open_db_sharedata 436,11863
+static DB *db_sharedata 453,12148
+static char *db_shareidx_path 461,12268
+static DB *open_db_shareidx 502,13389
+static DB *db_shareidx 549,14635
+static DB *db_master 565,14860
+static DB_COMPAREFN 587,15259
+static DB *db_md5idx 601,15539
+static DB_COMPAREFN 610,15665
+static DB *db_tokenidx 637,16334
+static void clean_db_path 651,16733
+static BOOL db_init 688,17827
+static void db_destroy 753,19514
+static u_int16_t serialize_fld 763,19738
+static void sharedata_meta 787,20222
+static int serialize_record 797,20498
+static void import_meta 823,21281
+static Share *unserialize_record 844,21625
+static int get_tokens_len 868,22228
+static BOOL db_insert_shareidx 880,22370
+static BOOL db_insert_sharedata 920,23274
+static BOOL db_insert_md5idx 964,24281
+static BOOL db_insert_tokenidx 1000,25061
+static BOOL db_insert 1052,26310
+static BOOL db_remove_tokenidx_token 1109,27860
+static BOOL db_remove_tokenidx 1134,28454
+static BOOL db_remove_sharedata 1165,29137
+static BOOL db_remove_shareidx 1193,29710
+static BOOL db_remove_md5idx 1219,30194
+static BOOL db_remove 1261,31155
+static BOOL db_remove_host_init 1320,32907
+static void db_remove_host_finish 1340,33212
+static BOOL db_remove_host_next 1365,33751
+static BOOL db_remove_host_schedule 1452,36060
+static FTSearchDB *db_remove_host_next_scheduled 1515,37801
+static BOOL db_remove_host_timer 1547,38540
+static BOOL db_sync 1574,39328
+static BOOL db_abort 1599,39785
+static BOOL db_close 1613,40044
+static Share *db_lookup_md5 1635,40508
+static DBC *cursor_md5idx_md5 1680,41562
+static BOOL add_search_result 1725,42771
+static int db_search_md5 1756,43798
+struct cursor_streamcursor_stream1819,45410
+static int cleanup_matches 1825,45474
+static int cleanup_cursors 1832,45579
+static void token_cleanup 1839,45710
+static DBC *get_cursor 1845,45916
+static List *token_gather_cursors 1875,46463
+static void token_add_result 1905,47036
+static BOOL is_stale_db 1930,47642
+static BOOL look_for 1944,47937
+static void calc_shortest 2001,49504
+static struct cursor_stream *get_start_cursor 2029,50145
+static int match_qt 2070,51234
+static int match_et 2152,53352
+static List *token_lookup_match 2160,53474
+static int lookup_ret 2173,53726
+static int token_lookup_ret 2200,54424
+static int db_search_tokens 2225,55383
+BOOL ft_search_db_init 2273,56897
+void ft_search_db_destroy 2296,57437
+BOOL ft_search_db_insert 2315,57761
+BOOL ft_search_db_remove 2341,58241
+BOOL ft_search_db_remove_host 2362,58635
+BOOL ft_search_db_sync 2396,59353
+BOOL ft_search_db_open 2409,59558
+BOOL ft_search_db_isopen 2433,60116
+BOOL ft_search_db_close 2445,60307
+Share *ft_search_db_lookup_md5 2461,60586
+int ft_search_db_md5 2475,60816
+int ft_search_db_tokens 2489,61066
+static struct hlhl2532,62386
+} *nodelist;2536,62436
+static int nodes 2538,62450
+static int files 2539,62472
+static int minnodes 2541,62495
+static int maxnodes 2542,62522
+static int minqueries 2544,62550
+static int maxqueries 2545,62581
+static Array *queries 2547,62613
+static void bm_close_db 2549,62644
+static DB *bm_open_db 2557,62755
+static int get_file_records 2583,63397
+static int load_test_data 2620,64109
+static int load_queries 2738,66524
+static double run_insert 2773,67124
+static double run_search 2812,67829
+static double run_remove 2851,68542
+static void test_benchmarks 2888,69147
+BOOL test_suite_search_db 2909,69717
+
+src/ft_search_db.h,160
+#define __FT_SEARCH_DB_H18,650
+typedef struct ft_search_dbft_search_db100,4643
+} FTSearchDB;FTSearchDB115,5263
+#define FT_SEARCH_DB(FT_SEARCH_DB118,5294
+
+src/ft_search_exec.c,924
+#define SEARCH_TIMING43,1149
+typedef BOOL (*FTSearchFunc)FTSearchFunc48,1267
+typedef struct sdatasdata58,1609
+} SearchData;SearchData95,2907
+static BOOL cmp_filename 106,3131
+static BOOL cmp_md5 160,4006
+static BOOL cmp_host 170,4207
+#define TOKEN_PUNCT 191,4688
+#define TOKEN_DELIM 192,4717
+static void token_remove_punct 196,4835
+static uint32_t tokenize_str 213,5058
+static int cmp_token 229,5252
+static int remove_dups 243,5442
+static int tokens_resize 269,5818
+static void token_add_str 286,6148
+uint32_t *ft_search_tokenize 324,6802
+uint32_t *ft_search_tokenizef 338,7034
+static int fill_sdata 359,7737
+static void clear_sdata 430,9320
+static BOOL cmp_sdata 454,9718
+static void add_result 464,9928
+static int final_match 493,10532
+static void search_remote 503,10814
+static int key_as_md5 560,12510
+static void search_local 573,12810
+int ft_search 589,13165
+BOOL ft_search_cmp 646,14642
+
+src/ft_search_exec.h,92
+#define __FT_SEARCH_EXEC_H18,654
+typedef BOOL (*FTSearchResultFn)FTSearchResultFn55,2126
+
+src/ft_search_obj.c,1268
+static Dataset *searches 26,809
+static Dataset *browses 27,876
+static Dataset *forwards 28,942
+static timer_id fwd_timeout_timer 30,1013
+static void set_params 34,1170
+static int search_timeout 49,1614
+static int search_begin 55,1703
+FTSearch *ft_search_new 66,1984
+static void finish_params 84,2461
+static void search_free 93,2641
+void ft_search_finish 102,2797
+FTSearch *ft_search_find 123,3182
+static int search_by_event 128,3285
+FTSearch *ft_search_find_by_event 135,3432
+void ft_search_disable 141,3579
+unsigned int ft_search_sentto 148,3726
+unsigned int ft_search_rcvdfrom 162,4090
+static int browse_timeout 174,4381
+static int browse_begin 180,4474
+FTBrowse *ft_browse_new 191,4765
+static void browse_free 207,5030
+void ft_browse_finish 213,5124
+FTBrowse *ft_browse_find 232,5443
+static int browse_by_event 245,5665
+FTBrowse *ft_browse_find_by_event 252,5816
+void ft_browse_disable 258,5962
+static int fwd_tick_by_addr 267,6156
+static int fwd_tick_by_guid 282,6457
+static int fwd_timeout 298,6783
+static void fwd_insert 317,7451
+FTSearchFwd *ft_search_fwd_new 368,8793
+static unsigned int fwd_remove 409,9571
+static void fwd_free 437,10231
+unsigned int ft_search_fwd_finish 446,10369
+FTSearchFwd *ft_search_fwd_find 459,10531
+
+src/ft_search_obj.h,274
+#define __FT_SEARCH_OBJ_H18,651
+} ft_search_flags_t;ft_search_flags_t73,2320
+#define FT_SEARCH_METHOD(FT_SEARCH_METHOD76,2408
+} ft_search_parms_t;ft_search_parms_t93,2979
+} FTSearch;FTSearch111,3705
+} FTBrowse;FTBrowse125,4253
+} FTSearchFwd;FTSearchFwd156,5173
+
+src/ft_session.c,1104
+static BOOL session_auth_packet 34,1025
+static void handle_packet 61,1568
+static void session_handle 86,2130
+time_t ft_session_uptime 158,3753
+static FTSession *create_session 177,4055
+BOOL ft_session_start 197,4389
+static int send_packet 213,4770
+static void session_flush_queue 224,5095
+static void session_reset_data 268,6122
+static void session_destroy_data 286,6493
+static void tidy_node_search 308,7043
+static void tidy_node 325,7556
+static void session_stop 335,7795
+void ft_session_stop 361,8480
+static int handshake_timeout 393,9169
+static void stage_1 403,9328
+static void stage_2 414,9665
+static void stage_3 461,10891
+static void stage_4 468,11103
+void ft_session_stage 488,11815
+int ft_session_queue 512,12280
+static void connect_complete 533,12756
+static void outgoing_complete 573,13694
+int ft_session_connect 578,13798
+static void incoming_complete 640,15534
+void ft_session_incoming 645,15637
+void ft_session_set_purpose 686,16665
+void ft_session_add_purpose 699,16908
+ft_purpose_t ft_session_remove_purpose 707,17049
+BOOL ft_session_drop_purpose 716,17236
+
+src/ft_session.h,139
+#define __FT_SESSION_H18,646
+} ft_purpose_t;ft_purpose_t56,2132
+} FTSession;FTSession152,7064
+#define FT_SESSION(FT_SESSION157,7148
+
+src/ft_share.c,763
+static void add_meta 36,985
+static void send_packet 42,1146
+static BOOL submit_addshare 50,1305
+static BOOL submit_remshare 77,1985
+static BOOL share_sync_begin 96,2409
+static BOOL share_sync_end 117,3053
+static int local_flush 134,3525
+void ft_share_local_flush 141,3704
+static int locate_future_parent 149,3936
+static void get_new_parent 158,4094
+static void submit_write 174,4574
+void ft_share_local_submit 181,4747
+void *openft_share_new 226,6166
+void openft_share_free 231,6279
+static BOOL share_add 238,6463
+BOOL openft_share_add 246,6627
+static BOOL share_remove 254,6825
+BOOL openft_share_remove 262,6996
+static BOOL share_sync 271,7280
+void openft_share_sync 283,7444
+void openft_share_hide 297,7815
+void openft_share_show 302,7872
+
+src/ft_share.h,28
+#define __FT_SHARE_H18,642
+
+src/ft_share_file.c,232
+FTShare *ft_share_new_data 27,828
+Share *ft_share_new 48,1180
+void ft_share_free_data 79,1833
+void ft_share_free 94,2009
+unsigned int ft_share_ref 104,2252
+unsigned int ft_share_unref 109,2323
+BOOL ft_share_complete 127,2663
+
+src/ft_share_file.h,60
+#define __FT_SHARE_FILE_H18,652
+} FTShare;FTShare50,1707
+
+src/ft_stats.c,301
+static Dataset *stats_db 44,1499
+void ft_stats_insert 48,1639
+void ft_stats_remove 68,2224
+void ft_stats_remove_dep 78,2436
+static void stats_collect_by_user 92,2770
+static void stats_collect 102,3026
+BOOL ft_stats_collect 110,3246
+static BOOL gather_stats 126,3557
+int openft_stats 145,3904
+
+src/ft_stats.h,61
+#define __FT_STATS_H18,641
+} ft_stats_t;ft_stats_t32,1177
+
+src/ft_stream.c,791
+static uint32_t id_cnt 33,1011
+static uint32_t stream_id 37,1143
+static int stream_init 58,1525
+static FTStream *stream_new 91,2199
+static void stream_free 118,2682
+static Dataset **get_direction 137,3012
+static char *get_direction_str 155,3279
+static FTStream *lookup_stream 173,3499
+static int insert_stream 187,3762
+static int remove_stream 202,4060
+FTStream *ft_stream_get 216,4296
+static void output_flush 274,5441
+void ft_stream_finish 323,6383
+void ft_stream_free 351,7057
+static void stream_write 358,7205
+static void zlib_deflate 377,7685
+static void stream_deflate 398,8161
+int ft_stream_send 412,8539
+static int zlib_recv 444,9215
+int ft_stream_recv 477,9708
+static int clear_stream 589,12310
+int ft_stream_clear 597,12460
+int ft_stream_clear_all 612,12708
+
+src/ft_stream.h,234
+#define __FT_STREAM_H18,644
+#define FT_STREAM_HEADER 48,1626
+} ft_stream_dir_t;ft_stream_dir_t59,1907
+} ft_stream_flags_t;ft_stream_flags_t73,2429
+} FTStream;FTStream118,4103
+typedef void (*FTStreamRecv)FTStreamRecv123,4149
+
+src/ft_transfer.c,1704
+static Dataset *pushes 35,1279
+static List *downloads 43,1559
+static unsigned long last_avail 48,1674
+static BOOL init_source 52,1793
+static void finish_source 59,1906
+static struct ft_source *new_source 64,1983
+static void free_source 74,2135
+static BOOL decompose_source 99,2759
+static BOOL parse_source 146,4103
+static void add_download 176,4647
+static void remove_download 181,4741
+Array *ft_downloads_access 186,4837
+FTTransfer *ft_transfer_new 205,5363
+static void ft_transfer_free 236,6096
+void ft_transfer_stop 260,6644
+void ft_transfer_set_transfer 295,7567
+Transfer *ft_transfer_get_transfer 304,7726
+void ft_transfer_set_chunk 312,7837
+Chunk *ft_transfer_get_chunk 321,7978
+void ft_transfer_set_source 329,8080
+Source *ft_transfer_get_source 338,8227
+void ft_transfer_set_fhandle 346,8332
+FILE *ft_transfer_get_fhandle 355,8458
+void ft_transfer_status 365,8638
+void ft_transfer_stop_status 380,8951
+static BOOL push_send_request 389,9222
+static void push_add 443,10842
+static void push_remove 456,11283
+static BOOL push_find_xfer 465,11434
+FTTransfer *push_access 477,11720
+static void set_ft_transfer 500,12375
+static FTTransfer *get_ft_transfer 518,13006
+BOOL openft_download_start 532,13298
+void openft_download_stop 613,15291
+void openft_upload_stop 633,15730
+static TCPC *get_connection 651,16126
+BOOL openft_chunk_suspend 667,16387
+BOOL openft_chunk_resume 679,16584
+BOOL openft_source_add 693,16860
+void openft_source_remove 717,17256
+static int cmp_sources 733,17576
+int openft_source_cmp 762,18247
+int openft_user_cmp 776,18513
+static BOOL submit_avail 792,18818
+void openft_upload_avail 805,19075
+unsigned long ft_upload_avail 816,19424
+
+src/ft_transfer.h,99
+#define __FT_TRANSFER_H18,647
+} FTTransfer;FTTransfer57,2007
+struct ft_sourceft_source64,2183
+
+src/ft_utils.c,147
+static void accept_test_result 28,816
+static void accept_test_verify 63,1661
+static void accept_test_port 80,1960
+void ft_accept_test 106,2767
+
+src/ft_utils.h,25
+#define __UTILS_H18,638
+
+src/ft_version.c,331
+static ft_version_t local_ver 23,753
+#define SHIFT(SHIFT25,789
+#define UNSHIFT(UNSHIFT26,836
+#define COMPAT_MASK 28,896
+ft_version_t ft_version 32,1039
+ft_version_t ft_version_local 42,1264
+void ft_version_parse 52,1443
+BOOL ft_version_gt 64,1798
+BOOL ft_version_lt 69,1914
+BOOL ft_version_eq 74,2030
+int main 82,2234
+
+src/ft_version.h,505
+#define __FT_VERSION18,643
+#define COMPAT_MASK 31,904
+#define FT_VERSION_GT(FT_VERSION_GT32,962
+#define FT_VERSION_LT(FT_VERSION_LT33,1029
+#define FT_VERSION_EQ(FT_VERSION_EQ34,1096
+#define FT_VERSION_CMP(FT_VERSION_CMP35,1164
+#define FT_VERSION_GT(FT_VERSION_GT38,1240
+#define FT_VERSION_LT(FT_VERSION_LT39,1288
+#define FT_VERSION_EQ(FT_VERSION_EQ40,1336
+#define FT_VERSION_CMP(FT_VERSION_CMP41,1384
+#define FT_VERSION_LOCAL 44,1484
+typedef uint32_t ft_version_t;ft_version_t49,1598
+
+src/ft_xfer.c,1657
+static List *open_connections 37,1112
+static unsigned long last_avail 42,1261
+struct _ft_source_ft_source47,1421
+static Dataset *ref_table 57,1551
+static const char *month_tab 60,1608
+static int parse_request 75,2007
+static void ft_source_free 126,3234
+static struct _ft_source *ft_source_new 136,3376
+static char *log_format_time 166,4033
+static void access_log 224,5006
+void ft_transfer_log 275,6238
+FTTransfer *ft_transfer_new 304,6836
+static void ft_transfer_free 328,7322
+static void ft_transfer_cancel 362,7993
+void ft_transfer_close 428,9943
+void ft_transfer_status 484,11343
+static int find_open 499,11690
+static TCPC *lookup_connection 516,11938
+TCPC *http_connection_open 544,12593
+void http_connection_close 558,12888
+void ft_transfer_ref 600,13866
+void ft_transfer_unref 633,14641
+static char *gen_nodepage 685,15753
+static char *localize_request 698,15965
+int ft_transfer_set_request 776,18007
+static Share *get_share_auth_openft 815,18841
+static Share *get_share_auth_gift 858,19621
+FILE *ft_transfer_open_request 901,20763
+static int send_push 952,22044
+int openft_download_start 1013,23873
+void openft_download_stop 1086,25566
+void openft_upload_stop 1097,25883
+static BOOL submit_uploads 1103,26047
+void openft_upload_avail 1109,26208
+unsigned long ft_upload_avail 1118,26478
+static int throttle_suspend 1134,26915
+static int throttle_resume 1158,27323
+static int throttle_sopt 1184,27741
+int openft_chunk_suspend 1201,27977
+int openft_chunk_resume 1207,28162
+BOOL openft_source_add 1215,28425
+BOOL openft_source_remove 1221,28563
+int openft_source_cmp 1244,29011
+int openft_user_cmp 1274,29543
+
+src/md5.c,1125
+#   define MAP_FAILED 34,906
+#  define O_BINARY 38,977
+# define open(open42,1042
+# define read(read43,1078
+# define close(close44,1122
+# define HIGHFIRST48,1196
+#define USE_MMAP54,1343
+#define HASH_LEN 60,1419
+struct MD5ContextMD5Context64,1525
+typedef struct MD5Context MD5_CTX;MD5_CTX80,2008
+# define md5_init 81,2043
+# define md5_state_t 82,2069
+# define md5_append 83,2098
+# define md5_finish 84,2128
+# define byteReverse(byteReverse89,2257
+static void byteReverse(98,2468
+static void MD5Init(117,2872
+static void MD5Update(132,3176
+static void MD5Final(189,4427
+# define F1(F1239,5729
+# define F2(F2240,5770
+# define F3(F3241,5803
+# define F4(F4242,5836
+# define MD5STEP(MD5STEP245,5926
+static void MD5Transform(252,6243
+static unsigned char *md5_hash_file 341,10091
+static unsigned char *md5_hash_file_mmap(415,11638
+unsigned char *md5_digest 529,14365
+unsigned char *md5_dup 548,14701
+static int bin_to_hex 564,14972
+char *md5_fmt 588,15340
+static unsigned char hex_char_to_bin 598,15483
+static int hex_to_bin 608,15627
+unsigned char *md5_bin 622,15944
+int main 650,16485
+
+src/md5.h,23
+#define __MD5_H18,631
+
+src/proto/ft_handshake.c,575
+#define MIN_VER_USERS 27,827
+#define MAX_VER_USERS 28,852
+static Dataset *ver_upgrade 31,924
+FT_HANDLER 35,1042
+static char *generate_msg 41,1207
+static void version_outdated 58,1703
+FT_HANDLER 89,2596
+FT_HANDLER 137,3916
+static void pending_packets 174,4752
+FT_HANDLER 204,5684
+static int nodelist_add 287,8094
+static int nodelist_default 333,9449
+static int nodelist_request 351,9916
+FT_HANDLER 380,10756
+FT_HANDLER 421,11826
+FT_HANDLER 502,13854
+FT_HANDLER 519,14227
+FT_HANDLER 541,14695
+FT_HANDLER 547,14811
+FT_HANDLER 558,15105
+FT_HANDLER 566,15211
+
+src/proto/ft_handshake.h,38
+#define __FT_HANDSHAKE_PROTO_H18,655
+
+src/proto/ft_push.c,178
+FT_HANDLER 30,851
+FT_HANDLER 57,1504
+static BOOL nuke_source 133,3641
+static void push_forward_error 173,4635
+static void push_forward_success 205,5454
+FT_HANDLER 212,5687
+
+src/proto/ft_push.h,27
+#define __FT_PUSH_H18,639
+
+src/proto/ft_query.c,1497
+static Dataset *searches 41,1141
+static timer_id search_timer 42,1174
+static BOOL query_verbose 45,1245
+static BOOL query_verbose_init 46,1280
+} sparams_t;sparams_t63,1965
+} sreply_t;sreply_t71,2265
+typedef void (*ResultHandler)ResultHandler77,2450
+static BOOL auth_search_handle 82,2650
+static BOOL auth_search_request 96,2897
+static BOOL auth_search_response 104,3047
+static int clear_search 114,3277
+static int clear_searches 129,3560
+static int active_search 147,4101
+static void sreply_init 193,5373
+static void sreply_finish 201,5561
+static int sreply_send 206,5645
+static void result_add_meta 219,5914
+static BOOL sreply_result 225,6073
+static void empty_result 295,8319
+static BOOL search_result_logic 311,8575
+static BOOL search_result 364,9982
+static ft_search_flags_t get_search_type 381,10351
+static int exec_search 402,10984
+static int forward_search_peer 449,12246
+static BOOL clamp_params 517,14248
+static BOOL create_result 548,14907
+static void destroy_result 643,17502
+ft_search_flags_t get_search_request_type 657,17890
+static int fill_params 676,18358
+static int forward_search 735,19954
+FT_HANDLER 757,20456
+static ft_nodeinfo_t *get_parent_info 814,22003
+static void handle_search_result 854,23236
+static void handle_forward_result 879,23908
+static void handle_search_sentinel 921,25086
+static void handle_forward_sentinel 930,25451
+FT_HANDLER 962,26442
+static int send_browse 1023,27872
+FT_HANDLER 1058,28768
+FT_HANDLER 1087,29420
+
+src/proto/ft_query.h,34
+#define __FT_QUERY_PROTO_H18,647
+
+src/proto/ft_sharing.c,331
+static BOOL is_child 31,868
+static BOOL auth_child 41,1099
+FT_HANDLER 85,2272
+static BOOL drop_parent_full 131,3466
+FT_HANDLER 137,3581
+FT_HANDLER 206,5641
+FT_HANDLER 219,5882
+static BOOL submit_digest_index 228,6049
+FT_HANDLER 244,6454
+FT_HANDLER 268,7287
+FT_HANDLER 338,9116
+FT_HANDLER 363,9726
+FT_HANDLER 392,10445
+
+src/proto/ft_sharing.h,36
+#define __FT_SHARING_PROTO_H18,651
+
+src/proto/ft_stats_digest.c,143
+#define IS_INDEX 24,820
+static ft_stats_t last_stats 34,1203
+FT_HANDLER 38,1331
+FT_HANDLER 62,1891
+FT_HANDLER 76,2142
+FT_HANDLER 98,2719
+
+src/proto/ft_stats_digest.h,34
+#define __FT_STATS_PROTO_H18,654
+
+src/test/db_bench.c,1025
+Protocol *FT=11,220
+#define REMOVE_BY_HOST 16,303
+#define SEARCH21,418
+static void bm_close_db 23,436
+static DB *bm_open_db 31,547
+char *ft_node_fmt 57,1177
+FTNode *ft_node_new 66,1358
+static FTSession *create_session 80,1568
+#define LOGMSG(LOGMSG100,1902
+static int dbg_wrapper 111,2559
+static int trace_wrapper 119,2706
+static int warn_wrapper 127,2951
+static int err_wrapper 135,3093
+#define TOKEN_PUNCT 145,3316
+#define TOKEN_DELIM 146,3345
+static void token_remove_punct 150,3463
+static uint32_t tokenize_str 167,3686
+static int cmp_token 183,3880
+static int remove_dups 197,4070
+static int tokens_resize 223,4446
+static void token_add_str 240,4776
+uint32_t *ft_search_tokenize 278,5424
+uint32_t *ft_search_tokenizef 292,5656
+struct hl hl313,6346
+} *nodelist;316,6388
+int nodes=317,6401
+int maxnodes=318,6423
+int maxqueries=319,6441
+Array *queries;320,6464
+int load_test_data(322,6481
+static int load_queries(424,8860
+void dummy 450,9339
+int do_benchmarks(454,9368
+int main 583,12887
+
+src/test/old/test/db_bench.c,970
+Protocol *FT=12,221
+static void bm_close_db 14,243
+static DB *bm_open_db 22,354
+char *ft_node_fmt 48,984
+FTNode *ft_node_new 57,1165
+static FTSession *create_session 71,1375
+#define LOGMSG(LOGMSG91,1709
+static int dbg_wrapper 102,2366
+static int trace_wrapper 110,2513
+static int warn_wrapper 118,2758
+static int err_wrapper 126,2900
+#define TOKEN_PUNCT 136,3123
+#define TOKEN_DELIM 137,3152
+static void token_remove_punct 141,3270
+static uint32_t tokenize_str 158,3493
+static int cmp_token 174,3687
+static int remove_dups 188,3877
+static int tokens_resize 214,4253
+static void token_add_str 231,4583
+uint32_t *ft_search_tokenize 269,5231
+uint32_t *ft_search_tokenizef 283,5463
+struct hl hl304,6153
+} *nodelist;307,6195
+int nodes=308,6208
+int maxnodes=309,6230
+int maxqueries=310,6248
+Array *queries;311,6271
+int load_test_data(313,6288
+static int load_queries(415,8667
+void dummy 441,9146
+int do_benchmarks(445,9175
+int main 547,12023

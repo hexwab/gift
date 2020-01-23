@@ -1,0 +1,4 @@
+$Id: BUGS,v 1.3 2003/07/02 09:28:05 jasta Exp $
+
+ * Stats.  The design sucks, the implementation sucks...gah, it needs to be
+   redone (again).

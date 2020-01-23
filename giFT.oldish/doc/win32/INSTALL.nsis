@@ -1,0 +1,41 @@
+$Id: INSTALL.nsis,v 1.2 2002/11/24 00:15:49 rossta Exp $
+
+This document describes building a Windows self extracting executable (SFX)
+using NullSoft's SuperPimp NSIS installer, please see README.nsis.
+
+For information on building giFT using Microsoft Visual Studio 6.0, please 
+see INSTALL.msvc++.
+
+Download NSIS from http://www.nullsoft.com/free/nsis/#download
+The latest version, as of this writing, is: 
+http://www.nullsoft.com/free/nsis/nsis196.exe
+
+Install NSIS and add the installation directory to your system PATH.
+
+First, build the giFT executables using either method outlined in INSTALL.msvc++.
+
+If you wish to include giftcurs, install Cygwin, and build giftcurs within it.
+
+If you used Makefile.msvc, then type the following:
+
+$ cd win32
+$ mkdir Debug
+$ cp ../src/*.exe ../ui/*.exe Debug
+
+Next, type the following:
+
+$ cd win32
+$ ./copydocs.sh
+
+This will add CR's to several files included in the SFX, as NSIS requires
+the files to contain CR's.
+
+Next, edit win32/gift.nsi, and change any paths as necessary.
+Also change the GIFT_DATE to reflect the date the build was generated.
+
+Finally, in Windows, type the following:
+
+> cd win32
+> makensis.exe gift.nsi
+
+This will create the SFX, giFT-0.10.0-cvs.exe

@@ -1,0 +1,635 @@
+
+/*
+ * search.c
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include <ctype.h>
+
+#include "openft.h"
+
+#include "xfer.h"
+#include "html.h"
+#include "search.h"
+
+#include "parse.h"
+
+#include "share.h"
+
+/*****************************************************************************/
+
+/**/extern Config     *openft_conf;
+/**/extern HashTable  *ft_shares;
+/**/extern Connection *ft_self;
+
+unsigned long search_unique_id = 0;
+
+/*****************************************************************************/
+
+struct _match_data;
+typedef int (*SearchFunc) (FileShare *file, struct _match_data *mdata);
+
+static HashTable *active_searches = NULL;
+
+/* group the data across the callbacks for hash_table_foreach */
+struct _match_data
+{
+	FT_HostShare *h_share; /* this is used so that it doesn't need to be
+							* calculated for match_host */
+	List         *results;
+	size_t        size;
+	SearchFunc    sfunc;
+
+	/* this is cached to work around a problem with local shares :/ */
+	int           uploads;
+	int           max_uploads;
+
+	/* use a large structure (passed by ref) for efficiency */
+
+	/* SEARCH_FILENAME */
+	char      *f_query;
+	char      *f_exclude;
+	ft_uint32 *f_qtokens;
+	ft_uint32 *f_etokens;
+	char      *f_realm;
+	size_t     f_size_min;
+	size_t     f_size_max;
+	size_t     f_kbps_min;
+	size_t     f_kbps_max;
+
+	/* SEARCH_MD5 */
+	char      *m_query;
+	char      *m_cmp_md5;
+
+	/* SEARCH_HOST */
+	unsigned long h_query;
+};
+
+static int max_results = 0; /* calculated from the configuration file upon
+                             * search */
+
+/*****************************************************************************/
+
+#define TOKEN_PUNCT ",`'!?*"
+#define TOKEN_DELIM "\\/ _-.[]()\t"
+
+/*****************************************************************************/
+
+static void token_remove_punct (char *token)
+{
+	char *ptr;
+
+	if (!token[0])
+		return;
+
+	while ((ptr = string_sep_set (&token, TOKEN_PUNCT)))
+	{
+		if (!token)
+			continue;
+
+		strmove (token - 1, token);
+		token--;
+	}
+}
+
+/*
+ * tokens are delimited by the set TOKEN_DELIM
+ * tokens are stripped of all punctuation
+ */
+ft_uint32 *search_tokenize (char *string)
+{
+	char      *token, *string0;
+	ft_uint32 *tokens;
+	int        tok = 0, tok_alloc = 32;
+
+	if (!string)
+		return NULL;
+
+	/* allocate the initial buffer */
+	tokens = malloc (tok_alloc * sizeof (ft_uint32));
+
+	string0 = string = strdup (string);
+
+	while ((token = string_sep_set (&string, TOKEN_DELIM)))
+	{
+		/* leave room for the null termination */
+		if (tok >= (tok_alloc - 1))
+		{
+			tok_alloc *= 2;
+			tokens = realloc (tokens, tok_alloc * sizeof (ft_uint32));
+			continue;
+		}
+
+		token_remove_punct (token);
+
+		if (*token)
+			tokens[tok++] = hash_string (string_lower (token));
+	}
+
+	free (string0);
+
+	/* null terminate */
+	tokens[tok++] = 0;
+
+	/* this is evil and wrong, but tightens ram usage */
+	tokens = realloc (tokens, tok * sizeof (ft_uint32));
+
+	return tokens;
+}
+
+/*****************************************************************************/
+
+/* readability or optimization...sigh...someone make this difficult
+ * decision for me */
+static int match_filename (FileShare *file, struct _match_data *mdata)
+{
+	FT_Share  *share;
+	ft_uint32 *tokens;
+	ft_uint32 *ptr;
+
+	if (!file)
+	{
+		/* query is NULL when the search was hidden.  only free tokens if
+		 * we calculated them ourselves */
+		if (mdata->f_query)
+		{
+			free (mdata->f_qtokens);
+			free (mdata->f_etokens);
+		}
+
+		return FALSE;
+	}
+
+	/* quick check to make sure we exist in the proper realm */
+	if (mdata->f_realm)
+	{
+#if 0
+		if (!ft_share_unflush (file, NULL))
+			return FALSE;
+#endif
+
+		if (strncmp (file->type, mdata->f_realm, strlen (mdata->f_realm)))
+			return FALSE;
+	}
+
+	share = share_lookup_data (file, "OpenFT");
+
+	/* just in case we haven't tokenized this file yet */
+	if (!share->tokens)
+	{
+		/* we need to pull the data up from the database to recalculate
+		 * tokens */
+		if (!ft_share_unflush (file, NULL))
+			return FALSE;
+
+		share->tokens = search_tokenize (file->sdata->path);
+	}
+
+	/* oh fuck it :) */
+	if (!share->tokens)
+		return FALSE;
+
+	/* check exclusion first */
+	for (ptr = mdata->f_etokens; ptr && *ptr; ptr++)
+	{
+		for (tokens = share->tokens; *tokens; tokens++)
+			if (*tokens == *ptr)
+				return FALSE;
+	}
+
+	/* TODO - optimize this again ;) */
+	for (ptr = mdata->f_qtokens; ptr && *ptr; ptr++)
+	{
+		int matched = 0;
+
+		/* 3:27am...is this correct? ... oh my god I can't feel my finger...
+		 * -- monitor off -- */
+		for (tokens = share->tokens; *tokens; tokens++)
+		{
+			if (*tokens == *ptr)
+				matched = 1;
+		}
+
+		if (!matched)
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
+static int match_md5 (FileShare *file, struct _match_data *mdata)
+{
+	if (!file)
+		return FALSE;
+
+	/* special condition for quick md5 matches of flushed data */
+	if (file->flushed || !file->sdata)
+	{
+		if (mdata->m_cmp_md5)
+			return (strcmp (mdata->m_cmp_md5, mdata->m_query) == 0);
+
+		return FALSE;
+	}
+
+	return (strcmp (file->sdata->md5, mdata->m_query) == 0);
+}
+
+static int match_host (FileShare *file, struct _match_data *mdata)
+{
+	if (!file)
+		return FALSE;
+
+	/* non-local searches may be more efficient */
+	if (mdata->h_share)
+		return (mdata->h_share->host == mdata->h_query);
+
+	/* hmm, what to do?
+	 * this is a search by host that has fallen to our own local node.  we
+	 * have no idea what that IP is, and therefore cannot match here.  Fuck */
+	return FALSE;
+}
+
+/*****************************************************************************/
+
+static SearchFunc search_match_func (struct _match_data *mdata,
+                                     int search_type,
+                                     void *query, void *exclude, char *realm,
+                                     size_t size_min, size_t size_max,
+                                     size_t kbps_min, size_t kbps_max)
+{
+	SearchFunc match_func = NULL;
+
+	if (search_type & SEARCH_FILENAME)
+	{
+		ft_uint32 *qtokens;
+		ft_uint32 *etokens;
+
+		match_func = (SearchFunc) match_filename;
+
+		/* deal with hidden searches */
+		if (search_type & SEARCH_HIDDEN)
+		{
+			qtokens = query;
+			etokens = exclude;
+
+			query   = NULL;
+			exclude = NULL;
+		}
+		else
+		{
+			qtokens = search_tokenize (query);
+			etokens = search_tokenize (exclude);
+		}
+
+		mdata->f_query    = query;
+		mdata->f_exclude  = exclude;
+		mdata->f_qtokens  = qtokens;
+		mdata->f_etokens  = etokens;
+		mdata->f_realm    = realm;
+		mdata->f_size_min = size_min;
+		mdata->f_size_max = size_max;
+		mdata->f_kbps_min = mdata->f_kbps_min;
+		mdata->f_kbps_max = mdata->f_kbps_max;
+	}
+	else if (search_type & SEARCH_MD5)
+	{
+		match_func = (SearchFunc) match_md5;
+
+		mdata->m_query = query;
+	}
+	else if (search_type & SEARCH_HOST)
+	{
+		match_func = (SearchFunc) match_host;
+
+		mdata->h_query = inet_addr (query);
+	}
+
+	return match_func;
+}
+
+/*****************************************************************************/
+
+static int key_as_md5 (char *key, FileShare *file,
+					   struct _match_data *mdata)
+{
+	if (mdata->size >= max_results)
+		return FALSE;
+
+	if (!file)
+		return TRUE;
+
+	if (mdata->sfunc == match_md5)
+	{
+		/* if this file data has been flushed we need to temporarily assign
+		 * the hash key as the comparison value
+		 *
+		 * NOTE: if the data matches, file->sdata->md5 will be reset properly
+		 * from the database */
+		if (file->flushed)
+			mdata->m_cmp_md5 = key;
+	}
+
+	/* match the file */
+	if ((*(mdata->sfunc)) (file, mdata))
+	{
+		/* if this is true, availability will be all fucked, we need to set
+		 * it on the fly for each match
+		 * NOTE: this hack is required because each host_share structure held
+		 * locally is a duplication.  This design flaw needs to be fixed */
+		if (file->local)
+		{
+			FT_Share *share;
+
+			if (!(share = share_lookup_data (file, "OpenFT")))
+				return FALSE;
+
+			/* the API for this function is fucking moronic */
+			ft_host_share_status (share->host_share, -1, mdata->uploads, -1);
+			ft_host_share_status (share->host_share, -1, -1, mdata->max_uploads);
+		}
+
+		if (!ft_share_unflush (file, NULL))
+			return TRUE;
+
+		ft_share_ref (file);
+		mdata->results = list_append (mdata->results, file);
+		mdata->size++;
+	}
+	else if (file->flushed && mdata->m_cmp_md5)
+	{
+		/* reset the above hack for consistency.  this isn't strictly required
+		 * as the data should not be read unless flushed is FALSE, but like
+		 * always to err is human :) */
+		mdata->m_cmp_md5 = NULL;
+	}
+
+	return TRUE;
+}
+
+static int key_as_host (unsigned long key, FT_HostShare *host_share,
+                        struct _match_data *mdata)
+{
+	if (mdata->size >= max_results)
+		return FALSE;
+
+	mdata->h_share = host_share;
+
+	/* real search func */
+	hash_table_foreach (host_share->dataset, (HashFunc) key_as_md5, mdata);
+
+	/* just in case */
+	mdata->h_share = NULL;
+
+	return TRUE;
+}
+
+/* NOTE: ft_search returns a newly allocated list, however, the data must be
+ * unref'd, not free'd! */
+List *ft_search (size_t *r_size, int search_type,
+                 void *query, void *exclude, char *realm,
+                 size_t size_min, size_t size_max,
+                 size_t kbps_min, size_t kbps_max)
+{
+	struct      _match_data mdata;
+	int         local = 0;
+
+	/* this cant happen */
+	if (!query)
+		return NULL;
+
+	/* init search data */
+	memset (&mdata, 0, sizeof (mdata));
+
+	if (search_type & SEARCH_LOCAL)
+	{
+		search_type &= ~SEARCH_LOCAL;
+		local = 1;
+	}
+
+	/* create the search match data and return the function to supply it to */
+	if (!(mdata.sfunc = search_match_func (&mdata, search_type,
+	                                       query, exclude, realm,
+	                                       size_min, size_max,
+	                                       kbps_min, kbps_max)))
+	{
+		/* fuck. */
+		return NULL;
+	}
+
+	/* calculate max_results -- just in case it changed */
+	max_results = config_get_int (openft_conf, "search/max_results=1000");
+
+	/* start looking */
+	hash_table_foreach (ft_shares, (HashFunc) key_as_host, &mdata);
+
+	/* search the files this node is sharing ... */
+	if (local && mdata.size < max_results)
+	{
+		/* god efficiency can be ugly sometimes :) */
+		mdata.uploads     = upload_length (NULL);
+		mdata.max_uploads = share_status ();
+
+		/* h_share as NULL is a condition which means that we are to
+		 * refer to our own local host information */
+		mdata.h_share = NULL;
+		share_foreach ((HashFunc) key_as_md5, &mdata);
+	}
+
+	/* cleanup */
+	(*(mdata.sfunc)) (NULL, &mdata);
+
+	if (r_size)
+		*r_size = mdata.size;
+
+	return mdata.results;
+}
+
+/*****************************************************************************/
+
+Search *search_new (IFEventID id, int search_type, char *query, char *exclude,
+					char *realm, size_t size_min, size_t size_max,
+					size_t kbps_min, size_t kbps_max)
+{
+	Search *search;
+
+	search = hash_table_lookup (active_searches, id);
+
+	if (!search)
+	{
+		search = malloc (sizeof (Search));
+
+		search->id       = id;
+		search->type     = search_type;
+		search->query    = STRDUP (query);
+		search->exclude  = STRDUP (exclude);
+		search->realm    = STRDUP (realm);
+		search->size_min = size_min;
+		search->size_max = size_max;
+		search->kbps_min = kbps_min;
+		search->kbps_max = kbps_max;
+		search->qtokens  = search_tokenize (query);
+		search->etokens  = search_tokenize (query);
+		search->ref      = 0;
+
+		if (!active_searches)
+			active_searches = hash_table_new ();
+
+		hash_table_insert (active_searches, id, search);
+	}
+
+	/* number of hosts that must return results */
+	search->ref++;
+
+	return search;
+}
+
+static void search_free (Search *search)
+{
+	assert (search);
+
+	free (search->query);
+	free (search->exclude);
+	free (search->realm);
+	free (search->qtokens);
+	free (search->etokens);
+	free (search);
+}
+
+void search_remove (IFEventID id)
+{
+	Search *search;
+
+	search = hash_table_lookup (active_searches, id);
+	hash_table_remove (active_searches, id);
+
+	/* TODO - temporary!!!!! */
+	if_event_remove (id);
+
+	search_free (search);
+}
+
+/*****************************************************************************/
+
+/* daemon -> user interface search result */
+void search_reply (IFEventID id, Connection *search_node, FileShare *file)
+{
+	FT_Share  *share;
+	Search    *search;
+	char      *host;
+	char      *href;
+	size_t     href_alloc;
+	char      *file_enc;
+	struct _match_data mdata;
+
+	if (!(search = hash_table_lookup (active_searches, id)))
+		return;
+
+	/* end of search */
+	if (!file)
+	{
+		/* TODO -- ref system wont work...node_disconnect needs to be able
+		 * to see if it's being waited on */
+		search->ref--;
+
+#if 0
+		TRACE (("dec: search->ref = %i", search->ref));
+#endif
+
+		if (!search->ref)
+			search_remove (search->id);
+
+		return;
+	}
+
+	if (!(share = share_lookup_data (file, "OpenFT")))
+	{
+		TRACE (("hmm, fuck"));
+		return;
+	}
+
+	/* the search result is firewalled as is this local node, displaying the
+	 * result is futile and annoying */
+#if 0
+	if (share->host_share->port == 0 && NODE (ft_self)->port == 0)
+		return;
+#else
+	if (share->host_share->port == 0)
+		return;
+#endif
+
+	/* verify that this wasnt a faulty search */
+	if ((mdata.sfunc = search_match_func (&mdata, search->type,
+	                                      search->query, search->exclude,
+	                                      search->realm,
+	                                      search->size_min, search->size_max,
+	                                      search->kbps_min, search->kbps_max)))
+	{
+		int ret;
+
+		/* this needs to be done for fast match_host...it's ugly, but it's
+		 * faster */
+		mdata.h_share = share->host_share;
+
+		ret = ((*(mdata.sfunc)) (file, &mdata));
+
+		mdata.h_share = NULL;
+
+		/* failed match, ignore this result */
+		if (!ret)
+			return;
+	}
+
+	/* otherwise, this is a normal search reply, send it back to the
+	 * interface protocol */
+
+	file_enc   = url_encode (file->sdata->path);
+	href_alloc = 128 + strlen (file_enc);
+	href       = malloc (href_alloc);
+
+	host = STRDUP (net_ip_str (share->host_share->host));
+
+	/* if the file was shared from a firewalled host, we need to construct
+	 * a special URL with the search node
+	 * NOTE: this logic is also used for results that are not fully verified
+	 * yet */
+	if (search_node &&
+	    (share->host_share->port == 0 || !share->host_share->verified))
+	{
+		snprintf (href, href_alloc - 1, "OpenFT://%s:%hu@%s:%hu%s",
+		          host, NODE (ft_self)->http_port,
+		          net_ip_str (NODE (search_node)->ip),
+		          NODE (search_node)->http_port, file_enc);
+	}
+	else
+	{
+		snprintf (href, href_alloc - 1, "OpenFT://%s:%hu%s",
+		          net_ip_str (share->host_share->host),
+		          share->host_share->http_port, file_enc);
+	}
+
+	free (file_enc);
+
+	if_event_reply (id, "item",
+	                "id=i",           search->id,
+	                "user=s",         host,
+	                "node=s",         net_ip_str (NODE (search_node)->ip),
+	                "href=s",         href,
+	                "size=i",         file->size,
+	                "hash=s",         file->sdata->md5,
+	                "availability=i", share->host_share->availability,
+	                NULL);
+
+	free (href);
+	free (host);
+}

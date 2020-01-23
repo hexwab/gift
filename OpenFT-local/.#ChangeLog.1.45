@@ -1,0 +1,384 @@
+$Id: ChangeLog,v 1.45 2004/05/12 06:12:49 jasta Exp $
+
+OpenFT 0.2.1.4:
+
+   * Fixed a signedness bug that could cause problems with non-ASCII characters
+     on some platforms.
+
+   * Fixed a packet handling bug that could cause an infinite loop.
+
+   * Minor networking tweaks.
+
+   * Fixed clipping of the nodes cache.
+
+OpenFT 0.2.1.3:
+
+   * Fixed a potentially fatal problem when parsing an HTTP request header
+     which fails to provide a request method.
+
+   * Fixed a bug that could result in a remote crash when supplying a relative
+     path in HTTP GET and HEAD request methods.
+
+   * Rewrote the ZLib decompression code to [hopefully] fix a bug which
+     can potentially leave OpenFT in an infinite loop (very rare).
+
+   * Fixed a problem when requesting additional nodelists from actively
+     connected peers which would produce an invalid request packet, and thus
+     never receive nodes.
+
+   * Corrected an invalid assumption when determining the "indirect" status of
+     remote peers that expected both port_openft and port_http to be positive
+     integers.  The HTTP port is not transmitted by nodelist responses, and
+     thus will be initialized to 0.  This subsequently prevents connection
+     attempts to these peers.
+
+   * Fixed ft_netorg_length cache corruption.
+
+   * Fixed search db filename problem which caused SEARCH nodes to be unusable
+     on Windows.
+
+OpenFT 0.2.1.2:
+
+   * Fixed a problem that would improperly cast the result of recv() to size_t
+     before testing for a negative return value.
+
+   * Improved URL encoding correctness.  This code is likely to be phased out
+     entirely with the introduction of giFT 0.12.x, *sigh*.
+
+   * Added HEAD request method support.  This is a server-side only change and
+     is not currently being utilized by this code base.
+
+   * Minor internal cleanups regarding the use of `FT_SELF' as a valid
+     FTNode object.
+
+   * Major logic improvements regarding class changes.
+
+   * Turned off incoming search verification by default.
+
+   * Massive search database redesign and internal code cleanups.  Added
+     an additional non-persistent index for efficient removal (similar to
+     what was used before but greatly cluttered the memory pool cache and
+     persisted for the life of the child connection).  This improvement
+     manifests itself in the form of a drop of n file descriptors actively
+     opened where n is the number of children the search node is currently
+     managing.
+
+   * Added a simple test-case system for benchmarking and testing
+     ft_search_db.c tweaks.
+
+   * Search node defaults have been adjusted to better facilitate the
+     increased search node distribution and lower the system requirements for
+     more casual search nodes.
+
+   * Minor search node optimization which avoids port verification for nodes
+     that can't possibly become our child (even if they think they can).  This
+     optimization should eventually be built into the network by allowing
+     users to dynamically adjust their firewalled status based on the
+     verification results from remote search peers.
+
+   * Automatically detect and adjust the fd limit of the process space
+     OpenFT is running in using getrlimit/setrlimit when available.  This
+     should greatly improve some operating system's ability to function as
+     a search node.
+
+   * Avoid a fatal assertion when giFT [mistakenly] calls p->download_start
+     consecutively, with no p->download_stop in-between.
+
+   * Major win32 portability improvements.  Thanks pretender :-)
+
+OpenFT 0.2.1.1:
+
+   * Move libgiftproto version requirements up to 0.11.4 for the changes to
+     the p->upload_auth system.
+
+   * Improved default nodes file from 0.2.1.0.
+
+   * Optimized ft_netorg_length to use a constant iteration of 31 (total
+     distinct possibilities for the klass fields) instead of moving over every
+     node that currently exists in the state set.
+
+   * Added a feature to clamp the maximum number of OpenFT connections that
+     will be allowed.  By default, this feature is only active for search
+     nodes and it is intended to keep them away from the default maximum fd
+     limit of 1024 on most systems.
+
+   * Fixed a small bug which would allow search nodes to release peers when
+     the purpose value was not properly assigned.
+
+OpenFT 0.2.1.0:
+
+   * Deliver the proper nodelist sentinel after the complete command has been
+     sent.  Should we maybe use a generalized stream here?
+
+   * Fixed a typo which would result in acceptance of a new parent despite
+     the precense of a previous one.  The remote peer is sent a rejected
+     response while the local node adds a parent class, thus creating an
+     inconsistency.  Eventually this leads to the local node dropping
+     legitimate parent nodes and then seeking out new parents to start the
+     process all over again.
+
+   * Improved search result filtering to firewalled users, specifically when
+     the search result would not be accessible to the user receiving the
+     results.  You could reason that this will reduce search result traffic by
+     about 25% due to the frequency of searches from firewalled users and also
+     the number of firewalled users on the network.  Although, I don't believe
+     this to be entirely accurate.  Still, it's an improvement *g*.
+
+   * Fixed a small memory leak which would occur for each HTTP request which
+     returned the 503 HTTP response (no available upload positions, generally).
+
+   * Handle the new UPLOAD_AUTH_HIDDEN condition from p->upload_auth.  Also
+     improved the logic which responds to 503 messages so that only
+     UPLOAD_AUTH_MAX will send the queue position.
+
+   * Fixed a severe search database bug which would cause all single share
+     removals (such as when resyncing shares) to fail to be removed from the
+     secondary token index which resulted in the need for the SEARCH_DB_HACK
+     switch.  Lingering references to the share database would always exist
+     and the size of the secondary token index would grow indefinitely,
+     causing performance and resource management issues.
+
+OpenFT 0.2.0.0:
+
+   * Internal improvements which allow idle connections to be cleaned up on
+     the client side more gracefully.  This system will need to be implemented
+     on a case-by-case basis, and is currently in use only by a small number
+     of systems.
+
+   * Modified the PUSH forward request/response such that a response is
+     always sent back, even when successful.  This way we can be sure to
+     terminate the session as soon as we can be assured that the packet was
+     delivered.
+
+   * Fixed several bugs which would cause regular user nodes to enter a state
+     of desperation when searching for nodes, even when they have all the
+     necessary connectivity.
+
+   * Automagically clamp the number of nodes written out to the cache to avoid
+     ridiculous startup times trying to read and sort them back in.
+
+   * Fixed a fatal assertion failure when responding with a node list that
+     exceeds 2048 bytes, triggered on search nodes when the external
+     OpenFT spider runs.
+
+   * Merged nodelist request and response into a single command for
+     efficiency.
+
+   * Fixed a fatal error with libdb3 >= 3.2.x.
+
+OpenFT 0.1.0.5:
+
+   * Fixed a bug where search nodes would try a new outgoing connection
+     when a push forward request was made.  The user must be connected for
+     this operation to have any meaning.
+
+   * Reduced the amount of stale PUSH sources that are allowed by killing the
+     source when the search node parent that is handling the forwarding says
+     that the user is no longer available as a child.
+
+   * Fixed a resource mismanagement bug which would request a nodelist from
+     remote peers even when all connection types are satisfied.
+
+   * Fixed a fatal bug when searching and no parent nodes are available.
+
+OpenFT 0.1.0.4:
+
+   * Fixed a problem where old nodes would stll prefer outgoing connections to
+     newer incompatible versions, effectively flooding them with erroneous
+     connection attempts.
+
+   * Reduce the amount of nodelists that are requested from remote peers in
+     an effort to reduce search node bandwidth requirements.
+
+   * First official version change which uses the a.b.c.d version identifier,
+     instead of a.b.c-d, to reduce confusion with the Debian packages.
+
+OpenFT 0.1.0-3:
+
+   * Added a special share (GET /nodes...) which will dynamically construct a
+     file containing references to all active OpenFT connections.
+
+OpenFT 0.1.0-2:
+
+   * Completely rewritten HTTP transfer system.  During this rewrite OpenFT's
+     nodepage was put to rest.
+
+   * Minor non-backwards compatible change to the PUSH system used by
+     firewalled nodes during uploading.
+
+OpenFT 0.1.0-1:
+
+   * No real changes, only a version change for this release candidate.
+
+OpenFT 0.0.10-1:
+
+   * Completely eliminated the need for FTSHost, moving the few required
+     facilities it provided to ft_search_db.h:FTSearchDB.
+
+   * Major search database optimizations resulting from direct storage of the
+     FTSearchDB pointer instead of relying on a lookup by IP in order to
+     complete the result set.  Needless to say these are highly experimental.
+
+   * Rearranged protocol commands related to sharing and stats.  Specifically,
+     sync messages are used to indicate when modifications to the shares will
+     be made, this replaces one part of the modshare_request command.  Added
+     FT_CHILD_PROP message to adjust availability and hopefully other child
+     properties in the future.  Divided FT_STATS_REQUEST such that it no
+     longer implemented any form of sub-commands, added
+     FT_STATS_DIGEST_{ADD,REMOVE} to replace the functionality.
+
+   * Improved the stats semantics such that parent search nodes will archive
+     previous index node replies and deliver them to children nodes who
+     request. This means that index nodes will no longer be bound to the base
+     user class, opting instead for a better defined hierarchy.
+
+   * Many legacy cleanups.
+
+   * Take advantage of the new FT->share_lookup (FT, ...) command.  In the
+     very near future a new command to access the entire share index (for
+     ft_share_local_submit) will be added as well.
+
+OpenFT 0.0.9-7:
+
+   * Actually, nothing.  It's a trick, but update anyway *g*.
+
+OpenFT 0.0.9-6:
+
+   * Improved FT_NODELIST_REQUEST so that specific classes may be filtered
+     by the remote node in order to produce visual graphs by spidering the
+     network.  Please see the openft-map module from this CVSROOT if you'd
+     like to know exactly how we are doing this...
+
+OpenFT 0.0.9-5:
+
+   * Major search efficiency improvements.  Temporarily removed MD5 search
+     forwarding.
+
+   * Reintroduced the concept of a search termination sentinel.  Each node
+     in the network will wait on all forwarded nodes to respond before it
+     delivers the sentinel so that the original searching node may elegantly
+     terminate the search before the timeout hits.  This feature depends on
+     all other nodes sending the sentinel in the proper order, and as such
+     is only moderately backwards compat to 0.0.9-4.
+
+OpenFT 0.0.9-4:
+
+   * Redesigned push requests and modified search results to properly maintain
+     the original search parent for push purposes.
+
+OpenFT 0.0.9-3:
+
+   * Modified the search response headers to track the original parent.  This
+     will be used to fix the push request problem introduced with the virtual
+     cluster design.
+
+   * Modified FT_NODELIST_{REQUEST,RESPONSE} so that only one packet is
+     exchanged for each direction (instead of one per node exchanged).
+
+OpenFT 0.0.9-2:
+
+   * Search enhancement using an id that can be considered unique for all
+     nodes operating on the search.  This is used for a stronger (and simpler)
+     system of search forwarding that can preserve as much of the original
+     data as possible, as well as detect "loops" in the query system.
+
+OpenFT 0.0.9-1:
+
+   * Major high-level redesign begun.  Initial changes include the formation
+     of virtual clusters through a configurable number of static peer search
+     node connections.  Searches are broadcasted to all peers, which then
+     rebroadcast the search until TTL expires, or the maximum result set is
+     reached.  Several optimizations are planned to improve efficiency in a
+     large scale network.
+
+   * Migrated the code over to the new logging facilities provided through the
+     Protocol structure.
+
+OpenFT 0.0.8-2:
+
+   * More improvements to the search database design.  We are now utilizing a
+     single database environment and all child shares are inserted into the
+     same physical file on disk.
+
+   * Tested and [almost] finished direct browsing.  Currently,
+     ft_packet_sendto is limited to only being able to deliver packets to
+     non-firewalled users.  Hopefully this will be addressed soon.
+
+OpenFT 0.0.8-1:
+
+   * Massive scalability improvements related to the search node database code
+     which organizes and indexes all child shares.  For the more technical of
+     our audience, we have moved to a database design utilizing two master
+     databases for all searching requirements (greatly increasing insert and
+     removal overhead) while reducing the number of file descriptors open at
+     any one time and total memory overhead.
+
+   * Rewrote node, network organization, and connection subsystems for OpenFT.
+     While it has little effect on the network structure directly, I will
+     begin to utilize these new APIs through implementation of node
+     clustering.  Honestly, it's coming soon :)
+
+   * Untested "fix" for direct user browsing.  See 0.0.7-8's entry for more
+     details on this.
+
+OpenFT 0.0.7-8:
+
+   * Direct browsing implemented.  Please note that this code will currently
+     only work if you already have an OpenFT connection with the user you are
+     browsing.  This limitation is strictly client-side and should be
+     considered a "bug".  Will be fixed ASAP.
+
+OpenFT 0.0.7-7:
+
+   * Fixed session handshaking...I know, shut up.
+
+OpenFT 0.0.7-6:
+
+   * Fixed session handshaking for real this time...I promise.
+
+OpenFT 0.0.7-5:
+
+   * Fixed a bug which ignored the need to test supplied ports.  This caused
+     nodes which have been improperly configured (port = non-zero yet it is
+     not remotely accessable, likely because of a firewall) to report as
+     non-firewalled users and reply with a URL as such.  It would thus be
+     impossible to download from these users.
+
+   * Fixed a somewhat related bug which caused session handshaking to
+     prematurely complete.  Fixing this bug causes a minor disruption in
+     handshaking with 0.0.7-4, which worsens the race condition in 0.0.7-4.
+
+OpenFT 0.0.7-4:
+
+   * Deliver node aliases over HTTP and display appropriately for uploads
+     registered this way.
+
+OpenFT 0.0.7-3:
+
+   * Fixed a minor endianness problem when communicating IPv4 addresses over
+     OpenFT.
+
+OpenFT 0.0.7-2:
+
+   * Public "release" of OpenFT 0.0.7.
+
+OpenFT 0.0.7-1:
+
+   * Transparent stream compression over OpenFT.  This system introduces a
+     a bandwidth optimization which greatly reduces the number of OpenFT
+     packets required for writing (by blocking multiple writes into one packet)
+     as well as transparently compressing the writes with ZLIB if available.
+     Currently, the non-zlib code is somewhat broken so ZLIB is a requirement.
+     This will be lifted soon.
+
+   * Strict protocol "handshaking" stage requiring all nodes deliver the
+     required information/packet responses before the stage increases and the
+     true OpenFT session begins.
+
+   * Completely removed old method of browsing due to a severe waste of
+     resources by design.  A new direct browse method which operates over
+     OpenFT using stream compression is expected to be completed shortly.
+
+OpenFT <= 0.0.6:
+
+   * Information lost.

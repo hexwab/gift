@@ -1,0 +1,25 @@
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_http_server.c
+--- ft_http_server.c	15 Nov 2003 12:15:58 -0000	1.58
++++ ft_http_server.c	11 Dec 2003 03:26:47 -0000
+@@ -294,7 +294,17 @@
+ 		 * actually ask giFT for authorization.
+ 		 */
+ 		if ((share = FT->share_lookup (FT, SHARE_LOOKUP_HPATH, spath)))
++		{
++			FTNode *node;
+ 			ret = FT->upload_auth (FT, net_ip_str (c->host), share, auth_info);
++			
++			/* allow our parent a free slot */
++			if (ret == UPLOAD_AUTH_MAX &&
++			    (node = ft_netorg_lookup (c->host)) &&
++			    (node->state & FT_NODE_CONNECTED) &&
++			    (node->ninfo.klass & FT_NODE_PARENT))
++				ret = UPLOAD_AUTH_ALLOW;
++		}
+ 		else
+ 			ret = UPLOAD_AUTH_NOTSHARED;
+ 	}

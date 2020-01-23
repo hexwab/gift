@@ -1,0 +1,138 @@
+$Id: TODO,v 1.11 2004/06/04 16:31:08 hipnod Exp $
+
+0.0.11
+------
+	o test short-writing of packets and make sure it works
+	o rename gt_conn_ -> gt_node_list_
+	o limit outgoing push upload rate
+	o use GtTransfer by splitting up gt_transfer_new instead of
+	  http_incoming thing
+	o insert incoming HTTP server connections into server connection list,
+	  to ensure the connection will get closed if there are too many
+	o optimize away extra packet allocations
+	o support basic packet routing
+	o implement simple flow-control
+	o make QRP implementation more complete
+	o support QRP for reducing queries to nodes
+	o implement GGEP properly
+	o make generic 3-way handshake for features that have a version
+	  number (Vendor-Message, X-Query-Routing, GGEP)
+	o make sure all global symbols are prefixed with gt_, GT_, or gnutella_
+	o move handshake code into handshake/
+	o rename gnutella_* handshake functions to gt_handshake_*
+	o maybe rewrite the handshaking code completely
+	o fix packet parsing when string is at the end; need to fix 
+	  io_buf_resize to terminate
+	o merge dev-intset-search branch
+	o make web cache index requests once in a while
+	o keep queue of outgoing pushed connects, retry
+	o rename gt_search_exec gt_share_db
+	o implement an abstract GtHttpHeader type
+	o eliminate extra list len calc in gt_node_list_foreach()
+	o test and possibly incorporate SHA1 code from Linux
+	o do tests on new searching code in dev-intset-search branch
+	o fix node->share_state being NULL if handshaking hasn't completed
+	o use callback system for running code when connection has completed
+	o fix gt_share_state.c for ultrapeer mode
+
+0.0.12
+------
+	o support downloading from push proxies
+	o refactor HTTP code and merge gt_http_client.c and http_request.c
+	o maybe do browsing
+	o break transfer code into transfer/
+	o break http code into http/
+	o break sharing code into share/
+	o break searching code into search/
+	o chop off gt_ prefixes in move
+
+0.0.13
+------
+	o implement basic download mesh
+	o limit outgoing push uploads
+
+0.1.0
+-----
+	o support dynamic querying
+	o send out XML metadata
+
+{******************************************************************************}
+
+HTTP
+----
+
+	o probably rename GtTransfer to GtHttpTransfer
+	o use a new type GtHttpHeader instead of Dataset for xfer->header
+	o generalize http handling and separate transfer code into callbacks
+	o make GtHttpConnection type to cleanup gt_transfer_cancel()
+	o make GtHttpConnectionCache for unifying pushed and non-pushed caches
+	o maybe separate GtHttpTransfer into GtHttpRequest/Response
+
+
+TRANSFER
+--------
+
+	o slap push proxies in source url; have to remove them too
+
+{******************************************************************************}
+
+THINGS NEEDED FROM THE DAEMON
+-----------------------------
+	
+	* make search object persistent in front-end space, and require
+	  explicit free from front-end, or front-end disconnect
+	  
+	  Would be better if searches were a handle existing in front-end
+	  space, that stuck around after search completion, and had to be
+	  explicitly cleaned up by a front-end.  This way we could still send
+	  results that come in after a search has timed out to the front-end,
+	  and let it decide what to do with them after a search has
+	  entered the "completed" (but still allocated) state. 
+	  
+	  Haven't seen those post-completion results actually happen in a
+	  while, though..I would like to think this means the search timeout
+	  logic is good, but since there is no tracking I've no precise idea
+	  how often it happens, except i don't usually see them on the debug
+	  console. Should really add something to check for them...
+
+	* interactive searches need hash-type
+	
+	  Interactive locate searches always assume sha1, because hash-type is
+	  null. The interface protocol should support a way to enumerate the
+	  supported hashes and pass a hash-type parameter from the user to
+	  locate.
+
+	* protocol callback for adding new sources, that doesn't cancel
+	  existing transfers
+
+	  This is needed for download mesh support. download_add_source will
+	  cancel existing transfers, which is not good because one source may
+	  end up cancelling an ongoing transfer if it sends another source in
+	  the alternate location that is currently actively transfering. So, a
+	  new function is needed for use in the callback to skip ongoing
+	  transfers.
+
+	* queueing w/ MAX_DOWNLOADS_PERUSER == 1 doesn't always work
+	
+	  Because transfer_length() operates on chunks rather than sources,
+	  sometimes more than one download per source gets started if the
+	  Chunk isn't active. Need to assess the impact of changing
+	  transfer_length() to use Sources instead of Chunks.
+
+	* need some way to enforce MAX_DOWNLOADS_PERUSER on per-source basis
+
+	  Active-queueing depends on MAX_DOWNLOADS_PERUSER == 1. If
+	  MAX_DOWNLOADS_PERUSER changes, active-queueing breaks and downloads
+	  will fail all the time. Should enforce MAX_DOWNLOADS_PERUSER on 
+	  a per-source basis at runtime.
+
+	  Hmm, this may require a User abstraction. There was something else I
+	  was thinking would require that too, perhaps related to upload
+	  queueing and how doing p->user_cmp there is bad...
+
+	* push downloads need a way to initiate transfer when no Chunk is
+	  allocated
+
+	* some way to enforce a minimum retry wait on sources
+
+	* configurable source timeouts to protect push downloads

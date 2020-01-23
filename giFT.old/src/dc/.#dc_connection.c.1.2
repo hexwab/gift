@@ -1,0 +1,144 @@
+#include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+#include "buffer.h"
+#include "protocol.h"
+#include "connection.h"
+#include "event.h"
+#include "dc_connection.h"
+#include "dc_daemon.h"
+#include "dc_event.h"
+#include "dc_parse.h"
+#include "dc_callback.h"
+#include "list.h"
+#include "opt.h"
+
+dc_Connection *dc_connection_new()
+{
+	dc_Connection *dc = malloc(sizeof(dc_Connection));
+
+	if (!dc) return NULL;
+
+	dc->state = DISCONNECTED;
+	dc->write_queue = NULL;
+	dc->read_buf = buffer_new();
+	dc->read_temp = buffer_new();
+	dc->write_buf = buffer_new();
+	dc->protocol = NULL;
+
+	return dc;
+}
+
+void dc_connection_destroy(dc_Connection *dc)
+{
+	List *temp;
+
+	dc->state = DISCONNECTED;
+
+	for (temp = dc->write_queue; temp; temp = temp->next)
+		event_destroy(EVENT(temp));
+
+	list_free(dc->write_queue);
+	dc->write_queue = NULL;
+
+	buffer_destroy(dc->read_buf);
+	buffer_destroy(dc->write_buf);
+}
+
+/* *********************************************************************** */
+
+Event* dc_connection_get_read_message(dc_Connection* dc)
+{
+	return dc_event_new_from_buffer(dc->read_buf);
+}
+
+void dc_connection_write(Protocol* p, Connection* c, Event* e)
+{
+	dc_Connection* dc = (dc_Connection*)c->data;
+
+	trace();
+	if (!dc->write_queue) /* make sure that the writing queue is filled */
+		input_add (p, c, INPUT_WRITE, dc_write_callback);
+
+	dc->write_queue = list_append(dc->write_queue, e);
+}
+
+void dc_connection_send_error(Protocol* p, Connection* c, char* fmt, ...)
+{
+	char error[1024];
+
+	va_list argptr;
+	va_start(argptr, fmt);
+	vsprintf(error, fmt, argptr);
+	va_end(argptr);
+
+	dc_connection_send(p, c, 1, "error", "value", OPT_TYPE_STRING, error);
+}
+
+void dc_connection_send(Protocol* p, Connection* c, int num_args, ...)
+{
+	va_list argptr;
+	Event* e;
+	int i;
+
+	printf("dc_connection_send: proto %p, conn %p, args %d\n",p,c,num_args);
+	va_start(argptr, num_args);
+
+	/* first get the name */
+
+	e = event_new(va_arg(argptr, char*));
+
+	/* now run through the arguments */
+
+	for (i = 0; i < num_args; ++i)
+	{
+		char* name;
+		EventArg* ea;
+		int d;
+
+		ea = NULL;
+
+		/* get the argument name */
+
+		name = va_arg(argptr, char*);
+
+		/* get the argument type, and the argument value */
+
+		switch (va_arg(argptr, int))
+		{
+			case OPT_TYPE_INT:
+			{
+				char num[10];
+
+				d = va_arg(argptr, int);
+
+				sprintf(num, "%d", d);
+
+				ea = event_arg_new(name, num);
+			} break;
+
+			case OPT_TYPE_FLAG:
+			{
+				if (va_arg(argptr, int))
+					ea = event_arg_new(name, "true");
+				else
+					ea = event_arg_new(name, "false");
+			} break;
+
+			case OPT_TYPE_STRING:
+			{
+				ea = event_arg_new(name, va_arg(argptr, char*));
+			} break;
+		}
+
+		/* add the argument */
+
+		if (ea)
+			e->args = list_append(e->args, ea);
+	}
+
+	va_end(argptr);
+
+	dc_connection_write(p, c, e);
+}

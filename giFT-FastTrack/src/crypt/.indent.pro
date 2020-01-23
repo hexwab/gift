@@ -1,0 +1,6 @@
+-kr
+-bad
+-pcs
+-ts4
+-bl -bli0
+-T u64 -T u32 -T u8

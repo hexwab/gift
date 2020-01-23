@@ -1,0 +1,117 @@
+ $Id: README,v 1.22 2004/04/14 21:06:23 mkern Exp $
+---------------------
+
+This is a FastTrack plugin for giFT (www.giftproject.org)
+...just in case you haven't guessed.
+
+Obviously we take no responsibility as to what this code does to
+your hardware, software, physical or mental health.
+
+Then again, running KaZaA in wine may destroy all of the above.
+
+
+Compilation & Installation
+--------------------------
+
+First put the sources you got somewhere outside the giFT source tree
+(note: this is contrary to previous versions of the plugin).
+
+Needed tools to build giFT-Fastrack are as follows:
+
+automake    >= 1.6 (not if you use the tarball release)
+autoconf    >= 2.5 (not if you use the tarball release)
+libtool     >= 1.4 (not if you use the tarball release)
+pkg-config
+giFT
+
+
+Next run './configure' in the top source dir if you are using a TARBALL RELEASE.
+Or run './autogen.sh' if you got the sources from CVS.
+
+
+Mac OS X users should run 
+  sh -c 'LIBTOOL=glibtool LIBTOOLIZE=glibtoolize ./configure'
+or
+  sh -c 'LIBTOOL=glibtool LIBTOOLIZE=glibtoolize ./autogen.sh'
+respectively.
+(or if use fink to install it, if you have it)
+
+If you have giFT installed in a non-standard location (according to
+pkg-config), you must make sure that PKG_CONFIG_PATH is set to the
+directory where libgift.pc is located.
+
+For example:
+  export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH" (for bash)
+or
+  setenv PKG_CONFIG_PATH "/usr/local/lib/pkgconfig" (for tcsh)
+
+
+The next step is to run 'make' and 'make install' which will compile
+and install the plugin.
+
+Then add FastTrack to the [main]/plugins line in ~/.giFT/gift.conf,
+like so:
+
+old:
+	[main]
+	plugins = OpenFT:Gnutella
+
+new:
+	[main]
+	plugins = OpenFT:Gnutella:FastTrack
+
+You may also use a fully qualified path to the plugin filename:
+ 
+	[main]
+	plugins = OpenFT:/usr/local/lib/giFT/libFastTrack.la
+ 
+The plugin will copy the configuration files from the
+$PREFIX/share/giFT/FastTrack/ directory if necessary.
+
+
+Running FastTrack behind a NAT
+------------------------------
+
+If you are behind a NAT and you still want to download from other
+NATed / firewalled users you must forward the port in the config file
+(default is 1214) and set the config option main/forwarding=1.
+
+
+Common Problems
+---------------
+
+As a general rule, if you get errors that aren't mentioned below, first get
+fresh sources from cvs before trying anything else. It may be that something
+about giFT has changed and we fixed it in cvs but haven't released yet.
+
+Problem:  You put the plugin into the giFT source tree.
+Symptoms: During ./autogen.sh you get the error:
+          "libtoolize failed to generate ltmain.sh"
+Solution: Move the plugin somewhere outside the giFT source tree, or update
+	  to the newest cvs version.
+
+Problem:  giFT was not built with ltdl support
+Symptoms: *** GIFT-FATAL: couldn't load protocol /usr/lib/giFT/libFastTrack.la
+	  in file : binary does not support this protocol, consider ltdl support
+Solution: Make sure libltdl is installed (apt-get install libltdl3-dev in
+	  debian) and rm config.cache && ./autogen.sh
+
+
+Contact
+-------
+
+Project Page:   http://developer.berlios.de/projects/gift-fasttrack/
+
+Mailing Lists:  gift-fasttrack-devel@lists.berlios.de    [Developer discussion]
+                gift-fasttrack-checkins@lists.berlios.de [Notifies about cvs checkins]
+
+IRC:            #giFT-FastTrack on irc.freenode.net [The best place for up to date info]
+
+See the file AUTHORS for a list of authors.
+
+
+Credits
+-------
+
+Most of the plugin code was taken from OpenFT and old giFT code and
+as such is copyrighted by the gift project.

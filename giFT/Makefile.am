@@ -1,0 +1,36 @@
+# $Id: Makefile.am,v 1.35 2006/11/19 21:50:09 hexwab Exp $
+###############################################################################
+
+SUBDIRS = \
+	data \
+	doc \
+	etc \
+	lib \
+	m4 \
+	plugin \
+	src \
+	win32
+
+man_MANS = \
+	giftd.1
+
+EXTRA_DIST = \
+	HACKING \
+	Make.msvc \
+	Makefile.msvc \
+	QUICKSTART \
+	autogen.sh \
+	gift.spec \
+	$(man_MANS)
+
+setupdir = $(prefix)/bin
+setup_SCRIPTS = gift-setup
+setup_DATA = gift-update-nodes
+
+DISTCLEANFILES = \
+	gconfdefs.h
+
+###############################################################################
+
+rpm: dist
+	rpmbuild -ta $(PACKAGE)-$(VERSION).tar.gz

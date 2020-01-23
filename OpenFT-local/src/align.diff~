@@ -1,0 +1,125 @@
+? align.diff
+? bloom
+? ft_bloom
+? ft_search_db.c.temp
+? ft_tokenize
+? gmon.out
+? local-share.diff
+? localchild.diff
+? random_nodes.diff
+? routing.diff
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	14 Jan 2005 19:13:28 -0000
+@@ -63,6 +63,10 @@
+ #define FT_CFG_NODE_CLASS_ALLOW   ft_cfg_get_int("main/class_allow=3");
+ #define FT_CFG_NODE_ALIAS         ft_cfg_get_str("main/alias")
+ 
++#define FT_CFG_VER_MINPARENT      ft_cfg_get_str("version/min_parent=131331")
++#define FT_CFG_VER_MINPEER        ft_cfg_get_str("version/min_peer=131331")
++#define FT_CFG_VER_MINCHILD       ft_cfg_get_str("version/min_child=131329")
++
+ #define FT_CFG_NODES_CACHE_MAX    (500)
+ 
+ #define FT_CFG_SEARCH_VFY         (0)
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.68
+diff -u -r1.68 ft_http_server.c
+--- ft_http_server.c	11 May 2004 21:25:18 -0000	1.68
++++ ft_http_server.c	14 Jan 2005 19:13:32 -0000
+@@ -788,8 +788,9 @@
+ 	assert (f != NULL);
+ 
+ 	/* overflowing shouldnt be possible, but just in case.... */
++#if 0
+ 	assert (c->start + c->transmit < c->stop);
+-
++#endif
+ 	/*
+ 	 * Ask giFT for the size we should send.  If this returns 0, the upload
+ 	 * was suspended.
+Index: ft_protocol.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_protocol.c,v
+retrieving revision 1.71
+diff -u -r1.71 ft_protocol.c
+--- ft_protocol.c	3 Aug 2003 10:56:34 -0000	1.71
++++ ft_protocol.c	14 Jan 2005 19:13:32 -0000
+@@ -152,23 +152,30 @@
+ 	FTStream *stream;
+ 
+ 	if (!(stream = ft_stream_get (c, FT_STREAM_RECV, packet)))
+-		return FALSE;
++	{
++		  FT->DBGFN (FT, "stream_get failed");
++		  return FALSE;
++	}
+ 
+ 	/* retrieve each complete parsed packet individually and pass to
+ 	 * handle_command independently */
+ 	ft_stream_recv (stream, packet, (FTStreamRecv) handle_stream_pkt, c);
+ 
+ 	if (stream->eof)
++	  {
++	    FT->DBGFN (FT, "eof");
+ 		ft_stream_finish (stream);
+-
++	  }
+ 	return TRUE;
+ }
+ 
+ BOOL ft_protocol_handle (TCPC *c, FTPacket *packet)
+ {
+ 	if (!c || !packet)
++	  {
++	    FT->DBGFN (FT, "");
+ 		return FALSE;
+-
++	  }
+ 	/* stream messages need a special interface to read all raw messages out,
+ 	 * so we will simply wrap it around handle_command indirectly */
+ 	if (ft_packet_flags (packet) & FT_PACKET_STREAM)
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.138
+diff -u -r1.138 ft_search_db.c
+--- ft_search_db.c	11 Oct 2004 22:13:21 -0000	1.138
++++ ft_search_db.c	14 Jan 2005 19:13:52 -0000
+@@ -674,8 +674,8 @@
+ 
+ 	if (ret)
+ 		return ret;
+-
+-	return a_rec->id - b_rec->id;
++	
++	return memcmp (&a_rec->id, &b_rec->id, sizeof (a_rec->id));
+ }
+ 
+ static DB *db_md5idx (void)
+Index: proto/ft_handshake.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/proto/ft_handshake.c,v
+retrieving revision 1.26
+diff -u -r1.26 ft_handshake.c
+--- proto/ft_handshake.c	9 May 2004 00:14:53 -0000	1.26
++++ proto/ft_handshake.c	14 Jan 2005 19:13:54 -0000
+@@ -278,7 +278,11 @@
+ 	if (klass & (FT_NODE_SEARCH | FT_NODE_INDEX) || ft_conn_children_left() > 0)
+ 		FT_SESSION(c)->child_eligibility = TRUE;
+ 	else
+-		FT_SESSION(c)->child_eligibility = FALSE;
++	{
++		//FT_SESSION(c)->child_eligibility = FALSE;
++		ft_session_stop (c);
++		return;
++	}
+ 
+ 	/* we need to verify that this node actually accepts connections on the
+ 	 * configured ports (damn liars!) */

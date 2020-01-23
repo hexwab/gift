@@ -1,0 +1,90 @@
+# $Id: Makefile.msvc,v 1.21 2002/11/24 00:15:49 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../lib
+GIFTAPI_DEF ="../win32/gift_api.def"
+
+LOADEROBJ = "..\win32\loader$(O)"
+
+OBJECTS = \
+	daemon$(O) \
+	plugin$(O) \
+	download$(O) \
+	if_message$(O) \
+	if_port$(O) \
+	if_search$(O) \
+	if_share$(O) \
+	if_stats$(O) \
+	if_transfer$(O) \
+	main$(O) \
+	md5$(O) \
+	mime$(O) \
+	meta$(O) \
+	meta_mp3$(O) \
+	meta_ogg$(O) \
+	meta_image$(O) \
+	share_file$(O) \
+	share_cache$(O) \
+	share_db$(O) \
+	share_hash$(O) \
+	transfer$(O) \
+	upload$(O) \
+	perl$(O) \
+	hook$(O)
+
+TARGET = $(GIFT_EXE)
+
+################################################################################
+!if defined(static) || defined(STATIC)
+LIBS      = $(LIBS) $(LIBGIFT_STATIC)
+LDFLAGS   = $(LDFLAGS) -libpath:"../OpenFT"
+GIFT_LIBS = $(OPENFT_STATIC)
+
+all: $(TARGET)
+
+install: $(TARGET)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(GIFT_LIBS) $(OBJECTS)
+
+!else
+################################################################################
+LIBS = $(LIBS) $(LIBGIFT_LIB)
+TARGETDLL = $(GIFT_DLL)
+TARGETLIB = $(GIFT_LIB)
+
+all: $(TARGETDLL) $(TARGET)
+
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGETDLL): $(OBJECTS) $(GIFTAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(GIFTAPI_DEF) $(LIBS) $(OBJECTS)
+
+$(TARGET): $(LOADEROBJ) $(TARGETDLL)
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(TARGETLIB) $(LOADEROBJ)
+
+!endif
+
+
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(LOADEROBJ)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

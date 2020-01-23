@@ -1,0 +1,126 @@
+Index: ft_shost.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_shost.c,v
+retrieving revision 1.31
+diff -u -r1.31 ft_shost.c
+--- ft_shost.c	30 May 2003 02:26:51 -0000	1.31
++++ ft_shost.c	2 Jun 2003 01:28:25 -0000
+@@ -42,6 +42,11 @@
+  */
+ static Dataset *shosts = NULL;
+ 
++static FTSHost **shosts_array = NULL;
++static int shosts_count = 0;
++static int shosts_size = 0;
++static int last_index = 0; /* attempt to speed up insertion slightly */
++
+ /*****************************************************************************/
+ 
+ Dataset *ft_shosts ()
+@@ -132,6 +137,50 @@
+ 	dataset_remove (shosts, &ip, sizeof (ip));
+ }
+ 
++static int insert_array (FTSHost *shost)
++{
++	if (!shosts_array || shosts_count == shosts_size)
++	{
++		if (shosts_array)
++			shosts_size <<= 1;
++		else
++			shosts_size = FT_MAX_CHILDREN;
++		
++		shosts_array = REALLOC (shosts_array, shosts_size * sizeof(FTSHost*));
++	}
++	
++	if (shosts_array)
++	{
++		int i;
++		
++		for (i = last_index ; ; i++)
++		{
++			if (i == shosts_size)
++				i = 0;
++			
++			if (!shosts_array[i])
++				break;
++		}
++		
++		shosts_array[i] = shost;
++
++		shosts_count++;
++		last_index = (i + 1) % shosts_size;
++
++		return i;
++	} else
++		return -1;
++}
++
++static void del_array (int index)
++{
++	assert (index >=0 && index < shosts_size);
++
++	shosts_array[index] = NULL;
++	shosts_count--;
++}
++
++
+ /*****************************************************************************/
+ 
+ FTSHost *ft_shost_get (in_addr_t ip)
+@@ -139,6 +188,12 @@
+ 	return lookup (ip);
+ }
+ 
++FTSHost *ft_shost_get_index (int index)
++{
++	assert (index < shosts_size);
++	return shosts_array[index];
++}
++
+ int ft_shost_add (FTSHost *shost)
+ {
+ 	if (!shost)
+@@ -148,6 +203,9 @@
+ 		return FALSE;
+ 
+ 	insert (shost->host, shost);
++
++	shost->index = insert_array (shost);
++
+ 	return TRUE;
+ }
+ 
+@@ -156,6 +214,8 @@
+ 	assert (shost != NULL);
+ 
+ 	del (shost->host);
++	del_array (shost->index);
++
+ 	ft_shost_free (shost);
+ 
+ 	/* sync the master databases for debugging */
+Index: ft_shost.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/ft_shost.h,v
+retrieving revision 1.18
+diff -u -r1.18 ft_shost.h
+--- ft_shost.h	5 May 2003 09:49:11 -0000	1.18
++++ ft_shost.h	2 Jun 2003 01:28:25 -0000
+@@ -82,10 +82,16 @@
+ 	                                    *   should be considered valid */
+ 	void         (*removecb) (struct _ft_shost *shost);
+ 
++	unsigned int   index;              /**< index in shosts */
++
+ #ifdef USE_LIBDB
+ 	StopWatch     *sw;                 /**< used when removing shares */
+ 	DB            *pri;                /**< primary database/index.
+ 	                                    *   MD5 (16 byte) key: FileShare data. */
++	DB            *sec;                /**< secondary index.
++	                                    *   token (4 byte) key: MD5 data. */
++	Array         *tokens;           /**< tokens used */
++
+ 	DBC           *pri_curs;           /**< cursor for removal */
+ 	DB_TXN        *pri_tid;            /**< transaction wrapper for removal */
+ #endif /* USE_LIBDB */

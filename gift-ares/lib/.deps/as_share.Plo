@@ -1,0 +1,358 @@
+as_share.lo .libs/as_share.o: as_share.c as_ares.h ../config.h \
+  /usr/include/ctype.h /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-32.h /usr/include/bits/types.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/stddef.h \
+  /usr/include/bits/typesizes.h /usr/include/endian.h \
+  /usr/include/bits/endian.h /usr/include/string.h \
+  /usr/include/bits/string.h /usr/include/bits/string2.h \
+  /usr/include/stdlib.h /usr/include/stdio.h /usr/include/libio.h \
+  /usr/include/_G_config.h /usr/include/wchar.h /usr/include/bits/wchar.h \
+  /usr/include/gconv.h /usr/lib/gcc/i486-linux-gnu/4.1.2/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/sys/types.h /usr/include/time.h \
+  /usr/include/sys/select.h /usr/include/bits/select.h \
+  /usr/include/bits/sigset.h /usr/include/bits/time.h \
+  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
+  /usr/include/alloca.h /usr/include/sys/stat.h /usr/include/bits/stat.h \
+  /usr/include/errno.h /usr/include/bits/errno.h \
+  /usr/include/linux/errno.h /usr/include/asm/errno.h \
+  /usr/include/asm-i386/errno.h /usr/include/asm-generic/errno.h \
+  /usr/include/asm-generic/errno-base.h /usr/include/fcntl.h \
+  /usr/include/bits/fcntl.h /usr/include/assert.h /usr/include/zlib.h \
+  /usr/include/zconf.h /usr/include/unistd.h \
+  /usr/include/bits/posix_opt.h /usr/include/bits/confname.h \
+  /usr/include/getopt.h /usr/include/sys/socket.h /usr/include/sys/uio.h \
+  /usr/include/bits/uio.h /usr/include/bits/socket.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/limits.h \
+  /usr/lib/gcc/i486-linux-gnu/4.1.2/include/syslimits.h \
+  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+  /usr/include/bits/posix2_lim.h /usr/include/bits/sockaddr.h \
+  /usr/include/asm/socket.h /usr/include/asm-i386/socket.h \
+  /usr/include/asm/sockios.h /usr/include/asm-i386/sockios.h \
+  /usr/include/netinet/in.h /usr/include/stdint.h /usr/include/bits/in.h \
+  /usr/include/bits/byteswap.h /usr/include/netdb.h \
+  /usr/include/rpc/netdb.h /usr/include/bits/netdb.h \
+  /usr/include/arpa/inet.h /usr/include/dirent.h \
+  /usr/include/bits/dirent.h /usr/local/include/libgift/libgift.h \
+  /usr/local/include/libgift/giftconfig.h /usr/include/inttypes.h \
+  /usr/include/sys/time.h /usr/local/include/libgift/platform.h \
+  /usr/local/include/libgift/memory.h /usr/local/include/libgift/strobj.h \
+  /usr/local/include/libgift/parse.h /usr/local/include/libgift/dataset.h \
+  /usr/local/include/libgift/list.h /usr/local/include/libgift/array.h \
+  /usr/local/include/libgift/list_lock.h \
+  /usr/local/include/libgift/tree.h /usr/local/include/libgift/event.h \
+  /usr/local/include/libgift/network.h /usr/local/include/libgift/tcpc.h \
+  /usr/local/include/libgift/fdbuf.h \
+  /usr/local/include/libgift/interface.h \
+  /usr/local/include/libgift/conf.h /usr/local/include/libgift/log.h \
+  /usr/include/syslog.h /usr/include/sys/syslog.h \
+  /usr/include/bits/syslog-path.h \
+  /usr/local/include/libgift/proto/protocol.h \
+  /usr/local/include/libgift/proto/transfer_api.h \
+  /usr/local/include/libgift/proto/if_event_api.h \
+  /usr/local/include/libgift/proto/share_hash.h \
+  /usr/local/include/libgift/proto/protocol_ver.h \
+  /usr/local/include/libgift/proto/share.h \
+  /usr/local/include/libgift/file.h /usr/local/include/libgift/mime.h \
+  /usr/local/include/libgift/proto/if_event_api.h as_log.h as_file.h \
+  as_hashtable.h as_util.h as_config.h as_sha1.h as_encoding.h as_hash.h \
+  as_packet.h as_crypt.h as_node.h as_node_man.h as_session.h \
+  as_session_man.h as_netinfo.h as_source.h as_meta.h as_tokenize.h \
+  as_search_result.h as_search.h as_search_man.h as_http_header.h \
+  as_http_client.h as_http_server.h as_push.h as_push_man.h \
+  as_download_chunk.h as_download_conn.h as_incoming.h as_share.h \
+  as_share_man.h as_upload.h as_upload_man.h as_push_reply.h
+
+as_ares.h:
+
+../config.h:
+
+/usr/include/ctype.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/include/bits/types.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/stddef.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/stdio.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/gconv.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
+
+/usr/include/errno.h:
+
+/usr/include/bits/errno.h:
+
+/usr/include/linux/errno.h:
+
+/usr/include/asm/errno.h:
+
+/usr/include/asm-i386/errno.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/fcntl.h:
+
+/usr/include/bits/fcntl.h:
+
+/usr/include/assert.h:
+
+/usr/include/zlib.h:
+
+/usr/include/zconf.h:
+
+/usr/include/unistd.h:
+
+/usr/include/bits/posix_opt.h:
+
+/usr/include/bits/confname.h:
+
+/usr/include/getopt.h:
+
+/usr/include/sys/socket.h:
+
+/usr/include/sys/uio.h:
+
+/usr/include/bits/uio.h:
+
+/usr/include/bits/socket.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/limits.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.1.2/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/bits/sockaddr.h:
+
+/usr/include/asm/socket.h:
+
+/usr/include/asm-i386/socket.h:
+
+/usr/include/asm/sockios.h:
+
+/usr/include/asm-i386/sockios.h:
+
+/usr/include/netinet/in.h:
+
+/usr/include/stdint.h:
+
+/usr/include/bits/in.h:
+
+/usr/include/bits/byteswap.h:
+
+/usr/include/netdb.h:
+
+/usr/include/rpc/netdb.h:
+
+/usr/include/bits/netdb.h:
+
+/usr/include/arpa/inet.h:
+
+/usr/include/dirent.h:
+
+/usr/include/bits/dirent.h:
+
+/usr/local/include/libgift/libgift.h:
+
+/usr/local/include/libgift/giftconfig.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/sys/time.h:
+
+/usr/local/include/libgift/platform.h:
+
+/usr/local/include/libgift/memory.h:
+
+/usr/local/include/libgift/strobj.h:
+
+/usr/local/include/libgift/parse.h:
+
+/usr/local/include/libgift/dataset.h:
+
+/usr/local/include/libgift/list.h:
+
+/usr/local/include/libgift/array.h:
+
+/usr/local/include/libgift/list_lock.h:
+
+/usr/local/include/libgift/tree.h:
+
+/usr/local/include/libgift/event.h:
+
+/usr/local/include/libgift/network.h:
+
+/usr/local/include/libgift/tcpc.h:
+
+/usr/local/include/libgift/fdbuf.h:
+
+/usr/local/include/libgift/interface.h:
+
+/usr/local/include/libgift/conf.h:
+
+/usr/local/include/libgift/log.h:
+
+/usr/include/syslog.h:
+
+/usr/include/sys/syslog.h:
+
+/usr/include/bits/syslog-path.h:
+
+/usr/local/include/libgift/proto/protocol.h:
+
+/usr/local/include/libgift/proto/transfer_api.h:
+
+/usr/local/include/libgift/proto/if_event_api.h:
+
+/usr/local/include/libgift/proto/share_hash.h:
+
+/usr/local/include/libgift/proto/protocol_ver.h:
+
+/usr/local/include/libgift/proto/share.h:
+
+/usr/local/include/libgift/file.h:
+
+/usr/local/include/libgift/mime.h:
+
+/usr/local/include/libgift/proto/if_event_api.h:
+
+as_log.h:
+
+as_file.h:
+
+as_hashtable.h:
+
+as_util.h:
+
+as_config.h:
+
+as_sha1.h:
+
+as_encoding.h:
+
+as_hash.h:
+
+as_packet.h:
+
+as_crypt.h:
+
+as_node.h:
+
+as_node_man.h:
+
+as_session.h:
+
+as_session_man.h:
+
+as_netinfo.h:
+
+as_source.h:
+
+as_meta.h:
+
+as_tokenize.h:
+
+as_search_result.h:
+
+as_search.h:
+
+as_search_man.h:
+
+as_http_header.h:
+
+as_http_client.h:
+
+as_http_server.h:
+
+as_push.h:
+
+as_push_man.h:
+
+as_download_chunk.h:
+
+as_download_conn.h:
+
+as_incoming.h:
+
+as_share.h:
+
+as_share_man.h:
+
+as_upload.h:
+
+as_upload_man.h:
+
+as_push_reply.h:

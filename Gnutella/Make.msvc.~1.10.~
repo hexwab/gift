@@ -1,0 +1,193 @@
+# $Id: Make.msvc,v 1.10 2005/07/11 14:00:42 mkern Exp $
+
+GT_MAJOR_VERSION = 0
+GT_MINOR_VERSION = 0
+GT_MICRO_VERSION = 10
+GT_REV_VERSION   = 1
+GT_EXTRA_VERSION = 
+VERSION = $(GT_MAJOR_VERSION).$(GT_MINOR_VERSION).$(GT_MICRO_VERSION).$(GT_REV_VERSION)
+
+
+O = .obj
+
+
+# dynamic by default
+!if !defined(static) && !defined(STATIC)
+DYNAMIC=1
+!endif
+
+
+##########################
+# release / debug
+##########################
+
+
+!if defined(release) || defined(RELEASE)
+
+
+D=
+DEXT=
+
+
+CFLAGS  = $(CFLAGS)  -Ox -G6
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+#DEFS    = $(DEFS)    -DNDEBUG -UDEBUG -U_DEBUG
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+
+
+!else # !defined(release) && !defined(RELEASE)
+
+
+D=d
+DEXT=d
+
+
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -DDEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+
+!endif # defined(release) || defined(RELEASE)
+
+
+##########################
+# static / dynamic linking
+##########################
+
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+CFLAGS	= $(CFLAGS) -MD$(D) -DUSE_LTDL
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_LTDL
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+
+##########################
+# libxml2 support
+##########################
+
+!if defined(libxml2) || defined(LIBXML2) || defined(xml) || defined(XML)
+
+
+!if "$(LIBXML2_ROOT)" == ""
+
+LIBXML2_ROOT=$(BUILD_ROOT)\libxml2
+
+!endif # "$(LIBXML2_ROOT)" == ""
+
+!if !exists($(LIBXML2_ROOT))
+
+!error Directory $(LIBXML2_ROOT) not found!
+
+!endif # !exists($(LIBXML2_ROOT))
+
+
+INCLUDES = $(INCLUDES) -I$(LIBXML2_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_LIBXML2
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBXML2_ROOT)\win32\bin.msvc"
+LIBS     = $(LIBS)      libxml2.lib
+
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+DIST_DLLS = $(DIST_DLLS) $(LIBXML2_ROOT)\win32\bin.msvc\libxml2.dll
+
+!endif #  defined(dynamic) || defined(DYNAMIC)
+
+
+!endif # defined(libxml2) || defined(LIBXML2) || defined(xml) || defined(XML)
+
+
+##########################
+# zlib support
+##########################
+
+
+!if defined(zlib) || defined(ZLIB)
+
+
+!if "$(ZLIB_ROOT)" == ""
+
+
+ZLIB_ROOT=$(BUILD_ROOT)\zlib
+
+
+!endif # "$(ZLIB_ROOT)" == ""
+
+
+!if !exists($(ZLIB_ROOT))
+
+
+!error Directory $(ZLIB_ROOT) not found!
+
+
+!endif # !exists($(ZLIB_ROOT))
+
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib.lib
+
+
+!endif # defined(zlib) || defined(ZLIB)
+
+
+##########################
+# general
+##########################
+
+
+# temporary till Gnutella doesn't require giFT symbols anymore
+GIFT_LIB      		= giFT$(DEXT).lib
+GIFT_DLL      		= giFT$(DEXT).dll
+GIFT_EXE   			= giFT$(DEXT).exe
+
+
+LIBGIFT_LIB      	= libgiFT$(DEXT).lib
+LIBGIFT_DLL      	= libgiFT$(DEXT).dll
+LIBGIFT_STATIC   	= libgiFTstatic$(DEXT).lib
+LIBGIFTPROTO_LIB	= libgiFTproto$(DEXT).lib
+LIBGIFTPROTO_DLL	= libgiFTproto$(DEXT).dll
+LIBGIFTPROTO_STATIC	= libgiFTprotostatic$(DEXT).lib
+GNUTELLA_LIB         	= Gnutella$(DEXT).lib
+GNUTELLA_DLL         	= Gnutella.dll
+GNUTELLA_STATIC       	= Gnutellastatic$(DEXT).lib
+
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT
+DEFS     = $(DEFS) -DGT_MAJOR_VERSION=\"$(GT_MAJOR_VERSION)\" \
+                   -DGT_MINOR_VERSION=\"$(GT_MINOR_VERSION)\" \
+                   -DGT_MICRO_VERSION=\"$(GT_MICRO_VERSION)\" \
+                   -DGT_REV_VERSION=\"$(GT_REV_VERSION)\" \
+                   -DGT_EXTRA_VERSION=\"$(GT_EXTRA_VERSION)\"
+
+
+INCLUDES = -I$(BUILD_ROOT) -I$(BUILD_ROOT)\libgift\win32 $(INCLUDES)
+
+
+LDFLAGS  = $(LDFLAGS) -nologo -version:$(VERSION)
+LDFLAGS  = $(LDFLAGS) -libpath:"$(BUILD_ROOT)\libgift" -libpath:"$(BUILD_ROOT)\libgift\proto"
+
+
+LIBS     = $(LIBS) wsock32.lib
+
+
+DEFS     = $(DEFS) -D_WINDOWS -U_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+
+
+##########################
+# tools
+##########################
+
+
+CC = cl
+LD = link
+LT = lib

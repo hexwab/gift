@@ -1,0 +1,37 @@
+<%perl>
+###############################################################################
+##
+## $Id: users.mhtml,v 1.3 2004/08/28 02:53:55 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%attr>
+	title => 'User Support'
+</%attr>
+
+<h2>Project Documentation</h2>
+
+<h3>gift 0.11.x</h3>
+
+<ul>
+	<li><a href="/docs/0.11.x/faq.html">Frequently Asked Questions</a></li>
+	<li>
+		Installation Instructions:
+		<ul>
+			<li><a href="/docs/0.11.x/install-unix.html">Building on UNIX and UNIX-like platforms</a></li>
+			<li><a href="/docs/0.11.x/install-win32.html">Building with MSVC++ for Windows</a></li>
+		</ul>
+</ul>

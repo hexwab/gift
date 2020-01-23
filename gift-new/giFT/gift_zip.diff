@@ -1,0 +1,632 @@
+Index: OpenFT/packet.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/packet.c,v
+retrieving revision 1.17
+diff -u -u -w -r1.17 packet.c
+--- OpenFT/packet.c	16 Apr 2002 21:20:19 -0000	1.17
++++ OpenFT/packet.c	19 Apr 2002 22:46:44 -0000
+@@ -298,7 +298,7 @@
+ 
+ /*****************************************************************************/
+ 
+-static int ft_packet_send_data (Connection *c, unsigned short ft_command,
++int ft_packet_send_data (Connection *c, unsigned short ft_command,
+                               char *data, int len)
+ {
+ 	FTPacket *packet;
+Index: OpenFT/packet.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/packet.h,v
+retrieving revision 1.5
+diff -u -u -w -r1.5 packet.h
+--- OpenFT/packet.h	14 Mar 2002 01:09:51 -0000	1.5
++++ OpenFT/packet.h	19 Apr 2002 22:46:44 -0000
+@@ -51,6 +51,8 @@
+ int ft_packet_send_constructed (Connection *nc, FTPacket *packet);
+ int ft_packet_send             (Connection *c, unsigned short ft_command,
+                                 char *fmt, ...);
++int ft_packet_send_data        (Connection *c, unsigned short ft_command,
++                                char *data, int len);
+ int ft_packet_send_indirect    (unsigned long deliver_to,
+                                 unsigned short ft_command, char *fmt, ...);
+ 
+Index: OpenFT/protocol.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/protocol.c,v
+retrieving revision 1.162
+diff -u -u -w -r1.162 protocol.c
+--- OpenFT/protocol.c	18 Apr 2002 09:34:26 -0000	1.162
++++ OpenFT/protocol.c	19 Apr 2002 22:46:44 -0000
+@@ -24,6 +24,8 @@
+ #include "search.h"
+ #include "parse.h"
+ 
++#include "zip.h"
++
+ /*****************************************************************************/
+ 
+ /**/extern Config *openft_conf;
+@@ -71,6 +73,13 @@
+ FT_HANDLER (version_request);
+ FT_HANDLER (version_response);
+ 
++#ifdef USE_ZLIB
++
++FT_HANDLER (share_compressed_request);
++FT_HANDLER (share_compressed_response);
++
++#endif
++
+ /*****************************************************************************/
+ 
+ struct _handler_table
+@@ -112,7 +121,10 @@
+ 
+ 	{ FT_VERSION_REQUEST,   ft_version_request },
+ 	{ FT_VERSION_RESPONSE,  ft_version_response },
+-
++#ifdef USE_ZLIB
++	{ FT_SHARE_COMPRESSED_REQUEST,     ft_share_compressed_request },
++	{ FT_SHARE_COMPRESSED_RESPONSE,    ft_share_compressed_response },
++#endif
+ 	{ 0,                    NULL }
+ };
+ 
+@@ -895,3 +907,163 @@
+ 	{
+ 	}
+ }
++
++/*****************************************************************************/
++
++#ifdef USE_ZLIB
++
++static char *db_path (Connection *c)
++{
++	char *path;
++
++	path =
++		gift_conf_path ("OpenFT/db/%s", net_ip_str (NODE (c)->ip));
++
++	return path;
++}
++
++static void error (char *msg, ...)
++{
++  va_list args;
++  va_start (args, msg);
++
++  fprintf (stderr, msg, args);
++  fprintf (stderr, ": %s\n", strerror (errno));
++}
++
++FT_HANDLER (share_compressed_request)
++{
++	FT_Chunk  *chunk;
++	ft_uint16  chunk_len;      /* length of the chunk data */
++	FILE      *f;
++	char       file[PATH_MAX];
++	off_t      file_len;
++	off_t	   read;
++	off_t	   written;
++	ZData     *zdata;          /* once we have received all the chunks
++	                            * we assemble a zdata object and call unzip */
++
++	/* we need to be a search node and they need to be our child already */
++	if (!(NODE (ft_self)->class & NODE_SEARCH) &&
++	    !(NODE (c)->class & NODE_CHILD))
++		return;
++
++	chunk = (FT_Chunk*) packet->data;
++	chunk_len = packet->len - FT_CHUNK_HEADER_LEN;
++
++	strcpy (file, db_path (c));
++	strcat (file, ".z");
++
++	if (chunk->done)
++	{
++		if (chunk->id)
++		{
++			/* read previous chunks, append current chunk, and uncompress */
++			f = fopen (file, "rb");
++
++			if (!f)
++			{
++				error ("Can't open %s", file);
++				unlink (file);
++				return;
++			}
++
++			if (!(file_stat (fileno (f), &file_len, NULL)))
++			{
++				error ("Error stating %s", file);
++				fclose (f);
++				unlink (file);
++				return;
++			}
++
++			zdata = malloc (file_len + chunk_len);
++			if (!zdata)
++			{
++				perror ("Out of memory");
++				fclose (f);
++				unlink (file);
++				return;
++			}
++
++			read = fread (zdata, sizeof (char), file_len, f);
++
++			if (read != file_len)
++			{
++				error ("Error reading %s", file);
++				fclose (f);
++				unlink (file);
++				return;
++			}
++
++			fclose (f);
++			/* append current chunk to end of buffer */
++			memcpy ((char*) zdata + file_len, (char*) chunk->data, chunk_len);
++			unlink (file);
++		}
++		else
++		{
++			/* the compressed data fit in one chunk */
++			zdata = malloc (chunk_len);
++			if (!zdata)
++			{
++				perror ("Out of memory");
++				return;
++			}
++			memcpy ((char*) zdata, (char*) chunk->data, chunk_len);
++		}
++
++		unzip_shares (c, zdata);
++
++		free (zdata);
++
++		conn_foreach ((ConnForeachFunc) submit_share_digest, c,
++	                  NODE_INDEX, NODE_CONNECTED, 0);
++	}
++	else
++	{
++		if (chunk->id) /* open the file for appending, it must exist */
++			f = fopen (file, "rb+");
++		else           /* create the file for writing */
++			f = fopen (file, "wb");
++
++		if (!f)
++		{
++			error ("Can't create or open %s", file);
++			unlink (file);
++			return;
++		}
++
++		if (chunk->id) /* this isn't the first chunk so let's seek to EOF */
++			if ((fseek (f, 0L, SEEK_END)))
++			{
++				error ("Seek error reading %s", file);
++				fclose (f);
++				unlink (file);
++				return;
++			}
++
++		written = fwrite (chunk->data, sizeof (char), chunk_len, f);
++
++		if (written != chunk_len)
++		{
++			error ("Can't write to %s", file);
++			fclose (f);
++			unlink (file);
++			return;
++		}
++
++		if ((fclose (f)))
++		{
++			error ("Error closing %s", file);
++			unlink (file);
++			return;
++		}
++	}
++}
++
++FT_HANDLER (share_compressed_response)
++{
++	TRACE_SOCK (("unused command"));
++}
++
++#endif /* USE_ZLIB */
+Index: OpenFT/protocol.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/protocol.h,v
+retrieving revision 1.11
+diff -u -u -w -r1.11 protocol.h
+--- OpenFT/protocol.h	29 Mar 2002 07:30:18 -0000	1.11
++++ OpenFT/protocol.h	19 Apr 2002 22:46:44 -0000
+@@ -56,7 +56,10 @@
+ 	FT_MODSHARE_RESPONSE,
+ 
+ 	FT_VERSION_REQUEST,
+-	FT_VERSION_RESPONSE
++	FT_VERSION_RESPONSE,
++
++	FT_SHARE_COMPRESSED_REQUEST = 22, /* why is the above set to 20? -Ross */
++	FT_SHARE_COMPRESSED_RESPONSE
+ };
+ 
+ /**************************************************************************/
+Index: OpenFT/share.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/OpenFT/share.c,v
+retrieving revision 1.123
+diff -u -u -w -r1.123 share.c
+--- OpenFT/share.c	17 Apr 2002 00:12:42 -0000	1.123
++++ OpenFT/share.c	19 Apr 2002 22:46:44 -0000
+@@ -28,6 +28,10 @@
+ 
+ #include "share.h"
+ 
++#include "sharing.h"
++
++#include "zip.h"
++
+ /*****************************************************************************/
+ 
+ /**/extern Connection *ft_self;
+@@ -492,6 +496,17 @@
+ 
+ /*****************************************************************************/
+ 
++static Connection *locate_future_parent (Connection *c, Node *node,
++                                         void *udata)
++{
++	if (node->class & NODE_PARENT)
++		return NULL;
++
++	return c;
++}
++
++#ifndef USE_ZLIB
++
+ static int local_submit_write (Connection *c, FileShare *file, void *udata)
+ {
+ #if 0
+@@ -529,16 +544,7 @@
+ 	return FALSE;
+ }
+ 
+-static Connection *locate_future_parent (Connection *c, Node *node,
+-                                         void *udata)
+-{
+-	if (node->class & NODE_PARENT)
+-		return NULL;
+-
+-	return c;
+-}
+-
+-void ft_share_local_submit (Connection *c)
++void ft_share_local_submit (Connection *c) /* the non-USE_ZLIB version */
+ {
+ 	HashTable *shares;
+ 
+@@ -564,6 +570,8 @@
+ 	           hash_flatten (shares), NULL);
+ }
+ 
++#endif /* !USE_ZLIB */
++
+ /*****************************************************************************/
+ /* TODO - all of this stuff needs to be optimized */
+ 
+@@ -713,3 +721,114 @@
+ 	if (size)
+ 		*size = stats.size; /* MB */
+ }
++
++/*****************************************************************************/
++
++#ifdef USE_ZLIB
++
++/* Vars contains variables shares by the following functions */
++typedef struct {
++	ft_uint32  len;   /* length of ZData header + compressed data length */
++	ft_uint32  id;    /* current chuck id, starts at 1 */
++	ft_uint32  pos;	  /* current position in buffer */
++	ft_uint16  done;  /* TRUE if we're reached the end of the buffer */
++	ft_uint32  tag;   /* sanity check, to be removed */
++	ZData     *zdata; /* entire compressed data buffer */
++} Vars;
++
++static int local_submit_destroy_compressed (Connection *c, Vars *vars)
++{
++	if (!vars)
++		return FALSE;	/* sentinel, just ignore */
++
++	if (vars->done)
++	{
++		free (vars->zdata);
++		free (vars);
++		return FALSE;
++	}
++
++	return TRUE;
++}
++
++static int local_submit_write_compressed (Connection *c, Vars *vars)
++{
++	ft_uint32  chunk_len;
++	FT_Chunk  *chunk;
++	ft_uint32  packet_len;
++
++	if (!vars)
++		return FALSE; /* we're done */
++
++	if (vars->pos + MAX_CHUNK_SIZE >= vars->len)
++	{
++		chunk_len   = vars->len - vars->pos;
++		vars->done = TRUE; /* we're done, return FALSE */
++	}
++	else
++		chunk_len = MAX_CHUNK_SIZE;
++
++	packet_len  = FT_CHUNK_HEADER_LEN + chunk_len;
++	chunk       = (FT_Chunk*) malloc (packet_len);
++	if (!chunk)
++	{
++		perror ("Out of memory");
++		return FALSE;
++	}
++
++	chunk->id   = vars->id++;
++	chunk->done = vars->done;
++
++	memcpy (chunk->data, (char*) vars->zdata + vars->pos, chunk_len);
++	vars->pos += chunk_len;
++
++	ft_packet_send_data (c, FT_SHARE_COMPRESSED_REQUEST, (char*) chunk, packet_len);
++
++	return vars->done ? FALSE : TRUE;
++}
++
++void ft_share_local_submit (Connection *c) /* the USE_ZLIB version */
++{
++	HashTable *shares;
++	Vars     *vars;
++
++	if (!(shares = share_index (NULL, NULL)))
++		return;
++
++	if (!c)
++	{
++		c = conn_foreach ((ConnForeachFunc) locate_future_parent, NULL,
++		                  NODE_SEARCH, NODE_CONNECTED, 0);
++
++		/* request this parent authorize us as a child */
++		if (c)
++			ft_packet_send (c, FT_CHILD_REQUEST, NULL);
++
++		return;
++	}
++
++	vars = (Vars*) malloc (sizeof (Vars));
++	if (!vars)
++	{
++		perror ("Out of memory");
++		return;
++	}
++
++	memset (vars, 0, sizeof (Vars));
++
++	if (!(zip_shares (shares, 0, &vars->zdata, &vars->len)))
++	{
++		free (vars);
++		return;
++	}
++
++	/* add the header to the data length, 'cause we're sending it too */
++	vars->len += ZDATA_HEADER_LEN;
++
++	queue_add_single (c,
++					  (QueueWriteFunc) local_submit_write_compressed,
++					  (QueueWriteFunc) local_submit_destroy_compressed,
++					  vars, NULL);
++}
++
++#endif /* USE_ZLIB */
+Index: src/Makefile.am
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/Makefile.am,v
+retrieving revision 1.32
+diff -u -u -w -r1.32 Makefile.am
+--- src/Makefile.am	13 Mar 2002 22:44:49 -0000	1.32
++++ src/Makefile.am	19 Apr 2002 22:46:45 -0000
+@@ -9,28 +9,29 @@
+ giFT_SOURCES = \
+ 	conf.h          conf.c \
+ 	connection.h    connection.c \
+-	interface.h     interface.c \
+-	if_event.h      if_event.c \
+ 	daemon.h        daemon.c \
+-	watch.h         watch.c \
+-	queue.h         queue.c \
+-	transfer.h      transfer.c \
++	dataset.h       dataset.c \
+ 	download.h      download.c \
+-	upload.h        upload.c \
+-	sharing.h       sharing.c \
+-	md5.h           md5.c \
+ 	event.h         event.c \
+ 	file.h          file.c \
+-	mime.h          mime.c \
++	gift.h          main.c \
+ 	hash.h          hash.c \
+-	dataset.h       dataset.c \
++	if_event.h      if_event.c \
++	interface.h     interface.c \
+ 	list.h          list.c \
++	md5.h           md5.c \
++	mime.h          mime.c \
+ 	nb.h            nb.c \
+ 	network.h       network.c \
+ 	parse.h         parse.c \
+-	protocol.h      protocol.c \
+ 	platform.h      platform.c \
+-	gift.h          main.c
++	protocol.h      protocol.c \
++	queue.h         queue.c \
++	sharing.h       sharing.c \
++	transfer.h      transfer.c \
++	upload.h        upload.c \
++	watch.h         watch.c \
++	zip.h		zip.c
+ 
+ giFT_LDADD = $(GIFT_LIBS)
+ giFT_LDFLAGS = $(GIFT_LDFLAGS) -export-dynamic
+Index: src/Makefile.msvc
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/Makefile.msvc,v
+retrieving revision 1.6
+diff -u -u -w -r1.6 Makefile.msvc
+--- src/Makefile.msvc	28 Mar 2002 00:55:21 -0000	1.6
++++ src/Makefile.msvc	19 Apr 2002 22:46:45 -0000
+@@ -28,7 +28,8 @@
+ 	sharing$(O) \
+ 	transfer$(O) \
+ 	upload$(O) \
+-	watch$(O)
++	watch$(O) \
++	zip$(O)
+ 
+ TARGET = giFT.exe
+ TARGETDLL = giFT.dll
+Index: src/sharing.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.c,v
+retrieving revision 1.37
+diff -u -u -w -r1.37 sharing.c
+--- src/sharing.c	16 Apr 2002 06:35:20 -0000	1.37
++++ src/sharing.c	19 Apr 2002 22:46:45 -0000
+@@ -31,6 +31,8 @@
+ 
+ #include "upload.h"
+ 
++#include "zip.h"
++
+ /*****************************************************************************/
+ 
+ /**/extern Config *gift_conf;
+@@ -365,6 +367,7 @@
+ 			notify_protocol (share, PROTOCOL_SHARE_ADD);
+ 	}
+ 
++	if (f)
+ 	fprintf (f, "%lu %s %lu %s\n", mtime, md5, size, path);
+ 
+ 	return TRUE;
+@@ -514,6 +517,9 @@
+ 	List    *ptr;
+ 	List    *sroot;
+ 	Dataset *shares = NULL;
++#ifdef USE_ZLIB
++	off_t    shares_size = 0;
++#endif
+ 
+ 	TRACE_FUNC ();
+ 
+@@ -524,6 +530,11 @@
+ 	shares = share_build_index (sroot, FALSE, NULL, NULL);
+ 
+ 	f = fopen (gift_conf_path ("shares"), "w");
++	if (!f)
++	{
++		perror(gift_conf_path ("shares"));
++		return;
++	}
+ 
+ 	for (ptr = sroot; ptr; ptr = list_next (ptr))
+ 	{
+@@ -532,6 +543,12 @@
+ 		TRACE (("descending %s...", root));
+ 		path_traverse (f, &shares, FALSE, root, root);
+ 	}
++
++#ifdef USE_ZLIB
++	fseek (f, 0, SEEK_END);
++	shares_size = ftell (f);
++	zip_write_shares (shares, shares_size);
++#endif
+ 
+ 	fclose (f);
+ 
+Index: src/sharing.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/sharing.h,v
+retrieving revision 1.15
+diff -u -u -w -r1.15 sharing.h
+--- src/sharing.h	16 Apr 2002 00:57:27 -0000	1.15
++++ src/sharing.h	19 Apr 2002 22:46:45 -0000
+@@ -36,7 +36,7 @@
+ 
+ 	char         *md5;
+ 
+-	unsigned long size;
++	unsigned long size;		/* do we want to support >4G size files? */
+ 	time_t        mtime;
+ 
+ 	/* protocol-specific data
+Index: win32/config.h
+===================================================================
+RCS file: /cvsroot/gift/giFT/win32/config.h,v
+retrieving revision 1.18
+diff -u -u -w -r1.18 config.h
+--- win32/config.h	9 Apr 2002 20:07:21 -0000	1.18
++++ win32/config.h	19 Apr 2002 22:46:45 -0000
+@@ -37,6 +37,9 @@
+ /* define on the command line as the MSVC project files don't yet support */
+ /* #define USE_DLOPEN 1 */
+ 
++/* define to use ZLIB compress library */
++#define USE_ZLIB
++
+ /* These are used!  Don't remove! -Ross */
+ #define PATH_SEP_CHAR ';'
+ #define PATH_SEP_STR ";"
+Index: win32/giFT.dsp
+===================================================================
+RCS file: /cvsroot/gift/giFT/win32/giFT.dsp,v
+retrieving revision 1.12
+diff -u -u -w -r1.12 giFT.dsp
+--- win32/giFT.dsp	18 Apr 2002 00:00:08 -0000	1.12
++++ win32/giFT.dsp	19 Apr 2002 22:46:45 -0000
+@@ -50,7 +50,8 @@
+ # ADD BSC32 /nologo
+ LINK32=link.exe
+ # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
+-# ADD LINK32 zlib.lib binmode.obj wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /version:0.10 /subsystem:console /machine:I386
++# ADD LINK32 zlib.lib binmode.obj wsock32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /version:0.10 /subsystem:console /machine:I386 /nodefaultlib:"libc.lib" /nodefaultlib:"libcmt.lib" /nodefaultlib:"msvcrt.lib"
++# SUBTRACT LINK32 /pdb:none
+ 
+ !ELSEIF  "$(CFG)" == "giFT - Win32 Debug"
+ 
+@@ -182,6 +183,10 @@
+ 
+ SOURCE=..\src\watch.c
+ # End Source File
++# Begin Source File
++
++SOURCE=..\src\zip.c
++# End Source File
+ # End Group
+ # Begin Group "Header Files"
+ 
+@@ -285,6 +290,10 @@
+ # Begin Source File
+ 
+ SOURCE=..\src\watch.h
++# End Source File
++# Begin Source File
++
++SOURCE=..\src\zip.h
+ # End Source File
+ # End Group
+ # Begin Group "Resource Files"

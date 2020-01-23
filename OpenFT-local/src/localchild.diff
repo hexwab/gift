@@ -1,0 +1,546 @@
+? ft_bloom
+? ft_tokenize
+? gmon.out
+? random_nodes.diff
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.68
+diff -u -r1.68 ft_http_server.c
+--- ft_http_server.c	11 May 2004 21:25:18 -0000	1.68
++++ ft_http_server.c	22 Aug 2004 01:46:25 -0000
+@@ -788,8 +788,9 @@
+ 	assert (f != NULL);
+ 
+ 	/* overflowing shouldnt be possible, but just in case.... */
++#if 0
+ 	assert (c->start + c->transmit < c->stop);
+-
++#endif
+ 	/*
+ 	 * Ask giFT for the size we should send.  If this returns 0, the upload
+ 	 * was suspended.
+Index: ft_search.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search.c,v
+retrieving revision 1.61
+diff -u -r1.61 ft_search.c
+--- ft_search.c	3 Aug 2004 00:08:27 -0000	1.61
++++ ft_search.c	22 Aug 2004 01:46:28 -0000
+@@ -376,6 +376,15 @@
+ 		FTNode *node = ft_share->node;
+ 		BOOL indirect;
+ 
++		/* FIXME */
++		if (!node)
++		{
++#if 0
++			FT->DBGFN (FT, "%s", share->path);
++#endif
++			return FALSE;
++		}
++
+ 		assert (node != NULL);
+ 
+ 		/* hack to forced verified=false to translate to indirect=true */
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.119
+diff -u -r1.119 ft_search_db.c
+--- ft_search_db.c	21 Aug 2004 21:10:19 -0000	1.119
++++ ft_search_db.c	22 Aug 2004 01:46:33 -0000
+@@ -52,7 +52,7 @@
+  * actively serving multiple real users.  This switch does _NOT_ cause the
+  * test suite to be executed.  See OPENFT_TEST_SUITE in ft_openft.c for that.
+  */
+-#define SEARCH_DB_BENCHMARK
++/* #define SEARCH_DB_BENCHMARK */
+ 
+ /*
+  * Primitive interactive querying when using the test suite.
+@@ -138,6 +138,7 @@
+ static DB     *db_md5_idx      = NULL;
+ static DB     *db_token_idx    = NULL;
+ static DB     *db_share_data   = NULL;
++FTSearchDB    *local_child     = NULL;
+ 
+ static uint32_t global_id = 0;
+ 
+@@ -285,7 +286,9 @@
+ 	sdb->shares = 0;
+ 	sdb->size = 0;
+ 
+-	node->session->search_db = sdb;
++	if (node)
++		node->session->search_db = sdb;
++	
+ 	sdb->node = node;
+ 
+ 	return sdb;
+@@ -955,6 +958,10 @@
+ 	int ret;
+ 	int tokens_len;
+ 
++	/* we don't track this for local shares, but pretend that we do */
++	if (sdb == local_child)
++		return TRUE;
++
+ 	if (!(dbp = db_shareidx (sdb, FALSE)))
+ 		return FALSE;
+ 
+@@ -1007,17 +1014,34 @@
+ 	key.data = &keyrec;
+ 	key.size = sizeof (keyrec);
+ 
+-	/* get the complete serialized record */
+-	if (!serialize_record (&data, hash, t, share))
+-		return 0;
++	if (sdb == local_child)
++	{
++		/* for local shares just store a pointer,
++		 * as we have the share in memory anyway */
++		data.data = &share;
++		data.size = sizeof (share);
++
++		/* TODO: order */
++
++		/* not reffing this should be safe... I hope */
++#if 0
++		ft_share_ref (share);
++#endif
++	}
++	else
++	{
++		/* get the complete serialized record */
++		if (!serialize_record (&data, hash, t, share))
++			return 0;
++	}
+ 
+ 	/* choose a new id, retrying until it succeeds */
+ 	do {
+-		id = global_id++;
+ 		
+ 		/* skip zero */
+-		if (!id)
+-			continue;
++		do {
++			id = global_id++;
++		} while (!id);
+ 
+ 		keyrec.sdb = sdb;
+ 		keyrec.id  = id;
+@@ -1275,6 +1299,10 @@
+ 	DBT key;
+ 	int ret;
+ 
++	/* we don't track this for local shares, but pretend that we do */
++	if (sdb == local_child)
++		return TRUE;
++
+ 	if (!(dbp = db_shareidx (sdb, FALSE)))
+ 		return FALSE;
+ 
+@@ -1334,40 +1362,26 @@
+ }
+ 
+ /*
+- * Remove a single share given its unique MD5SUM.  This is used primarily
++ * Remove a single share given its unique id.  This is used primarily
+  * when syncing smaller changes to the share database without a full dump and
+  * reimport.  This is not used internally with db_remove_host, which does
+  * something significantly more efficient for massive removal.
+  */
+-static BOOL db_remove (FTSearchDB *sdb, unsigned char *md5, off_t *retsize)
++static BOOL db_remove (FTSearchDB *sdb, uint32_t id, off_t *retsize)
+ {
+ 	Share    *share;
+ 	struct tokenized *t;
++	unsigned char *md5;
+ 	BOOL      failure;
+-	uint32_t  id;
+ 
+ 	if (!db_md5idx() || !db_tokenidx())
+ 		return FALSE;
+ 
+-#ifndef SEARCH_DB_BENCHMARK
+-	FT->DBGFN(FT,"%s: single_remove %s", ft_node_fmt (sdb->node), md5_fmt(md5));
+-#endif
+-
+-	/*
+-	 * Grab the per-user data entry at the supplied key, which will contain
+-	 * enough information to get the token list for removal from the
+-	 * secondary database and the size for statistics purposes.
+-	 */
+-	if (!(id = db_lookup_md5 (sdb, md5)))
+-	{
+-		FT->DBGFN (FT, "%s: unable to locate md5 %s for removal",
+-		           ft_node_fmt (sdb->node), md5_fmt (md5));
+-		return FALSE;
+-	}
+-
+ 	if (!(share = db_get_share (sdb, id, NULL)))
+ 		db_abort (sdb);
+ 
++	md5 = share_get_hash (share, "MD5")->data;
++
+ 	/* so that the caller knows how large the entry was that was just
+ 	 * removed (for stats purposes) */
+ 	if (retsize)
+@@ -1424,7 +1438,7 @@
+ 
+ 	/* we only needed this for the token list and size, sigh */
+ 	if (ft_share_unref (share) > 0)
+-		db_abort (sdb);
++		assert (sdb == local_child);
+ 
+ 	return !failure;
+ }
+@@ -1892,6 +1906,63 @@
+ 	return id;
+ }
+ 
++/* ewww */
++static uint32_t db_lookup_local_share (Share *share)
++{
++	static struct md5idx_data *datarec;
++	unsigned char *md5;
++	DB       *dbp;
++	DBC      *dbcp;
++	DBT       key;
++	DBT       data;
++	u_int32_t flags;
++	uint32_t  id = 0;
++
++	md5 = share_get_hash (share, "MD5")->data;
++
++	if (!md5)
++		abort();
++
++	if (!(dbp = db_md5idx()))
++		return 0;
++
++	if (!(dbcp = cursor_md5idx_md5 (dbp, md5)))
++		return 0;
++
++	memset (&key, 0, sizeof (key));
++	memset (&data, 0, sizeof (data));
++
++	/* iterate the cursor */
++	for (flags = DB_CURRENT;
++	     dbcp->c_get (dbcp, &key, &data, flags) == 0;
++	     flags = DB_NEXT_DUP)
++	{
++		assert (data.size == sizeof (*datarec));
++		datarec = data.data;
++
++		/* ignore results from nodes currently being removed in the
++		 * background */
++		if (datarec->sdb == local_child)
++		{
++			Share *sh;
++
++			sh = db_get_share (local_child, datarec->id, NULL);
++			assert (sh);
++			ft_share_unref (sh);
++
++			if (sh == share)
++			{
++				id = datarec->id;
++				break;
++			}
++		}
++	}
++	
++	dbcp->c_close (dbcp);
++
++	return id;
++}
++
+ static Share *db_get_share (FTSearchDB *sdb, uint32_t id, uint8_t **order)
+ {
+ 	static struct sharedata_key   keyrec;
+@@ -1921,18 +1992,29 @@
+ 		db_abort (sdb);
+ 	}
+ 
+-	assert (data.size <= sizeof (*datarec));
+-	datarec = data.data;
++	if (sdb == local_child)
++	{
++		share = *(Share **)data.data;
++		ft_share_ref (share);
+ 
+-	/*
+-	 * Create a new file structure for this record...this is actually quite a
+-	 * bit less efficient than we want to be, but ft_search_tokenizef needs
+-	 * to be called to gaurantee we are gathering the exact token stream that
+-	 * was created at insert.
+-	 */
+-	if (!(share = unserialize_record (sdb, NULL, datarec, order)))
+-		return NULL;
++		/* FIXME */
++		if (order)
++			*order = NULL;
++	}
++	else
++	{
++		assert (data.size <= sizeof (*datarec));
++		datarec = data.data;
+ 
++		/*
++		 * Create a new file structure for this record...this is actually quite a
++		 * bit less efficient than we want to be, but ft_search_tokenizef needs
++		 * to be called to gaurantee we are gathering the exact token stream that
++		 * was created at insert.
++		 */
++		if (!(share = unserialize_record (sdb, NULL, datarec, order)))
++			return NULL;
++	}
+ 	return share;
+ }
+ 
+@@ -2105,7 +2187,6 @@
+ static List *token_gather_cursors (DB *dbp, struct tokenized *query,
+ 				   struct tokenized *exclude, uint8_t *ordmap)
+ {
+-	uint32_t *t;
+ 	List     *cursors = NULL;
+ 	DBC      *dbcp;
+ 	uint8_t  *ordptr;
+@@ -2178,6 +2259,9 @@
+ 	assert (data->size == sizeof (*datarec));
+ 	datarec = data->data;
+ 
++	if (datarec->sdb == local_child)
++		return FALSE;
++
+ #ifndef SEARCH_DB_BENCHMARK
+ 	if (datarec->sdb->node == NULL)
+ 		assert (remove_active == TRUE);
+@@ -2601,6 +2685,8 @@
+ 		free (env_search_path);
+ 		env_search_path = NULL;
+ 	}
++
++	local_child = search_db_new (NULL);
+ #endif /* USE_LIBDB */
+ 
+ 	return db_initialized;
+@@ -2620,6 +2706,9 @@
+ 		free (env_search_path);
+ 		env_search_path = NULL;
+ 	}
++
++	search_db_free (local_child);
++	local_child = NULL;
+ #endif /* USE_LIBDB */
+ 
+ 	db_initialized = FALSE;
+@@ -2657,6 +2746,7 @@
+ {
+ 	BOOL ret    = FALSE;
+ #ifdef USE_LIBDB
++	uint32_t id;
+ 	off_t size = 0;
+ #endif /* USE_LIBDB */
+ 
+@@ -2664,7 +2754,19 @@
+ 		return FALSE;
+ 
+ #ifdef USE_LIBDB
+-	if ((ret = db_remove (FT_SEARCH_DB(node), md5, &size)))
++	/*
++	 * Grab the per-user data entry at the supplied key, which will contain
++	 * enough information to get the token list for removal from the
++	 * secondary database and the size for statistics purposes.
++	 */
++	if (!(id = db_lookup_md5 (FT_SEARCH_DB(node), md5)))
++	{
++		FT->DBGFN (FT, "%s: unable to locate md5 %s for removal",
++		           ft_node_fmt (node), md5_fmt (md5));
++		return FALSE;
++	}
++
++	if ((ret = db_remove (FT_SEARCH_DB(node), id, &size)))
+ 	{
+ 		FT_SEARCH_DB(node)->shares--;
+ 		FT_SEARCH_DB(node)->size -= ((float)size / 1024.0) / 1024.0;
+@@ -2681,6 +2783,49 @@
+ 	return ret;
+ }
+ 
++BOOL ft_search_db_insert_local (Share *share)
++{
++	BOOL ret = FALSE;
++
++	if (!share)
++		return FALSE;
++
++#ifdef USE_LIBDB
++	ret = db_insert (local_child, share);
++#endif /* USE_LIBDB */
++
++	return ret;
++}
++
++BOOL ft_search_db_remove_local (Share *share)
++{
++	BOOL ret    = FALSE;
++	uint32_t id;
++
++	if (!share)
++		return FALSE;
++
++#ifdef USE_LIBDB
++	id = db_lookup_local_share (share);
++
++	if (!id)
++		abort();
++
++	if ((ret = db_remove (local_child, id, NULL)))
++	{
++#ifndef SEARCH_DB_BENCHMARK
++		FT->DBGFN (FT, "local: removed %s", share->path);
++#endif
++	}
++	else
++	{
++		FT->DBGFN (FT, "local: %s removal failed", share->path);
++	}
++#endif /* USE_LIBDB */
++
++	return ret;
++}
++
+ BOOL ft_search_db_remove_host (FTNode *node)
+ {
+ #ifdef USE_LIBDB
+Index: ft_search_db.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.h,v
+retrieving revision 1.25
+diff -u -r1.25 ft_search_db.h
+--- ft_search_db.h	21 Aug 2004 21:10:20 -0000	1.25
++++ ft_search_db.h	22 Aug 2004 01:46:33 -0000
+@@ -160,6 +160,16 @@
+  */
+ BOOL ft_search_db_remove (FTNode *node, unsigned char *md5);
+ 
++/*
++ * DOCME
++ */
++BOOL ft_search_db_insert_local (Share *share);
++
++/*
++ * DOCME
++ */
++BOOL ft_search_db_remove_local (Share *share);
++
+ /**
+  * Remove all rows necessary to completely eliminate all traces of the host
+  * supplied.  Clearly, this is used when a user disconnects and may
+Index: ft_search_exec.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_exec.c,v
+retrieving revision 1.65
+diff -u -r1.65 ft_search_exec.c
+--- ft_search_exec.c	13 Aug 2004 22:49:45 -0000	1.65
++++ ft_search_exec.c	22 Aug 2004 01:46:33 -0000
+@@ -133,7 +133,7 @@
+ 	}
+ 
+ 	/* check main token list */
+-	for (i = 0, ptr = sdata->f_qtok->tokens; i < sdata->f_qtok->tokens; i++, ptr++)
++	for (i = 0, ptr = sdata->f_qtok->tokens; i < sdata->f_qtok->len; i++, ptr++)
+ 	{
+ 		int matched = FALSE;
+ 
+@@ -430,9 +430,6 @@
+ 	sw = stopwatch_new (TRUE);
+ #endif /* SEARCH_TIMING */
+ 
+-	/* search the files we are currently sharing */
+-	search_local (&sdata);
+-
+ 	/* search the remote nodes databases
+ 	 * NOTE: this does not mean to search over OpenFT, merely look at
+ 	 * shares that were submitted via OpenFT from our CHILD nodes */
+Index: ft_share.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_share.c,v
+retrieving revision 1.34
+diff -u -r1.34 ft_share.c
+--- ft_share.c	2 Nov 2003 12:09:07 -0000	1.34
++++ ft_share.c	22 Aug 2004 01:46:33 -0000
+@@ -248,6 +248,12 @@
+ 	ft_netorg_foreach (FT_NODE_PARENT, FT_NODE_CONNECTED, 0,
+ 	                   FT_NETORG_FOREACH(share_add), share);
+ 
++	if (openft->ninfo.klass & FT_NODE_SEARCH)
++	{
++		int ret = ft_search_db_insert_local (share);
++		assert (ret);
++	}
++
+ 	return TRUE;
+ }
+ 
+@@ -263,6 +269,13 @@
+ {
+ 	ft_netorg_foreach (FT_NODE_PARENT, FT_NODE_CONNECTED, 0,
+ 	                   FT_NETORG_FOREACH(share_remove), share);
++
++	if (openft->ninfo.klass & FT_NODE_SEARCH)
++	{
++		int ret =ft_search_db_remove_local (share);
++		assert (ret);
++	}
++
+ 	return TRUE;
+ }
+ 
+Index: ft_share_file.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_share_file.c,v
+retrieving revision 1.24
+diff -u -r1.24 ft_share_file.c
+--- ft_share_file.c	4 Aug 2004 01:56:25 -0000	1.24
++++ ft_share_file.c	22 Aug 2004 01:46:33 -0000
+@@ -19,7 +19,6 @@
+ #include "md5.h"
+ 
+ #include "ft_search.h"
+-#include "ft_tokenize.h"
+ #include "ft_share_file.h"
+ 
+ /*****************************************************************************/
+@@ -40,7 +39,6 @@
+ 
+ 	share->node = node;
+ 	share->ninfo = ninfo;
+-	share->tokens = ft_tokenize_share (file, 0);
+ 
+ 	return share;
+ }
+@@ -87,7 +85,6 @@
+ 	if (!share)
+ 		return;
+ 
+-	ft_tokenize_free (share->tokens);
+ 	free (share);
+ }
+ 
+@@ -136,12 +133,5 @@
+ 	if (!(share = share_get_udata (file, "OpenFT")))
+ 		return FALSE;
+ 
+-	/* tokenize this share for fast searching */
+-	if (!share->tokens)
+-		share->tokens = ft_tokenize_share (file, 0);
+-
+-	if (!share->tokens)
+-		return FALSE;
+-
+ 	return TRUE;
+ }

@@ -1,0 +1,23 @@
+/COPYING/1.1.1.1/Fri May  9 19:34:46 2003//
+/INSTALL/1.1/Sat Jun  7 17:06:03 2003//
+/NEWS/1.2/Tue Jul  1 15:49:03 2003//
+D/win32////
+/.cvsignore/1.4/Sun Jan 11 15:26:13 2004//
+/fasttrack.spec.in/1.1/Fri Sep 19 14:42:40 2003//
+D/m4////
+D/tools////
+/AUTHORS/1.12/Fri Apr 23 20:25:42 2004//
+/README/1.22/Fri Apr 23 20:25:43 2004//
+/README.win32/1.5/Fri Apr 23 20:25:43 2004//
+/autogen.sh/1.6/Fri Apr 23 20:25:43 2004//
+D/src////
+/PROTOCOL/1.19/Tue Nov 16 19:17:25 2004//
+D/data////
+D/debian////
+/ChangeLog/1.30/Fri Aug 19 22:18:17 2005//
+/Make.msvc/1.11/Fri Aug 19 22:18:17 2005//
+/Makefile.am/1.12/Fri Aug 19 22:18:17 2005//
+/Makefile.msvc/1.4/Fri Aug 19 22:18:17 2005//
+/TODO/1.45/Fri Aug 19 22:18:17 2005//
+/acinclude.m4/1.5/Fri Aug 19 22:18:17 2005//
+/configure.ac/1.37/Fri Aug 19 22:18:17 2005//

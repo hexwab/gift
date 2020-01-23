@@ -1,0 +1,149 @@
+2002-11-26 21:11  Göran Weinholt <weinholt@linux.nu>
+
+	* NEWS, debian/changelog: Preps for 0.5.5.
+
+2002-11-26 20:55  Göran Weinholt <weinholt@linux.nu>
+
+	* po/: ca.po, da.po, de.po, es.po, fr.po, nl.po, pl.po, pt_BR.po,
+	sv.po: make update-po... The command is 'cvs up -C', people.
+
+2002-11-26 20:54  Göran Weinholt <weinholt@linux.nu>
+
+	* po/sv.po: Updated the Swedish translation.
+
+2002-11-26 06:01  Christian Häggström <chm@c00.info>
+
+	* src/wakeup.c: Protocol change
+
+2002-11-24 18:37  Christian Häggström <chm@c00.info>
+
+	* src/ui_main.c: Fix a segfault when we have an empty result list
+	selected
+
+2002-11-23 17:31  Göran Weinholt <weinholt@linux.nu>
+
+	* src/transfer.c: Cruft.
+
+2002-11-23 17:23  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, format.h, search.c, transfer.c, transfer.h,
+	tree.c, tree.h, ui_main.c, ui_main.h, ui_settings.h, ui_transfer.c,
+	wakeup.c: Make ui_transfer somewhat nicer, by moving update_ui to
+	the tree structure. Split format-strings so they fit on screen.
+	Removed unused functions from header files
+
+2002-11-22 22:55  Göran Weinholt <weinholt@linux.nu>
+
+	* src/transfer.c: I got mad.
+
+2002-11-22 22:04  Göran Weinholt <weinholt@linux.nu>
+
+	* src/transfer.c: Evil.
+
+2002-11-22 21:48  Göran Weinholt <weinholt@linux.nu>
+
+	* src/: get.c, gift.c, misc.c, protocol.c, protocol.h, search.c,
+	transfer.c, ui_main.c: Compatibility with the newer protocol. I
+	think.
+
+2002-11-22 19:56  Göran Weinholt <weinholt@linux.nu>
+
+	* src/: search.c, transfer.c: Case insensitive we be.
+
+2002-11-21 00:12  Göran Weinholt <weinholt@linux.nu>
+
+	* src/misc.c: Protocol change makes this message look silly.
+
+2002-11-20 10:39  Christian Häggström <chm@c00.info>
+
+	* src/wakeup.c: oops
+
+2002-11-19 23:13  Christian Häggström <chm@c00.info>
+
+	* src/ui_transfer.c: shift-E (un)expands all transfers
+
+2002-11-18 22:04  Christian Häggström <chm@c00.info>
+
+	* src/: protocol.c, wakeup.c: giFTwakeup wakes nonstarted downloads
+	up too, after a tip from elrond
+
+2002-11-10 13:58  Christian Häggström <chm@c00.info>
+
+	* src/list.c: Don't set list start negative. Fixes a segfault in
+	help screen
+
+2002-11-08 18:54  Christian Häggström <chm@c00.info>
+
+	* src/: list.c, list.h, main.c, ui_draw.c, ui_help.c, ui_main.c,
+	ui_settings.c, ui_transfer.c, wakeup.c: Do not scroll empty lines
+	in help screen and infobox
+
+2002-11-08 18:31  Christian Häggström <chm@c00.info>
+
+	* src/: protocol.c, protocol.h: remove unused functions
+
+2002-11-06 18:20  Christian Häggström <chm@c00.info>
+
+	* src/format.c, src/format.h, src/parse.c, src/ui_transfer.c,
+	giFTcurs.conf.5: The Total: line is now also configurable
+
+2002-11-06 12:46  Christian Häggström <chm@c00.info>
+
+	* src/: format.c, get.c, gift.c, gift.h, search.c, search.h,
+	transfer.c, ui_main.c: Integrated search and transfer event
+	handling into gift.c signal system. They are now registrered by id,
+	not commands
+
+2002-11-05 10:37  Göran Weinholt <weinholt@linux.nu>
+
+	* TODO: Document the need for documentation.
+
+2002-11-05 00:04  Christian Häggström <chm@c00.info>
+
+	* src/wakeup.c: Updated giFTwakeup to the latest protocol
+
+2002-11-04 21:37  Göran Weinholt <weinholt@linux.nu>
+
+	* src/ui_transfer.c: Capital S for searching for sources on all
+	downloads.
+
+2002-11-04 17:06  Christian Häggström <chm@c00.info>
+
+	* src/: get.c, get.h, search.c, search.h, transfer.c, transfer.h,
+	tree.c, tree.h, ui_main.c: Implement single-source downloads as geo
+	suggested.
+
+2002-11-04 15:13  Göran Weinholt <weinholt@linux.nu>
+
+	* po/: ca.po, es.po: Updated Spanish and Catalan translations.
+
+2002-11-04 00:28  Göran Weinholt <weinholt@linux.nu>
+
+	* THANKS, src/list.c, src/list.h, src/ui_transfer.c: Merged a patch
+	from Daniel Phillips. When you remove a transfer, the selection
+	doesn't get moved to the top anymore.
+
+2002-10-30 01:52  Christian Häggström <chm@c00.info>
+
+	* src/transfer.c: More tolerant find-reuse function
+
+2002-10-28 23:21  Göran Weinholt <weinholt@linux.nu>
+
+	* autogen.sh: oops
+
+2002-10-27 19:00  Göran Weinholt <weinholt@linux.nu>
+
+	* acinclude.m4, configure.in: Mac OS X has a weird gcc that uses
+	not gcc's precompiler, but Apple's. Passing the -no-cpp-precomp
+	flag to gcc fixes this.
+
+2002-10-27 15:43  Göran Weinholt <weinholt@linux.nu>
+
+	* debian/control: We'll just have to set up something else for
+	stable.
+
+2002-10-27 02:52  Göran Weinholt <weinholt@linux.nu>
+
+	* src/protocol.c: This marks the beginning of a new era. We're
+	gonna require GCC.
+

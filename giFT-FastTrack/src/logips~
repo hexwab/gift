@@ -1,0 +1,4 @@
+#else
+			fprintf (stderr, "%08x %08x:%d %08x:%d %d %d\n",
+				   now, session->tcpcon->host, session->tcpcon->port,
+				   ip, port, load, last_seen);

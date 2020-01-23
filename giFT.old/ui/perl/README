@@ -1,0 +1,62 @@
+Author
+------
+
+giFT-shell Copyright Philip Walls 2002
+Under the terms of the GNU General Public License
+Please see LICENSE for details.
+
+giFT-shell is NOT WRITTEN BY JASTA
+If you have problems with it it is not giFT's fault.
+For questions, or bug reports contact malverian
+#giFT (irc.openprojects.net)
+
+giFT-perl is deprecated
+Please use giFT-shell instead
+
+
+
+Usage
+-----
+
+If you 'make install'd properly the giFT
+package, then you should only have to type
+'giFT-shell' to run.
+
+Once inside the interactive shell:
+################################################
+
+   [help]
+   Shows help list
+
+   [stats/netstat/transfer(s)]
+   Shows current transfers
+
+   [ls/dir/list]
+   Shows search results (must search first)
+
+   [search/find/locate]
+   Searches giFT network
+
+   [get/download]
+   Download a file
+
+   [quit/exit/logout]
+   Exit the giFT shell
+
+   [kill/term/cancel]
+   Cancel download and delete state file
+
+   [pause/halt/stop]
+   Pause download
+
+   [resume/continue]
+   Continue a download
+
+################################################
+
+
+No: there is no scrollback buffer
+No: there is not planned to be one
+
+I do plan on creating a ! similar to in BASH
+Please send bug reports to malverian.

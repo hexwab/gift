@@ -1,0 +1,1 @@
+bzcat /tmpfs/openft/maps/`cat /tmpfs/openft/latest-map` >newmap

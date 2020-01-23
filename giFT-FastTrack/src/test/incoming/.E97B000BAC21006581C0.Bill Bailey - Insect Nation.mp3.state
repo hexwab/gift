@@ -1,0 +1,11 @@
+[transfer]
+uniq = E97B000BAC21006581C0.Bill Bailey - Insect Nation.mp3
+filename = Bill Bailey - Insect Nation.mp3
+hash = FTH:=hc9qekLPw6wUfcuO68nvVLpLnkw=
+path = test/incoming/E97B000BAC21006581C0.Bill Bailey - Insect Nation.mp3
+transmit = 997674
+total = 6652352
+max_seek = 997674
+paused = 0
+chunks = 997674-6652352 
+

@@ -1,0 +1,266 @@
+#!/usr/bin/perl
+
+###############################################################################
+#
+#  Valid arguments are:
+#       type, default, info
+#
+#  Valid options for the type argument are:
+#       hidden, array, int, string
+#
+#  'default' argument is for defining a default value for a key
+#
+#  'info' argument is the text displayed when user is prompted for input
+#
+###############################################################################
+
+my $PATH = "$ENV{HOME}/.giFT";
+my $FIRSTRUN = 1;
+
+###############################################################################
+# determine random ports
+
+my $randport, $randhttp;
+
+my @invalid_ports = ( 1214, 1213 );
+
+do { $randport = int (rand 1800) + 1200; } while (invalid_port ($randport));
+push @invalid_ports, $randport;
+	
+do { $randhttp = int (rand 1800) + 1200; } while (invalid_port ($randhttp));
+
+sub invalid_port 
+{
+	my $port = shift;
+	
+	foreach my $cmp (@invalid_ports) { return 1 if ($cmp == $port); }
+	
+	0;
+}
+
+###############################################################################
+# option table
+
+my %options =
+(
+# OpenFT/OpenFT.conf (Main OpenFT Configuration)
+"OpenFT/OpenFT.conf" =>
+{
+	# [main]
+	"main" =>
+	{
+        	"http_port" =>
+        	{
+			"default" => "$randhttp",
+			"type" => "int",
+			"info" => "OpenFT uses HTTP for the main file transfer protocol.  Do not use 0."
+		},
+
+		"port" =>
+		{
+			"default" => "$randport",
+			"type" => "int",
+			"info" => "OpenFT's binary protocol listening port.\n*NOTE* Users without a direct Internet connection should choose '0' here!"
+		},
+
+		"class" =>
+		{
+			"default" => "1",
+			"type" => "int",
+			"info" => "Node classification.  If unsure, please select User.\n\t[1] User\n\t[3] Search\n\t[7] Index"
+		}
+	}
+
+},
+
+ # ui/ui.conf (giFT-fe Configuration)
+ "ui/ui.conf" =>
+ {
+	 # [daemon]
+	 "daemon" =>
+	 {
+		 "host" =>
+		 {
+			"default" => "127.0.0.1",
+			"type"    => "string",
+			"info"    => "giFT interface host"
+		},
+
+		"port" =>
+		{
+			"default" => "1213",
+			"type"    => "int",
+			"info"    => "giFT interface port"
+		},
+	}
+},
+
+# gift.conf (Main giFT Configuration)
+"gift.conf" =>
+{
+	# [main]
+	"main" =>
+	{
+		"setup" =>
+		{
+			"default" => "1",
+			"type" => "hidden"
+		},
+		"plugins" =>
+		{
+			"default" => "/usr/local/lib/giFT/libOpenFT.so",
+			"type" => "string",
+			"info" => "List of giFT plugins to init on startup separated by ':'"
+		}
+	},
+
+	"sharing" =>
+	{
+		"root" =>
+		{
+			"default" => "/home/malverian/mp3",
+			"type" => "string",
+			"info" => "List of fully qualified directories to share (recursively) separated by ':'"
+		}
+	}
+}
+);
+
+###############################################################################
+
+foreach my $config (keys %options) 
+{
+	if (&check($config)) 
+	{
+		print STDOUT "$config Already exists, would you like to:\n\n\t[1] Create new configuration\n\t[2] Edit with current options as default\n\n[1] > ";
+		my $reconfigure = <STDIN>;
+		if ($reconfigure == 1)       { &configure($config); }
+		elsif ($reconfigure == 2)    { &configure($config,1); }
+		elsif ($reconfigure eq "\n") { &configure($config); }
+		else                         { redo; }
+	}
+	else 
+	{
+		print STDOUT "$config doesn't exist, creating new config file.\n";
+		&configure($config);
+	}
+}
+
+if ($FIRSTRUN) { print STDOUT "\nNow run OpenFT/build_shares.pl to build your shares list and begin sharing.\n\n"; }
+
+sub configure 
+{
+	my $arg = $_[0];
+	my $reconfigure = $_[1];
+	my %saveopts = ();
+	my $section = "main";
+
+	&checkdir($arg);
+
+	if ($reconfigure)
+	{
+		my $savsection = "main";
+		open(CONFIGURE,"<$PATH/$arg") or die "Couldn't open $PATH/$arg: $!\n";
+		while(<CONFIGURE>)
+		{
+			if (/^\[(.+)\]$/i) { $savsection = $1; }
+			next if (/^\s*?#/);
+
+			if (/^(.+?) = (.+)$/)
+			{
+				$saveopts{$savsection}{$1} = $2;
+				print STDOUT "Reading $1... $2\n";
+			}
+		}
+		close CONFIGURE;
+                if ($saveopts{main}{setup} && $arg eq "gift.conf") { $FIRSTRUN = 0; }
+	}
+
+	open(CONFIGURE,">$PATH/$arg") or die "Couldn't open $PATH/$arg: $!\n";
+
+	print CONFIGURE "# $arg\n\n";
+
+	foreach my $section (keys (%{$options{$arg}}))
+	{
+		print CONFIGURE "[$section]\n";
+
+		foreach my $option (keys (%{$options{$arg}{$section}}))
+		{
+			if ($options{$arg}{$section}{$option}{type} eq "hidden")
+			{
+				print CONFIGURE "$option = $options{$arg}{$section}{$option}{default}\n";
+				next;
+			}
+
+			if ($saveopts{$section}{$option}) { print STDOUT "\n[$option]\n\n$options{$arg}{$section}{$option}{info}\n\n[$saveopts{$section}{$option}] > "; }
+			else                              { print STDOUT "\n[$option]\n\n$options{$arg}{$section}{$option}{info}\n\n[$options{$arg}{$section}{$option}{default}] > "; }
+
+			my $chosen = <STDIN>;
+			chop($chosen);
+			if ($chosen eq "") 
+			{
+				if ($saveopts{$section}{$option}) { print CONFIGURE "$option = $saveopts{$section}{$option}\n"; }
+				else                              { print CONFIGURE "$option = $options{$arg}{$section}{$option}{default}\n"; }
+			}
+			else
+			{
+				if ($options{$arg}{$section}{$option}{type} eq "int" && $chosen =~ /^\d+$/) 
+				{
+					print CONFIGURE "$option = $chosen\n";
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "string") 
+				{
+					print CONFIGURE "$option = $chosen\n";
+				}
+				elsif ($options{$arg}{$section}{$option}{type} eq "array") 
+				{
+					my @array = split(/\,/,$chosen);
+					foreach my $thing (@array) 
+					{
+						print CONFIGURE "$option = $thing\n";
+					}
+				}
+				else 
+				{
+					print STDOUT "\nAnswer requires type $options{$arg}{$section}{$option}{type}";
+					redo;
+				}
+			}
+		}
+	}
+	
+	close CONFIGURE or die "Couldn't write $PATH/$arg to disk: $!\n";
+}
+
+sub check 
+{
+	return 0 unless (open (CHECK, "<$PATH/$_[0]"));
+
+	close CHECK;
+	1;
+}
+
+sub checkdir 
+{
+	$_[0] =~ /(.+)\/(.+)/;
+	my @dir = split(/\//,$1);
+	my @PATH = ($PATH);
+	$" = "/";
+
+	foreach my $dir (@dir) 
+	{
+		if (opendir(CHECK,"@PATH/@dir")) 
+		{
+			closedir(CHECK);
+		}
+		else 
+		{
+			if (!opendir(CHECK,"@PATH"))      { mkdir("@PATH",0777) or die "@PATH: $!\n"; }
+			else                              { closedir(CHECK); }
+			
+			if (!opendir(CHECK,"@PATH/$dir")) { mkdir("@PATH/$dir",0777) or die "@PATH/$dir: $!\n"; }
+			else                              { closedir(CHECK); }
+		}
+		push (@PATH,$dir);
+	}
+}

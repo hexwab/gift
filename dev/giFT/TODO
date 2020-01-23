@@ -1,0 +1,40 @@
+Please note that some of this isn't really meant to make sense to anyone but
+jasta.
+
+
+giFT:
+
+   . doxygen the entire project
+   . widely redesign the giFT -> protocol communication model, see protocol.h
+   . update documentation
+   . implement OPT command
+   . improve mime support using mime.magic
+     (see rossta's port of the *nix 'file' command in
+     http://gift.2ebb.com/gift_magic_all.tar.gz).
+   . fair upload queue
+   . divide chunks at 1MB boundaries
+
+  UNIX:
+
+     . further investigate soapy's fork() patch
+	 . test for fork's presence and implement a blocking platform_child_proc
+	   if it's nowhere to be found.
+
+  Windows:
+
+     . add code (in win32/) to run giFT as an NT/2000/XP service.
+
+
+OpenFT:
+
+   . add bandwidth tracking diagnostic systems to gauge bw scalability
+   . automatic node promotion
+   . node clustering
+   . notify search nodes when unusual download problems occur, encourage search
+     node to re-evaluate port information.
+   . improve nodes cache
+   . remove ft_utils.c
+   . finish ft_node.c rewrite
+   . implement an ft_event.c with an event timeout and other functionality
+     abstracted away from ft_search.c
+   . add ft_browse.c to use ft_event.c

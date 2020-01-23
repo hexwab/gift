@@ -1,0 +1,28 @@
+protocol.o: protocol.c openft.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/gnu/stubs.h \
+ /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stddef.h \
+ /usr/lib/gcc-lib/i386-redhat-linux/egcs-2.91.66/include/stdarg.h \
+ /usr/include/bits/types.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/bits/stdio_lim.h \
+ /usr/include/stdlib.h /usr/include/sys/types.h /usr/include/time.h \
+ /usr/include/endian.h /usr/include/bits/endian.h \
+ /usr/include/sys/select.h /usr/include/bits/select.h \
+ /usr/include/bits/sigset.h /usr/include/sys/sysmacros.h \
+ /usr/include/alloca.h /usr/include/string.h ../src/gift.h ../config.h \
+ /usr/include/unistd.h /usr/include/bits/posix_opt.h \
+ /usr/include/bits/confname.h /usr/include/getopt.h \
+ /usr/include/assert.h ../src/parse.h ../src/hash.h ../src/dataset.h \
+ ../src/list.h ../src/connection.h ../src/protocol.h \
+ ../src/interface.h ../src/if_event.h ../src/download.h \
+ ../src/transfer.h ../src/upload.h ../src/event.h \
+ /usr/include/bits/time.h protocol.h packet.h ../src/network.h \
+ /usr/include/fcntl.h /usr/include/bits/fcntl.h \
+ /usr/include/sys/socket.h /usr/include/bits/socket.h \
+ /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
+ /usr/include/asm/sockios.h /usr/include/netinet/in.h \
+ /usr/include/stdint.h /usr/include/bits/in.h \
+ /usr/include/bits/byteswap.h /usr/include/arpa/inet.h \
+ /usr/include/netdb.h /usr/include/rpc/netdb.h node.h ../src/queue.h \
+ share.h ../src/sharing.h ../src/conf.h utils.h netorg.h http.h \
+ ../src/file.h search.h ../src/meta.h ../src/enum.h

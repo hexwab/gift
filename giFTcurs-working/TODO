@@ -1,0 +1,13 @@
+A realistic TODO list for giFTcurs
+==================================
+
+Stuff that's planned:
+	* Ability to choose filename for downloads.
+	* Documentation.
+
+Stuff that we'll probably never get to, but would be sort of nice:
+	* World domination and so on.
+	* Client to client chat.
+	* Use readline(3) for the input fields.
+
+Never forget, we must fight the feature creep!

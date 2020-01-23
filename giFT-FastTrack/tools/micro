@@ -1,0 +1,13 @@
+#!/bin/sh
+host=${1-fm2.imesh.com}
+port=${2-1214}
+enc=${3-0} # what enc type we would like
+
+#786639a8
+
+# connect to kazaa with a single line of code! w00t!
+#perl -e 'print map chr hex, @ARGV' a0 33 0d 0a 0 0 0 80 0 0 0 0 |nc $host $port| (perl -e 'sysread STDIN,$f,8;($s,$e)=unpack"NN",$f or die;$w=sprintf"%x",$s;chomp($x=`./xor $w`);$e^=hex$x;exec sprintf("./filter %x %x", $e, $s) or die' || (echo 'nope' 1>&2;cat))|hd
+perl -e 'print map chr hex, @ARGV' fa 00 b6 2b 0 0 0 80 0 0 0 $enc|nc $host $port| (perl -e 'sysread STDIN,$f,8;($s,$e)=unpack"NN",$f or die;$w=sprintf"%x",$s;chomp($x=`./xor $w`);$e^=hex$x;exec sprintf("./filter %x %x", $e, $s) or die' || (echo 'nope' 1>&2;cat))|hd
+
+# (ok, so you can't actually send anything useful, but you can at least test
+# handshaking and encryption...)

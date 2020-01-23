@@ -1,0 +1,105 @@
+<%perl>
+###############################################################################
+##
+## $Id: autohandler,v 1.5 2004/08/28 02:56:36 jasta Exp $
+##
+## Copyright (C) 2004 giFT project (gift.sourceforge.net)
+##
+## This program is free software; you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published by the
+## Free Software Foundation; either version 2, or (at your option) any
+## later version.
+##
+## This program is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+###############################################################################
+</%perl>
+
+<%init>
+	my $b = $m->base_comp();
+</%init>
+
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+	<head>
+
+		<title>giFT: <% $b->attr_if_exists ('title') %></title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<meta name="robots" content="all" />
+		<meta name="author" content="Josh Guilfoyle" />
+
+		<meta name="description"
+		      content="Official web site for the giFT project" />
+
+		<link rel="stylesheet"
+		      type="text/css"
+		      media="screen"
+		      title="default"
+		      href="/css/default.css" />
+
+		<link rel="Shortcut Icon"
+		      type="image/ico"
+		      href="/favicon.ico" />
+
+	</head>
+
+	<body>
+
+		<div id="pageContainer">
+
+			<div id="siteHeader">
+				<h1>The giFT Project :: <% $b->attr_if_exists ('title') %></h1>
+			</div>
+
+			<div id="siteContent">
+
+				<div id="siteSideBar">
+					<div id="siteNavigation">
+						<ul id="menu" title="Site navigation">
+							<li><a href="/about.mhtml">About giFT</a></li>
+							<li><a href="/index.mhtml">Project News</a></li>
+							<li><a href="/download.mhtml">Download</a></li>
+							<li>
+								Software
+								<ul>
+									<li><a href="/software/core.mhtml">Core Components</a></li>
+									<li><a href="/software/plugins.mhtml">Network Plugins</a></li>
+									<li><a href="/software/guis.mhtml">User Interfaces</a></li>
+								</ul>
+							</li>
+							<li><a href="/users.mhtml">Users</a></li>
+							<li><a href="/dev.mhtml">Developers</a></li>
+							<li><a href="/contact.mhtml">Get Involved!</a></li>
+						</ul>
+					</div>
+
+				</div>
+
+				<div id="pageContent">
+
+					<div id="pageBody">
+
+% $m->call_next;
+
+					</div>
+
+					<div id="pageFooter" />
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

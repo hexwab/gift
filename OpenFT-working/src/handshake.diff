@@ -1,0 +1,1414 @@
+? auto.diff
+? db-shutdown.diff
+? dbname.diff
+? dup.diff
+? ft_search_db.c.b0rk
+? ft_search_db.c.conf2
+? ft_search_db.c.conflicted
+? ft_search_db.c.temp
+? ft_search_db.c.vanilla
+? ft_shost.c.unused
+? ft_shost.h.unused
+? ft_xfer.c
+? handshake.diff
+? hashfn.diff
+? http_server.diff
+? locate-ttl.diff
+? netorg.diff
+? netorg3.diff
+? queue.diff
+? rlimit.diff
+? search-bonus.diff
+? search-separate.diff
+? shutdown2.diff
+? test
+? url.diff
+Index: ft_conf.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conf.h,v
+retrieving revision 1.27
+diff -u -r1.27 ft_conf.h
+--- ft_conf.h	26 Dec 2003 06:44:20 -0000	1.27
++++ ft_conf.h	5 May 2004 20:06:56 -0000
+@@ -44,14 +44,21 @@
+ #define FT_CFG_SEARCH_MINPEERS    ft_cfg_get_int("search/minpeers=8")
+ #define FT_CFG_SEARCH_MAXPEERS    ft_cfg_get_int("search/peers=12")
+ #define FT_CFG_SEARCH_TTL         ft_cfg_get_int("search/default_ttl=2")
++#define FT_CFG_LOCATE_TTL         ft_cfg_get_int("search/locate_ttl=3")
+ #define FT_CFG_SEARCH_RESULTS     ft_cfg_get_int("search/max_results=800")
+ #define FT_CFG_SEARCH_RESULTS_REQ ft_cfg_get_int("search/max_results_req=800")
+-#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=2")
++#define FT_CFG_MAX_TTL            ft_cfg_get_int("search/max_ttl=3")
+ #define FT_CFG_MAX_RESULTS        FT_CFG_SEARCH_RESULTS
+-#define FT_CFG_MAX_CHILDREN       ft_cfg_get_int("search/children=85")
++#define FT_CFG_MAX_CHILDREN       ft_cfg_get_int("search/children=100")
++#define FT_CFG_MIN_CHILDREN       ft_cfg_get_int("search/min_children=30")
+ #define FT_CFG_MAX_CONNECTIONS    (30)
+ #define FT_CFG_MAX_ACTIVE         ft_cfg_get_int("connections/max_active=-1")
+ 
++#define FT_CFG_PROMOTE_CHANCE     (0.1)
++#define FT_CFG_DEMOTE_CHANCE      (0.002)
++
++#define FT_CFG_MAX_ACTIVE         ft_cfg_get_int("connections/max_active=-1")
++
+ #define FT_CFG_SEARCH_ENV_PATH    ft_cfg_get_path("search/env_path", "OpenFT/db")
+ #define FT_CFG_SEARCH_ENV_CACHE   ft_cfg_get_int("search/env_cache=31457280")
+ #define FT_CFG_SEARCH_ENV_PRIV    ft_cfg_get_int("search/env_priv=1")
+Index: ft_conn.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_conn.c,v
+retrieving revision 1.55
+diff -u -r1.55 ft_conn.c
+--- ft_conn.c	5 May 2004 04:42:42 -0000	1.55
++++ ft_conn.c	5 May 2004 20:06:56 -0000
+@@ -20,6 +20,8 @@
+ #include "ft_node_cache.h"
+ #include "ft_conn.h"
+ 
++#include "ft_search_db.h"              /* automatic node promotion */
++
+ #ifdef HAVE_SYS_TIME_H
+ # include <sys/time.h>
+ #endif /* HAVE_SYS_TIME_H */
+@@ -54,6 +56,22 @@
+  */
+ static int max_active = -1;
+ 
++/**
++  * The number of 2 minute blocks we can go without a parent before we
++  * begin automatic search node promotion tests.
++  */
++#define IMPOVERISH_MIN (4)
++
++/**
++  * Ditto, but for seeing if our services as a search node are no longer
++  * required.
++  */
++#define SURPLUS_MIN (6)
++
++static unsigned int poverty_count = 0;
++
++static unsigned int surplus_count = 0;
++
+ /*****************************************************************************/
+ 
+ static BOOL drop_notalive (FTNode *node, void *udata)
+@@ -202,6 +220,10 @@
+ 
+ static BOOL get_nodes (FTNode *node, void *udata)
+ {
++#if 0
++  //	ft_packet_sendva (FT_CONN(node), FT_NODELIST_REQUEST, 0, NULL);
++	ft_packet_sendva (FT_CONN(node), FT_NODELIST_REQUEST, 0, "hh", FT_NODE_SEARCH, 500);
++#else
+ 	FTPacket *pkt;
+ 
+ 	if (!(pkt = ft_packet_new (FT_NODELIST_REQUEST, 0)))
+@@ -213,6 +235,7 @@
+ 	if (ft_packet_send (FT_CONN(node), pkt) < 0)
+ 		return FALSE;
+ 
++#endif
+ 	return TRUE;
+ }
+ 
+@@ -330,6 +353,125 @@
+ 
+ /*****************************************************************************/
+ 
++static BOOL check_promote (void)
++{
++	float diceroll;
++	int ret;
++	
++	assert (!(openft->ninfo.klass & FT_NODE_SEARCH));
++	if (!(openft->klass_max & FT_NODE_SEARCH))
++		return FALSE;
++
++	diceroll = ((float)rand() / (RAND_MAX + 1.0));
++	
++	if (diceroll > FT_CFG_PROMOTE_CHANCE)
++		return FALSE;
++
++	/* if you're hap^H^H^Hfirewalled and you know it... */
++	if (openft->ninfo.port_openft == 0)
++		return FALSE;
++
++	/* insert other	tests here */
++
++	FT->warn (FT, "Automatically promoting to FT_NODE_SEARCH status");
++
++	if ((ret = ft_search_db_init (FT_CFG_SEARCH_ENV_PATH, FT_CFG_SEARCH_ENV_CACHE)))
++		openft->ninfo.klass |= FT_NODE_SEARCH;
++	else
++		FT->DBGFN (FT, "search db startup failed");
++	
++	surplus_count = 0;
++
++	return ret;
++}
++
++static BOOL drop_after_demotion (FTNode *node, void *udata)
++{
++	if (!node->ninfo.klass & FT_NODE_PARENT)
++		ft_session_stop (FT_CONN(node));
++	return TRUE;
++}
++
++static BOOL drop_children (FTNode *node, void *udata)
++{
++	ft_node_remove_class (node, FT_NODE_CHILD);
++	return TRUE;
++}
++
++static BOOL check_demote (void)
++{
++	int n, min;
++	float chance, diceroll;
++
++	assert (openft->ninfo.klass & FT_NODE_SEARCH);
++
++	/* Don't demote unless we automatically promoted earlier */
++	if (openft->klass_min & FT_NODE_SEARCH)
++		return FALSE;
++
++	n = ft_netorg_length (FT_NODE_CHILD, FT_NODE_CONNECTED);
++	min = FT_CFG_MIN_CHILDREN;
++
++	if (n >= min)
++	{
++		surplus_count = 0;
++		return FALSE;
++	}
++
++	/* wait a while for child acquisition */
++	if (++surplus_count < SURPLUS_MIN)
++		return FALSE;
++
++	/* 
++	 * This needs to be random so that newly-orphaned children
++	 * have time to locate a new parent before said parent demotes
++	 * itself too.
++	 *
++	 * This should become less critical as network size increases.
++	 */
++	chance = FT_CFG_DEMOTE_CHANCE;
++	chance *= ((float)min / (n + 1)); /* few children == more chance to demote */
++
++	/*
++	 * we haven't had any incoming connections yet; we might be
++         * firewalled but unaware of the fact...
++	 */
++	if (openft->ninfo.indirect)
++		chance *= 5; 
++
++	diceroll = ((float)rand() / (RAND_MAX + 1.0));
++
++	if (diceroll > chance)
++		return FALSE;
++	
++	/* OK, do it */
++	FT->DBGFN (FT, "demoting: firewalled=%d, children=%d, min=%d, surplus_count=%d",
++		   openft->ninfo.indirect, n, min, surplus_count);
++
++	openft->ninfo.klass &= ~FT_NODE_SEARCH;
++	ft_search_db_destroy ();
++	
++	/*
++	 * Drop all non-PARENT connections first.  FIXME: this might
++	 * not be necessary, and is yet another place where network
++	 * topology is hardcoded, but I'm trying it anyway in an
++	 * effort to remove demoted nodes as quickly as possible.
++	 */
++	ft_netorg_foreach (FT_NODE_USER, FT_NODE_CONNECTED, 0,
++			   FT_NETORG_FOREACH(drop_after_demotion), NULL);
++
++	/*
++	 * Remove CHILD status from any remaining connections.  Note
++	 * that this does *not* tell the remote node that we've done
++	 * so, thus causing problems if our PARENT is also our
++	 * CHILD...
++	 */
++	ft_netorg_foreach (FT_NODE_CHILD, FT_NODE_CONNECTED, 0,
++			       FT_NETORG_FOREACH(drop_children), NULL);
++	
++	return TRUE;
++}
++
+ static int acquire_new_stuff (void)
+ {
+ 	BOOL need_parents;
+@@ -343,6 +485,35 @@
+ 	need_peers   = ft_conn_need_peers();
+ 	need_index   = ft_conn_need_index();
+ 
++	/* 
++	 * 4 possibilities here:
++	 * search orphan action
++	 * no     no     stable, do nothing
++	 * no     yes    try autopromotion
++	 * yes    no     check if we're no longer needed
++	 * yes    yes    wait for a parent (don't demote without one)
++	 *
++	 * In particular, this last case means that the minimum child
++	 * count is inapplicable on tiny networks with only one search
++	 * node.  
++	 */
++
++	if (openft->ninfo.klass & FT_NODE_SEARCH)
++	{
++		poverty_count = 0;
++
++		if (!need_parents)
++			check_demote ();
++	}
++	else 
++	{
++		if (!need_parents)
++			poverty_count = 0;
++		else
++			if (++poverty_count >= IMPOVERISH_MIN)
++				check_promote ();
++	}
++
+ 	/* nothing is needed, get out of here */
+ 	if (!need_parents && !need_peers && !need_index)
+ 		return 0;
+@@ -573,7 +744,6 @@
+ 			return limit;
+ 		}
+ 
+-
+ 		limit = (int)rlim.rlim_cur;
+ 	}
+ #endif /* HAVE_SYS_RESOURCE_H */
+@@ -589,15 +759,15 @@
+ 	/* the default (-1) asks us to make an educated guess */
+ 	if ((nconns = FT_CFG_MAX_ACTIVE) == -1)
+ 	{
+-		if (!(openft->ninfo.klass & FT_NODE_SEARCH))
+-			nconns = 600;
+-		else
++		if (openft->klass_max & FT_NODE_SEARCH)
+ 		{
+ 			int nchildren = FT_CFG_MAX_CHILDREN;
+ 
+ 			/* 2n * (n / 3) */
+ 			nconns = (7 * nchildren) / 3;
+ 		}
++		if (nconns < 400)
++			nconns = 400;
+ 
+ 		FT->warn (FT, "guessing max_active=%d", nconns);
+ 	}
+@@ -633,7 +803,7 @@
+ 	 * the long run, this is done to minimize the need to create TCP
+ 	 * connections that will not be desired.
+ 	 */
+-	n = ft_netorg_foreach (FT_NODE_USER, FT_NODE_DISCONNECTED, 0,
++	n = ft_netorg_random (FT_NODE_USER, FT_NODE_DISCONNECTED, 0,
+ 	                       FT_NETORG_FOREACH(start_connection), &weight);
+ 
+ 	FT->DBGFN (FT, "began %i connections (remaining weight: %i)", n, weight);
+@@ -660,18 +830,27 @@
+ 	int n;
+ 
+ 	if (!check_local_allow (node))
++	{
++		FT->DBGFN (FT, "%s: not local", ft_node_fmt (node));
+ 		return FALSE;
++	}
+ 
+ 	/* we won't authorize a duplicate connection */
+ 	if (node->state != FT_NODE_DISCONNECTED)
++	{
++		FT->DBGFN (FT, "%s: dup", ft_node_fmt (node));
+ 		return FALSE;
++	}
+ 
+ 	if (outgoing)
+ 	{
+ 		/* refuse outbound connections when we suspect the version may be
+ 		 * outdated...let them come to us to prove otherwise */
+ 		if (node->version && FT_VERSION_LT(node->version, FT_VERSION_LOCAL))
++		{
++			FT->DBGFN (FT, "%s: outdated outbound", ft_node_fmt (node));
+ 			return FALSE;
++		}
+ 	}
+ 
+ 	/* make sure we honor FT_CFG_MAX_ACTIVE, when set */
+@@ -680,13 +859,19 @@
+ 		n = ft_netorg_length (FT_NODE_CLASSANY, FT_NODE_CONNECTED);
+ 
+ 		if (n >= max_active)
++		{
++			FT->DBGFN (FT, "%s: max_active hit", ft_node_fmt (node));
+ 			return FALSE;
++		}
+ 
+ 		/* when we only have 100 connections left, start refusing the broken
+ 		 * 0.2.0.0 nodes (and 0.2.0.1 out of CVS) */
+ 		if ((node->version > 0 && node->version <= OPENFT_0_2_0_1) &&
+ 		    (n + 100 >= max_active))
++		{
++			FT->DBGFN (FT, "%s: semi-outdated", ft_node_fmt (node));
+ 			return FALSE;
++		}
+ 	}
+ 
+ 	return TRUE;
+Index: ft_http_server.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_http_server.c,v
+retrieving revision 1.66
+diff -u -r1.66 ft_http_server.c
+--- ft_http_server.c	24 Apr 2004 07:02:27 -0000	1.66
++++ ft_http_server.c	5 May 2004 20:06:57 -0000
+@@ -36,6 +36,22 @@
+ 
+ /*****************************************************************************/
+ 
++static char *version_string = NULL;
++
++char *ft_http_server_version (void)
++{
++	if (!version_string)
++	{
++		version_string = stringf_dup ("OpenFT/%i.%i.%i.%i (%s)",
++			     OPENFT_MAJOR, OPENFT_MINOR,
++			     OPENFT_MICRO, OPENFT_REV,
++			     platform_version ()
++			     );
++	}
++
++	return version_string;
++}
++
+ /*
+  * Accept a new incoming HTTP connection.  Please note that this does not
+  * necessarily mean this is a download or an upload, merely that it is an
+@@ -349,7 +365,17 @@
+ 			 * need to actually ask giFT for authorization.
+ 			 */
+ 			if ((share = FT->share_lookup (FT, SHARE_LOOKUP_HPATH, reqstr)))
++			{
++				FTNode *node;
+ 				ret = FT->upload_auth (FT, net_ip_str (c->host), share, auth_info);
++				
++				/* allow our parent a free slot */
++				if (ret == UPLOAD_AUTH_MAX &&
++				    (node = ft_netorg_lookup (c->host)) &&
++				    (node->state & FT_NODE_CONNECTED) &&
++				    (node->ninfo.klass & FT_NODE_PARENT))
++				ret = UPLOAD_AUTH_ALLOW;
++			}
+ 			else
+ 				ret = UPLOAD_AUTH_NOTSHARED;
+ 		}
+@@ -405,6 +431,7 @@
+ 	char *md5str;
+ 	char *buf_range;
+ 	char *buf_length;
++	char *server;
+ 	off_t start = 0;
+ 	off_t stop  = 0;
+ 	off_t entity;
+@@ -433,10 +460,21 @@
+ 	md5str = hash->algo->dspfn (hash->data, hash->len);
+ 	assert (md5str != NULL);
+ 
++	server = ft_http_server_version ();
++	assert (server != NULL);
++
+ 	dataset_insertstr (&reply->keylist, "Content-Range",  buf_range);
+ 	dataset_insertstr (&reply->keylist, "Content-Length", buf_length);
+ 	dataset_insertstr (&reply->keylist, "Content-Type",   share->mime);
+ 	dataset_insertstr (&reply->keylist, "Content-MD5",    md5str);
++	dataset_insertstr (&reply->keylist, "Server",         server);
++
++	if (strcmp (req->request, "/nodes") == 0)
++	{
++		dataset_insertstr (&reply->keylist, "X-Class", stringf ("%d", openft->ninfo.klass));
++		dataset_insertstr (&reply->keylist, "X-ClassMin", stringf ("%d", openft->klass_min));
++		dataset_insertstr (&reply->keylist, "X-ClassMax", stringf ("%d", openft->klass_max));
++	}
+ 
+ 	if (openft->ninfo.alias)
+ 		dataset_insertstr (&reply->keylist, "X-OpenftAlias", openft->ninfo.alias);
+@@ -460,11 +498,16 @@
+ 	 * protocol as the protocol-specific status.
+ 	 */
+ 	buf_retry = stringf_dup ("%u", (60 * SECONDS));
+-	buf_pos   = stringf_dup ("%u of %u",
+-	                         auth_info->queue_pos, auth_info->queue_ttl);
++
++	if (auth_info->queue_pos && auth_info->queue_ttl)
++	{
++		buf_pos = stringf_dup ("%u of %u",
++				       auth_info->queue_pos,
++				       auth_info->queue_ttl);
++		dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
++	}
+ 
+ 	dataset_insertstr (&reply->keylist, "X-ShareStatus",   "Queued");
+-	dataset_insertstr (&reply->keylist, "X-QueuePosition", buf_pos);
+ 	dataset_insertstr (&reply->keylist, "X-QueueRetry",    buf_retry);
+ 
+ 	free (buf_retry);
+Index: ft_netorg.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.c,v
+retrieving revision 1.35
+diff -u -r1.35 ft_netorg.c
+--- ft_netorg.c	5 May 2004 04:46:22 -0000	1.35
++++ ft_netorg.c	5 May 2004 20:06:57 -0000
+@@ -451,6 +451,61 @@
+ 
+ /*****************************************************************************/
+ 
++static void randomize_conn_iptr (ft_state_t state)
++{
++	struct conn_list *clist = NULL;
++	int new_pos;
++
++	if (!(clist = get_conn_list (state)))
++		return;
++
++	if (clist->list == NULL || clist->count == 0)
++		return;
++
++	/* set clist->iptr to random point in list */
++	new_pos = rand() % clist->count;
++	clist->iptr = list_nth (clist->list->list, new_pos);
++
++	/* just in case anything went wrong */
++	if (clist->iptr == NULL)
++		clist->iptr = (clist->list ? clist->list->list : NULL);
++}
++
++int ft_netorg_random (ft_class_t klass, ft_state_t state, int iter,
++                      FTNetorgForeach func, void *udata)
++{
++	int looped = 0;
++
++	if (!func)
++		return 0;
++
++	if (state)
++	{
++		randomize_conn_iptr (state);
++		looped = foreach_list (klass, state, iter, func, udata);
++	}
++	else
++	{
++		/* state = 0x00 indicates that all states should be processed,
++		 * therefore requiring multiple calls to foreach_list that are
++		 * capable of persisting iteration data */
++		randomize_conn_iptr (FT_NODE_CONNECTED);
++		randomize_conn_iptr (FT_NODE_CONNECTING);
++		randomize_conn_iptr (FT_NODE_DISCONNECTED);
++
++		iter_state (klass, FT_NODE_CONNECTED, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_CONNECTING, iter, &looped, func, udata);
++		iter_state (klass, FT_NODE_DISCONNECTED, iter, &looped, func, udata);
++	}
++
++	if (iter)
++		assert (looped <= iter);
++
++	return looped;
++}
++
++/*****************************************************************************/
++
+ #ifdef VERIFY_NETORG_LENGTH
+ static BOOL length_dummy (FTNode *node, void *udata)
+ {
+@@ -507,10 +562,10 @@
+ 	}
+ 
+ #ifdef VERIFY_NETORG_LENGTH
+-	assert (len == lenvfy);
++	//	assert (len == lenvfy);
+ #endif
+ 
+-	return len;
++	return lenvfy;
+ }
+ 
+ /*****************************************************************************/
+Index: ft_netorg.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_netorg.h,v
+retrieving revision 1.13
+diff -u -r1.13 ft_netorg.h
+--- ft_netorg.h	25 Oct 2003 23:55:21 -0000	1.13
++++ ft_netorg.h	5 May 2004 20:06:57 -0000
+@@ -105,6 +105,14 @@
+                        FTNetorgForeach func, void *udata);
+ 
+ /**
++ * Does the same as ft_netorg_foreach but starts at a random position in each
++ * list instead of the last access / beginning.
++ */
++int ft_netorg_random (ft_class_t klass, ft_state_t state, int iter,
++                      FTNetorgForeach func, void *udata);
++
++
++/**
+  * Efficient means of accessing the total length of the list that would be
+  * iterated over using a similar call to ::ft_netorg_foreach.  This routine
+  * accesses a separately maintained data structure which has the length
+Index: ft_node.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_node.c,v
+retrieving revision 1.55
+diff -u -r1.55 ft_node.c
+--- ft_node.c	5 Feb 2004 21:19:46 -0000	1.55
++++ ft_node.c	5 May 2004 20:06:58 -0000
+@@ -57,7 +57,7 @@
+ 	/* this will destroy all the necessary associations for us */
+ 	if (node->session)
+ 	{
+-		if (node->session->search_db)
++		if (node->session->search_db && !openft->shutdown)
+ 			FT->warn (FT, "removing node with an active search database!");
+ 
+ 		ft_session_stop (FT_CONN(node));
+@@ -94,6 +94,7 @@
+ 	ft_node_set_http_port (node, http_port);
+ 	ft_node_set_class     (node, klass);
+ 
++	FT->dbg (FT, "registered %s: indirect=%d", ft_node_fmt (node), node->ninfo.indirect);
+ 	node->last_session = vitality;
+ 	node->uptime       = uptime;
+ 	node->version      = ver;
+@@ -169,7 +170,10 @@
+ 	openft = node->ninfo.port_openft;
+ 	http   = node->ninfo.port_http;
+ 
+-	node->ninfo.indirect = BOOL_EXPR (openft == 0 || http == 0);
++//	node->ninfo.indirect = BOOL_EXPR (openft == 0 || http == 0);
++	node->ninfo.indirect = BOOL_EXPR (openft == 0);
++	FT->dbg(FT, "set_indirect: %s oft=%d, http=%d, indirect=%d", ft_node_fmt (node), node->ninfo.port_openft, node->ninfo.port_http, node->ninfo.indirect);
++
+ }
+ 
+ void ft_node_set_port (FTNode *node, in_port_t port)
+@@ -561,6 +565,10 @@
+ 	if (!loss && !gain)
+ 		return;
+ 
++	/* shutting down */
++	if (openft->shutdown)
++		return;
++
+ 	/* the API tells us we need to register class changes, although the
+ 	 * implementation does not actually do anything with them */
+ 	ft_netorg_change (node, orig, node->state);
+@@ -686,14 +694,19 @@
+ 	else
+ 	{
+ 		assert (node->ninfo.port_openft > 0);
+-		assert (node->ninfo.port_http > 0);
++//		assert (node->ninfo.port_http > 0);
+ 
+ 		if (node->session)
+ 		{
+ 			if (node->session->verified == FALSE)
++			{	
++				FT->dbg (FT, "%s unverified", ft_node_fmt (node));
+ 				return TRUE;
++			}
+ 		}
+ 	}
++	if (ret)
++		FT->dbg (FT, "%s firewalled", ft_node_fmt (node));
+ 
+ 	return ret;
+ }
+Index: ft_node_cache.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_node_cache.c,v
+retrieving revision 1.17
+diff -u -r1.17 ft_node_cache.c
+--- ft_node_cache.c	2 Nov 2003 12:09:06 -0000	1.17
++++ ft_node_cache.c	5 May 2004 20:06:58 -0000
+@@ -227,13 +227,17 @@
+ 	/* determine the remaining number of nodes we can write to the cache */
+ 	remaining = FT_CFG_NODES_CACHE_MAX - nodes;
+ 
++#if 0
+ 	/* fill in the rest with user nodes... */
+ 	if (remaining > 0)
+ 	{
+ 		ft_netorg_foreach (FT_NODE_USER, FT_NODE_STATEANY, remaining,
+ 		                   FT_NETORG_FOREACH(write_node_user), f);
+ 	}
+-
++#else
++		ft_netorg_foreach (FT_NODE_USER, FT_NODE_STATEANY, 0,
++		                   FT_NETORG_FOREACH(write_node_user), f);
++#endif
+ 	fclose (f);
+ 
+ 	/* get rid of the temp path */
+Index: ft_openft.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_openft.c
+--- ft_openft.c	27 Dec 2003 01:57:26 -0000	1.58
++++ ft_openft.c	5 May 2004 20:06:58 -0000
+@@ -156,7 +156,7 @@
+ 		}
+ 
+ 		/* lets not make a big fuss out of this setting */
+-		openft->klass_alw &= ~FT_NODE_SEARCH;
++		openft->klass_max &= ~FT_NODE_SEARCH;
+ 	}
+ 
+ #ifndef USE_LIBDB
+@@ -209,10 +209,11 @@
+ 	openft->ninfo.alias       =      STRDUP(FT_CFG_NODE_ALIAS);
+ 	openft->ninfo.port_openft =  (in_port_t)FT_CFG_NODE_PORT;
+ 	openft->ninfo.port_http   =  (in_port_t)FT_CFG_NODE_HTTP_PORT;
+-	openft->klass_alw         = (ft_class_t)FT_CFG_NODE_CLASS_ALLOW;
++	openft->klass_min         = (ft_class_t)FT_CFG_NODE_CLASS;
++	openft->klass_max         = (ft_class_t)FT_CFG_NODE_CLASS_ALLOW;
+ 
+-	/* hmm, maybe ninfo.indirect is a bad idea? */
+-	openft->ninfo.indirect = BOOL_EXPR (openft->ninfo.port_openft == 0);
++	/* nope, ninfo.indirect is not a bad idea */
++	openft->ninfo.indirect = 1;
+ 
+ 	/* make sure that the parameters supplied above dont conflict in some way */
+ 	if (!(clamp_openft_params (p, openft)))
+@@ -303,6 +304,8 @@
+ 	/* disconnect everyone for cleanliness */
+ 	ft_netorg_clear (FT_NETORG_FOREACH(cleanup_conn), NULL);
+ 
++	ft_search_db_destroy ();
++
+ 	/* cleanup */
+ 	config_free (openft->cfg);
+ 	tcp_close (openft->bind_openft);
+Index: ft_openft.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_openft.h,v
+retrieving revision 1.48
+diff -u -r1.48 ft_openft.h
+--- ft_openft.h	23 Dec 2003 04:22:35 -0000	1.48
++++ ft_openft.h	5 May 2004 20:06:58 -0000
+@@ -100,7 +100,8 @@
+ 	TCPC            *bind_openft;      /**< Listen on the OpenFT port */
+ 	TCPC            *bind_http;        /**< Listen on the OpenFT HTTP port */
+ 
+-	ft_class_t       klass_alw;        /**< Class mask for auto-promotion */
++	ft_class_t       klass_min;        /**< Automatic class management */
++	ft_class_t       klass_max;
+ 
+ 	unsigned int     avail;            /**< Cached upload availability */
+ 
+Index: ft_search.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search.c,v
+retrieving revision 1.57
+diff -u -r1.57 ft_search.c
+--- ft_search.c	12 Mar 2004 13:32:47 -0000	1.57
++++ ft_search.c	5 May 2004 20:06:58 -0000
+@@ -286,6 +286,7 @@
+ {
+ 	FTPacket *pkt;
+ 	int       type;
++	int       ttl;
+ 
+ 	assert (search != NULL);
+ 	assert (search->event != NULL);
+@@ -297,10 +298,24 @@
+ 	type = search->params.type;
+ 
+ #ifdef FT_SEARCH_PARANOID
+-	if (FT_SEARCH_TYPE(type) == FT_SEARCH_FILENAME)
++	if (FT_SEARCH_METHOD(type) == FT_SEARCH_FILENAME)
+ 		type |= FT_SEARCH_HIDDEN;
+ #endif /* FT_SEARCH_PARANOID */
+ 
++#ifdef FT_SEARCH_DIRECT
++	if (FT_SEARCH_METHOD(type) == FT_SEARCH_FILENAME)
++		type |= FT_SEARCH_COUNT;
++#endif	
++
++	switch (FT_SEARCH_METHOD(type))
++	{
++	case FT_SEARCH_MD5:
++		ttl = FT_CFG_LOCATE_TTL;
++		break;
++	default:
++		ttl = FT_CFG_SEARCH_TTL;
++	}
++
+ 	if (!(pkt = ft_packet_new (FT_SEARCH_REQUEST, 0)))
+ 		return FALSE;
+ 
+@@ -328,7 +343,7 @@
+ 	/* add the TTL of this search, that is, the number of nodes that will
+ 	 * forward this search along to their peers until the search is stopped
+ 	 * in the network */
+-	ft_packet_put_uint16 (pkt, FT_CFG_SEARCH_TTL, TRUE);
++	ft_packet_put_uint16 (pkt, ttl, TRUE);
+ 
+ 	/* write the maximum number of results we want to get back, so that this
+ 	 * search may more efficiently complete when the result set is large */
+@@ -415,8 +430,7 @@
+ 		                        FT_NETORG_FOREACH(send_search), search);
+ 	}
+ 
+-	FT->DBGFN (FT, "%s: searched %i nodes (ttl=%i)",
+-	           ft_guid_fmt (search->guid), n, FT_CFG_SEARCH_TTL);
++	FT->DBGFN (FT, "%s: searched %i nodes", ft_guid_fmt (search->guid), n);
+ 
+ 	/* we are using this logic to determine how many parents are being waited
+ 	 * on, so that the code can clean itself up immediately if no nodes were
+Index: ft_search_db.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.c,v
+retrieving revision 1.108
+diff -u -r1.108 ft_search_db.c
+--- ft_search_db.c	14 Apr 2004 10:19:35 -0000	1.108
++++ ft_search_db.c	5 May 2004 20:07:00 -0000
+@@ -58,7 +58,7 @@
+  * Sync all databases after changes have been made to ease debugging.  This
+  * greatly hurts performance and should not be enabled for every day usage.
+  */
+-/* #define SEARCH_DB_SYNC */
++#define SEARCH_DB_SYNC
+ 
+ /*
+  * Apply a custom hash function for the child data so that a well distributed
+@@ -125,6 +125,10 @@
+ static BOOL    remove_active   = FALSE;
+ #endif /* SEARCH_DB_BENCHMARK */
+ 
++#if 0
++static Dataset *partial_cache  = NULL;
++#endif
++
+ /*****************************************************************************/
+ 
+ struct md5idx_key
+@@ -162,6 +166,7 @@
+ struct sharedata_data
+ {
+ 	off_t          size;               /* file size */
++  u_int16_t pad;
+ 	u_int16_t      path;               /* offset of path */
+ 	u_int16_t      mime;               /* offset of mime type */
+ 	u_int16_t      meta;               /* offset of meta data */
+@@ -247,8 +252,11 @@
+ 	if (!(sdb = MALLOC (sizeof (FTSearchDB))))
+ 		return NULL;
+ 
++	FT->DBGFN (FT, "%s (%p)", ft_node_fmt (sdb->node), sdb);
++
+ 	node->session->search_db = sdb;
+ 	sdb->node = node;
++	sdb->dups = NULL;
+ 
+ 	return sdb;
+ }
+@@ -747,8 +755,10 @@
+ 		return FALSE;
+ 	}
+ 
++#ifndef SEARCH_DB_BENCHMARK
+ 	if (!(remove_queue = array_new (NULL)))
+ 		return FALSE;
++#endif
+ 
+ 	return TRUE;
+ }
+@@ -763,6 +773,24 @@
+ 	clean_db_path (envpath);
+ }
+ 
++static void free_dups (FTSearchDB *sdb)
++{
++	void *elem;
++	int count = 0;
++	
++	while ((elem = array_pop (&sdb->dups)))
++	{
++		free (elem);
++		count++;
++	}
++
++	if (count)
++		FT->DBGFN (FT, "%s: %d duplicates freed",
++			   sdb->share_idx_name, count);
++
++	array_unset (&sdb->dups);
++}
++
+ /*****************************************************************************/
+ 
+ static u_int16_t serialize_fld (struct sharedata_data *datarec,
+@@ -956,11 +984,12 @@
+ 	 * this key */
+ 	if ((ret = dbp->put (dbp, NULL, &key, &data, DB_NOOVERWRITE)))
+ 	{
+-		ERR_DB_SDB("DB->put", ret, sdb);
+-
+ 		assert (ret == DB_KEYEXIST);
++//#ifndef SEARCH_DB_BENCHMARK
+ 		FT->DBGFN (FT, "duplicate MD5 %s (%s)",
+ 		           md5_fmt (keyrec.md5), sdb->share_idx_name);
++//#endif
++//		array_push (&sdb->dups, md5_dup (keyrec.md5));
+ 
+ 		return FALSE;
+ 	}
+@@ -1072,13 +1101,15 @@
+ 	if (!(tokens = ft_search_tokenizef (share)))
+ 		return FALSE;
+ 
++	success = TRUE;
++
+ 	/*
+ 	 * Insert into the global primary and secondary databases, as well as the
+ 	 * host-specific primary database.  See ft_search_db.h for more details
+ 	 * on exactly how this stuff is designed, if you're willing to believe it
+ 	 * was designed at all :)
+ 	 */
+-	if ((success = db_insert_sharedata (sdb, hash, tokens, share)))
++	if (db_insert_sharedata (sdb, hash, tokens, share))
+ 	{
+ 		success = db_insert_shareidx (sdb, hash, tokens);
+ 		assert (success == TRUE);
+@@ -1274,6 +1305,39 @@
+ 	if (!db_md5idx() || !db_tokenidx())
+ 		return FALSE;
+ 
++#if 0
++	/* dup lookup first; yes, this is horribly inefficient,
++	 * and despite it probably being safe to check only if lookup
++	 * fails, I'm being cautious for now
++	 */
++	if (sdb->dups)
++	{
++		int i, len;
++		len = array_count (&sdb->dups);
++		for (i=0; i<len; i++)
++		{
++			unsigned char *dup;
++			dup = array_index (&sdb->dups, i);
++			assert (dup);
++			if (!memcmp (md5, dup, 16))
++			{
++				/* Now remove this dup, and don't touch the db */
++				free (dup);
++				array_splice (&sdb->dups, i, 1, NULL);
++
++#ifndef SEARCH_DB_BENCHMARK
++				FT->DBGFN (FT, "%s: removed duplicate %s", 
++					   sdb->share_idx_name, md5_fmt (md5));
++#endif
++
++				assert (len - array_count (&sdb->dups) == 1);
++
++				return TRUE;
++			}
++		}
++	}
++#endif
++
+ 	/*
+ 	 * Grab the per-user data entry at the supplied key, which will contain
+ 	 * enough information to get the token list for removal from the
+@@ -1305,12 +1369,14 @@
+ 
+ 	/* tokenize so that we know exactly what we're supposed to be removing
+ 	 * from the secondary database */
++
+ 	if (!(tokens = ft_search_tokenizef (share)))
+-		failure = TRUE;
++		db_abort (sdb);
+ 	else
+ 	{
+ 		/* attempt to remove each token individually from the secondary
+ 		 * token index */
++		FT->dbg(FT,"attempting to remove tokens for hash %s", md5_fmt(md5));
+ 		failure |= ! db_remove_tokenidx (sdb, tokens, md5);
+ 		free (tokens);
+ 	}
+@@ -1365,6 +1431,8 @@
+ 	/* close and remove db_shareidx */
+ 	db_close (sdb, TRUE);
+ 
++	free_dups (sdb);
++
+ 	/* clean up the search database handle allocated to the node structure */
+ 	search_db_free (sdb);
+ }
+@@ -1663,6 +1731,31 @@
+ 
+ 	if ((ret = dbp->get (dbp, NULL, &key, &data, 0)))
+ 	{
++		assert (ret == DB_NOTFOUND);
++
++#if 0
++		/* make sure we actually have some dups */
++		if (!sdb->dups)
++			db_abort (sdb);
++
++		{
++			int i, len;
++			len = array_count (&sdb->dups);
++			for (i=0; i<len; i++)
++			{
++				unsigned char *dup;
++				dup = array_index (&sdb->dups, i);
++				assert (dup);
++				if (!memcmp (md5, dup, 16))
++					break;
++			}
++			
++			/* abort if we didn't find it in the dups list either */
++			if (i == len)
++				db_abort (sdb);
++		}
++
++#endif
+ 		ERR_DB_SDB("DB->get", ret, sdb);
+ 		return NULL;
+ 	}
+@@ -1941,8 +2034,12 @@
+ 	assert (data->size == sizeof (*datarec));
+ 	datarec = data->data;
+ 
++#ifndef SEARCH_DB_BENCHMARK
+ 	if (datarec->sdb->node == NULL)
+ 		assert (remove_active == TRUE);
++#else
++	assert (datarec->sdb->node != NULL);
++#endif
+ 
+ 	/* if node is NULL, stale is TRUE */
+ 	return BOOL_EXPR (datarec->sdb->node == NULL);
+@@ -2196,7 +2293,8 @@
+ 	 * Realm matches need to use a partial database lookup before the result
+ 	 * is fully selected and added to the list.
+ 	 */
+-	if (add_search_result (a, datarec->sdb, datarec->md5))
++	if ((!*max_results) ||
++	    add_search_result (a, datarec->sdb, datarec->md5))
+ 		(*matches)++;
+ 
+ 	cleanup_matches (dbt, NULL);
+@@ -2315,6 +2413,8 @@
+ 		env_search_path = NULL;
+ 	}
+ #endif /* USE_LIBDB */
++
++	db_initialized = FALSE;
+ }
+ 
+ /*****************************************************************************/
+@@ -2383,6 +2483,11 @@
+ 	if (!sdb)
+ 		return TRUE;
+ 
++#ifndef SEARCH_DB_BENCHMARK
++	if (openft->shutdown)
++		return TRUE;
++#endif
++
+ 	/*
+ 	 * Schedule the removal and leave.  We cannot block for the entire
+ 	 * duration of this operation, but we can disassociate the FTSearchDB
+@@ -2540,8 +2645,8 @@
+ static int nodes = 0;
+ static int files = 0;
+ 
+-static int minnodes = 100;
+-static int maxnodes = 500;
++static int minnodes = 20;
++static int maxnodes = 20;
+ 
+ static int minqueries =  5000;
+ static int maxqueries = 10000;
+@@ -2607,6 +2712,11 @@
+ 		assert (record != NULL);
+ 
+ 		array_push (files, record);
++
++		/* make some duplicates for good measure */
++		if (rand() > RAND_MAX/100)
++			array_push (files, record);
++
+ 		nfiles++;
+ 	}
+ 
+@@ -2718,7 +2828,7 @@
+ 
+ 		bm_close_db (hostdb);
+ 
+-		if (i > maxnodes)
++		if (i >= maxnodes)
+ 			break;
+ 	}
+ 
+@@ -2794,6 +2904,8 @@
+ 			Share *share = array_index (&hl->files, j);
+ 			assert (share != NULL);
+ 
++			FT->dbg (FT, "inserting file %s",
++				 md5_fmt (share_get_hash (share,"MD5")->data));
+ 			if (!(ft_search_db_insert (hl->node, share)))
+ 			{
+ 				FT->err (FT, "%s(%s): error inserting file",
+@@ -2850,7 +2962,7 @@
+ 	return stime;
+ }
+ 
+-static double run_remove (void)
++static double run_remove (int remove_singly)
+ {
+ 	StopWatch *gsw;
+ 	double rtime;
+@@ -2868,20 +2980,77 @@
+ 		assert (sw != NULL);
+ #endif
+ 
+-		if (!(ft_search_db_remove_host (node)))
++		if (remove_singly)
+ 		{
+-			FT->err (FT, "error removing node %s", ft_node_fmt (node));
+-			abort ();
++			int j;
++			Array *f=nodelist[i].files;
++			int flen=array_count(&f);
++
++			ft_search_db_open (node);
++
++			for(j=0;j<flen;j++) {
++				Share *file=array_splice (&f, j, 0, NULL);
++				Hash *hash=share_get_hash (file, "MD5");
++				if (hash) {
++					FT->dbg (FT,"removing file %s (%s)", file->path, ft_node_fmt(node));
++
++					if (!ft_search_db_remove(node,hash->data))
++						FT->err (FT,"error removing file %s (%s)", file->path, ft_node_fmt(node));
++				} else 
++					FT->err (FT, "error reading file array");
++			}
++			
++			ft_search_db_close (node, FALSE);
++
++			{
++				DB_BTREE_STAT *stats;
++				DB *db=FT_SEARCH_DB(node)->share_idx;
++				if (db)
++				{
++					if (!db->stat(db, &stats, 0))
++						assert (stats->bt_ndata == 0);
++					else
++					{
++						FT->err(FT, "failed to get sdb stats");
++						abort ();
++					}
++				}
++			}
++		}
++
++		if (0)
++		{
++			if (!(ft_search_db_remove_host (node)))
++			{
++				FT->err (FT, "error removing node %s", ft_node_fmt (node));
++				abort ();
++			}
+ 		}
+ 
+ #if 0
+ 		FT->dbg (FT, "delete %s(%lu): %.06fs elapsed", ft_node_fmt (node),
+ 				 shares, stopwatch_free_elapsed (sw));
+ #endif
+-
+ 		ft_search_db_sync (node);
+ 	}
+ 
++	{
++		DB_BTREE_STAT *stats;
++		DB *db=db_tokenidx();
++		assert (db);
++
++		if (!db->stat(db, &stats, 0))
++		{
++			FT->dbg (FT, "tokenidx: %d key, %d data", stats->bt_nkeys, stats->bt_ndata);
++			assert (stats->bt_ndata == 0);
++		}
++		else
++		{
++			FT->err(FT, "failed to get sdb stats");
++			abort ();
++		}
++	}
++	
+ 	rtime = stopwatch_free_elapsed (gsw);
+ 
+ 	return rtime;
+@@ -2903,9 +3072,11 @@
+ 	         nqueries, stime, (float)nqueries / stime);
+ 
+ 	/* remove */
+-	rtime = run_remove ();
++	rtime = run_remove (1);
+ 	FT->dbg (FT, "remove(%lu): %.06fs elapsed (avg %.02f files/s)",
+ 	         files, rtime, (float)files / rtime);
++
++	db_sync (NULL);
+ }
+ 
+ BOOL test_suite_search_db (Protocol *p)
+Index: ft_search_db.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_db.h,v
+retrieving revision 1.21
+diff -u -r1.21 ft_search_db.h
+--- ft_search_db.h	26 Oct 2003 13:15:43 -0000	1.21
++++ ft_search_db.h	5 May 2004 20:07:00 -0000
+@@ -81,6 +81,7 @@
+ #  include <db4/db.h>
+ # endif
+ # ifdef HAVE_DB_H
++//#include "/usr/local/BerkeleyDB.4.1/include/db.h"
+ #  include <db.h>
+ # endif
+ # ifdef HAVE_DB3_DB_H
+@@ -111,6 +112,7 @@
+ 
+ 	unsigned long shares;              /**< total files currently shared */
+ 	double        size;                /**< total size (MB) */
++	Array   *dups;                     /* duplicated hashes */
+ } FTSearchDB;
+ 
+ /* shorthand */
+Index: ft_search_exec.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_exec.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_search_exec.c
+--- ft_search_exec.c	7 Jan 2004 12:06:42 -0000	1.58
++++ ft_search_exec.c	5 May 2004 20:07:01 -0000
+@@ -58,7 +58,7 @@
+  * Enable if you wish debugging information regarding the elapsed search time
+  * to be displayed.
+  */
+-/* #define SEARCH_TIMING */
++/*#define SEARCH_TIMING*/
+ 
+ /*****************************************************************************/
+ 
+@@ -617,8 +617,15 @@
+ 	if (sdata->matches >= sdata->nmax)
+ 		return;
+ 
+-	/* set the maximum allowed matches for this search method */
+-	max_hits = sdata->nmax - sdata->matches;
++	/*
++	 * Set the maximum allowed matches for this search method.
++	 * Zero means count the number of results.
++	 */
++	if ((FT_SEARCH_METHOD(sdata->type) == FT_SEARCH_FILENAME) &&
++	    (sdata->type & FT_SEARCH_COUNT))
++		max_hits = 0;
++	else
++		max_hits = sdata->nmax - sdata->matches;
+ 
+ 	/*
+ 	 * Perform the appropriate search, filling the matches array with dirty
+@@ -713,6 +720,13 @@
+ 	if (!fill_sdata (&sdata, nmax, resultfn, udata, type, realm, query, exclude))
+ 		return -1;
+ 
++#if 0
++	if (type & FT_SEARCH_LOCAL)
++		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
++	else
++		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
++#endif
++
+ #ifdef SEARCH_TIMING
+ 	sw = stopwatch_new (TRUE);
+ #endif /* SEARCH_TIMING */
+Index: ft_search_obj.h
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search_obj.h,v
+retrieving revision 1.8
+diff -u -r1.8 ft_search_obj.h
+--- ft_search_obj.h	2 Nov 2003 12:09:06 -0000	1.8
++++ ft_search_obj.h	5 May 2004 20:07:01 -0000
+@@ -44,6 +44,11 @@
+  */
+ /* #define FT_SEARCH_PARANOID */
+ 
++/*
++ * Get results directly from their source supernode instead of having them forwarded
++ */
++#define FT_SEARCH_DIRECT
++
+ /*****************************************************************************/
+ 
+ /**
+@@ -69,7 +74,13 @@
+ 	 * ::ft_search_tokenize output.  This is not cryptographically secure and
+ 	 * is only expected to appease the casual privacy nut, sorry.
+ 	 */
+-	FT_SEARCH_HIDDEN   = 0x20
++	FT_SEARCH_HIDDEN   = 0x20,
++
++	/**
++	 * Request only a the number of results, not the results themselves.
++	 */
++	FT_SEARCH_COUNT    = 0x40,
++
+ } ft_search_flags_t;
+ 
+ /* take only the bits that determine what type of search it is */
+Index: ft_session.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_session.c,v
+retrieving revision 1.89
+diff -u -r1.89 ft_session.c
+--- ft_session.c	23 Dec 2003 21:29:39 -0000	1.89
++++ ft_session.c	5 May 2004 20:07:01 -0000
+@@ -432,7 +432,7 @@
+ 		if (need_search)
+ 		{
+ 			ft_packet_put_uint16 (pkt, (uint16_t)FT_NODE_SEARCH, TRUE);
+-			ft_packet_put_uint16 (pkt, 10, TRUE);
++			ft_packet_put_uint16 (pkt, 15, TRUE);
+ 		}
+ 
+ 		if (need_index)
+@@ -584,13 +584,17 @@
+ 	if (FT_CONN(node))
+ 	{
+ 		assert (FT_CONN(node)->fd >= 0);
++		FT->DBGFN (FT, "%s: already connected", ft_node_fmt (node));
+ 
+ 		ft_session_add_purpose (node, goal);
+ 		return -1;
+ 	}
+ 
+ 	if (ft_node_fw (node) || !ft_conn_auth (node, TRUE))
++	{
++		FT->DBGFN (FT, "%s: fw/unauth", ft_node_fmt (node));
+ 		return -1;
++	}
+ 
+ 	FT->DBGFN (FT, "attempting connection to %s", ft_node_fmt (node));
+ 
+@@ -648,6 +652,8 @@
+ 	FTNode     *node;
+ 	FTSession  *session;
+ 
++	openft->ninfo.indirect = 0;
++
+ 	if (!(c = tcp_accept (listen, FALSE)))
+ 	{
+ 		FT->err (FT, "accept: %s", GIFT_NETERROR());
+Index: ft_share_file.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_share_file.c,v
+retrieving revision 1.21
+diff -u -r1.21 ft_share_file.c
+--- ft_share_file.c	2 Nov 2003 12:09:07 -0000	1.21
++++ ft_share_file.c	5 May 2004 20:07:01 -0000
+@@ -51,7 +51,7 @@
+ 	Share   *file;
+ 	FTShare *share;
+ 
+-	if (!(file = share_new_ex (FT, NULL, 0, filename, mime, size, 0)))
++	if (!(file = share_new_ex (FT, filename, mime, size, 0)))
+ 		return NULL;
+ 
+ 	if (!share_set_hash (file, "MD5", md5, 16, TRUE))
+Index: proto/ft_handshake.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/proto/ft_handshake.c,v
+retrieving revision 1.23
+diff -u -r1.23 ft_handshake.c
+--- proto/ft_handshake.c	23 Dec 2003 18:32:45 -0000	1.23
++++ proto/ft_handshake.c	5 May 2004 20:07:01 -0000
+@@ -334,15 +334,15 @@
+ {
+ 	int n;
+ 
+-	n = ft_netorg_foreach (FT_NODE_SEARCH | FT_NODE_INDEX, FT_NODE_CONNECTED, 15,
+-	                       FT_NETORG_FOREACH(nodelist_add), args);
++	n = ft_netorg_random (FT_NODE_SEARCH | FT_NODE_INDEX, 0, 15,
++	                      FT_NETORG_FOREACH(nodelist_add), args);
+ 
+ 	/* we weren't able to come up with enough search/index nodes, try to give
+ 	 * them at least something */
+ 	if (n < 10)
+ 	{
+-		n += ft_netorg_foreach (FT_NODE_USER, FT_NODE_CONNECTED, 20,
+-		                        FT_NETORG_FOREACH(nodelist_add), args);
++		n += ft_netorg_random (FT_NODE_USER, 0, 20,
++		                       FT_NETORG_FOREACH(nodelist_add), args);
+ 	}
+ 
+ 	return n;
+@@ -367,8 +367,8 @@
+ 		/* otherwise we should respond only to the connected classes that
+ 		 * they requested (this is used to graph the network through third
+ 		 * party tools) */
+-		nodes = ft_netorg_foreach (klass, FT_NODE_CONNECTED, nreq,
+-		                           FT_NETORG_FOREACH(nodelist_add), &args);
++		nodes = ft_netorg_random (klass, 0, nreq,
++		                          FT_NETORG_FOREACH(nodelist_add), &args);
+ 	}
+ 
+ 	/* we're done w/ this :) */
+@@ -470,6 +470,8 @@
+ 		ft_node_set_port  (node, port);
+ 		ft_node_set_class (node, klass);
+ 
++		FT->DBGSOCK (FT, c, "got %s (%s) indirect=%d", ft_node_fmt (node), ft_node_classstr_full (node->ninfo.klass), node->ninfo.indirect);
++		
+ 		if (conns + newconns > conns_max)
+ 			continue;
+ 
+@@ -490,7 +492,7 @@
+ 		}
+ 	}
+ 
+-#if 0
++#if 1
+ 	FT->DBGSOCK (FT, c, "rcvd %i nodes (%i new conns)", n, newconns);
+ #endif
+ 
+Index: proto/ft_sharing.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/proto/ft_sharing.c,v
+retrieving revision 1.15
+diff -u -r1.15 ft_sharing.c
+--- proto/ft_sharing.c	23 Dec 2003 18:32:45 -0000	1.15
++++ proto/ft_sharing.c	5 May 2004 20:07:01 -0000
+@@ -48,6 +48,12 @@
+ 	if (node->session->search_db)
+ 		return FALSE;
+ 
++	if (node->version < OPENFT_0_2_0_1)
++	{
++		FT->DBGSOCK (FT, FT_CONN(node), "refusing old would-be child");
++		return FALSE;
++	}
++
+ 	/*
+ 	 * NOTE: This is _NOT_ handled gracefully by the network and
+ 	 * absolutely needs to be!  This cannot be left like this.  The round

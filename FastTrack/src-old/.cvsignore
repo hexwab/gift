@@ -1,0 +1,12 @@
+libgift
+vc60.idb
+vc60.pdb
+FastTrack*.lib
+*.dll
+.deps
+.libs
+Makefile
+Makefile.in
+*.lo
+*.la
+

@@ -1,0 +1,98 @@
+/*
+ * meta_ogg.c -- inappropriately named, this is actually for parsing the
+ * Ogg Vorbis codec
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "gift.h"
+
+#include "share_file.h"
+
+#include "meta.h"
+#include "meta_ogg.h"
+
+#ifdef USE_LIBVORBIS
+#include <vorbis/vorbisfile.h>
+#endif
+
+/*****************************************************************************/
+
+int meta_ogg_run (FileShare *file)
+{
+#ifdef USE_LIBVORBIS
+	FILE           *f;
+	OggVorbis_File  oggfile;
+	vorbis_info    *vinfo;
+	vorbis_comment *vcomment;
+	int             i;
+	long            bitrate;
+	long            freq;
+	int             dur;
+
+	if (!(f = fopen (SHARE_DATA (file)->path, "rb")))
+		return FALSE;
+
+	if (ov_open (f, &oggfile, NULL, 0))
+	{
+		fclose (f);
+		return FALSE;
+	}
+
+	/* extract basic audio info */
+	vinfo = ov_info (&oggfile, -1);
+
+	bitrate = ov_bitrate (&oggfile, -1);
+	freq    = vinfo->rate;
+	dur     = (int) ov_time_total (&oggfile, -1);
+
+	if (bitrate > 0)
+		meta_set (file, "Bitrate", stringf ("%likbps", bitrate / 1000));
+
+	meta_set (file, "Frequency", stringf ("%liHz", freq));
+	meta_set (file, "Duration",  stringf ("%is", dur));
+
+	/* extract comments */
+	vcomment = ov_comment (&oggfile, -1);
+
+	for (i = 0; i < vcomment->comments; i++)
+	{
+		char *cmt, *cmt0;
+		char *key;
+		char *val;
+
+		cmt0 = cmt = STRDUP (vcomment->user_comments[i]);
+
+		key = string_sep (&cmt, "=");
+		val = cmt;
+
+#ifdef DEBUG
+		/* format the key :) */
+		string_lower (key);
+#endif /* DEBUG */
+
+		if (key && val)
+			meta_set (file, key, val);
+
+		free (cmt0);
+	}
+
+	/* ov_clear seems to implicitely close the file... */
+	ov_clear (&oggfile);
+#else
+	GIFT_WARN (("unable to process %s: libvorbis support has been disabled",
+	            SHARE_DATA(file)->path));
+#endif /* USE_LIBVORBIS */
+
+	return TRUE;
+}

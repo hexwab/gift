@@ -1,0 +1,244 @@
+$Id: ChangeLog,v 1.33 2006/08/06 17:26:39 hexwab Exp $
+
+Gnutella 0.0.11:
+
+	* Made SHA1 implementation work correctly on 64 bit machines.
+
+	* Create new client GUID on each startup to prevent stupid packagers
+	  from hurting the network.
+
+	* Disable the timebomb once and for all.
+	
+Gnutella 0.0.10.1:
+
+    * Added additional revision digit to version number so we can release
+      packages with updated GT_RELEASE_DATE if nothing else has changed.
+
+    * Increased web cache disabling to 365 days after built and complete
+      shutdown to 1.5 years.
+
+Gnutella 0.0.10:
+
+    * Disconnect idle nodes that don't reply to pings.
+
+    * Support Vendor Messages.
+
+    * Support ConnectBack vendor message for better firewalled status
+      detection.
+
+    * Slightly improved the random number seed.
+
+    * Send an empty error page when the remote side supports queueing.
+
+    * All searches now timeout after at most 10 minutes.
+
+    * Only use the full http:// URL in GWebcache requests when using a proxy
+      (see RFC 2616 (HTTP/1.1) for further information).
+
+    * Support outgoing compression of message streams.
+
+    * Drop "urn:" trailer from queries sent.
+
+    * Send full filename in PUSH uploads; seems LimeWire requires it.
+
+    * Support p->share_hide/show for hiding shares from other nodes with
+      a HopsFlow message, allowing them to be efficiently un/re-shared.
+
+    * Basic support for sending GGEP blocks.
+
+    * Change "really-old" auto-deactivation to silent failure to avoid
+      creating surprises for people who don't care.
+
+    * Support push proxies:  put a GGEP block containing the IP address of
+      some servers we're connected to in order to improve upload performance
+      of firewalled nodes.
+
+    * Ban webcaches that resolve to local IP addresses.
+
+Gnutella 0.0.9.2:
+
+    * Fix file descriptor leak in file_cache.c that's been around for a while
+      but was made worse by syncing the nodes files every so often.
+
+    * Don't potentially poll the CPU if the remote zlib stream is called with
+      Z_FINISH.
+
+Gnutella 0.0.9.1:
+
+    * Remove checking for -lresolv in configure.
+
+Gnutella 0.0.9:
+
+    * Fix compile problem with 0.0.8 on big-endian platforms.
+
+    * Deactivate the plugin if it's more than one year old.
+
+    * Close all searches when plugin is unloaded.
+
+Gnutella 0.0.8:
+
+    * Trim the node list every so often to prevent it from growing unbounded.
+
+    * Fix leak of GtNode on incoming connects.
+
+    * No longer reply to queries marked with the same GUID.
+
+    * Fix bug in GWebCache code where replies got discarded, as well as
+      some miscellaneous bugs in GWebCache code, and ban caches that
+      fail DNS lookups.
+
+    * Updated list of GWebCaches.
+
+    * Fix metadata parsing bugs where the metadata was discarded.
+
+    * Removed questionably-bad hosts from ban-list.
+
+    * Support new Source URL format: Gnutella:?ip=..&port=...
+
+    * Timeout push requests to monopolize Chunks less so that Chunks
+      will get trapped on inactive Sources less often.
+
+    * Shorter connection timeout to monopolize Chunks less.
+
+Gnutella 0.0.7:
+
+    * Fix a compile error caused by bad prototype in a header file.
+
+    * Use a different method for calculating the number of files/total
+      bytes shared. Some samples around the median of many pongs are taken
+      instead of just using the average of many pongs.
+
+    * Ban downloaders for IP addresses in hostiles.txt and incorporate
+      ban list from peer guardian.
+
+Gnutella 0.0.6:
+
+    * Support receive-side decompression of node streams (transmit-side
+      compression still unimplemented).
+
+    * Source searching re-enabled.
+
+    * Preliminary support for parsing XML metadata from packets that
+      have them (usually from LimeWire or Shareaza) using libxml. Support
+      is disabled by default and needs --with-libxml passed to configure
+      to enable.
+
+    * Keep track of file sizes/file count statistics from pongs, and
+      approximate the number on the network (very haphazardly, I
+      might add).
+
+    * Fix a potential assert failure when shares are removed.
+
+    * Fix bug where malformed incoming connection requests would
+      cause CPU polling.
+
+    * Incrementally build a larger query-routing table until the fill
+      ratio is 1%. Reduces bandwidth used a bit.
+
+    * Support active-queueing.
+
+    * Fix parsing of bitprint urns.
+
+Gnutella 0.0.5:
+
+    * Don't reply to our own search requests.
+
+    * Fix display of the time to retry when the peer we
+      download from supplies Retry-After:
+
+    * Fix severe mistake in request parsing that caused almost
+      all uploads to fail.
+
+    * Remove access.log support, as it has a tendency to consume
+      too much disk space when small chunks get requested.
+
+Gnutella 0.0.4:
+
+    * Download unpausing would crash giftd. Fix it.
+
+    * Support requests by hpath (/audio/blah/) as well since its
+      not too much extra code to support and useful sometimes.
+
+    * Compression was not enabled in configure script, enabled it.
+
+    * Firewalled nodes that did searches would accept results from
+      nodes with private IPs. Fixed.
+
+    * Maintain a banlist of gwebcaches and add any gwebcaches
+      that return anything but 200-series responses.
+
+    * Fixed Retry-After.
+
+Gnutella 0.0.3:
+
+    * Add a node cache to store nodes learned from pongs and X-Try-Ultrapeer:
+      With this, connecting to the network should be much less ad-hoc. Also,
+      returns such nodes in X-Try-Ultrapeer: header for other nodes.
+
+    * Access the gwebcaches on demand, rather then when the
+      number of nodes is arbitrarily low.
+
+    * Use 4-bit QRP patches. Still needs to do incremental updates, though.
+
+    * Send "206 Partial Content" replies to partial requests instead of
+      "200 OK".
+
+    * Support Retry-After: header.
+
+    * Basic static stats that assumes the network has no cycles.
+
+    * Only send requests by file index, rather than uri-res requests,
+      if the previous uri-res request failed or the connection closed
+      abruptly. Previously, they were sent randomly. Also, send these
+      requests without url encoding, as that is more compatible.
+
+    * Update HTTP transfer size after we receive a GIV response, as
+      giFT could change the size of a download request while we wait
+      for a response from the firewalled servent.
+
+Gnutella 0.0.2:
+
+    * 0.0.1 would access the gwebcaches excessively due to an oversight
+      that the nodes retrieved from them aren't stored because they
+      have a vitality of 0. So, this increase in the release number should
+      help identifying problem behaviour between releases.
+
+      Unfortunately, this adds a new problem in that a completely stale nodes
+      file will keep us from connecting. This needs a redesign to access the
+      caches if we've exhausted all other options.
+
+    * Much improved search timeout system that will detect when
+      no more results for a search are likely to come back. Still need to
+      check if any results are dropped, though.
+
+    * Fix leak of TCPC objects for persistent connections.
+
+    * Temporarily disabled locate requests because they need some kind
+      of global queue to limit the rate at which they are produced.
+
+Gnutella 0.0.1:
+
+    * Persistent HTTP support.
+
+    * Eliminated most races between download_stop and push downloads.
+      There is still the possiblity of the remote end aborting the connection
+      before we giFT reissues a download_start request, but that can't be
+      fixed without protocol-initiated downloads.
+
+    * Submit query-routing table of local shares to ultrapeers.
+
+    * Support for using an http proxy to access the gwebcaches (set
+      "http/proxy" key in ~/.giFT/Gnutella/Gnutella.conf).
+
+    * Testable, but unstable Ultrapeer mode.
+
+    * Forgot to report 'Connecting' status when initiating a download.
+
+    * Added ChangeLog.
+
+    * Use a trie for storing the local shares database to improve
+      lookup time. Memory usage still needs investigation.
+
+Gnutella 0.0.0:
+
+    * Basic support for searching, downloading, and uploading.

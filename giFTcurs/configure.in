@@ -1,0 +1,62 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(configure.in)
+AM_CONFIG_HEADER(config.h)
+AC_PREREQ(2.52)
+dnl AM_INIT_AUTOMAKE(giFTcurs, 0.5.7)
+AM_INIT_AUTOMAKE(giFTcurs, `date +%y%m%d`-cvs)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+
+dnl Check for curses
+AC_CHECK_CURSES
+if test "$has_curses" = false ; then
+	AC_ERROR(You don't seem to have the curses headers installed)
+fi
+
+ALL_LINGUAS="ca da de es fr nl pl pt_BR sv"
+AM_GNU_GETTEXT
+
+dnl Checks for libraries.
+AC_CHECK_LIB(socket, socket)
+AM_PATH_GLIB_2_0(2.0.0, , AC_ERROR(You need glib-2.0 to compile giFTcurs))
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(getopt.h sys/vfs.h sys/mount.h sys/statvfs.h regex.h termios.h sys/ioctl.h sys/un.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_NO_CPP_PRECOMP
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(socket,,
+	AC_ERROR(socket must be available in order to build.))
+AC_CHECK_FUNCS(strnlen statfs getopt_long hstrerror gai_strerror)
+AC_CHECK_FUNCS(getaddrinfo,,[AC_CHECK_LIB(bind, getaddrinfo)] [AC_CHECK_LIB(nsl, gethostbyname)])
+
+dnl Parse --enable-feature options
+AC_ARG_ENABLE(mouse,
+[  --disable-mouse         Disable mouse support],, enable_mouse=yes)
+if test x$enable_mouse != xyes; then
+	AC_DEFINE(DISABLE_MOUSE, 1, [Disable mouse support])
+fi
+
+AC_ARG_ENABLE(libgpm,
+[  --disable-libgpm        Disable usage of libgpm],, enable_libgpm=yes)
+if test x$enable_libgpm = xyes; then
+	AC_CHECK_LIB(gpm, Gpm_Open)
+fi
+
+AC_ARG_ENABLE(internal-mouse,
+[  --disable-internal-mouse Disable internal mouse parsing],, enable_internal_mouse=yes)
+if test x$enable_internal_mouse != xyes; then
+	AC_DEFINE(DISABLE_INTERNAL_MOUSE, 1, [Disable internal mouse parsing])
+fi
+
+AC_OUTPUT([
+	Makefile \
+	src/Makefile \
+	intl/Makefile \
+	po/Makefile.in
+])

@@ -1,0 +1,298 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+my $VERSION='0.0.1';
+
+my %commands=(
+    sync    =>\&sync,
+    version =>\&version,
+    shares  =>\&shares,
+    stats   =>\&stats, 
+    search  =>\&search,
+#    watch   =>\&watch,
+#    raw     =>\&raw,
+    );
+
+# option processing
+
+my $server='localhost:1213';
+
+my ($debug, $version);
+
+use Getopt::Long;
+
+Getopt::Long::Configure (qw[bundling require_order]);
+
+GetOptions(
+	   'server|s=s'  => \$server,
+	   'debug|d'     => \$debug,
+	   'version|v'   => \$version,
+	   ) or exit 2;
+
+if ($version) {
+    print "gsh $VERSION\n";
+    exit 0;
+}
+
+use giFT::Daemon;
+
+my $daemon=new giFT::Daemon($server,undef,1,$debug) or do {
+    print STDERR "Can't connect to $server: $!\n";
+    exit 2;
+};
+
+my $interactive=!@ARGV;
+
+if ($interactive) {
+    interactive();
+} else {
+    exit(do_command(shift @ARGV, @ARGV));
+}
+
+{
+    my $done;
+    sub wait_until_done {
+	$done=0;
+	do {
+#	    print STDERR "[waiting]\n";
+	    $daemon->poll;
+	} while !$done;
+    }
+    
+    sub done {
+	$done=1;
+    }
+}
+
+sub poll {
+#    print STDERR "[polling]\n";
+    $daemon->poll unless $daemon->eof;
+#    print STDERR "[done]\n";
+}
+
+# sync
+# sync -w (wait)
+# shares status/hide/show/toggle [-q]
+# shares list
+# search
+# watch [command] [id]
+# stats
+
+sub my_getopt {
+    my @results;
+    my $i;
+    my @opts=map {$_=>\$results[$i++]} @_;
+    GetOptions(@opts) or return undef;
+    @results;
+}
+
+sub error {
+    print STDERR "$0: " if !$interactive;
+    print STDERR "@_\n";
+    2;
+}
+
+sub do_command {
+    my $command=shift;
+    local @ARGV=@_ if $interactive; # ewwww
+
+    if (my $func=$commands{$command}) {
+	return &$func;
+    }
+
+    return error "Unknown command '$command'";
+}
+
+sub interactive {
+    $daemon->attach;
+
+    $commands{quit}=sub {exit 0};
+
+    use Term::ReadLine;
+    
+    my $term=new Term::ReadLine $0;
+
+    my $attribs = $term->Attribs;
+    $attribs->{completion_entry_function} =
+	$attribs->{list_completion_function};
+
+    $attribs->{completion_word}=[keys %commands];
+    
+    my $prompt='gsh>';
+    while (defined ($_=$term->readline($prompt))) {
+	do_command(split' ') if /[^\s]/;
+    }
+}
+
+# commands here we come
+
+sub sync {
+    my ($wait)=my_getopt('wait|w');
+
+    $daemon->attach;
+
+    use giFT::Shares;
+    my $cb_sync=sub {
+	done;
+	0;
+    };
+    
+    my $shares=new giFT::Shares($daemon, 1, $cb_sync);
+    $shares->sync;
+    wait_until_done if $wait;
+    0;
+}
+
+# shares
+
+use giFT::Shares;
+
+sub shares {
+    my $action=shift @ARGV;
+
+    my %actions=
+	(
+	 status=>sub {
+	     my ($quiet)=my_getopt('quiet|q');
+	     my $hidden=share_status();
+	     print "Shares are currently ".($hidden?'hidden':'visible').".\n" unless $quiet;
+	     $hidden;
+	 },
+	 hide=>sub {
+	     my $shares=new giFT::Shares($daemon, 1, undef, undef);
+	     $shares->hide(1);
+	     0;
+	 },
+	 show=>sub {
+	     my $shares=new giFT::Shares($daemon, 1, undef, undef);
+	     $shares->hide(0);
+	     0;
+	 },
+	 toggle=>sub {
+	     my ($quiet)=my_getopt('quiet|q');
+	     my $hidden=share_status();
+	     my $shares=new giFT::Shares($daemon, 1, undef, undef);
+	     $shares->hide(!$hidden);
+	     print "Shares are now ".(!$hidden?'hidden':'visible').".\n" unless $quiet;
+	     !$hidden;
+	 },
+	 list=>\&list_shares,
+	 );
+
+    return error "No share action specified" if !$action;
+
+    for ($actions{$action}) {
+	return &$_ if $_; # FIXME: check args
+	return error "Unknown share action '$action'";
+    }
+}
+
+sub share_status {
+    my ($verbose)=shift;
+
+    $daemon->attach; 
+
+    my $hidden;
+
+    my $cb_hide=sub {
+	$hidden=shift;
+	done;
+	0;
+    };
+
+    my $shares=new giFT::Shares($daemon, 1, undef, undef, $cb_hide);
+ 
+    wait_until_done if (!defined ($hidden=$shares->hidden_status));
+
+    $hidden;
+}
+
+sub list_shares {
+    my $cb_shares=sub {
+	done;
+	0;
+    };
+
+    my $shares=new giFT::Shares($daemon, 0, undef, undef, undef, $cb_shares);
+
+    wait_until_done if !$shares->share_status;
+
+    for my $share ($shares->shares) {
+	print "$share->{path}\n";
+    }
+    0;
+}    
+
+# stats
+
+sub stats {
+    use giFT::Stats;
+
+    my ($users,$files,$size,$human,$protos,$quiet)=
+	my_getopt('users|u','files|f','size|s','protocols|p','quiet|q');
+
+    my $cb_stats=sub {
+	done;
+	0;
+    };
+
+    my $stats=new giFT::Stats($daemon,$cb_stats);
+    
+    wait_until_done;
+    
+    my $error=0;
+
+    if ($protos) {
+	print join "\n", $stats->protocols,'' unless $quiet;
+	return !$stats->protocols;
+    }
+
+    my @protos=@ARGV?@ARGV:$stats->protocols; # damn || for not working!
+
+    my $header=0;
+    for my $proto (@protos) {
+	my @stats=$stats->proto_stats($proto);
+	if (@stats) {
+#	    print scalar @stats;
+	    $stats[2]/=1<<30;
+	    if ($users || $files || $size) {
+		my $stat=$users?$stats[0]:$files?$stats[1]:$stats[2];
+		if ($#ARGV) {
+		    printf "%-9d %s\n", $stat,$proto;
+		} else {
+		    print "$stat\n";
+		}
+	    } else {
+		print "Protocol        Users      Files     GBytes\n" unless $header++;
+		printf "%-11s %9d %10d %10s\n", $proto, @stats;
+	    }
+	} else {
+	    $error=1;
+	    error "Protocol '$proto' not found" unless $quiet;
+	}
+    }
+    $error;
+}
+
+# version
+
+sub version {
+    poll; # might have a version waiting
+    
+    my ($ver,$app)=$daemon->version;
+    
+    my $cb_ver=sub {
+	($ver,$app)=@_;
+	done;
+	# no return value; it's not a real command callback
+    };
+
+    if (!defined $ver) {
+	$daemon->attach(undef, undef, $cb_ver);
+	wait_until_done;
+    }
+
+    print "$app version $ver\n";
+    0;
+}

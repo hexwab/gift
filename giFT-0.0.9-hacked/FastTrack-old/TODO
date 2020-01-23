@@ -1,0 +1,8 @@
+
+- add firewalled download support
+- make node cache smarter
+- use giFT's new logging facilities
+- implement sharing?
+- make dowloading less greedier
+- rename meta data keys
+- cleanup download reporting

@@ -1,0 +1,8 @@
+$Id: ChangeLog,v 1.25 2004/11/12 00:20:23 jasta Exp $
+
+Each giFT components maintains its own separate ChangeLog.  See the following
+alternate files:
+
+src/ChangeLog
+lib/ChangeLog
+plugin/ChangeLog

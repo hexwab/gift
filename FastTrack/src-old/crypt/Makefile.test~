@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+TEST_SOURCES=test.c mother.c
+CFLAGS=-O2 -Wall
+LDFLAGS=-lm
+
+tests: test_2 test_20
+
+test_%: enc_type_%.c ${TEST_SOURCES}
+	@echo -n $<...
+	@gcc ${CFLAGS} ${LDFLAGS} -o $@ ${TEST_SOURCES} $< -DCRYPT_FUNC=${<:.c=}
+	@./$@ |md5sum |cmp - test_$*.md5 && echo -e ' \tpass' || echo -e ' \tFAIL'

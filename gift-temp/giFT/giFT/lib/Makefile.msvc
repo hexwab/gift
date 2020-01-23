@@ -1,0 +1,71 @@
+# $Id: Makefile.msvc,v 1.13 2003/05/04 20:53:50 rossta Exp $
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I../src
+LIBGIFTAPI_DEF ="../win32/libgift_api.def"
+
+OBJECTS = \
+	array$(O) \
+	conf$(O) \
+	tcpc$(O) \
+	dataset$(O) \
+	event$(O) \
+	fdbuf$(O) \
+	file$(O) \
+	interface$(O) \
+	list$(O) \
+	list_lock$(O) \
+	tree$(O) \
+	log$(O) \
+	memory$(O) \
+	network$(O) \
+	parse$(O) \
+	platform$(O) \
+	stopwatch$(O) \
+	strobj$(O)
+
+TARGETDLL = $(LIBGIFT_DLL)
+TARGETLIB = $(LIBGIFT_LIB)
+TARGETLIBSTATIC = $(LIBGIFT_STATIC)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+all: $(TARGETDLL) $(TARGETLIBSTATIC)
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+all: $(TARGETLIBSTATIC)
+install:
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGETDLL): $(OBJECTS) $(LIBGIFTAPI_DEF)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGETDLL) -implib:$(TARGETLIB) \
+	       -def:$(LIBGIFTAPI_DEF) $(LIBS) $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGETLIBSTATIC): $(OBJECTS)
+	$(LT) -nologo -out:$(TARGETLIBSTATIC) $(OBJECTS)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGETDLL)
+	@-del /Q /F $(TARGETLIB)
+	@-del /Q /F $(TARGETLIBSTATIC)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.idb
+	@-del /Q /F ..\plugin\*$(O)
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

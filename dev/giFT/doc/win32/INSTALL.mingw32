@@ -1,0 +1,51 @@
+The New Way to build
+--------------------
+
+Currently, I am cross compiling giFT, so I am not sure if building it
+on Windows directly works. If you want to try, you will need both
+Mingw32 AND Cygwin. Make sure that you are using Mingw32's compiler,
+not Cygwin's. The Cygwin environment is needed because the scripts
+and the makefiles uses standard *nix commands.
+
+To cross compile giFT on a *nix system, you will first need the
+Mingw32 compiler. If you are using Debian, just 'apt-get install mingw32'.
+If you are not using Debian, you can read about how to build
+a cross compiler here:
+
+http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mingw-cross-howto.txt
+
+I have never tried that, though.
+
+When you have a cross compiler, do the following to build giFT:
+
+CC=i586-mingw32msvc-gcc \
+./autogen.sh --host=i586-mingw32msvc --target=i586-mingw32msvc \
+             --build=i386-linux --disable-libdl --enable-maintainer-mode
+make
+
+If you are not using Debian's Mingw32 package, you may have to alter
+this slightly. Also, change i386-linux to whatever build host you are
+using.
+
+The Old Way to build
+--------------------
+
+This is the old way to build giFT for Win32. It may or may not
+work. You might have to edit the Makefile.mingw32's.
+
+To build the Win32 port of giFT using mingw32:
+
+1. Install MinGW (www.mingw.org)
+   Make sure mingw\bin is in PATH
+
+2. Open a command line window
+
+3. Make sure that you are in the giFT directory
+
+4. Type 'make -f Makefile.mingw32'
+
+5. Type 'make -f Makefile.mingw32 install'
+
+6. The directory win32-dist will now contain giFT.exe and data files.
+   You will have to supply configuration files in a directory named
+   giFT-config

@@ -1,0 +1,1540 @@
+[18:42:55] giftd 0.11.8.1 (Mar 30 2005 15:38:28) started
+[18:42:55] Plugin OpenFT (0.2.1.3) successfully loaded and initialized
+[18:42:55] OpenFT: ft_openft.c:256(openft_start): Booya! OpenFT in the house!
+[18:42:55] *** GIFT-WARNING: OpenFT: guessing max_active=600
+[18:42:55] *** GIFT-ERROR: OpenFT: setrlimit(4096): Invalid argument
+[18:42:55] OpenFT: ft_node_cache.c:101(read_cache): opening nodes cache from /home/benklop/.giFT/OpenFT/nodes...
+[18:42:55] OpenFT: ft_node_cache.c:126(read_cache): successfully read 224 nodes
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 81.86.98.143:1215: costs 16
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.223.11.3:1215
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 200.223.11.3:1215: costs 16
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.140.17.111:1753
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 213.140.17.111:1753: costs 16
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 82.105.185.209:1215: costs 16
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.205.207.224:1215
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 68.205.207.224:1215: costs 16
+[18:42:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:42:55] OpenFT: ft_conn.c:519(start_connection): 12.99.190.195:1215: costs 16
+[18:42:55] OpenFT: ft_conn.c:639(ft_conn_initial): began 6 connections (remaining weight: 0)
+[18:42:55] Plugin Gnutella (0.0.10) successfully loaded and initialized
+[18:42:55] Gnutella: gt_gnutella.c:153(gnutella_start): Starting Gnutella plugin
+[18:42:55] Gnutella: file_cache.c:107(file_cache_load): loaded filecache for /home/benklop/.giFT/Gnutella/gwebcaches. nlines = 58
+[18:42:55] Gnutella: file_cache.c:107(file_cache_load): loaded filecache for /home/benklop/.giFT/Gnutella/bad_gwebcaches. nlines = 5
+[18:42:55] Gnutella: gt_bind.c:144(bind_gnutella_port): entered
+[18:42:55] Gnutella: bound to port 6346
+[18:42:55] Gnutella: file_cache.c:107(file_cache_load): loaded filecache for /home/benklop/.giFT/Gnutella/stable_nodes. nlines = 0
+[18:42:55] Gnutella: file_cache.c:107(file_cache_load): loaded filecache for /home/benklop/.giFT/Gnutella/recent_nodes. nlines = 150
+[18:42:55] Plugin FastTrack (0.8.7) successfully loaded and initialized
+[18:42:55] FastTrack: fst_fasttrack.c:501(fst_giftcb_start): starting up
+[18:42:55] FastTrack: fst_fasttrack.c:584(fst_giftcb_start): Loaded 400 supernode addresses from nodes file "/home/benklop/.giFT/FastTrack/nodes"
+[18:42:55] FastTrack: fst_fasttrack.c:598(fst_giftcb_start): Loaded 945 banned ip ranges from "/home/benklop/.giFT/FastTrack/banlist"
+[18:42:55] FastTrack: fst_fasttrack.c:618(fst_giftcb_start): Http server listening on port 1214
+[18:42:55] FastTrack: fst_session.c:119(fst_session_connect): connecting to 69.156.75.45:1070, load: 89%
+[18:42:55] FastTrack: fst_fasttrack.c:154(fst_plugin_connect_next): discovery cycle started with 10 UDP pings
+[18:42:55] Plugin Ares (0.2.2) successfully loaded and initialized
+[18:42:55] Ares: asp_plugin.c:230(asp_giftcb_start): Starting up.
+[18:42:55] Ares: as_ares.c:88(as_init): Initializing Ares library...
+[18:42:55] Ares: as_node_man.c:481(as_nodeman_load): Loaded 400 nodes from node file
+[18:42:55] Ares: as_session_man.c:78(as_sessman_connect): Requested: 5, connected: 0, connecting: 0
+[18:42:55] giFT: download_state.c:322(read_state): awaking state transfer minority_ report.avi
+[18:42:55] giFT: download_state.c:322(read_state): awaking state transfer Minority_Report.avi
+[18:42:55] giFT: giftd.c:744(init_transfer): recovered 2 state transfers
+[18:42:55] *** GIFT-WARNING: updating index...
+[18:42:55] OpenFT: 68.205.207.224:1215 (USER) -> FINAL: 
+[18:42:55] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:42:55] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: EOF from socket
+[18:42:55] giFT: share_cache.c:855(share_write_index): entered
+[18:42:55] giFT: share_cache.c:562(share_build_index): entered
+[18:42:55] giFT: share_cache.c:893(share_write_index): descending root: /home/benklop/Desktop/Shared...
+[18:42:55] giFT: share_cache.c:465(path_traverse): descending /home/benklop/Desktop/Shared...
+[18:42:55] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:42:55] FastTrack: fst_fasttrack.c:244(fst_plugin_session_callback): CONNECTED to 69.156.75.45:1070, local ip: 192.168.0.243
+[18:42:55] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:42:56] FastTrack: fst_session.c:606(session_do_handshake): outgoing enc_type: 0xA9, incoming enc_type: 0xA9
+[18:42:56] FastTrack: fst_session.c:434(session_decrypt_packet): remote network name is "KaZaA"
+[18:42:56] FastTrack: fst_session.c:250(fst_session_send_info): sending address: 192.168.0.243:1214, bandwidth: 0x60, username: giFTed
+[18:42:56] FastTrack: fst_fasttrack.c:251(fst_plugin_session_callback): ESTABLISHED session to 69.156.75.45:1070
+[18:42:56] Gnutella: [169.233.16.20]: vendor.c:132(gt_vmsg_send_supported): sending MessagesSupported
+[18:42:56] Gnutella: [70.68.195.128]: vendor.c:132(gt_vmsg_send_supported): sending MessagesSupported
+[18:42:56] Gnutella: [169.233.16.20]: gt_bind.c:222(fwtest_node): fwtesting
+[18:42:56] Gnutella: [24.102.76.184]: vendor.c:132(gt_vmsg_send_supported): sending MessagesSupported
+[18:42:56] FastTrack: fst_fasttrack.c:294(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[18:42:56] FastTrack: fst_session.c:152(fst_session_disconnect): disconnected from 69.156.75.45:1070
+[18:42:56] FastTrack: fst_session.c:119(fst_session_connect): connecting to 68.80.161.94:1695, load: 88%
+[18:42:56] FastTrack: fst_fasttrack.c:223(fst_plugin_discover_callback): discovery cycle complete: 10 pings, 10 pongs, 0 others
+[18:42:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:42:56] FastTrack: fst_session.c:152(fst_session_disconnect): disconnected from 68.80.161.94:1695
+[18:42:56] FastTrack: fst_session.c:119(fst_session_connect): connecting to 24.10.87.218:2043, load: 88%
+[18:42:56] FastTrack: fst_fasttrack.c:154(fst_plugin_connect_next): discovery cycle started with 10 UDP pings
+[18:42:56] Gnutella: [24.102.76.184]: gt_bind.c:222(fwtest_node): fwtesting
+[18:42:56] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:42:56] Gnutella: gt_query_route.c:1045(submit_empty_table): reseting route table for 169.233.16.20
+[18:42:56] Gnutella: gt_query_route.c:1045(submit_empty_table): reseting route table for 24.102.76.184
+[18:42:56] Gnutella: [66.108.186.98]: gt_accept.c:161(fw_status_update): connected, clearing firewalled status
+[18:42:56] FastTrack: fst_fasttrack.c:244(fst_plugin_session_callback): CONNECTED to 24.10.87.218:2043, local ip: 192.168.0.243
+[18:42:56] Gnutella: gt_query_route.c:1045(submit_empty_table): reseting route table for 70.68.195.128
+[18:42:57] giFT: share_cache.c:1141(share_read_index): entered
+[18:42:57] giFT: share_cache.c:562(share_build_index): entered
+[18:42:57] OpenFT: ft_share.c:285(openft_share_sync): beginning share sync...
+[18:42:57] OpenFT: ft_share.c:285(openft_share_sync): finishing share sync...
+[18:42:57] giFT: share_cache.c:1157(share_read_index): total shares: 82 (1976.14MB)
+[18:42:57] Ares: as_share_man.c:235(as_shareman_add_and_submit): Submitted 75 of 79 shares to 0 supernodes.
+[18:42:57] FastTrack: fst_session.c:606(session_do_handshake): outgoing enc_type: 0xA9, incoming enc_type: 0xA9
+[18:42:57] FastTrack: fst_session.c:434(session_decrypt_packet): remote network name is "KaZaA"
+[18:42:57] FastTrack: fst_session.c:250(fst_session_send_info): sending address: 192.168.0.243:1214, bandwidth: 0x60, username: giFTed
+[18:42:57] FastTrack: fst_fasttrack.c:251(fst_plugin_session_callback): ESTABLISHED session to 24.10.87.218:2043
+[18:42:57] FastTrack: fst_fasttrack.c:294(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[18:42:58] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:42:58] FastTrack: fst_fasttrack.c:361(fst_plugin_session_callback): received network name: "KaZaA", sending ours: "KaZaA"
+[18:42:58] FastTrack: fst_fasttrack.c:384(fst_plugin_session_callback): received external ip: 68.69.137.130
+[18:42:58] FastTrack: fst_session.c:250(fst_session_send_info): sending address: 68.69.137.130:1214, bandwidth: 0x60, username: giFTed
+[18:42:58] FastTrack: fst_fasttrack.c:395(fst_plugin_session_callback): registering shares with new supernode
+[18:42:58] FastTrack: fst_share.c:197(share_register_all_iter): clipping shares at FST_MAX_SHARED_FILES (50)
+[18:42:58] FastTrack: fst_search.c:390(fst_searchlist_send_queries): resent 0 pending searches to supernode
+[18:42:58] FastTrack: fst_fasttrack.c:336(fst_plugin_session_callback): received network stats: 2388520 users, 665117287 files, 43040768 GB
+[18:42:58] Gnutella: [70.69.184.86]: gt_node.c:321(gt_node_error): error: [outgoing] connection not authorized
+[18:43:00] Gnutella: gt_query_route.c:481(build_qrp_table): 0.0001s elapsed building
+[18:43:00] Gnutella: gt_query_route.c:483(build_qrp_table): present=208 shared=0 size=32768
+[18:43:00] Gnutella: gt_query_route.c:484(build_qrp_table): fill ratio=0.3174%
+[18:43:00] Gnutella: gt_query_route.c:520(build_qrp_table): 0.0014s elapsed compressing
+[18:43:00] Gnutella: gt_query_route.c:521(build_qrp_table): compressed size=618
+[18:43:02] reaped child process 7502
+[18:43:05] Gnutella: gt_netorg.c:158(report_connected_leaf): connected=3 nodes=313
+[18:43:16] FastTrack: fst_fasttrack.c:223(fst_plugin_discover_callback): discovery cycle complete: 10 pings, 9 pongs, 0 others
+[18:43:18] OpenFT: 63.107.215.205:0 (USER) -> FINAL: 
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 216.239.85.31:4421
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.57.107.196:1215
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 155.97.197.156:1215
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:43:18] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:43:18] OpenFT: 155.97.197.156:1215 (SEARCH) -> FINAL: 
+[18:43:18] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:43:18] OpenFT: 216.239.85.31:4421 (SEARCH) -> FINAL: 
+[18:43:18] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: EOF from socket
+[18:43:18] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:43:18] OpenFT: 216.239.85.31:4421 (SEARCH) -> DISCO: EOF from socket
+[18:43:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.158.200.84:1215
+[18:43:19] OpenFT: [155.97.197.156]: ft_sharing.c:143(ft_child_response): request refused
+[18:43:19] OpenFT: 155.97.197.156:1215      SEARCH (+NONE)
+[18:43:19] OpenFT: 155.97.197.156:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.6.36.51:1330
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.233.145.200:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.50.125.232:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.195.249.207:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.195.246.210:1215
+[18:43:19] OpenFT: 70.50.125.232:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:19] OpenFT: 64.123.151.127:1215 (SEARCH) -> FINAL: 
+[18:43:19] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:19] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.174.49.182:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.93.168.58:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.207.13.163:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.14.196.251:1215
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:43:19] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:43:19] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:19] OpenFT: 172.195.249.207:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:19] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:19] OpenFT: 71.100.88.143:1215 (SEARCH) -> FINAL: 
+[18:43:19] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:43:19] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:43:19] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:43:19] OpenFT: 71.100.88.143:1215 (SEARCH) -> DISCO: EOF from socket
+[18:43:19] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:43:20] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 203.102.43.146:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.217.17.175:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 162.83.177.187:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:43:20] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:43:20] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:43:20] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:43:20] OpenFT: 162.83.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:20] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.240.14.68:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 166.66.110.61:1215
+[18:43:20] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:43:20] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:20] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: EOF from socket
+[18:43:20] OpenFT: 203.102.43.146:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:20] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:20] OpenFT: 201.240.14.68:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:20] OpenFT: [64.123.151.127]: ft_sharing.c:143(ft_child_response): request refused
+[18:43:20] OpenFT: 64.123.151.127:1215      SEARCH (+NONE)
+[18:43:20] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:43:20] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:43:20] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:43:20] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:43:20] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:43:21] if_event.c:472(if_event_attach): 127.0.0.1
+[18:43:21] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:43:23] OpenFT: 172.174.49.182:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:43:25] FastTrack: fst_upload.c:204(fst_upload_process_request): started upload of "/home/benklop/Desktop/Shared/Sim_City_4_CD2.bin.exe" to magnomfs@201.10.55.214
+[18:43:55] OpenFT: 200.223.11.3:1215 (USER) -> DISCO: Connection timed out
+[18:43:55] OpenFT: 213.140.17.111:1753 (USER) -> DISCO: Connection timed out
+[18:43:55] Ares: as_session.c:219(session_connected): Connected to 128.252.107.176:25706
+[18:43:56] Ares: as_session.c:219(session_connected): Connected to 140.184.52.39:11562
+[18:43:56] Ares: as_session.c:219(session_connected): Connected to 128.195.101.66:45715
+[18:44:01] giFT: upload.c:793(set_queued_info): hit 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip): 1/1
+[18:44:17] Ares: as_session.c:219(session_connected): Connected to 12.190.0.124:48614
+[18:44:17] Ares: as_session.c:541(session_handshake): Handshake with 12.190.0.124:48614 aborted. Supernode has 366 (>350) children.
+[18:44:18] OpenFT: 68.57.107.196:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:18] OpenFT: 24.158.200.84:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 201.6.36.51:1330 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 24.233.145.200:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 24.195.246.210:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 65.93.168.58:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 81.207.13.163:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:19] OpenFT: 69.14.196.251:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:20] OpenFT: 64.217.17.175:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:20] OpenFT: 166.66.110.61:1215 (SEARCH) -> DISCO: Connection timed out
+[18:44:26] Ares: as_session.c:219(session_connected): Connected to 146.151.53.250:58068
+[18:44:45] OpenFT: 68.205.207.224:1215 (USER) -> DISCO: EOF from socket
+[18:44:47] giFT: upload.c:793(set_queued_info): hit 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip): 1/1
+[18:44:54] FastTrack: fst_upload.c:229(fst_giftcb_upload_stop): finished upload to magnomfs@201.10.55.214, transferred 291412 bytes
+[18:44:54] giFT: upload.c:754(upload_queue_detach): keeping upload slot for magnomfs@201.10.55.214(/home/benklop/Desktop/Shared/Sim_City_4_CD2.bin.exe)[653559884 bytes left][timeout 15s]
+[18:44:55] OpenFT: ft_conn.c:324(keep_alive): kept 0 connections alive
+[18:44:55] OpenFT: ft_conn.c:351(acquire_new_stuff): seeking more parents...
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.158.78.78:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.204.170.136:1510
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.182.97:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.203.249.128:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.168.146.168:1215
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.181.127.30:1215
+[18:44:55] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:55] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:44:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.57.107.196:1215
+[18:44:55] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:44:55] OpenFT: 172.203.249.128:1215 (SEARCH) -> FINAL: 
+[18:44:55] OpenFT: 81.158.78.78:1215 (SEARCH) -> FINAL: 
+[18:44:55] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:55] OpenFT: 200.168.146.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:56] OpenFT: 24.181.127.30:1215 (SEARCH) -> FINAL: 
+[18:44:56] Ares: as_session.c:219(session_connected): Connected to 147.4.233.147:32650
+[18:44:56] OpenFT: 151.205.182.97:1215 (SEARCH) -> FINAL: 
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 168.226.135.64:1279
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.91.154.247:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.220.80.225:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 147.163.1.18:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.158.120.117:1677
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.177.171.62:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.110.13.151:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.160.133.212:1215
+[18:44:56] OpenFT: 200.204.170.136:1510 (SEARCH) -> FINAL: 
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.207.252.166:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.157.54.121:1215
+[18:44:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:44:56] OpenFT: 70.110.13.151:1215 (SEARCH) -> FINAL: 
+[18:44:56] OpenFT: 67.160.133.212:1215 (SEARCH) -> FINAL: 
+[18:44:56] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:56] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:56] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:56] OpenFT: 80.44.65.43:1217 (SEARCH) -> FINAL: 
+[18:44:56] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:57] OpenFT: [81.158.78.78]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:57] OpenFT: 81.158.78.78:1215        SEARCH (+NONE)
+[18:44:57] OpenFT: 81.158.78.78:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:57] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:57] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 162.83.177.187:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.170.67.167:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.158.78.78:1215
+[18:44:57] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:57] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:44:57] OpenFT: 162.83.177.187:1215 (SEARCH) -> FINAL: 
+[18:44:57] OpenFT: 67.170.67.167:1215 (SEARCH) -> FINAL: 
+[18:44:57] OpenFT: 62.21.199.125:1215 (SEARCH) -> FINAL: 
+[18:44:57] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:44:57] OpenFT: 81.158.78.78:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:57] OpenFT: 67.170.67.167:1215 (SEARCH) -> DISCO: EOF from socket
+[18:44:57] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:57] OpenFT: [67.160.133.212]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:57] OpenFT: 67.160.133.212:1215      SEARCH (+NONE)
+[18:44:57] OpenFT: 67.160.133.212:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:57] OpenFT: [172.203.249.128]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:57] OpenFT: 172.203.249.128:1215     SEARCH (+NONE)
+[18:44:57] OpenFT: 172.203.249.128:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.251.138:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.203.249.128:1215
+[18:44:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 218.111.50.237:1215
+[18:44:57] OpenFT: 200.204.170.136:1510 (SEARCH) -> DISCO: EOF from socket
+[18:44:57] OpenFT: 151.205.251.138:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: 172.203.249.128:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.153.174.30:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.160.133.212:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 217.132.11.31:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.189.12.60:60197
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.237.85.198:1241
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.203.249.128:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.36.212.192:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:44:58] OpenFT: 65.96.139.72:1215 (SEARCH) -> FINAL: 
+[18:44:58] OpenFT: 67.160.133.212:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: 24.0.210.122:1215 (SEARCH) -> FINAL: 
+[18:44:58] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:44:58] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: EOF from socket
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:44:58] OpenFT: 80.177.171.62:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: 172.203.249.128:1215 (SEARCH) -> FINAL: 
+[18:44:58] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:44:58] OpenFT: [162.83.177.187]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:58] OpenFT: 162.83.177.187:1215      SEARCH (+NONE)
+[18:44:58] OpenFT: 162.83.177.187:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.44.148.216:1215
+[18:44:58] OpenFT: 80.43.48.218:1215        SEARCH (-NONE)
+[18:44:58] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:44:58] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:58] OpenFT: 67.44.148.216:1215 (SEARCH) -> FINAL: 
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:44:58] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:44:58] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:44:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:44:58] OpenFT: [62.21.199.125]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:58] OpenFT: 62.21.199.125:1215       SEARCH (+NONE)
+[18:44:58] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:58] OpenFT: [24.181.127.30]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:58] OpenFT: 24.181.127.30:1215       SEARCH (+NONE)
+[18:44:58] OpenFT: 24.181.127.30:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:58] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.195.249.207:1215
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.210.178.218:1215
+[18:44:59] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:44:59] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: EOF from socket
+[18:44:59] OpenFT: 172.195.249.207:1215 (SEARCH) -> FINAL: 
+[18:44:59] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:59] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:44:59] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:59] OpenFT: [80.44.65.43]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:59] OpenFT: 80.44.65.43:1217         SEARCH (+NONE)
+[18:44:59] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:59] OpenFT: [65.96.139.72]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:59] OpenFT: 65.96.139.72:1215        SEARCH (+NONE)
+[18:44:59] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:59] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:59] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:44:59] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 63.238.104.2:1215
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.181.127.30:1215
+[18:44:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:44:59] OpenFT: 172.203.249.128:1215     SEARCH (-NONE)
+[18:44:59] OpenFT: 63.238.104.2:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 24.181.127.30:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:44:59] OpenFT: [172.203.249.128]: ft_sharing.c:143(ft_child_response): request refused
+[18:44:59] OpenFT: 172.203.249.128:1215     SEARCH (+NONE)
+[18:44:59] OpenFT: 172.203.249.128:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:44:59] OpenFT: 218.111.50.237:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:44:59] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.174.18.61:1215
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 144.134.101.111:1215
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.245.22.1:1217
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.142.189.219:1625
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:45:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:45:00] OpenFT: 67.44.148.216:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:45:00] OpenFT: 69.174.18.61:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: 144.134.101.111:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:00] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:00] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:45:00] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:45:00] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:01] OpenFT: 66.237.85.198:1241 (SEARCH) -> FINAL: 
+[18:45:01] OpenFT: 217.132.11.31:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:01] OpenFT: 83.245.22.1:1217 (SEARCH) -> FINAL: 
+[18:45:01] OpenFT: 67.142.189.219:1625 (INDEX) -> DISCO: Socket error: Connection refused
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.44.148.216:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.218.225.143:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.73.4.59:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.153.52.246:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.7.70.221:1441
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:45:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.6.36.51:1330
+[18:45:01] OpenFT: 67.44.148.216:1215 (SEARCH) -> FINAL: 
+[18:45:01] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:45:01] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:01] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:45:01] OpenFT: 24.153.52.246:1215 (SEARCH) -> FINAL: 
+[18:45:02] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: EOF from socket
+[18:45:02] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:02] OpenFT: [66.237.85.198]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:02] OpenFT: 66.237.85.198:1241       SEARCH (+NONE)
+[18:45:02] OpenFT: 66.237.85.198:1241 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.14.196.251:1215
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.170.67.167:1215
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.237.85.198:1241
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:45:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.251.138:1215
+[18:45:02] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:45:02] OpenFT: 67.170.67.167:1215 (SEARCH) -> FINAL: 
+[18:45:02] OpenFT: 66.237.85.198:1241 (SEARCH) -> FINAL: 
+[18:45:02] OpenFT: 151.205.251.138:1215 (SEARCH) -> FINAL: 
+[18:45:02] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:45:02] OpenFT: 67.170.67.167:1215 (SEARCH) -> DISCO: EOF from socket
+[18:45:02] OpenFT: [12.99.190.195]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:02] OpenFT: 12.99.190.195:1215       SEARCH (+NONE)
+[18:45:02] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:02] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:45:02] OpenFT: 67.44.148.216:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:45:02] OpenFT: [24.153.52.246]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:02] OpenFT: 24.153.52.246:1215       SEARCH (+NONE)
+[18:45:02] OpenFT: 24.153.52.246:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.44.148.216:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.153.52.246:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:45:03] OpenFT: 66.237.85.198:1241       SEARCH (-NONE)
+[18:45:03] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:03] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:45:03] OpenFT: 24.153.52.246:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:03] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:45:03] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: EOF from socket
+[18:45:03] OpenFT: [151.205.251.138]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:03] OpenFT: 151.205.251.138:1215     SEARCH (+NONE)
+[18:45:03] OpenFT: 151.205.251.138:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:03] OpenFT: [66.237.85.198]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:03] OpenFT: 66.237.85.198:1241       SEARCH (+NONE)
+[18:45:03] OpenFT: 66.237.85.198:1241 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.215.11.68:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.24.225.157:1561
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.170.67.167:1215
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.237.85.198:1241
+[18:45:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:45:03] OpenFT: 12.99.190.195:1215       SEARCH (-NONE)
+[18:45:03] OpenFT: 81.157.54.121:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:03] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:45:03] OpenFT: 66.237.85.198:1241 (SEARCH) -> FINAL: 
+[18:45:03] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:45:03] OpenFT: [12.99.190.195]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:03] OpenFT: 12.99.190.195:1215       SEARCH (+NONE)
+[18:45:03] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:03] OpenFT: [151.205.182.97]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:03] OpenFT: 151.205.182.97:1215      SEARCH (+NONE)
+[18:45:03] OpenFT: 151.205.182.97:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:04] OpenFT: 81.36.212.192:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:04] OpenFT: 67.170.67.167:1215 (SEARCH) -> FINAL: 
+[18:45:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.1.24.18:1215
+[18:45:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.183.237.250:1215
+[18:45:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.251.138:1215
+[18:45:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:45:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.49.128.65:1215
+[18:45:04] OpenFT: 66.237.85.198:1241       SEARCH (-NONE)
+[18:45:04] OpenFT: 24.1.24.18:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:04] OpenFT: 151.205.251.138:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:04] OpenFT: 67.170.67.167:1215 (SEARCH) -> DISCO: EOF from socket
+[18:45:04] OpenFT: [66.237.85.198]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:04] OpenFT: 66.237.85.198:1241       SEARCH (+NONE)
+[18:45:04] OpenFT: 66.237.85.198:1241 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:04] OpenFT: [70.110.13.151]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:04] OpenFT: 70.110.13.151:1215       SEARCH (+NONE)
+[18:45:04] OpenFT: 70.110.13.151:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:04] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:04] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:45:05] OpenFT: 67.44.148.216:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:05] OpenFT: 68.220.80.225:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:07] OpenFT: 151.189.12.60:60197 (INDEX) -> FINAL: 
+[18:45:09] giFT: upload.c:578(remove_queue_tick): timed out magnomfs@201.10.55.214(0)
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 61.91.204.55:1215
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.173.214.100:1743
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.100.105.227:1215
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.233.145.200:1215
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.41.149.246:2031
+[18:45:10] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.173.176.122:1215
+[18:45:11] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:45:11] OpenFT: 84.64.19.124:1215 (SEARCH) -> FINAL: 
+[18:45:11] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:45:11] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:45:11] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:11] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:45:11] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:45:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:45:12] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:45:12] OpenFT: [172.195.249.207]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:12] OpenFT: 172.195.249.207:1215     SEARCH (+NONE)
+[18:45:12] OpenFT: 172.195.249.207:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.158.200.84:1215
+[18:45:12] OpenFT: [84.64.19.124]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:12] OpenFT: 84.64.19.124:1215        SEARCH (+NONE)
+[18:45:12] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:12] OpenFT: [66.236.208.164]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:12] OpenFT: 66.236.208.164:1245      INDEX (+NONE)
+[18:45:12] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:45:12] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:45:14] OpenFT: [83.245.22.1]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:14] OpenFT: 83.245.22.1:1217         SEARCH (+NONE)
+[18:45:14] OpenFT: 83.245.22.1:1217 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:16] OpenFT: 63.107.215.205:1215 (USER) -> DISCO: EOF from socket
+[18:45:17] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:45:17] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:45:17] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:45:17] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:45:17] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:45:17] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:17] OpenFT: 84.64.19.124:1215 (SEARCH) -> FINAL: 
+[18:45:17] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.146.135.61:1584
+[18:45:17] OpenFT: 12.99.190.195:1215       SEARCH (-NONE)
+[18:45:17] OpenFT: [12.99.190.195]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:17] OpenFT: 12.99.190.195:1215       SEARCH (+NONE)
+[18:45:17] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:18] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.245.22.1:1217
+[18:45:18] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:45:18] OpenFT: 84.64.19.124:1215        SEARCH (-NONE)
+[18:45:18] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:45:18] OpenFT: 66.236.208.164:1245      INDEX (-NONE)
+[18:45:18] OpenFT: [84.64.19.124]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:18] OpenFT: 84.64.19.124:1215        SEARCH (+NONE)
+[18:45:18] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:19] OpenFT: [66.236.208.164]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:19] OpenFT: 66.236.208.164:1245      INDEX (+NONE)
+[18:45:19] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:45:20] OpenFT: [82.105.185.209]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:20] OpenFT: 82.105.185.209:1215      SEARCH (+NONE)
+[18:45:20] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:22] OpenFT: 83.245.22.1:1217 (SEARCH) -> FINAL: 
+[18:45:29] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:45:29] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:45:29] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.221.200.190:1215
+[18:45:29] OpenFT: 83.245.22.1:1217         SEARCH (-NONE)
+[18:45:29] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:45:30] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:30] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 216.239.85.31:4421
+[18:45:30] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:45:30] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:30] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:45:30] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:33] OpenFT: 216.239.85.31:4421 (SEARCH) -> FINAL: 
+[18:45:34] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:45:34] OpenFT: [83.245.22.1]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:34] OpenFT: 83.245.22.1:1217         SEARCH (+NONE)
+[18:45:34] OpenFT: 83.245.22.1:1217 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:34] OpenFT: [216.239.85.31]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:34] OpenFT: 216.239.85.31:4421       SEARCH (+NONE)
+[18:45:34] OpenFT: 216.239.85.31:4421 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:36] Ares: as_session.c:219(session_connected): Connected to 64.106.92.176:30754
+[18:45:36] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:44] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.168.16.168:2036
+[18:45:44] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:45:44] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.170.67.167:1215
+[18:45:44] OpenFT: 67.170.67.167:1215 (SEARCH) -> FINAL: 
+[18:45:44] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:44] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:45:45] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:45:45] OpenFT: [67.170.67.167]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:45] OpenFT: 67.170.67.167:1215       SEARCH (+NONE)
+[18:45:45] OpenFT: 67.170.67.167:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:45:52] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[21300655 bytes left][timeout 15s]
+[18:45:53] OpenFT: [151.189.12.60]: ft_sharing.c:143(ft_child_response): request refused
+[18:45:53] OpenFT: 151.189.12.60:60197      INDEX (+NONE)
+[18:45:53] OpenFT: 151.189.12.60:60197 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:45:55] OpenFT: 68.57.107.196:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:56] OpenFT: 168.226.135.64:1279 (INDEX) -> DISCO: Connection timed out
+[18:45:56] OpenFT: 24.91.154.247:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:56] OpenFT: 147.163.1.18:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:56] OpenFT: 69.158.120.117:1677 (INDEX) -> DISCO: Connection timed out
+[18:45:56] OpenFT: 68.207.252.166:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:57] OpenFT: 71.100.88.143:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:58] OpenFT: 172.153.174.30:1215 (SEARCH) -> DISCO: Connection timed out
+[18:45:59] OpenFT: 24.210.178.218:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:01] OpenFT: 68.218.225.143:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:01] OpenFT: 69.73.4.59:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:01] OpenFT: 24.7.70.221:1441 (SEARCH) -> DISCO: Connection timed out
+[18:46:01] OpenFT: 201.6.36.51:1330 (SEARCH) -> DISCO: Connection timed out
+[18:46:02] OpenFT: 69.14.196.251:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:03] OpenFT: 68.215.11.68:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:03] OpenFT: 70.24.225.157:1561 (INDEX) -> DISCO: Connection timed out
+[18:46:04] OpenFT: 66.183.237.250:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:04] OpenFT: 68.49.128.65:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 61.91.204.55:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 200.173.214.100:1743 (SEARCH) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 81.100.105.227:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 24.233.145.200:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 66.41.149.246:2031 (INDEX) -> DISCO: Connection timed out
+[18:46:10] OpenFT: 172.173.176.122:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:11] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[21200645 bytes left][timeout 15s]
+[18:46:12] OpenFT: 24.158.200.84:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:17] OpenFT: 200.146.135.61:1584 (SEARCH) -> DISCO: Connection timed out
+[18:46:21] giFT: upload.c:793(set_queued_info): hit 70.33.50.233(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/1
+[18:46:29] OpenFT: 68.221.200.190:1215 (SEARCH) -> DISCO: Connection timed out
+[18:46:32] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[21100635 bytes left][timeout 15s]
+[18:46:42] giFT: upload.c:793(set_queued_info): hit 213.118.37.233(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 2/2
+[18:46:44] OpenFT: 213.168.16.168:2036 (SEARCH) -> DISCO: Connection timed out
+[18:46:52] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[21000625 bytes left][timeout 15s]
+[18:46:55] OpenFT: ft_conn.c:324(keep_alive): kept 0 connections alive
+[18:46:55] OpenFT: ft_conn.c:351(acquire_new_stuff): seeking more parents...
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.243.99.174:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.153.169.8:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.119.159.104:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.96.216.17:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.202.14.139:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.66.238.177:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 150.208.67.117:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.154.253.166:1215
+[18:46:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.204.170.136:1510
+[18:46:55] OpenFT: 150.208.67.117:1215 (SEARCH) -> FINAL: 
+[18:46:55] OpenFT: 70.66.238.177:1215 (SEARCH) -> FINAL: 
+[18:46:55] OpenFT: 81.96.216.17:1215 (SEARCH) -> FINAL: 
+[18:46:55] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:55] OpenFT: 172.153.169.8:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.233.187.177:1753
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.158.200.84:1215
+[18:46:56] OpenFT: 69.233.187.177:1753 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.240.14.68:1215
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.197.194.149:1215
+[18:46:56] OpenFT: [150.208.67.117]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:56] OpenFT: 150.208.67.117:1215      SEARCH (+NONE)
+[18:46:56] OpenFT: 150.208.67.117:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:56] OpenFT: 201.240.14.68:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.110.13.151:1215
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.245.22.1:1217
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.189.12.60:60197
+[18:46:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 61.72.10.84:1215
+[18:46:56] OpenFT: [70.66.238.177]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:56] OpenFT: 70.66.238.177:1215       SEARCH (+NONE)
+[18:46:56] OpenFT: 70.66.238.177:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:56] OpenFT: 70.110.13.151:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:56] OpenFT: 61.72.10.84:1215 (INDEX) -> FINAL: 
+[18:46:57] OpenFT: [81.96.216.17]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:57] OpenFT: 81.96.216.17:1215        SEARCH (+NONE)
+[18:46:57] OpenFT: 81.96.216.17:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:57] OpenFT: 200.204.170.136:1510 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 83.245.22.1:1217 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.96.216.17:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.214.14.16:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.233.145.200:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.177.171.62:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.110.13.151:1215
+[18:46:58] OpenFT: 24.0.210.122:1215 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 70.110.13.151:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:58] OpenFT: 81.96.216.17:1215 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 217.132.11.31:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.182.97:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.142.189.219:1625
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.174.49.182:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 209.197.132.25:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:46:58] OpenFT: 67.142.189.219:1625 (INDEX) -> FINAL: 
+[18:46:58] OpenFT: [24.0.210.122]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:58] OpenFT: 24.0.210.122:1215        SEARCH (+NONE)
+[18:46:58] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:58] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 216.239.85.31:4421
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.132.64.6:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.183.237.250:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.152.140.166:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 85.196.203.106:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.153.52.246:1215
+[18:46:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.49.128.65:1215
+[18:46:58] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:46:58] OpenFT: 213.84.182.55:1215 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:58] OpenFT: 216.239.85.31:4421 (SEARCH) -> FINAL: 
+[18:46:58] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:46:59] OpenFT: 216.239.85.31:4421 (SEARCH) -> DISCO: EOF from socket
+[18:46:59] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:59] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:46:59] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:59] OpenFT: 24.153.52.246:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:59] OpenFT: [61.72.10.84]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:59] OpenFT: 61.72.10.84:1215         INDEX (+NONE)
+[18:46:59] OpenFT: 61.72.10.84:1215 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 61.72.10.84:1215
+[18:46:59] OpenFT: 81.96.216.17:1215        SEARCH (-NONE)
+[18:46:59] OpenFT: 80.177.171.62:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:59] OpenFT: 151.205.182.97:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:59] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:59] OpenFT: 61.72.10.84:1215 (INDEX) -> FINAL: 
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.195.249.207:1215
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 168.226.135.64:1279
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.93.168.58:1215
+[18:46:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.217.17.175:1215
+[18:46:59] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:46:59] OpenFT: 172.154.253.166:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:46:59] OpenFT: 200.204.170.136:1510 (SEARCH) -> DISCO: EOF from socket
+[18:46:59] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:46:59] OpenFT: [81.96.216.17]: ft_sharing.c:143(ft_child_response): request refused
+[18:46:59] OpenFT: 81.96.216.17:1215        SEARCH (+NONE)
+[18:46:59] OpenFT: 81.96.216.17:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:46:59] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:46:59] OpenFT: 65.96.139.72:1215 (SEARCH) -> FINAL: 
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.158.78.78:1215
+[18:47:00] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:00] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:00] OpenFT: 81.158.78.78:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.174.18.61:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.237.85.198:1241
+[18:47:00] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:47:00] OpenFT: 69.174.18.61:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:47:00] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:47:00] OpenFT: 66.237.85.198:1241 (SEARCH) -> FINAL: 
+[18:47:00] OpenFT: 65.96.139.72:1215        SEARCH (-NONE)
+[18:47:00] OpenFT: 64.123.151.127:1215 (SEARCH) -> FINAL: 
+[18:47:00] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:00] OpenFT: 66.237.85.198:1241 (SEARCH) -> DISCO: EOF from socket
+[18:47:00] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:00] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:47:00] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:00] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:00] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:47:00] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:47:00] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:00] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:47:00] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:00] OpenFT: [213.84.182.55]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:00] OpenFT: 213.84.182.55:1215       SEARCH (+NONE)
+[18:47:00] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.96.216.17:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:47:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.168.16.168:2036
+[18:47:00] OpenFT: 61.72.10.84:1215         INDEX (-NONE)
+[18:47:00] OpenFT: [65.96.139.72]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:00] OpenFT: 65.96.139.72:1215        SEARCH (+NONE)
+[18:47:00] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:00] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:01] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:47:01] OpenFT: 65.132.64.6:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/3
+[18:47:01] OpenFT: 81.96.216.17:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 162.83.177.187:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.158.120.117:1677
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.77.253.128:1215
+[18:47:01] OpenFT: 64.123.151.127:1215      SEARCH (-NONE)
+[18:47:01] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:47:01] OpenFT: 67.77.253.128:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.174.18.61:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.237.85.198:1241
+[18:47:01] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:47:01] OpenFT: 69.174.18.61:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 66.237.85.198:1241 (SEARCH) -> FINAL: 
+[18:47:01] OpenFT: 162.83.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:01] OpenFT: [64.123.151.127]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:01] OpenFT: 64.123.151.127:1215      SEARCH (+NONE)
+[18:47:01] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:01] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:01] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:47:01] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:01] OpenFT: 209.197.132.25:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 217.132.11.31:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:01] OpenFT: 66.237.85.198:1241 (SEARCH) -> DISCO: EOF from socket
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.50.125.232:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:47:01] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:47:01] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:47:02] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:02] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:02] OpenFT: 70.50.125.232:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:02] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:02] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:47:02] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:47:02] OpenFT: [61.72.10.84]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:02] OpenFT: 61.72.10.84:1215         INDEX (+NONE)
+[18:47:02] OpenFT: 61.72.10.84:1215 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:47:02] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:02] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:47:02] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:02] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:02] OpenFT: 172.174.49.182:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.14.196.251:1215
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.204.170.136:1510
+[18:47:02] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:47:02] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:47:02] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:47:02] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:47:02] OpenFT: 65.96.139.72:1215 (SEARCH) -> FINAL: 
+[18:47:03] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:03] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: EOF from socket
+[18:47:03] OpenFT: 172.195.249.207:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.165.144:1215
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:47:03] OpenFT: 80.43.48.218:1215        SEARCH (-NONE)
+[18:47:03] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:03] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:47:03] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.174.18.61:1215
+[18:47:03] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:47:03] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:03] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:47:03] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:47:03] OpenFT: 69.174.18.61:1215 (SEARCH) -> FINAL: 
+[18:47:03] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:03] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:03] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:47:03] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:47:03] OpenFT: 65.96.139.72:1215        SEARCH (-NONE)
+[18:47:03] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:47:03] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:03] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:47:03] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:03] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:47:03] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:47:03] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:03] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:04] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:47:04] OpenFT: 83.245.22.1:1217         SEARCH (-NONE)
+[18:47:04] OpenFT: 67.142.189.219:1625 (INDEX) -> DISCO: Connection reset by peer
+[18:47:04] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:04] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:47:04] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:04] OpenFT: 84.64.19.124:1215 (SEARCH) -> FINAL: 
+[18:47:04] OpenFT: [65.96.139.72]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:04] OpenFT: 65.96.139.72:1215        SEARCH (+NONE)
+[18:47:04] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:04] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:47:04] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:04] OpenFT: 200.204.170.136:1510 (SEARCH) -> FINAL: 
+[18:47:04] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:04] OpenFT: [69.174.18.61]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:04] OpenFT: 69.174.18.61:1215        SEARCH (+NONE)
+[18:47:04] OpenFT: 69.174.18.61:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:04] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:04] OpenFT: 84.119.159.104:1215 (SEARCH) -> FINAL: 
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.239.112.183:1215
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.241.239.192:1220
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.110.13.151:1215
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.13.198.189:1215
+[18:47:05] OpenFT: 84.64.19.124:1215        SEARCH (-NONE)
+[18:47:05] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:47:05] OpenFT: 70.110.13.151:1215 (SEARCH) -> FINAL: 
+[18:47:05] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:47:05] OpenFT: [84.64.19.124]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:05] OpenFT: 84.64.19.124:1215        SEARCH (+NONE)
+[18:47:05] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.211.95.26:2074
+[18:47:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.17.186.74:1215
+[18:47:05] OpenFT: 71.100.88.143:1215 (SEARCH) -> FINAL: 
+[18:47:05] OpenFT: 71.100.88.143:1215 (SEARCH) -> DISCO: EOF from socket
+[18:47:06] OpenFT: [84.119.159.104]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:06] OpenFT: 84.119.159.104:1215      SEARCH (+NONE)
+[18:47:06] OpenFT: 84.119.159.104:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:07] OpenFT: 83.17.186.74:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:07] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:47:07] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:47:07] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:47:07] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.83.28.137:1215
+[18:47:07] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:47:07] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:47:07] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:47:07] OpenFT: 65.96.139.72:1215 (SEARCH) -> FINAL: 
+[18:47:07] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:47:07] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:47:08] OpenFT: 70.110.13.151:1215       SEARCH (-NONE)
+[18:47:08] OpenFT: [83.245.22.1]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:08] OpenFT: 83.245.22.1:1217         SEARCH (+NONE)
+[18:47:08] OpenFT: 83.245.22.1:1217 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:08] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.29.74.49:1215
+[18:47:08] OpenFT: 82.105.185.209:1215      SEARCH (-NONE)
+[18:47:08] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:08] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:47:08] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:47:08] OpenFT: 65.29.74.49:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:08] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:08] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:47:08] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:08] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:08] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:47:08] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:08] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:47:08] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.143.0.48:1215
+[18:47:08] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:47:08] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 196.22.186.113:1532
+[18:47:08] OpenFT: 65.96.139.72:1215        SEARCH (-NONE)
+[18:47:08] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:47:08] OpenFT: [65.96.139.72]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:08] OpenFT: 65.96.139.72:1215        SEARCH (+NONE)
+[18:47:08] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:08] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:47:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.146.135.61:1584
+[18:47:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 4.227.154.234:1215
+[18:47:11] OpenFT: [82.105.185.209]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:11] OpenFT: 82.105.185.209:1215      SEARCH (+NONE)
+[18:47:11] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:11] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20900615 bytes left][timeout 15s]
+[18:47:11] OpenFT: [70.110.13.151]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:11] OpenFT: 70.110.13.151:1215       SEARCH (+NONE)
+[18:47:11] OpenFT: 70.110.13.151:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:12] giFT: upload.c:793(set_queued_info): hit 70.33.50.233(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/3
+[18:47:12] OpenFT: 4.227.154.234:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:13] OpenFT: 172.143.0.48:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:47:17] OpenFT: [200.204.170.136]: ft_sharing.c:143(ft_child_response): request refused
+[18:47:17] OpenFT: 200.204.170.136:1510     SEARCH (+NONE)
+[18:47:17] OpenFT: 200.204.170.136:1510 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:47:31] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20800605 bytes left][timeout 15s]
+[18:47:37] Ares: as_session.c:219(session_connected): Connected to 199.212.72.101:30081
+[18:47:44] *** GIFT-ERROR: Ares: Handshake with 199.212.72.101:30081 failed. Got something else than ACK.
+[18:47:49] Gnutella: [202.161.100.89]: gt_node.c:321(gt_node_error): error: [incoming] connection not authorized
+[18:47:51] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20700595 bytes left][timeout 15s]
+[18:47:52] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/3
+[18:47:55] OpenFT: 201.243.99.174:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:55] OpenFT: 172.202.14.139:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:56] OpenFT: 24.158.200.84:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:56] OpenFT: 82.197.194.149:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:56] OpenFT: 151.189.12.60:60197 (INDEX) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 12.214.14.16:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 24.233.145.200:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 66.183.237.250:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 24.152.140.166:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 85.196.203.106:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:58] OpenFT: 68.49.128.65:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:59] OpenFT: 168.226.135.64:1279 (INDEX) -> DISCO: Connection timed out
+[18:47:59] OpenFT: 65.93.168.58:1215 (SEARCH) -> DISCO: Connection timed out
+[18:47:59] OpenFT: 64.217.17.175:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:00] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:00] OpenFT: 213.168.16.168:2036 (SEARCH) -> DISCO: Connection timed out
+[18:48:01] OpenFT: 69.158.120.117:1677 (INDEX) -> DISCO: Connection timed out
+[18:48:01] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:02] OpenFT: 69.14.196.251:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:03] OpenFT: 68.13.165.144:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:04] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:05] OpenFT: 24.239.112.183:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:05] OpenFT: 201.241.239.192:1220 (SEARCH) -> DISCO: Connection timed out
+[18:48:05] OpenFT: 201.13.198.189:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:05] OpenFT: 172.211.95.26:2074 (SEARCH) -> DISCO: Connection timed out
+[18:48:05] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:06] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:06] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:07] OpenFT: 200.83.28.137:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:08] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:08] OpenFT: 71.100.88.143:1215 (SEARCH) -> DISCO: Connection timed out
+[18:48:08] OpenFT: 196.22.186.113:1532 (INDEX) -> DISCO: Connection timed out
+[18:48:11] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20600585 bytes left][timeout 15s]
+[18:48:11] OpenFT: 200.146.135.61:1584 (SEARCH) -> DISCO: Connection timed out
+[18:48:15] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:16] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:16] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:16] giFT: upload.c:793(set_queued_info): hit 172.203.147.6(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 4/4
+[18:48:30] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20500575 bytes left][timeout 15s]
+[18:48:47] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/4
+[18:48:52] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20400565 bytes left][timeout 15s]
+[18:48:55] OpenFT: ft_conn.c:324(keep_alive): kept 0 connections alive
+[18:48:55] OpenFT: ft_conn.c:351(acquire_new_stuff): seeking more parents...
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.86.98.143:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.154.253.166:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.153.169.8:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.57.196.195:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:48:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 144.134.101.111:1215
+[18:48:55] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:55] OpenFT: 200.57.196.195:1215 (SEARCH) -> DISCO: Socket error: No route to host
+[18:48:55] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:48:55] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:55] OpenFT: 172.153.169.8:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:55] OpenFT: 81.86.98.143:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:56] OpenFT: 144.134.101.111:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:56] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:56] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:48:57] OpenFT: 172.154.253.166:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:49:11] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20300555 bytes left][timeout 15s]
+[18:49:16] OpenFT: 71.100.88.143:1215 (SEARCH) -> FINAL: 
+[18:49:16] OpenFT: 71.100.88.143:1215 (SEARCH) -> DISCO: EOF from socket
+[18:49:31] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20200545 bytes left][timeout 15s]
+[18:49:34] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/4
+[18:49:36] giFT: upload.c:793(set_queued_info): hit 24.138.31.38(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 5/5
+[18:49:42] giFT: upload.c:578(remove_queue_tick): timed out 213.118.37.233(2)
+[18:49:46] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 5/5
+[18:49:50] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20100535 bytes left][timeout 15s]
+[18:50:00] Gnutella: [200.106.3.37]: gt_node.c:321(gt_node_error): error: [incoming] connection not authorized
+[18:50:09] giFT: upload.c:793(set_queued_info): hit 172.203.147.6(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/5
+[18:50:09] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[20000525 bytes left][timeout 15s]
+[18:50:12] giFT: upload.c:578(remove_queue_tick): timed out 70.33.50.233(1)
+[18:50:24] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/4
+[18:50:28] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19900515 bytes left][timeout 15s]
+[18:50:30] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 4/4
+[18:50:47] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19800505 bytes left][timeout 15s]
+[18:50:55] OpenFT: ft_conn.c:324(keep_alive): kept 0 connections alive
+[18:50:55] OpenFT: ft_conn.c:351(acquire_new_stuff): seeking more parents...
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.57.196.195:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 144.134.101.111:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 211.31.58.206:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 210.213.227.248:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.202.14.139:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.243.99.174:1215
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:50:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:50:55] OpenFT: 200.57.196.195:1215 (SEARCH) -> DISCO: Socket error: No route to host
+[18:50:55] *** GIFT-ERROR: Ares: Ran out of nodes
+[18:50:55] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:50:55] OpenFT: 210.213.227.248:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:50:55] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:50:56] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:50:56] OpenFT: 144.134.101.111:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:50:56] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:50:56] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:51:03] giFT: upload.c:793(set_queued_info): hit carlitos@201.246.127.114(/home/benklop/Desktop/Shared/Sim_City_4_CD2.bin.exe): 5/5
+[18:51:03] FastTrack: fst_upload.c:144(fst_upload_process_request): No upload slot available for carlitos@201.246.127.114
+[18:51:07] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19700495 bytes left][timeout 15s]
+[18:51:13] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/5
+[18:51:15] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 4/5
+[18:51:26] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19600485 bytes left][timeout 15s]
+[18:51:50] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19500475 bytes left][timeout 15s]
+[18:51:55] OpenFT: 211.31.58.206:1215 (SEARCH) -> DISCO: Connection timed out
+[18:51:55] OpenFT: 172.202.14.139:1215 (SEARCH) -> DISCO: Connection timed out
+[18:51:55] OpenFT: 201.243.99.174:1215 (SEARCH) -> DISCO: Connection timed out
+[18:52:00] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/5
+[18:52:00] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 4/5
+[18:52:02] giFT: upload.c:793(set_queued_info): hit 172.203.147.6(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 2/5
+[18:52:09] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19400465 bytes left][timeout 15s]
+[18:52:29] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19300455 bytes left][timeout 15s]
+[18:52:36] giFT: upload.c:578(remove_queue_tick): timed out 24.138.31.38(3)
+[18:52:37] giFT: upload.c:793(set_queued_info): hit magnomfs@201.10.55.214(/home/benklop/Desktop/Shared/Sim_City_4_CD2.bin.exe): 5/5
+[18:52:37] FastTrack: fst_upload.c:144(fst_upload_process_request): No upload slot available for magnomfs@201.10.55.214
+[18:52:45] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/5
+[18:52:46] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/5
+[18:52:48] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19200445 bytes left][timeout 15s]
+[18:52:55] OpenFT: ft_conn.c:324(keep_alive): kept 0 connections alive
+[18:52:55] OpenFT: ft_conn.c:351(acquire_new_stuff): seeking more parents...
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.66.88.9:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.190.69.131:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.39.99.33:1735
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.29.74.49:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 218.111.50.237:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.168.146.168:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 195.134.80.164:1486
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.224.95.107:1232
+[18:52:55] OpenFT: 68.190.69.131:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:55] OpenFT: 24.50.156.56:1215 (SEARCH) -> FINAL: 
+[18:52:55] OpenFT: 65.29.74.49:1215 (SEARCH) -> FINAL: 
+[18:52:55] OpenFT: 69.39.99.33:1735 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:55] OpenFT: 64.252.114.10:1215 (SEARCH) -> FINAL: 
+[18:52:55] OpenFT: 195.134.80.164:1486 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:55] OpenFT: 200.168.146.168:1215 (SEARCH) -> FINAL: 
+[18:52:55] Ares: as_session.c:219(session_connected): Connected to 67.87.142.55:38021
+[18:52:55] Ares: as_session.c:219(session_connected): Connected to 65.39.34.195:41768
+[18:52:55] Ares: as_session.c:219(session_connected): Connected to 160.36.97.249:48947
+[18:52:55] Ares: as_session.c:565(session_handshake): Handshake with 67.87.142.55:38021 complete. seeds: 0xFC90 and 0x32
+[18:52:55] Ares: as_session_man.c:282(session_state_cb): CONNECTED 67.87.142.55:38021
+[18:52:55] Ares: as_search_man.c:141(as_searchman_new_session): Sent 0 queued queries to new supernode 67.87.142.55
+[18:52:55] Ares: as_share_man.c:198(as_shareman_submit): Submitted all 75 shares to supernode 67.87.142.55
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 144.134.101.111:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.158.78.78:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 168.226.135.64:1279
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.36.141.210:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.73.12.94:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.183.237.250:1215
+[18:52:55] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.138.244.181:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 162.83.177.187:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 4.227.154.234:1215
+[18:52:56] OpenFT: 66.36.141.210:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: 81.158.78.78:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:52:56] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: [24.50.156.56]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:56] OpenFT: 24.50.156.56:1215        SEARCH (+NONE)
+[18:52:56] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.56.39.107:1215
+[18:52:56] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.76.112.88:1215
+[18:52:56] OpenFT: 144.134.101.111:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:52:56] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: [65.29.74.49]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:56] OpenFT: 65.29.74.49:1215         SEARCH (+NONE)
+[18:52:56] OpenFT: 65.29.74.49:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:56] OpenFT: 80.56.39.107:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: 162.83.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:56] OpenFT: [64.252.114.10]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:56] OpenFT: 64.252.114.10:1215       SEARCH (+NONE)
+[18:52:56] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:56] OpenFT: 200.138.244.181:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.142.189.219:1625
+[18:52:57] OpenFT: 80.43.48.218:1215        SEARCH (-NONE)
+[18:52:57] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: 67.142.189.219:1625 (INDEX) -> FINAL: 
+[18:52:57] OpenFT: 24.50.156.56:1215 (SEARCH) -> FINAL: 
+[18:52:57] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:52:57] OpenFT: 218.111.50.237:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] Ares: as_session.c:565(session_handshake): Handshake with 160.36.97.249:48947 complete. seeds: 0x6CA4 and 0x10
+[18:52:57] Ares: as_session_man.c:282(session_state_cb): CONNECTED 160.36.97.249:48947
+[18:52:57] Ares: as_search_man.c:141(as_searchman_new_session): Sent 0 queued queries to new supernode 160.36.97.249
+[18:52:57] Ares: as_share_man.c:198(as_shareman_submit): Submitted all 75 shares to supernode 160.36.97.249
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.158.78.78:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.36.141.210:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.138.244.181:1215
+[18:52:57] OpenFT: 24.50.156.56:1215        SEARCH (-NONE)
+[18:52:57] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:57] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:52:57] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.152.238.183:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.153.52.246:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.207.252.166:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.156.17.65:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 144.134.101.111:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:52:57] OpenFT: 81.158.78.78:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: 66.36.141.210:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.195.249.207:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.6.36.51:1330
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.233.145.200:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.158.200.84:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:52:57] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:52:57] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:52:57] OpenFT: [24.50.156.56]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:57] OpenFT: 24.50.156.56:1215        SEARCH (+NONE)
+[18:52:57] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:57] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: 24.153.52.246:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: 64.252.114.10:1215 (SEARCH) -> FINAL: 
+[18:52:57] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:57] OpenFT: 172.156.17.65:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: 62.21.199.125:1215 (SEARCH) -> FINAL: 
+[18:52:58] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:52:58] OpenFT: 144.134.101.111:1215 (SEARCH) -> FINAL: 
+[18:52:58] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:52:58] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:58] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:52:58] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:58] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:52:58] OpenFT: 200.138.244.181:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:52:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:52:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:52:58] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.56.39.107:1215
+[18:52:58] OpenFT: 64.252.114.10:1215       SEARCH (-NONE)
+[18:52:58] OpenFT: 172.152.238.183:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:58] OpenFT: 80.56.39.107:1215 (SEARCH) -> FINAL: 
+[18:52:58] OpenFT: [64.252.114.10]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:58] OpenFT: 64.252.114.10:1215       SEARCH (+NONE)
+[18:52:58] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.190.69.131:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.50.125.232:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.189.12.60:60197
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 209.197.132.25:1215
+[18:52:59] OpenFT: 62.21.199.125:1215       SEARCH (-NONE)
+[18:52:59] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Connection reset by peer
+[18:52:59] OpenFT: [200.168.146.168]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:59] OpenFT: 200.168.146.168:1215     SEARCH (+NONE)
+[18:52:59] OpenFT: 200.168.146.168:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:59] OpenFT: 68.190.69.131:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:59] OpenFT: 70.50.125.232:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:52:59] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 71.100.88.143:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.204.170.136:1510
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.93.168.58:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.112.233.69:1946
+[18:52:59] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:52:59] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:52:59] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:52:59] OpenFT: 65.96.139.72:1215 (SEARCH) -> FINAL: 
+[18:52:59] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:52:59] OpenFT: [62.21.199.125]: ft_sharing.c:143(ft_child_response): request refused
+[18:52:59] OpenFT: 62.21.199.125:1215       SEARCH (+NONE)
+[18:52:59] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.165.144:1215
+[18:52:59] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:52:59] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:52:59] OpenFT: 12.216.149.115:1215      SEARCH (-NONE)
+[18:53:00] OpenFT: 64.123.151.127:1215 (SEARCH) -> FINAL: 
+[18:53:00] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 162.83.177.187:1215
+[18:53:00] OpenFT: 65.96.139.72:1215        SEARCH (-NONE)
+[18:53:00] OpenFT: 4.227.154.234:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: 162.83.177.187:1215 (SEARCH) -> FINAL: 
+[18:53:00] OpenFT: 82.41.157.168:1215 (SEARCH) -> FINAL: 
+[18:53:00] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:53:00] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:00] OpenFT: 172.195.249.207:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: [80.56.39.107]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 80.56.39.107:1215        SEARCH (+NONE)
+[18:53:00] OpenFT: 80.56.39.107:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:00] OpenFT: [12.216.149.115]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 12.216.149.115:1215      SEARCH (+NONE)
+[18:53:00] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:00] OpenFT: [65.96.139.72]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 65.96.139.72:1215        SEARCH (+NONE)
+[18:53:00] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:00] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:53:00] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.174.49.182:1215
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.29.74.49:1215
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.152.238.183:1215
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.160.133.212:1215
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 217.132.11.31:1215
+[18:53:00] OpenFT: 162.83.177.187:1215      SEARCH (-NONE)
+[18:53:00] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.138.244.181:1215
+[18:53:00] OpenFT: 64.123.151.127:1215      SEARCH (-NONE)
+[18:53:00] OpenFT: 200.204.170.136:1510 (SEARCH) -> FINAL: 
+[18:53:00] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: 65.29.74.49:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: 67.160.133.212:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:00] OpenFT: [144.134.101.111]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:00] OpenFT: 144.134.101.111:1215     SEARCH (+NONE)
+[18:53:00] OpenFT: 144.134.101.111:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:01] OpenFT: [162.83.177.187]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:01] OpenFT: 162.83.177.187:1215      SEARCH (+NONE)
+[18:53:01] OpenFT: 162.83.177.187:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:01] OpenFT: [64.123.151.127]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:01] OpenFT: 64.123.151.127:1215      SEARCH (+NONE)
+[18:53:01] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:01] OpenFT: 200.138.244.181:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:01] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:02] OpenFT: 200.204.170.136:1510 (SEARCH) -> DISCO: EOF from socket
+[18:53:02] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:02] OpenFT: 172.152.238.183:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:04] OpenFT: 217.132.11.31:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:04] OpenFT: 67.142.189.219:1625 (INDEX) -> DISCO: Connection reset by peer
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.0.210.122:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.39.194.104:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.56.39.107:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.195.249.207:1215
+[18:53:05] OpenFT: 24.0.210.122:1215 (SEARCH) -> FINAL: 
+[18:53:05] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 68.39.194.104:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 172.174.49.182:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 172.195.249.207:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 80.56.39.107:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.174.49.182:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.165.103.40:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 61.72.10.84:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.160.133.212:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 217.132.11.31:1215
+[18:53:05] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.44.65.43:1217
+[18:53:05] OpenFT: 24.0.210.122:1215        SEARCH (-NONE)
+[18:53:05] OpenFT: 69.165.103.40:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 67.160.133.212:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: [24.0.210.122]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:05] OpenFT: 24.0.210.122:1215        SEARCH (+NONE)
+[18:53:05] OpenFT: 24.0.210.122:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:05] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:05] OpenFT: 61.72.10.84:1215 (INDEX) -> FINAL: 
+[18:53:06] OpenFT: 61.72.10.84:1215 (INDEX) -> DISCO: EOF from socket
+[18:53:07] OpenFT: [82.41.157.168]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:07] OpenFT: 82.41.157.168:1215       SEARCH (+NONE)
+[18:53:07] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:08] OpenFT: 12.76.112.88:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:08] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19100435 bytes left][timeout 15s]
+[18:53:08] OpenFT: 217.132.11.31:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:08] OpenFT: 80.44.65.43:1217 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:10] Ares: as_session.c:565(session_handshake): Handshake with 65.39.34.195:41768 complete. seeds: 0xE8FA and 0xA1
+[18:53:10] Ares: as_session_man.c:282(session_state_cb): CONNECTED 65.39.34.195:41768
+[18:53:10] Ares: as_search_man.c:141(as_searchman_new_session): Sent 0 queued queries to new supernode 65.39.34.195
+[18:53:10] Ares: as_share_man.c:198(as_shareman_submit): Submitted all 75 shares to supernode 65.39.34.195
+[18:53:10] Ares: as_session_man.c:240(session_state_cb): DISCONNECTED 65.39.34.195:41768
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.154.253.166:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.110.13.151:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.29.74.49:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.41.157.168:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.168.146.168:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:53:11] OpenFT: 82.105.185.209:1215      SEARCH (-NONE)
+[18:53:11] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:11] OpenFT: 70.110.13.151:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:11] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:53:11] OpenFT: 65.29.74.49:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:11] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:53:11] OpenFT: 84.64.19.124:1215 (SEARCH) -> FINAL: 
+[18:53:11] OpenFT: 200.168.146.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:11] OpenFT: 172.154.253.166:1215 (SEARCH) -> FINAL: 
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.220.80.225:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.170.67.167:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.251.138:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 213.84.182.55:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.1.24.18:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 138.192.100.90:2028
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.49.128.65:1215
+[18:53:11] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 201.241.239.192:1220
+[18:53:11] OpenFT: 12.99.190.195:1215       SEARCH (-NONE)
+[18:53:12] OpenFT: 24.1.24.18:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:53:12] OpenFT: 67.170.67.167:1215 (SEARCH) -> FINAL: 
+[18:53:12] OpenFT: 151.205.251.138:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: 213.84.182.55:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:53:12] OpenFT: [12.99.190.195]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:12] OpenFT: 12.99.190.195:1215       SEARCH (+NONE)
+[18:53:12] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 83.245.22.1:1217
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.175.42.18:1215
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.77.157.162:1215
+[18:53:12] OpenFT: 84.64.19.124:1215        SEARCH (-NONE)
+[18:53:12] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:53:12] OpenFT: 68.77.157.162:1215 (SEARCH) -> FINAL: 
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:53:12] OpenFT: 80.43.48.218:1215        SEARCH (-NONE)
+[18:53:12] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:53:12] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.142.189.219:1625
+[18:53:12] OpenFT: 67.170.67.167:1215       SEARCH (-NONE)
+[18:53:12] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: 82.41.157.168:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: 172.174.49.182:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:12] OpenFT: [84.64.19.124]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:12] OpenFT: 84.64.19.124:1215        SEARCH (+NONE)
+[18:53:12] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:12] OpenFT: [67.170.67.167]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:12] OpenFT: 67.170.67.167:1215       SEARCH (+NONE)
+[18:53:12] OpenFT: 67.170.67.167:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:13] OpenFT: 172.175.42.18:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.175.42.18:1215
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 62.21.199.125:1215
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.96.216.17:1215
+[18:53:13] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.190.69.131:1215
+[18:53:13] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:13] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:53:13] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:13] OpenFT: 68.190.69.131:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:13] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:13] OpenFT: 62.21.199.125:1215 (SEARCH) -> FINAL: 
+[18:53:13] OpenFT: 81.96.216.17:1215 (SEARCH) -> FINAL: 
+[18:53:13] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:13] OpenFT: [82.105.185.209]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:13] OpenFT: 82.105.185.209:1215      SEARCH (+NONE)
+[18:53:13] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:13] OpenFT: 67.142.189.219:1625 (INDEX) -> DISCO: Socket error: Connection refused
+[18:53:13] OpenFT: 172.175.42.18:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.207.13.163:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 70.50.125.232:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.171.46.77:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.83.28.137:1215
+[18:53:14] OpenFT: 62.21.199.125:1215       SEARCH (-NONE)
+[18:53:14] OpenFT: 70.50.125.232:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:14] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 61.72.10.84:1215
+[18:53:14] OpenFT: 81.96.216.17:1215        SEARCH (-NONE)
+[18:53:14] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:14] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:53:14] OpenFT: 61.72.10.84:1215 (INDEX) -> FINAL: 
+[18:53:14] OpenFT: [62.21.199.125]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:14] OpenFT: 62.21.199.125:1215       SEARCH (+NONE)
+[18:53:14] OpenFT: 62.21.199.125:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:14] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.43.48.218:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.130.216.203:1541
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.123.151.127:1215
+[18:53:14] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:53:14] OpenFT: [81.96.216.17]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:14] OpenFT: 81.96.216.17:1215        SEARCH (+NONE)
+[18:53:14] OpenFT: 81.96.216.17:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:14] OpenFT: 61.72.10.84:1215 (INDEX) -> DISCO: EOF from socket
+[18:53:14] OpenFT: 64.123.151.127:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:14] OpenFT: 24.130.216.203:1541 (INDEX) -> FINAL: 
+[18:53:14] OpenFT: 80.43.48.218:1215 (SEARCH) -> FINAL: 
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.153.52.246:1215
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.211.95.26:2074
+[18:53:14] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.208.177.187:1215
+[18:53:15] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:15] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:53:15] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:15] OpenFT: 24.153.52.246:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:15] OpenFT: 200.208.177.187:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:15] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 24.50.156.56:1215
+[18:53:15] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 68.13.184.42:1715
+[18:53:15] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 82.105.185.209:1215
+[18:53:15] OpenFT: 80.43.48.218:1215        SEARCH (-NONE)
+[18:53:15] OpenFT: 24.50.156.56:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:16] OpenFT: 68.13.184.42:1715 (SEARCH) -> FINAL: 
+[18:53:16] OpenFT: 200.171.46.77:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:16] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 69.14.196.251:1215
+[18:53:16] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 80.182.98.32:4000
+[18:53:16] OpenFT: 24.130.216.203:1541      INDEX (-NONE)
+[18:53:16] OpenFT: 80.182.98.32:4000 (INDEX) -> FINAL: 
+[18:53:16] OpenFT: 68.13.184.42:1715        SEARCH (-NONE)
+[18:53:16] OpenFT: [80.43.48.218]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:16] OpenFT: 80.43.48.218:1215        SEARCH (+NONE)
+[18:53:16] OpenFT: 80.43.48.218:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:16] OpenFT: 80.182.98.32:4000 (INDEX) -> DISCO: Connection reset by peer
+[18:53:16] OpenFT: [24.130.216.203]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:16] OpenFT: 24.130.216.203:1541      INDEX (+NONE)
+[18:53:16] OpenFT: 24.130.216.203:1541 (INDEX) -> DISCO: Idle: 2: Purpose completed
+[18:53:16] OpenFT: [68.13.184.42]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:16] OpenFT: 68.13.184.42:1715        SEARCH (+NONE)
+[18:53:16] OpenFT: 68.13.184.42:1715 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:16] OpenFT: 82.105.185.209:1215 (SEARCH) -> FINAL: 
+[18:53:22] OpenFT: 83.245.22.1:1217 (SEARCH) -> FINAL: 
+[18:53:22] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.99.190.195:1215
+[18:53:22] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:53:22] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.23.67.167:1215
+[18:53:22] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 64.252.114.10:1215
+[18:53:22] OpenFT: 82.105.185.209:1215      SEARCH (-NONE)
+[18:53:22] OpenFT: 12.99.190.195:1215 (SEARCH) -> FINAL: 
+[18:53:22] OpenFT: 64.252.114.10:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:22] OpenFT: 84.64.19.124:1215 (SEARCH) -> FINAL: 
+[18:53:22] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 151.205.251.138:1215
+[18:53:22] OpenFT: 12.99.190.195:1215       SEARCH (-NONE)
+[18:53:22] OpenFT: 151.205.251.138:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:22] OpenFT: [12.99.190.195]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:22] OpenFT: 12.99.190.195:1215       SEARCH (+NONE)
+[18:53:22] OpenFT: 12.99.190.195:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:23] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 66.236.208.164:1245
+[18:53:23] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 172.175.42.18:1215
+[18:53:23] OpenFT: 84.64.19.124:1215        SEARCH (-NONE)
+[18:53:23] OpenFT: 66.236.208.164:1245 (INDEX) -> FINAL: 
+[18:53:23] OpenFT: 67.23.67.167:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:23] OpenFT: 66.236.208.164:1245 (INDEX) -> DISCO: EOF from socket
+[18:53:23] OpenFT: [84.64.19.124]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:23] OpenFT: 84.64.19.124:1215        SEARCH (+NONE)
+[18:53:23] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:23] OpenFT: 172.175.42.18:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:24] OpenFT: [172.154.253.166]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:24] OpenFT: 172.154.253.166:1215     SEARCH (+NONE)
+[18:53:24] OpenFT: 172.154.253.166:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:25] OpenFT: [82.105.185.209]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:25] OpenFT: 82.105.185.209:1215      SEARCH (+NONE)
+[18:53:25] OpenFT: 82.105.185.209:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:27] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[19000425 bytes left][timeout 15s]
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 84.64.19.124:1215
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 12.216.149.115:1215
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 217.132.11.31:1215
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 67.70.207.244:1215
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 81.100.105.227:1215
+[18:53:28] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 200.173.214.100:1743
+[18:53:28] OpenFT: 83.245.22.1:1217         SEARCH (-NONE)
+[18:53:28] OpenFT: 12.216.149.115:1215 (SEARCH) -> FINAL: 
+[18:53:28] OpenFT: 84.64.19.124:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:28] OpenFT: 67.70.207.244:1215 (SEARCH) -> FINAL: 
+[18:53:28] OpenFT: 12.216.149.115:1215 (SEARCH) -> DISCO: EOF from socket
+[18:53:30] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 65.96.139.72:1215
+[18:53:30] OpenFT: ft_session.c:595(ft_session_connect): attempting connection to 63.18.171.134:1215
+[18:53:30] OpenFT: 65.96.139.72:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:30] giFT: upload.c:793(set_queued_info): hit 210.49.153.55(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 3/5
+[18:53:31] OpenFT: 217.132.11.31:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:31] OpenFT: 63.18.171.134:1215 (SEARCH) -> DISCO: Socket error: Connection refused
+[18:53:32] OpenFT: [67.70.207.244]: ft_sharing.c:143(ft_child_response): request refused
+[18:53:32] OpenFT: 67.70.207.244:1215       SEARCH (+NONE)
+[18:53:32] OpenFT: 67.70.207.244:1215 (SEARCH) -> DISCO: Idle: 2: Purpose completed
+[18:53:36] giFT: upload.c:793(set_queued_info): hit 81.53.102.21(/home/benklop/Desktop/Shared/Games - Sim City 3000 Full Version.zip): 1/5
+[18:53:45] OpenFT: 83.245.22.1:1217         PARENT (+PARENT)
+[18:53:45] OpenFT: [83.245.22.1]: ft_share.c:196(ft_share_local_submit): submitting shares...
+[18:53:47] giFT: upload.c:754(upload_queue_detach): keeping upload slot for 68.174.250.1(/home/benklop/Desktop/Shared/Sim City 2000 Microsoft Windows XP Full Version.zip)[18900415 bytes left][timeout 15s]

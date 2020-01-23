@@ -1,0 +1,162 @@
+http.lo : \
+ http.c gt_gnutella.h ../config.h \
+ /usr/local/include/libgift/libgift.h \
+ /usr/local/include/libgift/giftconfig.h /usr/include/stdio.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/gnu/stubs.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h \
+ /usr/include/bits/types.h /usr/include/bits/wordsize.h \
+ /usr/include/bits/typesizes.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/include/bits/wchar.h /usr/include/gconv.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h \
+ /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+ /usr/include/bits/stdio.h /usr/include/stdlib.h \
+ /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
+ /usr/include/bits/endian.h /usr/include/sys/select.h \
+ /usr/include/bits/select.h /usr/include/bits/sigset.h \
+ /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+ /usr/include/bits/pthreadtypes.h /usr/include/bits/sched.h \
+ /usr/include/alloca.h /usr/include/string.h \
+ /usr/include/bits/string.h /usr/include/bits/string2.h \
+ /usr/include/assert.h /usr/include/stdint.h /usr/include/inttypes.h \
+ /usr/include/unistd.h /usr/include/bits/posix_opt.h \
+ /usr/include/bits/confname.h /usr/include/getopt.h \
+ /usr/include/sys/time.h /usr/local/include/libgift/platform.h \
+ /usr/include/sys/stat.h /usr/include/bits/stat.h \
+ /usr/local/include/libgift/memory.h \
+ /usr/local/include/libgift/strobj.h \
+ /usr/local/include/libgift/parse.h \
+ /usr/local/include/libgift/dataset.h \
+ /usr/local/include/libgift/list.h /usr/local/include/libgift/array.h \
+ /usr/local/include/libgift/list_lock.h \
+ /usr/local/include/libgift/tree.h /usr/local/include/libgift/event.h \
+ /usr/local/include/libgift/network.h /usr/include/fcntl.h \
+ /usr/include/bits/fcntl.h /usr/include/sys/socket.h \
+ /usr/include/sys/uio.h /usr/include/bits/uio.h \
+ /usr/include/bits/socket.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/limits.h \
+ /usr/lib/gcc-lib/i386-linux/2.95.4/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/bits/sockaddr.h \
+ /usr/include/asm/socket.h /usr/include/asm/sockios.h \
+ /usr/include/netinet/in.h /usr/include/bits/in.h \
+ /usr/include/bits/byteswap.h /usr/include/arpa/inet.h \
+ /usr/include/netdb.h /usr/include/rpc/netdb.h \
+ /usr/include/bits/netdb.h /usr/local/include/libgift/tcpc.h \
+ /usr/local/include/libgift/fdbuf.h \
+ /usr/local/include/libgift/interface.h \
+ /usr/local/include/libgift/conf.h /usr/local/include/libgift/log.h \
+ /usr/include/syslog.h /usr/include/sys/syslog.h \
+ /usr/local/include/libgift/proto/protocol.h \
+ /usr/local/include/libgift/proto/transfer_api.h \
+ /usr/local/include/libgift/proto/if_event_api.h \
+ /usr/local/include/libgift/proto/share_hash.h \
+ /usr/local/include/libgift/proto/protocol_ver.h \
+ /usr/local/include/libgift/proto/share.h \
+ /usr/local/include/libgift/file.h /usr/include/dirent.h \
+ /usr/include/bits/dirent.h http.h gt_guid.h gt_conf.h \
+ /usr/include/ctype.h
+http.c :
+gt_gnutella.h :
+../config.h :
+/usr/local/include/libgift/libgift.h :
+/usr/local/include/libgift/giftconfig.h :
+/usr/include/stdio.h :
+/usr/include/features.h :
+/usr/include/sys/cdefs.h :
+/usr/include/gnu/stubs.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stddef.h :
+/usr/include/bits/types.h :
+/usr/include/bits/wordsize.h :
+/usr/include/bits/typesizes.h :
+/usr/include/libio.h :
+/usr/include/_G_config.h :
+/usr/include/wchar.h :
+/usr/include/bits/wchar.h :
+/usr/include/gconv.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/stdarg.h :
+/usr/include/bits/stdio_lim.h :
+/usr/include/bits/sys_errlist.h :
+/usr/include/bits/stdio.h :
+/usr/include/stdlib.h :
+/usr/include/sys/types.h :
+/usr/include/time.h :
+/usr/include/endian.h :
+/usr/include/bits/endian.h :
+/usr/include/sys/select.h :
+/usr/include/bits/select.h :
+/usr/include/bits/sigset.h :
+/usr/include/bits/time.h :
+/usr/include/sys/sysmacros.h :
+/usr/include/bits/pthreadtypes.h :
+/usr/include/bits/sched.h :
+/usr/include/alloca.h :
+/usr/include/string.h :
+/usr/include/bits/string.h :
+/usr/include/bits/string2.h :
+/usr/include/assert.h :
+/usr/include/stdint.h :
+/usr/include/inttypes.h :
+/usr/include/unistd.h :
+/usr/include/bits/posix_opt.h :
+/usr/include/bits/confname.h :
+/usr/include/getopt.h :
+/usr/include/sys/time.h :
+/usr/local/include/libgift/platform.h :
+/usr/include/sys/stat.h :
+/usr/include/bits/stat.h :
+/usr/local/include/libgift/memory.h :
+/usr/local/include/libgift/strobj.h :
+/usr/local/include/libgift/parse.h :
+/usr/local/include/libgift/dataset.h :
+/usr/local/include/libgift/list.h :
+/usr/local/include/libgift/array.h :
+/usr/local/include/libgift/list_lock.h :
+/usr/local/include/libgift/tree.h :
+/usr/local/include/libgift/event.h :
+/usr/local/include/libgift/network.h :
+/usr/include/fcntl.h :
+/usr/include/bits/fcntl.h :
+/usr/include/sys/socket.h :
+/usr/include/sys/uio.h :
+/usr/include/bits/uio.h :
+/usr/include/bits/socket.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/limits.h :
+/usr/lib/gcc-lib/i386-linux/2.95.4/include/syslimits.h :
+/usr/include/limits.h :
+/usr/include/bits/posix1_lim.h :
+/usr/include/bits/local_lim.h :
+/usr/include/linux/limits.h :
+/usr/include/bits/posix2_lim.h :
+/usr/include/bits/sockaddr.h :
+/usr/include/asm/socket.h :
+/usr/include/asm/sockios.h :
+/usr/include/netinet/in.h :
+/usr/include/bits/in.h :
+/usr/include/bits/byteswap.h :
+/usr/include/arpa/inet.h :
+/usr/include/netdb.h :
+/usr/include/rpc/netdb.h :
+/usr/include/bits/netdb.h :
+/usr/local/include/libgift/tcpc.h :
+/usr/local/include/libgift/fdbuf.h :
+/usr/local/include/libgift/interface.h :
+/usr/local/include/libgift/conf.h :
+/usr/local/include/libgift/log.h :
+/usr/include/syslog.h :
+/usr/include/sys/syslog.h :
+/usr/local/include/libgift/proto/protocol.h :
+/usr/local/include/libgift/proto/transfer_api.h :
+/usr/local/include/libgift/proto/if_event_api.h :
+/usr/local/include/libgift/proto/share_hash.h :
+/usr/local/include/libgift/proto/protocol_ver.h :
+/usr/local/include/libgift/proto/share.h :
+/usr/local/include/libgift/file.h :
+/usr/include/dirent.h :
+/usr/include/bits/dirent.h :
+http.h :
+gt_guid.h :
+gt_conf.h :
+/usr/include/ctype.h :

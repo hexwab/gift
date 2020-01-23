@@ -1,0 +1,85 @@
+$Id: README,v 1.13 2004/02/06 02:49:09 hipnod Exp $
+
+Compilation & Installation
+--------------------------
+
+You must install giFT before installing this plugin.
+
+The configure script uses pkg-config to search for giFT. If you have
+installed giFT somewhere besides the default pkg-config lookup path, you
+need to change the PKG_CONFIG_PATH environment variable so configure can
+find libgift.pc.
+
+After installing, you should run the gift-setup script. If you want, you can
+setup the plugin manually by adding "Gnutella" to the /main/plugins line in
+~/.giFT/giftd.conf, like so:
+
+	[main]
+	plugins = OpenFT:Gnutella
+
+You may also use a fully qualified path to the plugin filename:
+
+	[main]
+	plugins = OpenFT:/usr/local/lib/giFT/libGnutella.la
+
+You can also specify the plugin on the command line:
+
+	$ giftd -d -p Gnutella -p OpenFT
+
+
+Bootstrapping
+-------------
+
+On initial startup, the plugin has to find some Gnutella nodes to connect to.
+No default nodes are hardcoded.  Instead, there is a list of websites called
+"GWebCaches", and a GWebCache is randomly selected and contacted to retrieve a
+list of currently active nodes.  If these nodes are busy, they can still
+bootstrap the plugin by informing it of more nodes to connect to, so this
+process continues until the plugin finds some available nodes.
+
+This process tends to be somewhat fragile, because a GWebCache is usually only
+contacted once for this purpose, so the GWebCache handling code in the plugin
+runs infrequently and tends to have bugs.  If you experience problems
+connecting, it would help to view the log file when reporting problems.
+
+If you're interested in running a GWebCache, see "More GWebCache Info" below
+for more information.
+
+
+Configuration
+-------------
+
+The configuration file is in $HOME/.giFT/Gnutella/Gnutella.conf, and is created
+if it doesn't exist.  The syntax of the config file is the same as other giFT
+files.
+
+gift-setup will set the default port to something random. You can change it by
+editing the plugin's config file.  If this port isn't reachable, you will
+receive less search results because you cannot download from firewalled users.
+You may have to do some other configuration (forward the port on your firewall,
+etc) to make the port reachable.
+
+
+
+More GWebCache info
+-------------------
+
+If you're interested in running a GWebCache, more information can be found at
+http://www.gnucleus.com/gwebcache/.  Note that while running one doesn't
+require a lot of bandwidth for each request, there are quite a lot of nodes
+making many requests to a dwindling number of GWebCaches (there used to be
+200+, not there are only about 60 left due to abusive nodes hammering them).
+
+It helps to put the cache on a separate domain (for example, gwc.foo.com) so
+that the name can be removed from the DNS if the load on it becomes too high.
+Note that this name probably shouldn't contain the word "cache" in it, because
+that may be treated specially by HTTP proxies.
+
+
+Contact
+-------
+
+Email:  hipnod@bellsouth.net  [Original author]
+
+IRC:    #giFT-gnutella on irc.freenode.net
+

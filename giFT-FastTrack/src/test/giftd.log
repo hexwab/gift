@@ -1,0 +1,111 @@
+[17:13:21] giftd 0.11.8.1 (Nov 30 2004 17:25:32) started
+[17:13:21] Plugin FastTrack (0.8.8) successfully loaded and initialized
+[17:13:21] FastTrack: fst_fasttrack.c:649(fst_giftcb_start): starting up
+[17:13:21] *** GIFT-WARNING: FastTrack: Local file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes" does not exist, copying default from "/usr/local/share/giFT/FastTrack/nodes"
+[17:13:21] FastTrack: fst_fasttrack.c:732(fst_giftcb_start): Loaded 2447 supernode addresses from nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:21] FastTrack: fst_fasttrack.c:746(fst_giftcb_start): Loaded 945 banned ip ranges from "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/banlist"
+[17:13:21] FastTrack: fst_fasttrack.c:766(fst_giftcb_start): Http server listening on port 41214
+[17:13:21] FastTrack: fst_session.c:128(fst_session_connect): connecting to 217.149.204.82:3128, load: 50%
+[17:13:21] FastTrack: fst_session.c:128(fst_session_connect): connecting to 217.43.187.222:3430, load: 50%
+[17:13:21] FastTrack: fst_fasttrack.c:226(fst_plugin_connect_next): discovery cycle started with 10 UDP pings
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Hooverphonic-Mad about you.wav
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer met-art_yy_sph_0102.jpg
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer met-art_yy_sph_0002.jpg
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer met-art_yy_sph_0023.jpg
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Banks, Iain - Culture 5 - Excession.doc
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Banks, Iain - A Song Of Stone.doc
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Banks, Iain - Look To Windward.rtf
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Banks, Iain - Canal Dreams.rtf
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Banks, Iain - The State of the Art.rtf
+[17:13:21] giFT: download_state.c:322(read_state): awaking state transfer Against a Dark Background.rtf
+[17:13:21] giFT: giftd.c:744(init_transfer): recovered 10 state transfers
+[17:13:21] *** GIFT-WARNING: updating index...
+[17:13:21] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 217.149.204.82:3128, local ip: 81.6.228.78
+[17:13:21] giFT: share_cache.c:855(share_write_index): entered
+[17:13:21] *** GIFT-WARNING: no sharing root found!!  share you bastard!
+[17:13:21] giFT: share_cache.c:562(share_build_index): entered
+[17:13:21] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:21] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 217.149.204.82:3128 (total sessions: 1)
+[17:13:21] giFT: share_cache.c:1141(share_read_index): entered
+[17:13:21] *** GIFT-WARNING: no sharing root found!!  share you bastard!
+[17:13:21] giFT: share_cache.c:562(share_build_index): entered
+[17:13:21] giFT: share_cache.c:1157(share_read_index): total shares: 0 (0.00MB)
+[17:13:22] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:22] FastTrack: fst_fasttrack.c:61(save_nodes): saved 2646 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:22] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 217.149.204.82:3128
+[17:13:22] FastTrack: fst_fasttrack.c:330(fst_plugin_session_callback): DISCONNECTED session to 217.149.204.82:3128 (total sessions: 0)
+[17:13:22] FastTrack: fst_session.c:128(fst_session_connect): connecting to 81.191.97.111:3700, load: 50%
+[17:13:22] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 81.191.97.111:3700, local ip: 81.6.228.78
+[17:13:22] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:22] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 81.191.97.111:3700 (total sessions: 1)
+[17:13:22] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:22] FastTrack: fst_fasttrack.c:61(save_nodes): saved 2802 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:22] FastTrack: fst_fasttrack.c:429(fst_plugin_session_callback): disconnecting from index node
+[17:13:22] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 81.191.97.111:3700
+[17:13:22] FastTrack: fst_fasttrack.c:330(fst_plugin_session_callback): DISCONNECTED session to 81.191.97.111:3700 (total sessions: 0)
+[17:13:22] FastTrack: fst_session.c:128(fst_session_connect): connecting to 69.132.156.171:2957, load: 50%
+[17:13:22] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 69.132.156.171:2957, local ip: 81.6.228.78
+[17:13:22] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:22] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 69.132.156.171:2957 (total sessions: 1)
+[17:13:23] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:23] FastTrack: fst_fasttrack.c:61(save_nodes): saved 2999 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:23] FastTrack: fst_fasttrack.c:429(fst_plugin_session_callback): disconnecting from index node
+[17:13:23] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 69.132.156.171:2957
+[17:13:23] FastTrack: fst_fasttrack.c:330(fst_plugin_session_callback): DISCONNECTED session to 69.132.156.171:2957 (total sessions: 0)
+[17:13:23] FastTrack: fst_session.c:128(fst_session_connect): connecting to 69.161.163.219:3253, load: 50%
+[17:13:23] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 69.161.163.219:3253, local ip: 81.6.228.78
+[17:13:23] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:23] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 69.161.163.219:3253 (total sessions: 1)
+[17:13:23] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:23] FastTrack: fst_fasttrack.c:61(save_nodes): saved 3177 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:23] FastTrack: fst_fasttrack.c:429(fst_plugin_session_callback): disconnecting from index node
+[17:13:23] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 69.161.163.219:3253
+[17:13:23] FastTrack: fst_fasttrack.c:330(fst_plugin_session_callback): DISCONNECTED session to 69.161.163.219:3253 (total sessions: 0)
+[17:13:23] FastTrack: fst_session.c:128(fst_session_connect): connecting to 199.97.91.99:1113, load: 50%
+[17:13:23] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 199.97.91.99:1113, local ip: 81.6.228.78
+[17:13:23] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:23] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 199.97.91.99:1113 (total sessions: 1)
+[17:13:24] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:24] FastTrack: fst_fasttrack.c:61(save_nodes): saved 3363 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:24] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 199.97.91.99:1113
+[17:13:24] FastTrack: fst_fasttrack.c:330(fst_plugin_session_callback): DISCONNECTED session to 199.97.91.99:1113 (total sessions: 0)
+[17:13:24] FastTrack: fst_session.c:128(fst_session_connect): connecting to 24.26.116.111:3967, load: 51%
+[17:13:24] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 24.26.116.111:3967
+[17:13:24] FastTrack: fst_session.c:128(fst_session_connect): connecting to 81.110.166.120:2682, load: 51%
+[17:13:26] reaped child process 27472
+[17:13:28] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 81.110.166.120:2682
+[17:13:28] FastTrack: fst_session.c:128(fst_session_connect): connecting to 81.96.24.103:3950, load: 49%
+[17:13:32] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 81.96.24.103:3950, local ip: 81.6.228.78
+[17:13:34] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:34] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 81.96.24.103:3950 (total sessions: 1)
+[17:13:36] FastTrack: fst_session.c:164(fst_session_disconnect): disconnected from 217.43.187.222:3430
+[17:13:36] FastTrack: fst_session.c:128(fst_session_connect): connecting to 217.170.12.129:1727, load: 49%
+[17:13:36] FastTrack: fst_fasttrack.c:303(fst_plugin_session_callback): CONNECTED to 217.170.12.129:1727, local ip: 81.6.228.78
+[17:13:36] FastTrack: fst_session.c:446(session_decrypt_packet): remote network name is "KaZaA"
+[17:13:36] FastTrack: fst_fasttrack.c:313(fst_plugin_session_callback): ESTABLISHED session to 217.170.12.129:1727 (total sessions: 2)
+[17:13:36] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:36] FastTrack: fst_fasttrack.c:495(fst_plugin_session_callback): received network name: "KaZaA", sending ours: "KaZaA"
+[17:13:36] FastTrack: fst_fasttrack.c:518(fst_plugin_session_callback): received external ip: 81.6.228.78
+[17:13:37] FastTrack: fst_fasttrack.c:417(fst_plugin_session_callback): added 200 received supernode IPs to nodes list
+[17:13:37] FastTrack: fst_fasttrack.c:61(save_nodes): saved 3432 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"
+[17:13:41] FastTrack: fst_fasttrack.c:495(fst_plugin_session_callback): received network name: "KaZaA", sending ours: "KaZaA"
+[17:13:41] FastTrack: fst_fasttrack.c:518(fst_plugin_session_callback): received external ip: 81.6.228.78
+[17:13:41] FastTrack: fst_fasttrack.c:534(fst_plugin_session_callback): registering shares with new supernode
+[17:13:41] FastTrack: fst_fasttrack.c:536(fst_plugin_session_callback): registering shares with new supernode failed
+[17:13:41] FastTrack: fst_fasttrack.c:470(fst_plugin_session_callback): received network stats: 2732958 users, 1070316797 files, 45282304 GB
+[17:13:41] FastTrack: fst_fasttrack.c:282(fst_plugin_discover_callback): discovery cycle complete: 10 pings, 6 pongs, 0 others
+[17:15:10] giFT: download.c:467(cancel_sources): *sigh*...notify jasta
+[17:15:10] giFT: download.c:427(handle_next_queue): Hooverphonic-Mad about you.wav
+[17:15:10] giFT: download.c:427(handle_next_queue): met-art_yy_sph_0102.jpg
+[17:15:10] giFT: download.c:427(handle_next_queue): met-art_yy_sph_0002.jpg
+[17:15:10] giFT: download.c:427(handle_next_queue): met-art_yy_sph_0023.jpg
+[17:15:10] giFT: download.c:467(cancel_sources): *sigh*...notify jasta
+[17:15:10] giFT: download.c:427(handle_next_queue): Banks, Iain - Culture 5 - Excession.doc
+[17:15:10] giFT: download.c:427(handle_next_queue): Banks, Iain - A Song Of Stone.doc
+[17:15:10] giFT: download.c:427(handle_next_queue): Banks, Iain - Look To Windward.rtf
+[17:15:10] giFT: download.c:427(handle_next_queue): Banks, Iain - Canal Dreams.rtf
+[17:15:10] giFT: download.c:427(handle_next_queue): Banks, Iain - The State of the Art.rtf
+[17:15:10] giFT: download.c:427(handle_next_queue): Against a Dark Background.rtf
+[17:15:10] FastTrack: fst_fasttrack.c:842(fst_giftcb_destroy): shutting down
+[17:15:10] FastTrack: fst_fasttrack.c:865(fst_giftcb_destroy): added current supernode 81.96.24.103:3950 back into node cache
+[17:15:10] FastTrack: fst_fasttrack.c:61(save_nodes): saved 3428 supernode addresses to nodes file "/home/HEx/gift/giFT-FastTrack/src/test/FastTrack/nodes"

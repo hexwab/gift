@@ -1,0 +1,3 @@
+version=2
+# Site/Directory                            Pattern                            Version  Script
+http://download.berlios.de/gift-fasttrack/  giFT-FastTrack-([\d\.]+)\.tar\.gz  debian   uupdate

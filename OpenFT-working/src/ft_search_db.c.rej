@@ -1,0 +1,22 @@
+***************
+*** 2415,2425 ****
+  		sdb = search_db_new (node);
+  		assert (sdb != NULL);
+- 		
+- 		assert (key.size <= sizeof (dbname));
+- 		gift_strncpy (dbname, key.data, key.size);
+  
+! 		if (!(hostdb = bm_open_db (dbfile, dbname)))
+  		{
+! 			FT->err (FT, "%s: failed to open '%s'", dbfile, dbname);
+  			continue;
+  		}
+--- 2414,2421 ----
+  		sdb = search_db_new (node);
+  		assert (sdb != NULL);
+  
+! 		if (!(hostdb = bm_open_db (dbname, key.data)))
+  		{
+! 			FT->err (FT, "%s: failed to open '%s'", dbname, (char *)key.data);
+  			continue;
+  		}

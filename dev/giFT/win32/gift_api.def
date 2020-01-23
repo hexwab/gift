@@ -1,0 +1,62 @@
+; $Id: gift_api.def,v 1.23 2002/10/17 09:10:16 rossta Exp $
+
+EXPORTS
+chunk_free              ; transfer.h
+chunk_new               ; transfer.h
+chunk_write             ; transfer.h
+download_remove_source	; download.h
+gift_exit               ; main.c
+gift_main               ; main.c
+hash_algo_register
+hash_algo_unregister
+hook_event		; hook.h
+hook_var_free		; hook.h
+hook_var_new		; hook.h
+hook_var_value		; hook.h
+if_message_new
+if_search_remove	; reply.h
+if_search_result	; reply.h
+if_stats_reply		; reply.h
+md5_bin			; md5.h
+md5_checksum            ; md5.h
+md5_digest
+md5_dup			; md5.h
+md5_string		; md5.h
+meta_foreach
+meta_lookup
+meta_set
+mime_type               ; mime.h
+sdb_unlink
+share_clear_index       ; sharing.h
+share_complete		; sharing.h
+share_find_file         ; sharing.h
+share_foreach           ; sharing.h
+share_free              ; sharing.h
+share_hash_get
+share_hash_set
+share_index             ; sharing.h
+share_index_sorted      ; sharing.h
+share_insert_data       ; sharing.h
+share_lookup_data       ; sharing.h
+share_new               ; sharing.h
+share_read_index        ; sharing.h
+share_ref        	; sharing.h
+share_remove_data       ; sharing.h
+share_remove_entry	; sharing.h
+share_unref		; sharing.h
+share_write_index       ; sharing.h
+source_free             ; transfer.h
+source_new              ; transfer.h
+source_status           ; transfer.h
+transfer_free           ; transfer.h
+transfer_new            ; transfer.h
+transfer_stop           ; transfer.h
+transfers_throttle      ; transfer.h
+transfers_throttle_tick ; transfer.h
+upload_availability     ; upload.h
+upload_auth		; upload.h
+upload_length           ; upload.h
+upload_new              ; upload.h
+upload_status		; upload.h
+upload_stop             ; upload.h
+upload_write            ; upload.h

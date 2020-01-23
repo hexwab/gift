@@ -1,0 +1,11 @@
+vc60.idb
+vc60.pdb
+Ares*.lib
+*.dll
+.deps
+.libs
+Makefile
+Makefile.in
+*.lo
+*.la
+

@@ -1,0 +1,29 @@
+int main(void) {
+	unsigned char foo[30], *e;
+	e=pack_integer(50, foo, foo+8);
+	printf("%p, %p, %02x %02x %02x %02x %02x\n", foo, e, e[0],e[1],e[2],e[3],e[4]);
+}
+
+
+unsigned char *
+pack_integer (unsigned long value, unsigned char *buf, unsigned char *end)
+{
+	unsigned long i=value;
+	unsigned char *ptr=buf, *foo;
+	while (i)
+	{
+		ptr++;
+		i>>=7;
+	}
+	if (ptr>end)
+		return NULL;
+	foo=ptr;
+
+	while (value)
+	{
+		*(--ptr)=value &0x7f;
+		if (value>127)
+			*ptr|=0x80;
+	}
+	return foo;
+}

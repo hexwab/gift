@@ -1,0 +1,81 @@
+# $Id: Makefile.msvc,v 1.1 2003/10/22 18:38:59 jasta Exp $
+
+
+!include ../Make.msvc
+
+INCLUDES = $(INCLUDES) -I. -Iproto
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS = $(LIBS) $(LIBGIFT_LIB) $(LIBGIFTPROTO_LIB) $(GIFT_LIB)
+TARGET = $(OPENFT_DLL)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+LIBS = $(LIBS) $(LIBGIFT_STATIC) $(LIBGIFTPROTO_STATIC) $(GIFT_LIB)
+TARGET = $(OPENFT_STATIC)
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+OBJECTS = \
+	ft_conf$(O) \
+	ft_conn$(O) \
+	ft_guid$(O) \
+	ft_http$(O) \
+	ft_http_client$(O) \
+	ft_http_server$(O) \
+	ft_netorg$(O) \
+	ft_node$(O) \
+	ft_node_cache$(O) \
+	ft_openft$(O) \
+	ft_packet$(O) \
+	ft_protocol$(O) \
+	ft_search$(O) \
+	ft_search_db$(O) \
+	ft_search_exec$(O) \
+	ft_search_obj$(O) \
+	ft_session$(O) \
+	ft_share$(O) \
+	ft_share_file$(O) \
+	ft_stats$(O) \
+	ft_stream$(O) \
+	ft_transfer$(O) \
+	ft_utils$(O) \
+	ft_version$(O) \
+	md5$(O) \
+	proto\ft_handshake$(O) \
+	proto\ft_push$(O) \
+	proto\ft_query$(O) \
+	proto\ft_sharing$(O) \
+	proto\ft_stats_digest$(O)
+	
+all : $(TARGET)
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(OPENFT_LIB)
+	@-del /Q /F $(OPENFT_DLL)
+	@-del /Q /F $(OPENFT_STATIC)
+	@-del /Q /F *.lib
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+	@-del /Q /F proto\*$(O)
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+$(TARGET) : $(OBJECTS)
+	$(LD) $(LDFLAGS) -dll -out:$(TARGET) $(LIBS) $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+$(TARGET) : $(OBJECTS)
+	$(LT) -nologo -out:$(TARGET) $(OBJECTS)
+
+!endif
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

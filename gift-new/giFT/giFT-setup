@@ -1,0 +1,88 @@
+#!/usr/bin/perl
+
+# PREFIX, Template Path, Config Path
+$prefix		= "/usr/local";
+my $tpath	= "$prefix/etc/giFT/";
+my $cpath	= "$ENV{HOME}/.giFT";
+
+# These are for testing purposes
+#	my $tpath	= "$ENV{HOME}/cvs/giFT/etc";
+#	my $cpath	= ".";
+
+my @configs = ("gift.conf", "OpenFT/OpenFT.conf", "ui/ui.conf");
+foreach my $config (@configs)
+{
+	open (TEMPLATE, "$tpath/$config") ||
+	die "No template for $config found\n";
+
+	create_path ("$cpath/$config");
+	open (OUTC, ">$cpath/$config") ||
+	die "Couldn't create $cpath/$config: $!\n";
+
+	my $line = 0;
+
+	while (<TEMPLATE>)
+	{
+		$line++;
+
+		if ( /^\[.*\]\n/ )
+		{
+			print OUTC;
+		}
+		elsif ( /^#(.*)/ )
+		{
+			print OUTC;
+			print STDOUT "$1\n";
+		}
+
+		elsif ( /^\s*(.*?)\s*=\s*(.*?)\n/)
+		{
+			ASK:
+
+			print STDOUT "[$2] ";
+			my $answer = <STDIN>;
+
+			if ($answer eq "\n")
+			{
+				if ($2 eq "")
+				{
+					goto ASK;
+				}
+				else
+				{
+					print OUTC "$1 = $2\n\n";
+				}
+			}
+			else
+			{
+				print OUTC "$1 = $answer\n\n";
+			}
+		}
+	}
+}
+
+sub create_path
+{
+	$_[0] =~ /(.+)\/.+/;
+
+	$" = "/";
+	my @dir = split(/\//,$1);
+
+	my @tree = ();
+
+	foreach my $dir (@dir)
+	{
+		push(@tree,$dir);
+		next unless @tree > 1;
+
+		if (opendir(CHECK,"@tree"))
+		{
+			closedir(CHECK);
+		}
+		else
+		{
+			if (!opendir(CHECK,"@tree")) { mkdir("@tree", 0755) or die "Couldn't mkdir @tree: $!\n"; }
+			else                         { closedir(CHECK); }
+		}
+	}
+}

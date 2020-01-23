@@ -1,0 +1,9 @@
+==7433== Memcheck, a memory error detector for x86-linux.
+==7433== Copyright (C) 2002-2003, and GNU GPL'd, by Julian Seward.
+==7433== Using valgrind-2.1.0, a program supervision framework for x86-linux.
+==7433== Copyright (C) 2000-2003, and GNU GPL'd, by Julian Seward.
+==7433== Estimated CPU clock rate is 1670 MHz
+==7433== For more details, rerun with: -v
+==7433== 
+==7433== 
+==7433== ---- Attach to GDB ? --- [Return/N/n/Y/y/C/c] ---- 

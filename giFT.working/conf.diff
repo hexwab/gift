@@ -1,0 +1,47 @@
+Allow SI suffixes for large integers; also allow hex and octal
+
+Index: lib/conf.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/lib/conf.c,v
+retrieving revision 1.32
+diff -u -r1.32 conf.c
+--- lib/conf.c	31 Oct 2003 13:14:22 -0000	1.32
++++ lib/conf.c	13 Jan 2004 18:49:32 -0000
+@@ -213,14 +213,33 @@
+ 
+ int config_get_int (Config *conf, char *keypath)
+ {
+-	char *value;
++	char *strvalue, *endptr;
++	long value;
+ 
+-	value = config_get_str (conf, keypath);
++	strvalue = config_get_str (conf, keypath);
+ 
+-	if (!value)
++	if (!strvalue)
+ 		return 0;
+ 
+-	return atoi (value);
++	value = strtol (strvalue, &endptr, 0);
++
++	switch (*endptr) {
++	case 'k':
++	case 'K':
++		value <<= 10;
++		break;
++	case 'm':
++	case 'M':
++		value <<= 20;
++		break;
++	case 'g':
++	case 'G':
++		value <<= 30;
++		break;
++		/* for stuff beyond this we'd need a long long */
++	}
++
++	return value;
+ }
+ 
+ /*****************************************************************************/

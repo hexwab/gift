@@ -1,0 +1,270 @@
+# $Id: Make.msvc,v 1.26 2003/06/24 04:46:20 rossta Exp $
+
+VERSION = 0.10
+
+O = .obj
+
+# release / debug
+!if defined(release) || defined(RELEASE)
+
+D=
+_D=
+DEBUG_OR_RELEASE=Release
+DEXT=
+CFLAGS  = $(CFLAGS)  -Ox -G6
+
+DEFS    = $(DEFS)    -DNDEBUG -U_DEBUG
+LDFLAGS = $(LDFLAGS) -release -FORCE:UNRESOLVED
+
+!else # !defined(release) && !defined(RELEASE)
+
+# must be lower case:
+D=d
+_D=_d
+DEBUG_OR_RELEASE=Debug
+DEXT=$(DEXT)
+CFLAGS  = $(CFLAGS)  -Od -Gm -GZ -W3 -Zi
+DEFS    = $(DEFS)    -D_DEBUG -UNDEBUG -D_WALL
+LDFLAGS = $(LDFLAGS) -debug
+
+!endif # defined(release) || defined(RELEASE)
+
+# static / dynamic linking
+!if defined(dynamic) || defined(DYNAMIC)
+
+!error DLL build not supported (yet).
+CFLAGS   = $(CFLAGS) -MD$(D) -DUSE_LTDL
+STATIC_OR_DYNAMIC=Dynamic
+_STATIC_OR_NULL=
+S_IF_STATIC=
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+CFLAGS   = $(CFLAGS) -MT$(D) -UUSE_LTDL
+STATIC_OR_DYNAMIC=Static
+_STATIC_OR_NULL=_Static
+S_IF_STATIC=s
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+#############
+# libdb support
+#############
+!if defined(db) || defined(DB) || defined(libdb) || defined(LIBDB)
+
+!if "$(LIBDB_ROOT)" == ""
+
+LIBDB_ROOT=d:\usr\src\db-4.1.25
+
+!endif # "$(LIBDB_ROOT)" == ""
+
+!if !exists($(LIBDB_ROOT))
+
+!error Directory $(LIBDB_ROOT) not found!
+
+!endif # !exists($(LIBDB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(LIBDB_ROOT)\BUILD_WIN32 -I$(LIBDB_ROOT)\INCLUDE -I$(LIBDB_ROOT)\INCLUDE_AUTO
+DEFS     = $(DEFS)     -DUSE_LIBDB -DHAVE_DB_H
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBDB_ROOT)\BUILD_WIN32\$(DEBUG_OR_RELEASE)$(_STATIC_OR_NULL)"
+LIBS     = $(LIBS)      libdb41$(S_IF_STATIC)$(D).lib
+
+!endif # defined(db) || defined(DB) || defined(libdb) || defined(LIBDB)
+
+#############
+# id3lib support
+#############
+!if defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB)
+
+!if "$(ID3LIB_ROOT)" == ""
+
+ID3LIB_ROOT=d:\usr\src\id3lib-3.8.3
+
+!endif # "$(ID3LIB_ROOT)" == ""
+
+!if !exists($(ID3LIB_ROOT))
+
+!error Directory $(ID3LIB_ROOT) not found!
+
+!endif # !exists($(ID3LIB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_ID3LIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\libprj"
+LIBS     = $(LIBS)     id3lib$(D).lib
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=3
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+DEFS     = $(DEFS)     -DID3LIB_LINKOPTION=1
+
+!endif # defined(dynamic) || defined(DYNAMIC)
+
+INCLUDES = $(INCLUDES) -I$(ID3LIB_ROOT)\zlib\include
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ID3LIB_ROOT)\zlib"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!else # !(defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB)
+
+# zlib support
+!if defined(zlib) || defined(ZLIB)
+
+!if "$(ZLIB_ROOT)" == ""
+
+ZLIB_ROOT=d:\usr\src\zlib
+
+!endif # "$(ZLIB_ROOT)" == ""
+
+!if !exists($(ZLIB_ROOT))
+
+!error Directory $(ZLIB_ROOT) not found!
+
+!endif # !exists($(ZLIB_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(ZLIB_ROOT)
+DEFS     = $(DEFS)     -DUSE_ZLIB
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(ZLIB_ROOT)"
+LIBS     = $(LIBS)     zlib$(D).lib
+
+!endif # defined(zlib) || defined(ZLIB)
+
+!endif # defined(id3) || defined(ID3) || defined(id3lib) || defined(ID3LIB)
+
+#############
+# libvorbis support
+#############
+!if defined(vorbis) || defined(VORBIS)
+
+!if "$(LIBVORBIS_ROOT)" == ""
+
+LIBVORBIS_ROOT=d:\usr\src\libvorbis-1.0
+
+!endif # "$(LIBVORBIS_ROOT)" == ""
+
+!if !exists($(LIBVORBIS_ROOT))
+
+!error Directory $(LIBVORBIS_ROOT) not found!
+
+!endif # !exists($(LIBVORBIS_ROOT))
+
+!if "$(LIBOGG_ROOT)" == ""
+
+LIBOGG_ROOT=d:\usr\src\ogg
+
+!endif # "$(LIBOGG_ROOT)" == ""
+
+!if !exists($(LIBOGG_ROOT))
+
+!error Directory $(LIBOGG_ROOT) not found!
+
+!endif # !exists($(LIBOGG_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(LIBVORBIS_ROOT)\include
+INCLUDES = $(INCLUDES) -I$(LIBOGG_ROOT)\include
+DEFS     = $(DEFS)     -DUSE_LIBVORBIS
+#LDFLAGS  = $(LDFLAGS)  /NODEFAULTLIB:"msvcrtd"
+#LDFLAGS  = $(LDFLAGS)  /NODEFAULTLIB:"LIBCMTD"
+
+#LIBVORBIS_ROOT=d:\usr\src\oggvorbis-win32sdk-1.0
+#LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\lib"
+ 
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\win32\Vorbis_$(STATIC_OR_DYNAMIC)_$(DEBUG_OR_RELEASE)"
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\win32\VorbisEnc_$(STATIC_OR_DYNAMIC)_$(DEBUG_OR_RELEASE)"
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBVORBIS_ROOT)\win32\VorbisFile_$(STATIC_OR_DYNAMIC)_$(DEBUG_OR_RELEASE)"
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(LIBOGG_ROOT)\win32\$(STATIC_OR_DYNAMIC)_$(DEBUG_OR_RELEASE)"
+
+LIBS     = $(LIBS)     vorbis$(_STATIC_OR_NULL)$(_D).lib vorbisfile$(_STATIC_OR_NULL)$(_D).lib ogg$(_STATIC_OR_NULL)$(_D).lib
+
+!endif # defined(vorbis) || defined(VORBIS)
+
+#############
+# ImageMagick support
+#############
+!if defined(imagemagick) || defined(IMAGEMAGICK)
+
+!if "$(IMAGEMAGIC_ROOT)" == ""
+
+IMAGEMAGIC_ROOT=D:\usr\src\ImageMagick-5.5.7
+
+!endif # "$(IMAGEMAGIC_ROOT)" == ""
+
+!if !exists($(IMAGEMAGIC_ROOT))
+
+!error Directory $(IMAGEMAGIC_ROOT) not found!
+
+!endif # !exists($(IMAGEMAGIC_ROOT))
+
+INCLUDES = $(INCLUDES) -I$(IMAGEMAGIC_ROOT)
+DEFS     = $(DEFS)     -DUSE_IMAGEMAGICK
+LDFLAGS  = $(LDFLAGS)  -libpath:"$(IMAGEMAGIC_ROOT)/VisualMagick\lib"
+# I don't know which, of all of these, are needed, so I'm including them all
+LIBS     = $(LIBS)     CORE_DB_bzlib_.lib CORE_DB_coders_.lib CORE_DB_fpx_.lib CORE_DB_jbig_.lib CORE_DB_jp2_.lib CORE_DB_jpeg_.lib CORE_DB_lcms_.lib CORE_DB_libxml_.lib CORE_DB_Magick++_.lib CORE_DB_magick_.lib CORE_DB_png_.lib CORE_DB_tiff_.lib CORE_DB_ttf_.lib CORE_DB_wmf_.lib CORE_DB_xlib_.lib CORE_DB_zlib_.lib X11.lib Xext.lib
+LIBS     = $(LIBS)     gdi32.lib ole32.lib 
+# These don't appear to be needed
+#LIBS     = $(LIBS)     kernel32.lib oleaut32.lib winmm.lib dxguid.lib
+
+!endif # defined(ImageMagick) || defined(IMAGEMAGICK)
+
+GIFT_LIB         	= giFT$(DEXT).lib
+GIFT_DLL         	= giFT$(DEXT).dll
+GIFT_EXE         	= giFT$(DEXT).exe
+LIBGIFT_LIB      	= libgiFT$(DEXT).lib
+LIBGIFT_DLL      	= libgiFT$(DEXT).dll
+LIBGIFT_STATIC   	= libgiFTstatic$(DEXT).lib
+LIBGIFTPROTO_LIB	= libgiFTproto$(DEXT).lib
+LIBGIFTPROTO_DLL	= libgiFTproto$(DEXT).dll
+LIBGIFTPROTO_STATIC	= libgiFTprotostatic$(DEXT).lib
+OPENFT_LIB		= OpenFT$(DEXT).lib
+OPENFT_DLL		= OpenFT$(DEXT).dll
+OPENFT_STATIC		= OpenFTstatic$(DEXT).lib
+LIBPROTO_LIB		= libproto$(DEXT).lib
+LIBPROTO_DLL		= libproto$(DEXT).dll
+LIBPROTO_STATIC		= libprotostatic$(DEXT).lib
+GNUTELLA_LIB		= Gnutella$(DEXT).lib
+GNUTELLA_DLL		= Gnutella$(DEXT).dll
+GNUTELLA_STATIC		= Gnutellastatic$(DEXT).lib
+FASTTRACK_LIB		= FastTrack$(DEXT).lib
+FASTTRACK_DLL		= FastTrack$(DEXT).dll
+FASTTRACK_STATIC	= FastTrackstatic$(DEXT).lib
+
+CFLAGS   = $(CFLAGS) -nologo
+DEFS     = $(DEFS) -DHAVE_CONFIG_H -DWIN32 -DNO_STRICT -DPLUGIN_OPENFT -DPLUGIN_GNUTELLA
+INCLUDES = -I../win32 -I../src -I../lib -I../OpenFT -I../Gnutella -I../plugin $(INCLUDES)
+LDFLAGS  = $(LDFLAGS) -nologo -version:$(VERSION) -libpath:"../src" -libpath:"../lib" -libpath:"../win32"
+
+LIBS     = $(LIBS) binmode.obj oldnames.lib win32.lib advapi32.lib user32.lib ws2_32.lib
+
+# advapi32.lib: RegOpenKey
+# user32.lib:   MessageBox
+
+#############
+# FastTrack plugin
+#############
+
+# ugh
+!if exists(FastTrack) || exists(../FastTrack) || exists(../../FastTrack) || exists(../../../FastTrack)
+
+DEFS     = $(DEFS) -DPLUGIN_FASTTRACK
+INCLUDES = $(INCLUDES) -I../FastTrack/src -I../FastTrack/src/crypt
+
+!endif # exists(FastTrack)
+
+!if defined(console) || defined(CONSOLE)
+
+DEFS     = $(DEFS) -D_CONSOLE -U_WINDOWS
+LDFLAGS  = $(LDFLAGS) /subsystem:console
+
+!else # defined(console) || defined(CONSOLE)
+
+DEFS     = $(DEFS) -D_WINDOWS -U_CONSOLE
+LDFLAGS  = $(LDFLAGS) /subsystem:windows
+
+!endif # defined(console) || defined(CONSOLE)
+
+CC = cl
+LD = link
+LT = lib

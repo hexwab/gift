@@ -1,0 +1,37 @@
+Index: ft_search.c
+===================================================================
+RCS file: /cvsroot/gift/OpenFT/src/ft_search.c,v
+retrieving revision 1.58
+diff -u -r1.58 ft_search.c
+--- ft_search.c	22 May 2004 07:22:19 -0000	1.58
++++ ft_search.c	27 Jun 2004 15:58:21 -0000
+@@ -289,6 +289,9 @@
+ 	if (FT_SEARCH_METHOD(type) == FT_SEARCH_MD5)
+ 		ttl++;
+ 
++	if (openft->ninfo.klass & FT_NODE_SEARCH)
++		ttl--;
++
+ 	return ttl;
+ }
+ 
+@@ -416,14 +419,16 @@
+ {
+ 	int n;
+ 
+-	n = ft_netorg_foreach (FT_NODE_PARENT, FT_NODE_CONNECTED, FT_CFG_SEARCH_PARENTS,
+-	                       FT_NETORG_FOREACH(send_search), search);
+-
+ 	if (openft->ninfo.klass & FT_NODE_SEARCH)
+ 	{
+ 		n += ft_netorg_foreach (FT_NODE_SEARCH, FT_NODE_CONNECTED, FT_CFG_SEARCH_MAXPEERS,
+ 		                        FT_NETORG_FOREACH(send_search), search);
+ 	}
++	else
++	{
++		n = ft_netorg_foreach (FT_NODE_PARENT, FT_NODE_CONNECTED, FT_CFG_SEARCH_PARENTS,
++				       FT_NETORG_FOREACH(send_search), search);
++	}
+ 
+ 	FT->DBGFN (FT, "%s: searched %i nodes (ttl=%u)",
+ 	           ft_guid_fmt (search->guid), n,

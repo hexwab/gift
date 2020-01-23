@@ -1,0 +1,41 @@
+# $Id: Makefile.msvc,v 1.13 2002/04/30 13:56:50 rossta Exp $
+
+!include ../Make.msvc
+
+LIBS       = $(LIBS) $(GIFT_LIB) $(LIBGIFT_LIB)
+OPENFT_DEF = "../win32/openft_api.def"
+TARGET     = $(OPENFT_DLL)
+
+OBJECTS = \
+	daemon$(O) \
+	html$(O) \
+	http$(O) \
+	netorg$(O) \
+	node$(O) \
+	openft$(O) \
+	packet$(O) \
+	protocol$(O) \
+	search$(O) \
+	share$(O) \
+	share_db$(O) \
+	share_comp$(O) \
+	utils$(O)
+
+all : $(TARGET)
+
+install : $(TARGET)
+	@copy /y $(TARGET) ..\win32-dist\OpenFT.dll
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.exp
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+
+$(TARGET) : $(OBJECTS) $(OPENFT_DEF)
+	@$(LD) $(LDFLAGS) -dll -out:$(TARGET) -def:$(OPENFT_DEF) $(LIBS) \
+	  $(OBJECTS)
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

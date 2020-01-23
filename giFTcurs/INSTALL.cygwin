@@ -1,0 +1,19 @@
+$Id: INSTALL.cygwin,v 1.2 2003/06/23 03:58:34 rossta Exp $
+
+To install giFTcurs for cygwin, you will need to download and install glib.
+
+Browse 
+
+http://web.sfc.keio.ac.jp/~s01397ms/cygwin/
+
+to discover the latest version of glib.
+
+For 2.2.1-2, execute the following:
+
+wget -O - http://web.sfc.keio.ac.jp/~s01397ms/cygwin/glib-2.2.1-2.tar.gz |\
+tar -C / -xvzf -
+
+Then follow the instructions in the README file.
+
+This file intentionally contains CRs as it's readers will primarily be Windows
+users.

@@ -1,0 +1,16 @@
+AM_CFLAGS = $(GIFT_CFLAGS)
+
+INCLUDES = -I$(top_srcdir)/lib -I$(top_srcdir)/src
+
+plugin_LTLIBRARIES = libeDonkey.la
+
+libeDonkey_la_SOURCES = \
+	ed_main.c        ed_main.h   \
+	ed_daemon.c      ed_daemon.h
+
+libeDonkey_la_LIBADD = \
+	$(top_builddir)/lib/libgiFT.la \
+	$(LIBDB_LIBS)
+
+# _BIG_ hack
+# libOpenFT_la_LDFLAGS = -module -avoid-version -L$(top_builddir)/lib/.libs

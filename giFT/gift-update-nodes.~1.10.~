@@ -1,0 +1,212 @@
+#!/usr/bin/perl -w
+#
+# $Id: gift-update-nodes,v 1.10 2007/05/16 21:25:58 hexwab Exp $
+#
+# Copyright (C) 2006 giFT project (gift.sourceforge.net)
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 2, or (at your option) any
+# later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+
+use strict;
+use Data::Dumper;
+
+our $VERSION='0.3';
+
+my $warn=1;
+
+for ($ARGV[0]) {
+    last unless $_ && /^-/;
+    /^--?v/i and do {
+	print "gift-update-nodes version $VERSION\n";
+	exit 0;
+    };
+
+    # this is primarily for use by gift-setup
+    /^--no-warning$/ and do {
+	$warn=0;
+	shift, next;
+    };
+
+    print "Usage: $0 [plugins...]\n";
+    exit 0;
+}
+
+my $method;
+my $errors;
+$|++;
+
+if (!$method) {
+    eval "use LWP::Simple 'get'";
+    $method='LWP' if (!$@);
+}
+
+if (!$method) {
+    system("wget --version >/dev/null 2>&1")==0 and $method='wget';
+}
+
+if (!$method) {
+    my $ret=system("curl --version >/dev/null 2>&1");
+    ($ret==0 || $ret==2<<8) and $method='curl'; # WTF? --version returns non-zero status?
+}
+
+if (!$method) {
+    die "couldn't find a downloader: none of LWP, wget or curl seems to work";
+}
+
+my $manual=1;
+my @plugins;
+
+if (@ARGV and $ARGV[0]) { # WTF?
+    @plugins=@ARGV;
+    $manual=0;
+} else {
+    open(FOO, "giftd -V|") or die "failed to get plugins list from giFT";
+    my $gotavail=0;
+    while (<FOO>) {
+	next unless /Available plugins:/..1;
+	$gotavail=1;
+	next unless /^\t(\S+) /;
+	push @plugins, $1;
+    }
+    close FOO;
+    die "failed to get plugins list from giFT" if !$gotavail;
+    die "no plugins found" if !@plugins;
+}
+
+if ($manual) {
+    # apparently some people don't have this, despite it being part of perl!
+    eval "use IO::Socket::INET";
+    if (!$@) {
+	my $sock = IO::Socket::INET->new('127.0.0.1:1213');
+	if ($sock) {
+	    print <<EOF;
+	    
+WARNING: giFT appears to be running.  The daemon should be stopped before
+updating nodes.
+
+EOF
+	    my $yesno;
+	    do {
+		print "Continue anyway? [yN] ";
+	    } while (($yesno = <STDIN>) !~ m/^[yn]?$/i);
+	    exit 0 unless ($yesno =~ m/y/i);
+	}
+    }
+}
+
+my $list;#=`cat ~/nodes.cgi`;
+my $url="http://update.kceasy.com/cgi-bin/nodes.cgi?app=gift-update-nodes&version=$VERSION";
+
+print STDERR "Fetching nodes lists using $method... ";
+if ($list=geturl($url)) {
+    print STDERR "done.\n";
+} else {
+    print STDERR "failed.\nAborting.\n";
+    exit 1;
+}
+
+
+my %files;
+my $plugin;
+for (split/\n/,$list) {
+    chomp;
+    s/\r$//; # just in case
+    next if /^#/ or /^$/;
+    $plugin=$1, next if (/^\[(.*)\]$/);
+    die "parse error reading nodes list" unless /^\d+\s*=\s*(.*)/ and $plugin;
+    my $file;
+    @{$file}{qw[desc type unk1 filename url unk2]}=split/\|/,$1;
+    push @{$files{$plugin}}, $file;
+}
+
+print <<EOF if $manual && $warn;
+
+WARNING: Only update plugins which do not connect currently!  Updating
+working plugins could easily make things worse.
+
+EOF
+
+#print Dumper \%files;
+
+for my $plugin (@plugins) {
+    unless (-d "$ENV{HOME}/.giFT/$plugin/") {
+	print STDERR "Plugin \`$plugin\' not configured (rerun gift-setup?)\n";
+	$errors++;
+    }
+
+    if (!$files{$plugin}) {
+	print STDERR "No nodes for plugin \`$plugin\', skipping...\n";
+	next;
+    }
+
+    if ($manual) {
+	my $yesno;
+	do {
+	    print "Update plugin \`$plugin\'? [yN] ";
+	} while (($yesno = <STDIN>) !~ m/^[yn]?$/i);
+	next unless ($yesno =~ m/y/i);
+    }
+
+    for my $file (@{$files{$plugin}}) {
+	print STDERR "Fetching $file->{desc} from $file->{url}... ";
+	my $contents=geturl($file->{url});
+	unless (defined $contents) {
+	    print STDERR "failed.\n";
+	    $errors++;
+	    next;
+	}
+	print STDERR "done.\n";
+
+	# a little paranoia never hurt anybody...
+	die if $file->{filename}!~/^[[:alnum:].]+$/;
+
+	my $filename="$ENV{HOME}/.giFT/$plugin/$file->{filename}";
+	my $realfn=">$filename";
+	$realfn = "|gunzip $realfn" if $contents=~/^\x1f\x8b/;
+
+	if (open FOO, $realfn and
+	    print FOO $contents and
+	    close FOO) {
+	    print STDERR "Updated file $filename\n";
+	} else {
+	    print STDERR "Failed to write to $filename: $!\n";
+	    $errors++;
+	}
+    }
+}
+
+exit !!$errors;
+
+sub geturl {
+    &{{
+	LWP=>\&get_lwp,
+	wget=>\&get_wget,
+	curl=>\&get_curl,
+    }->{$method}};
+}
+
+sub get_lwp {
+    return get($_[0]);
+}
+
+sub get_wget {
+    open (FOO, '-|', 'wget','--quiet','-O','-',$_[0]) or die $!;
+    my $out;
+    { local $/=undef; $out=<FOO>; }
+    close(FOO)?$out:undef;
+}
+
+sub get_curl {
+    open (FOO, '-|', 'curl','-s','-f',$_[0]) or die $!;
+    my $out;
+    { local $/=undef; $out=<FOO>; }
+    close(FOO)?$out:undef;
+}

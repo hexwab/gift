@@ -1,0 +1,16 @@
+Source: gift-fasttrack
+Section: net
+Priority: optional
+Maintainer: Göran Weinholt <weinholt@dtek.chalmers.se>
+Build-Depends: debhelper (>> 4.0.0)
+Standards-Version: 3.5.8
+
+Package: gift-fasttrack
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: giFT plugin for the peer to peer network FastTrack
+ FastTrack is a peer to peer network used by programs such as Kazaa, and at
+ any given time it contains at least 5.8PB shared by about 400,000 users.
+ .
+ There are currently no packages of giFT, so this package is missing that
+ dependency. You will need to install giFT by hand.

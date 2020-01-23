@@ -1,0 +1,12 @@
+# -*- makefile -*-
+# $Id: Makefile.msvc,v 1.4 2002/05/03 21:35:30 rossta Exp $
+
+install:
+	@-md ..\win32-dist\data
+	@-md ..\win32-dist\data\OpenFT
+	@copy /y mime.types ..\win32-dist\data
+	@copy /y OpenFT\nodes ..\win32-dist\data\OpenFT
+	@copy /y OpenFT\*.css ..\win32-dist\data\OpenFT
+	@copy /y OpenFT\*.gif ..\win32-dist\data\OpenFT
+	@copy /y OpenFT\*.jpg ..\win32-dist\data\OpenFT
+	@copy /y OpenFT\*.txt ..\win32-dist\data\OpenFT

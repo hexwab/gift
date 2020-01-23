@@ -1,0 +1,115 @@
+#include "enum.h"
+#include <stdlib.h>		/* for NULL */
+#include <stdio.h>
+#include <string.h>
+
+const unsigned char *enum_mime[] =
+{
+	"application/octet-stream",
+	"audio/mpeg",
+	"video/mpeg",
+	"image/jpeg",
+	"application/x-msvideo",
+};
+#define mime_size 5
+
+
+const unsigned char *enum_genre[] =
+{
+	"Unknown",
+	"Audio",
+	"Video",
+	"Image",
+	"Document",
+	"Other",
+};
+#define genre_size 5
+
+typedef struct
+  {
+	  const int size;
+	  const unsigned char **list;
+  }
+Enum_list;
+
+Enum_list tag_enums[] =
+{
+	{0, NULL},		/* filename (unused) */
+	{0, NULL},		/* filesize */
+	{0, NULL},		/* md5 */
+	{genre_size, enum_genre},	/* genre */
+	{0, NULL},		/* bitrate */
+	{0, NULL},		/* duration */
+	{0, NULL},		/* Xres */
+	{0, NULL},		/* Yres */
+	{0, NULL},		/* title */
+	{0, NULL},		/* artist */
+	{0, NULL},		/* album */
+	{0, NULL},		/* comment */
+	{0, NULL},		/* year */
+	{0, NULL},		/* track number */
+	{mime_size, enum_mime},	/* MIME type */
+};
+
+#define listsize(l) (sizeof(l)/sizeof(l[0]))
+
+#define TAG_ENUMS_SIZE listsize(tag_enums)
+
+
+unsigned char *
+decode_enum (Metadata * md)
+{
+	unsigned char *string = NULL;
+	Enum_list *el;
+	unsigned int type;
+	if ((md->type & META_MASK) != META_ENUM)
+	  {
+		  fprintf (stderr, "decode_enum called with non-enum tag 0x%x\n", md->type);
+		  return NULL;
+	  }
+	type = (md->type >> META_SHIFT);
+	if (type <= TAG_ENUMS_SIZE && (el = tag_enums + type))
+	  {
+
+		  if (md->value.enum_val < el->size)
+			  /* have to strdup as non-const strings are used elsewhere :( */
+			  string = strdup (el->list[md->value.enum_val]);
+		  else
+			  fprintf (stderr, "value %ul out of range (max %ul)\n", md->value.enum_val, el->size);
+
+	  }
+	return string;
+}
+
+Metadata *
+encode_enum (Metadata * md)
+{
+	Enum_list *el;
+	unsigned int type;
+	if (!md)
+		return NULL;
+	if ((md->type & META_MASK) != META_STRING)
+		return md;
+
+	type = (md->type >> META_SHIFT);
+	if (type <= TAG_ENUMS_SIZE && (el = tag_enums + type))
+	  {
+		  const unsigned char **ptr = el->list;
+		  int count = 0;
+		  while (count < el->size)
+		    {
+			    if (!strcmp (*ptr, md->value.str_val))
+				    break;
+			    ptr++;
+			    count++;
+		    }
+		  if (count != el->size)
+		    {
+			    free (md->value.str_val);
+			    md->type = (md->type & ~META_MASK) | META_ENUM;
+			    md->value.enum_val = count;
+			    fprintf (stderr, "is an enum! type %d val %d\n", md->type, count);
+		    }
+	  }
+	return md;
+}

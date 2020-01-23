@@ -1,0 +1,6 @@
+; $Id: openft_api.def,v 1.5 2002/04/06 00:20:01 rossta Exp $
+
+EXPORTS
+OpenFT_init
+;Entry point when _DEBUG is set:
+OpenFTd_init=OpenFT_init

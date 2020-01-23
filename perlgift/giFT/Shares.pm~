@@ -1,0 +1,110 @@
+cpackage giFT::Shares;
+
+my %shares;
+
+sub new {
+    my (undef,$daemon,$lazy,$cb)=@_;
+    return $shares{$daemon} if $shares{$daemon}; # singleton
+
+    my $self={
+	daemon=>$daemon,
+	lazy=>$lazy,
+	hidden=>undef,
+    };
+    my $cb=sub {
+	my (undef,$m)=%{(shift)};
+	if ($m->{action}) {
+	    $self->{hidden}=($m->{action} eq 'hide');
+	}
+	    
+    };
+
+    $self->{daemon}->set_handler('SHARE',$cb);
+
+	
+
+__END__
+=head1 NAME
+
+giFT::Shares - manipulate files shared on giFT
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=over 4
+
+=item B<$shares=new giFT::Shares($daemon,$lazy,$callback)>
+
+Creates a new shares object, and, if lazy is not set, requests a list
+of shares from giFT.
+
+Because this is expensive (especially with a remote giFT daemon), the
+shares are cached where possible.  In particular, creating multiple
+shares objects connected to the same daemon will not retrieve the
+shares list twice.
+
+=head1 METHODS
+
+=item B<shares()>
+
+Returns the list of shares, or in scalar context, returns the number
+of shares.
+
+Returns undef if the shares list has yet to be retrieved, or if giFT
+has yet to finish the initial synchronization.
+
+=item B<find_by_hash()>
+
+Returns the share(s) with the given hash.
+
+Returns undef if the shares list has yet to be retrieved.
+
+=item B<sync()>
+
+Requests that giFT synchronize the shares list.
+
+=item B<sync_status()>
+
+Returns giFT's sync status value if giFT is currently synchronizing
+shares, undef otherwise.
+
+(Note that this is unrelated to whether files are currently shared or
+not.)
+
+=item B<sync_progress()>
+
+Returns the progress of giFT's synchronization, as a percentage, or
+undef if progress is unavailable.
+
+=item B<hide($hide)>
+
+Sets whether shares are hidden or not (boolean).
+
+=item B<hidden_status()>
+
+Returns true if shares are hidden, false otherwise.
+
+=item B<
+
+=back
+
+=head1 NOTES
+
+This is implemented I<ickily>.
+
+=head1 SEE ALSO
+
+L<giFT::Daemon>, L<giFT::Search>, L<giFT::Interface>, L<giFT(1)>.
+
+=head1 AUTHOR
+
+Tom Hargreaves E<lt>HEx@freezone.co.ukE<gt>
+
+=head1 LICENSE
+
+Copyright 2003 by Tom Hargreaves.
+
+This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself. 
+
+=cut

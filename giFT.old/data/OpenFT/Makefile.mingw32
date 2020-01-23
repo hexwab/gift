@@ -1,0 +1,11 @@
+# -*- makefile -*-
+
+.PHONY: all install clean
+
+all:
+
+install:
+	copy /y *.css ..\..\win32-dist\data\OpenFT
+	copy /y *.jpg ..\..\win32-dist\data\OpenFT
+
+clean:

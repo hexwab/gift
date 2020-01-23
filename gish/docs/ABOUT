@@ -1,0 +1,47 @@
+:: Gift ::
+
+The meat of all of these projects is a dainty little Perl module by the 
+name of Gift. It handles all of the silly low level stuff you'd normally 
+have to deal with when making an interface to giFT. Yes, I realize the 
+casing is incompatible with the name of the software it is meant to use 
+- you can thank Jasta for that ;)
+
+
+:: gish ::
+
+A streamlined, sexy command line interface to the giFT daemon, of course 
+making use of Gift.pm - this magnificent piece of work is the brainchild 
+of a confused and bewildered Jasta. It has gone through many 
+incantations before reaching it's current fully evolved state. More 
+information about where the project is headed, and a few ideas 
+currently on the drawing board can be found in gish-examples.txt
+
+
+:: gish-uri ::
+
+A URI parsing utility built around the gish command line interface. 
+Written by jasta with code stolen from weinholt's uri2gift.
+
+
+:: examples/usegift.pl ::
+
+A small, simple, well documented example of how to use the Gift library 
+for several giFT operations. Not all functions are used in this program, 
+nor is it really guaranteed to work. It is meant to be a proof of 
+concept of how the Gift module can accomplish things with minimal 
+effort.
+
+
+:: examples/uri2gift ::
+
+A simple URI parsing program originally written by weinholt. I rebuilt 
+it to use Gift.pm and as a result, the code is much more lean, and in 
+general more functional. Should work at the least with sig2dat and 
+magnet URIs.
+
+
+:: examples/giftexile :::
+
+The gimp legged, foaming at the mouth bastard step-brother of gish - 
+if you find any valid use for this program, please do tell! Eventually 
+hopefully will be a light weight, gnut style interface to giFT.

@@ -1,0 +1,46 @@
+Index: src/if_share.c
+===================================================================
+RCS file: /cvsroot/gift/giFT/src/if_share.c,v
+retrieving revision 1.11
+diff -u -r1.11 if_share.c
+--- src/if_share.c	30 May 2003 21:13:45 -0000	1.11
++++ src/if_share.c	9 Jul 2003 18:55:18 -0000
+@@ -62,6 +62,17 @@
+ 	                     NULL,                       NULL);
+ }
+ 
++static void put_hash (ds_data_t *key, ds_data_t *value, Interface *cmd)
++{
++	char *hash = hash_dsp ((Hash *)value->data);
++
++	if (hash)
++	{
++		interface_put (cmd, "hash", hash);
++		free (hash);
++	}
++}
++
+ void if_share_file (IFEvent *event, FileShare *file)
+ {
+ 	Interface *cmd;
+@@ -78,7 +89,6 @@
+ 	if (file)
+ 	{
+ 		char *path;
+-		char *hash;
+ 
+ 		if ((path = file_host_path (SHARE_DATA(file)->path)))
+ 		{
+@@ -89,11 +99,7 @@
+ 		INTERFACE_PUTI (cmd, "size", file->size);
+ 		interface_put  (cmd, "mime", file->mime);
+ 
+-		if ((hash = share_dsp_hash (file, NULL)))
+-		{
+-			interface_put (cmd, "hash", hash);
+-			free (hash);
+-		}
++		share_foreach_hash (file, DS_FOREACH(put_hash), cmd);
+ 
+ 		append_meta_data (cmd, file);
+ 	}

@@ -1,0 +1,174 @@
+ $Id: ChangeLog,v 1.33 2006/08/25 17:57:39 mkern Exp $
+
+2006-08-25  Markus Kern <mkern@users.berlios.de>
+
+	* Limit maximum concurrent supernode connection attempts. (This has no
+	  new effects under the default config since we never reach a significant
+	  number of TCP connections because of the UDP discovery we use instead).
+
+2006-08-17  Markus Kern <mkern@users.berlios.de>
+
+	* Cleaned up shares submission. Still needs work and testing though.
+
+2006-01-29  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed crash when giFT cannot write downloaded data to disk.
+
+2005-07-09  Markus Kern <mkern@users.berlios.de>
+
+	* Don't add reserved ips to cache and remove them on connect when they
+	  are there.
+
+2004-12-28  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed crash on firewalled source abortion.
+
+2004-12-19  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed unchecked FST_PLUGIN->session access in fst_download.c
+	* Fixed url decoder memmove overrun.
+
+2004-11-27  Markus Kern <mkern@users.berlios.de>
+
+	* Added windows installer.
+
+2004-11-11  Markus Kern <mkern@users.berlios.de>
+
+	* Finalized multi-supernode connection code.
+	* Fixed NULL pointer crash on some corrupt search results.
+
+2004-09-03  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed abuse of gethostbyname in HTTP client.
+
+2004-06-19  Markus Kern <mkern@users.berlios.de>
+	
+	* Fixed remote DoS on HTTP server (not exploitable).
+	* Fixed remote DoS on HTTP client (not exploitable).
+
+2004-06-16  HEx <hex@users.berlios.de>
+
+	* Use default nodes file if cache runs out of nodes.
+
+2004-03-20  Markus Kern <mkern@users.berlios.de>
+
+	* Added auto_search_more config option.
+	* Tweaked supernode discovery.
+	* Fixed shares upload limiting.
+
+2004-03-11  Markus Kern <mkern@users.berlios.de>
+
+	* Periodically ping supernode and disconnect after timeout.
+
+2004-03-09  Markus Kern <mkern@users.berlios.de>
+
+	* New url format.
+	* Remove firewalled sources if our supernode changed.
+
+2004-03-08  Markus Kern <mkern@users.berlios.de>
+
+	* More UDP tweaks
+	* Reply to protocol version notify.
+
+2004-03-07  Markus Kern <mkern@users.berlios.de>
+
+	* Added new kzhash. Calculated for shares and used for verification of
+	  downloads if provided by the front end.
+
+2004-03-03  Markus Kern <mkern@users.berlios.de>
+
+	* Calculate availability based on reported bandwidth.
+	* Let gift-setup handle the config file.
+	* Check for invalid whitespaces in usernames.
+
+2004-03-02  Markus Kern <mkern@users.berlios.de>
+
+	* Don't sort out index nodes when saving node list.
+	* Limit number of shared files so supernodes don't reject us.
+
+2004-02-29  Markus Kern <mkern@users.berlios.de>
+
+	* Rewrote UDP supernode discovery to work in parallel with TCP
+
+2004-01-16  Markus Kern <mkern@users.berlios.de>
+
+	* Added UDP supernode discovery
+
+2003-11-27  Markus Kern <mkern@users.berlios.de>
+
+	* Added sharing of files
+	* Improved and activated Participation Level code (thanks Ashton)
+	* Fixed memory leaks reported by Luna
+
+2003-09-18  Markus Kern <mkern@users.berlios.de>
+
+	* Added downloading from firewalled hosts
+	* Rewrote search reply parsing and added user name decompression
+
+2003-09-17  Markus Kern <mkern@users.berlios.de>
+
+	* Added HTTP server. Doesn't do anything yet.
+
+2003-09-12  Markus Kern <mkern@users.berlios.de>
+
+	* Added filtering of bogus search results based on banlist
+
+2003-09-11  Markus Kern <mkern@users.berlios.de>
+
+	* Changed hash encoding from hex to base64
+	* Changed url format. Old format still supported for now
+
+2003-09-10  Markus Kern <mkern@users.berlios.de>
+
+	* Rewrote entire download system
+	* Cleaned up stuff all over the place
+
+2003-07-14  Markus Kern <mkern@users.berlios.de>
+
+	* Lots of bug fixes/clean ups since last ChangeLog entry
+	* Releasing 0.8.2 for compatibility with giFT release 0.11.1
+
+2003-06-29  Chris Zubrzycki  <beren12@sheep.berlios.de>
+
+    * added configure options for debugging and heavy debugging
+	* cleaning up source code
+
+2003-06-27  Chris Zubrzycki  <beren12@sheep.berlios.de>
+
+	* update for protocol_compat system, we can now hardcode the last
+	  libgiftproto version we know about
+
+2003-06-07  Chris Zubrzycki  <beren12@sheep.berlios.de>
+
+	* added automake files for plugin creation.
+	* TODO: add manpage and more docs
+	* moved sources to src/
+
+2003-05-18  Markus Kern <mkern@user.berlios.de>
+
+	* Fixed the endianess issues, the plugin should now work fine
+	  on big-endian
+
+2003-05-09  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed download status reporting
+	* Improved Makefile (thank you Justin)
+
+2003-05-07  Markus Kern <mkern@users.berlios.de>
+
+	* Fix source search bug
+
+2003-05-05  Markus Kern <mkern@users.berlios.de>
+
+	* Fixed serious file corruption bug
+
+2003-05-04  Markus Kern <mkern@users.berlios.de>
+
+	* Removed removal of unavailable sources until proper interface
+	  is implemented
+	* Adapted to changes in giFT's hashing interface
+	* Added IP address to user names
+
+2003-05-01  Markus Kern <mkern@users.berlios.de>
+
+	* Initial Release

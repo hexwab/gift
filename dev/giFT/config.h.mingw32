@@ -1,0 +1,15 @@
+
+#define STDC_HEADERS 1
+#define HAVE_SELECT 1
+#define HAVE_SOCKET 1
+#define HAVE_STRDUP 1
+#define HAVE_STRSTR 1
+#define HAVE_DIRENT_H 1
+#define HAVE_FCNTL_H 1
+#define HAVE_UNISTD_H 1
+
+#define PACKAGE "giFT"
+#define VERSION "0.10.0"
+
+/* Added */
+#define HAVE_STRING_H 1

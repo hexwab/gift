@@ -1,0 +1,62 @@
+# $Id: Makefile.msvc,v 1.2 2003/05/04 20:53:52 rossta Exp $
+
+!include ../../Make.msvc
+
+LIBS = $(LIBS) comctl32.lib gdi32.lib shell32.lib
+
+EXENAME=giFTsetup
+
+INCLUDES = $(INCLUDES) -I.. -I../../lib
+
+OBJECTS = \
+	$(EXENAME)$(O)
+	
+TARGET = $(EXENAME).exe
+
+!if defined(dynamic) || defined(DYNAMIC)
+
+LIBS = $(LIBS) $(LIBGIFT_LIB)
+TARGETDLL = $(GIFT_DLL)
+TARGETLIB = $(GIFT_LIB)
+
+all: $(TARGET)
+
+install: $(TARGET) $(TARGETDLL)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+	@copy /y $(TARGETDLL) ..\win32-dist\$(TARGETDLL)
+	@copy /y $(TARGETLIB) ..\win32-dist\$(TARGETLIB)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(TARGET): $(OBJECTS) $(TARGETDLL)
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(TARGETLIB) $(OBJECTS)
+
+!else # !(defined(dynamic) || defined(DYNAMIC))
+
+LIBS      = $(LIBS) $(LIBGIFT_STATIC)
+LDFLAGS   = $(LDFLAGS) -libpath:".." -libpath:"../../lib"
+
+all: $(TARGET)
+
+install: $(TARGET)
+	@copy /y $(TARGET) ..\win32-dist\$(TARGET)
+#	-@strip --strip-all ..\win32-dist\$(TARGET)
+
+$(EXENAME).res : $(EXENAME).rc
+	rc.exe /l 0x41d /fo"$(EXENAME).res" $(DEFS) $(EXENAME).rc
+
+$(TARGET): $(OBJECTS) $(EXENAME).res
+	$(LD) $(LDFLAGS) -out:$(TARGET) $(LIBS) $(OBJECTS) $(EXENAME).res
+
+!endif
+
+clean :
+	@-del /Q /F *$(O)
+	@-del /Q /F $(TARGET)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pdb
+	@-del /Q /F *.res
+
+.c$(O):
+	@$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<

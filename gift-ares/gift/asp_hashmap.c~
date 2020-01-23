@@ -1,0 +1,65 @@
+struct {
+	char *name;
+	size_t size;
+} MapEntry;
+
+static ASHashTable *map = NULL;
+
+void asp_hashmap_init (void)
+{
+	assert (!map);
+
+	map = as_hashtable_create_mem (TRUE);
+}
+
+static as_bool free_entry (ASHashTableEntry *entry, void *udata)
+{
+	MapEntry *e = entry->val;
+	
+	free (e->name);
+	free (e);
+
+	return TRUE;
+}
+
+void asp_hashmap_destroy (void)
+{
+	assert (map);
+
+	as_hashtable_foreach (map, (ASHashTableForeachFunc)free_entry, NULL);
+}
+
+void asp_hashmap_insert (ASHash *hash, char *name, size_t size)
+{
+	MapEntry *e;
+	
+	if (!map)
+		return;
+
+	if (!(e = malloc (sizeof(MapEntry)))
+		return;
+
+	e->name = STRDUP (name);
+	e->size = size;
+	
+	if (!as_hashtable_insert (map, hash->data, AS_HASH_SIZE, e))
+	{
+		free (e->name);
+		free (e);
+	}
+}
+
+as_bool as[_hashmap_lookup (ASHash *hash, char **name, size_t *size)
+{
+	MapEntry *e;
+
+	if (!map || !(e = as_hashtable_lookup (map, hash->data)))
+		return FALSE;
+
+	if (name)
+		*name = e->name;
+	if (size)
+		*size = e->size;
+
+	return TRUE;
+}

@@ -1,0 +1,15 @@
+[transfer]
+uniq = 4272000D5661009B9E5E.John Williams - Indiana Jones and the Last Crusade (Longer).mp3
+filename = John Williams - Indiana Jones and the Last Crusade (Longer).mp3
+hash = f636d15732078eefb2edbb8815ecac8d
+path = †`@†x@x…*@ºz)@¨k¶ã/Äh
+transmit = 4238000
+total = 10198622
+max_seek = 4238000
+chunks = 4238000-10198622 
+
+[source0]
+user = 168.28.247.162
+url = OpenFT://168.28.247.162:2298/mnt.MP3s/Classical/John%20Williams%20-%20%20Indiana%20Jones%20and%20the%20Last%20Crusade%20%28Longer%29.mp3
+
+

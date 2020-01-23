@@ -1,0 +1,31 @@
+# -*- makefile -*-
+
+OBJECTS = openft.o node.o packet.o protocol.o utils.o daemon.o share.o \
+http.o search.o html.o mime.o netorg.o
+
+TARGET = libopenft.a
+
+CC = gcc
+HEADERS = $(wildcard *.h) ../config.h
+CFLAGS = -Wall -g
+DEFS = -DHAVE_CONFIG_H
+INCLUDES = -I. -I.. -I../src
+
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CFLAGS)
+
+.PHONY: clean
+
+all: $(TARGET)
+
+install: $(TARGET)
+
+clean:
+	del *.o
+	del $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	ar cru $(TARGET) $(OBJECTS)
+	ranlib $(TARGET)
+
+%.o: %.c $(HEADERS)
+	$(COMPILE) -c $<

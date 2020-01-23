@@ -1,0 +1,452 @@
+/* giFTcurs - curses interface to giFT
+ * Copyright (C) 2001-2002 Göran Weinholt <weinholt@linux.nu>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,  USA.
+ *
+ * $Id: search.c,v 1.17 2002/04/12 22:04:05 chnix Exp $
+ */
+#include "giftcurs.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "log.h"
+#include "gift.h"
+#include "parse.h"
+#include "poll.h"
+#include "xcommon.h"
+#include "ui.h"
+#include "ui_main.h"			/* ugly */
+#include "get.h"
+#include "search.h"
+#include "ban.h"
+
+#define HITS_INTERVAL 500
+#define MAX_HITS 100000
+
+list hits;
+
+/*
+ * There a two types of searches,
+ * namely searches for text (`query') or searches for hashes (in get.c)
+ */
+
+void gift_query_parse(int fd, xml_data);
+
+/* This gets the job done, but is more eveil than before.. :) */
+int gift_query_timer(void)
+{
+	incoming_search_item(1);
+	return HITS_INTERVAL;
+}
+
+int gift_query_start(char *searchstr)
+{
+	int id;
+
+	id = gift_search_start(searchstr, gift_query_parse);
+	if (id < 0) {
+		incoming_search_item(0);
+		return -1;
+	}
+	poll_add_timer(HITS_INTERVAL, gift_query_timer);
+	return id;
+}
+
+int gift_search_start(char *searchstr, void (*fn) (int, xml_data))
+{
+	int id;
+
+	if (gift_printf("<search %s/>\n", searchstr) < 0)
+		return -1;
+	id = ID_JOKER;				/* fn gets called on next <event id=%d> */
+	gift_register_id(id, fn);
+	return id;
+}
+
+void gift_search_stop(int id)
+{
+	/* daemon thinks this is a new search */
+	// UNIMPLEMENTED: gift_printf("<search id=%d/>\n", id);
+	gift_unregister_id(id);
+}
+
+void gift_search_cleanup(void)
+{
+	banwords_cleanup();
+}
+
+xml_data gift_search_parse(xml_data buf)
+{
+	char *head;
+
+	head = xml_get_type(buf);
+	if (!strcasecmp(head, "search")) {
+		/* <search id="3"/> means no more hits */
+		return NULL;
+	}
+	if (strcasecmp(head, "item")) {
+		DEBUG("Server sent <%s> instead of <item>! Aborting search.", head);
+		return NULL;
+	}
+	return buf;
+}
+
+#if 0
+char *tag_names[TAG_MAX];
+char *real_tag_names[TAG_MAX];
+#endif
+
+void gift_search_init(void)
+{
+#if 0
+	tag_names[TAG_ARTIST] = _("Artist");
+	tag_names[TAG_TITLE] = _("Title");
+	tag_names[TAG_ALBUM] = _("Album");
+	tag_names[TAG_YEAR] = _("Year");
+	tag_names[TAG_BITRATE] = _("Bitrate");
+	tag_names[TAG_HREF] = _("Location");
+	tag_names[TAG_GENRE] = _("Genre");
+	tag_names[TAG_COMMENT] = _("Comment");
+	tag_names[TAG_KEYWORDS] = _("Keywords");
+	tag_names[TAG_BANDWIDTH] = _("Connection");
+	tag_names[TAG_TIME] = _("Time");
+	tag_names[TAG_RESOLUTION] = _("Dimension");
+	tag_names[TAG_BITDEPTH] = _("Colors");
+	tag_names[TAG_USER] = _("User");
+
+	real_tag_names[TAG_ARTIST] = "ARTIST";
+	real_tag_names[TAG_TITLE] = "TITLE";
+	real_tag_names[TAG_ALBUM] = "ALBUM";
+	real_tag_names[TAG_YEAR] = "YEAR";
+	real_tag_names[TAG_BITRATE] = "BITRATE";
+	real_tag_names[TAG_HREF] = "href";
+	real_tag_names[TAG_GENRE] = "GENRE";
+	real_tag_names[TAG_COMMENT] = "COMMENT";
+	real_tag_names[TAG_KEYWORDS] = "KEYWORDS";
+	real_tag_names[TAG_BANDWIDTH] = "BANDWIDTHTAG";
+	real_tag_names[TAG_TIME] = "TIME";
+	real_tag_names[TAG_RESOLUTION] = "RESOLUTION";
+	real_tag_names[TAG_BITDEPTH] = "BITDEPTH";
+	real_tag_names[TAG_USER] = "user";
+#endif
+
+	banwords_init();
+}
+
+char *extract_directory_alloc(const char *href)
+{
+	/* This is just a hack to get at least _something_ in the infobox
+	 * Some examples:
+	 * OpenFT://123.34.5.99:1234/ _directory_ /file.mp3
+	 * OpenFT://123.34.5.99:1215/?listen_port=1216&request_host=123.34.5.99&request_file=/ _directory_ /kids.mp3
+	 * Note: We should not depend on the protocol-specific part
+	 */
+	int len;
+	char *buf;
+	char *start = strchr(href, '.');
+
+	if (!start)
+		return NULL;
+	start = strchr(start, '/');
+	if (!start)
+		return NULL;
+	start++;
+	if (start[0] == '?') {
+		start = strchr(start, '/');
+		if (!start)
+			return NULL;
+		start++;
+	}
+	len = strrchr(href, '/') - start;
+	if (len <= 0)
+		return NULL;
+	buf = malloc(len + 1);
+	memcpy(buf, start, len);
+	buf[len] = '\0';
+	http_decode(buf);
+	trim(buf);
+	/* is it worth to shrink the allocated memory? */
+	buf = realloc(buf, strlen(buf) + 1);
+	return buf;
+}
+
+char *extract_filename_alloc(const char *href)
+{
+	char *buf = strrchr(href, '/');
+	char *buf2 = strrchr(href, '\\');
+
+	if (buf2 > buf)
+		buf = buf2;
+	buf = strdup(buf + 1);
+	http_decode(buf);
+	trim(buf);
+	/* is it worth to shrink the allocated memory? */
+	buf = realloc(buf, strlen(buf) + 1);
+	/* and replace " with ' because we cannot escape it yet */
+	for (buf2 = buf; *buf2; buf2++)
+		if (*buf2 == '"')
+			*buf2 = '\'';
+	return buf;
+}
+
+/* sort against number of sources and filesize */
+static int compare_filesize(const hit * h1, const hit * h2)
+{
+	if (h1->sources.num < h2->sources.num)
+		return 1;
+	if (h1->sources.num > h2->sources.num)
+		return -1;
+	if (h1->filesize < h2->filesize)
+		return 1;
+	if (h1->filesize > h2->filesize)
+		return -1;
+	return 0;
+}
+
+/* sort alphabetically */
+static int compare_alfabet(const hit * h1, const hit * h2)
+{
+	return strcoll(h1->filename, h2->filename);
+}
+
+static int (*hit_compare) (const hit * h1, const hit * h2) = compare_filesize;
+
+static void add_subhit(hit * bob, char *user, char *href, int av)
+{
+	subhit *sh = calloc(1, sizeof(subhit));
+
+	sh->user = strdup(user);
+	sh->href = strdup(href);
+	sh->availability = av;
+	list_push(&bob->sources, sh);
+}
+
+/* This is the big ugly function that parses search hits */
+void gift_query_parse(int id, xml_data buf)
+{
+	hit *bob;
+	int i;
+	char *href, *filename, *hash, *user;
+	unsigned long filesize;
+	int availability;
+
+	if (!buf)
+		return;
+
+	buf = gift_search_parse(buf);
+
+	if (!buf) {
+		gift_unregister_id(id);
+		if (!gift_issearching()) {
+			poll_del_timer(gift_query_timer);
+			incoming_search_item(1);
+		}
+		incoming_search_item(0);
+		return;
+	}
+	/* NOTE: it might be good for debugging, to throw out everything but stuff
+	   we got from the local daemon, 0.0.0.0 */
+
+	href = xml_get_param(buf, "href");
+	if (!href) {
+		DEBUG("daemon sent no href!");
+		return;
+	}
+
+	if (!(availability = xml_get_param_int(buf, "availability"))) {
+#if 0
+		DEBUG("dropped because availability=0");
+		return;
+#endif
+	}
+
+	filename = extract_filename_alloc(href);
+	if (!banwords_check(filename)) {
+		free(filename);
+		return;
+	}
+
+	hash = xml_get_param(buf, "hash");
+	filesize = xml_get_param_int(buf, "size");
+	user = xml_get_param(buf, "user");
+
+	if (!filesize || !user || !hash) {
+		free(filename);
+		return;
+	}
+
+	/* Check if we already had this one. */
+	for (i = 0; i < hits.num; i++) {
+		char *new_dir;
+		int j;
+
+		bob = hits.entries[i];
+
+		if (strcmp(bob->hash, hash) || bob->filesize != filesize)
+			continue;
+
+		for (j = 0; j < bob->sources.num; j++) {
+			subhit *sh = bob->sources.entries[j];
+
+			if (strcmp(user, sh->user))
+				continue;
+			/* already have this user */
+			if (sh->availability > availability)
+				sh->availability = availability;
+			free(filename);
+			return;
+		}
+		/* Never seen this href before */
+		add_subhit(bob, user, href, availability);
+		/* if the new hit has more info, merge it with our old one */
+		if (strlen(filename) > strlen(bob->filename)) {
+			free(bob->filename);
+			bob->filename = filename;
+		} else {
+			free(filename);
+		}
+		new_dir = extract_directory_alloc(href);
+		if (new_dir) {
+			if (!bob->directory || strlen(new_dir) > strlen(bob->directory)) {
+				free(bob->directory);
+				bob->directory = new_dir;
+			} else
+				free(new_dir);
+		}
+
+		/* invalidate previous pretty-string */
+		if (bob->pretty) {
+			free(bob->pretty);
+			bob->pretty = NULL;
+		}
+		list_resort(&hits, i, (int (*)(const void *, const void *)) hit_compare);
+		return;
+	}
+
+	if (hits.num == MAX_HITS - 1) {
+		message(_("Limit of %d unique hits reached."), MAX_HITS);
+/*gift_query_stop(id); *//* comment if continue to search duplicates */
+	} else if (hits.num >= MAX_HITS) {
+		return;
+	}
+
+	/* It's a brand new hit */
+	bob = calloc(1, sizeof(*bob));
+	bob->filesize = filesize;
+	bob->hash = strdup(hash);
+	bob->filename = filename;
+	bob->directory = extract_directory_alloc(href);
+	list_initialize(&bob->sources);
+	add_subhit(bob, user, href, availability);
+	bob->downloading = !!find_download(hash, filesize);
+
+	list_insort(&hits, bob, (int (*)(const void *, const void *)) hit_compare);
+}
+
+int gift_issearching(void)
+{
+	return gift_isregistered(gift_query_parse);
+}
+
+void gift_query_stop(void)
+{
+	gift_unregister_cb(gift_query_parse, NULL);
+	poll_del_timer(gift_query_timer);
+	incoming_search_item(1);
+}
+
+void gift_hits_free(list * snafu)
+{
+	int i, j;
+
+	for (i = 0; i < snafu->num; i++) {
+		hit *bob = (hit *) snafu->entries[i];
+
+		free(bob->pretty);
+		free(bob->filename);
+		free(bob->directory);
+		free(bob->hash);
+		for (j = 0; j < bob->sources.num; j++) {
+			subhit *sh = bob->sources.entries[j];
+
+			free(sh->user);
+			free(sh->href);
+			free(sh);
+			bob->sources.entries[j] = NULL;
+		}
+		list_remove_all(&bob->sources);
+		free(bob);
+		snafu->entries[i] = NULL;
+	}
+	list_remove_all(snafu);
+}
+
+static int qsort_comparer(hit ** p1, hit ** p2)
+{
+	return hit_compare(*p1, *p2);
+}
+
+char *toggle_sort_method(int direction)
+{
+	int i;
+	hit *selected;
+
+	/* FIXME: get more orders and direction == 1 means next order
+	   and direction == 0 means previous. */
+	hit_compare = hit_compare == compare_alfabet ? compare_filesize : compare_alfabet;
+
+	selected = list_selected(&hits);
+
+	qsort(hits.entries, hits.num, sizeof(hit *),
+		  (int (*)(const void *, const void *)) qsort_comparer);
+
+	/* find the selected item again */
+	for (i = 0; i < hits.num; i++) {
+		if (hits.entries[i] == selected) {
+			hits.sel = i;
+			break;
+		}
+	}
+
+	incoming_search_item(1);
+
+	if (hit_compare == compare_alfabet)
+		return _("alphabetical");
+
+	/*if (hit_compare == compare_filesize) */
+	return _("size-based");
+}
+
+void hit_download_mark(const char *hash, unsigned long size)
+{
+	int i;
+
+	for (i = 0; i < hits.num; i++) {
+		hit *h = hits.entries[i];
+
+		if (h->filesize == size && !strcmp(hash, h->hash)) {
+			h->downloading = 1;
+			/* invalidate previous pretty-string */
+			if (h->pretty) {
+				free(h->pretty);
+				h->pretty = NULL;
+			}
+			return;
+		}
+	}
+}

@@ -1,0 +1,14 @@
+/.cvsignore/1.1/Sun Jan  4 03:57:53 2004//
+/Makefile.am/1.4/Wed Jan  7 07:24:43 2004//
+/bye.c/1.2/Wed Jan  7 07:27:18 2004//
+/gt_message.c/1.6/Wed Jan  7 07:24:43 2004//
+/gt_message.h/1.3/Wed Mar 24 06:21:13 2004//
+/msg_handler.h/1.3/Wed Jan  7 07:24:43 2004//
+/ping.c/1.4/Fri Mar  5 17:49:40 2004//
+/ping_reply.c/1.7/Tue Jan  4 15:00:52 2005//
+/push.c/1.3/Wed Mar 24 06:36:12 2004//
+/query.c/1.10/Fri Jun  4 15:44:59 2004//
+/query_reply.c/1.3/Wed Mar 24 06:35:10 2004//
+/query_route.c/1.1/Sun Jan  4 03:57:53 2004//
+/vendor.c/1.6/Fri Mar 26 11:44:13 2004//
+D

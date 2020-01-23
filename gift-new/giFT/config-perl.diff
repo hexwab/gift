@@ -1,0 +1,83 @@
+Index: configure.in
+===================================================================
+RCS file: /cvsroot/gift/giFT/configure.in,v
+retrieving revision 1.68
+diff -u -r1.68 configure.in
+--- configure.in	4 Jun 2002 02:33:43 -0000	1.68
++++ configure.in	18 Jun 2002 22:31:40 -0000
+@@ -64,6 +64,8 @@
+ AM_CONDITIONAL(DAEMON, test x$enable_daemon = xyes)
+ AC_ARG_ENABLE(openft,[  --disable-openft        disable compiling the OpenFT plugin],,[enable_openft=yes])
+ AM_CONDITIONAL(OPENFT, test x$enable_openft = xyes)
++AC_ARG_ENABLE(perl,[  --disable-perl          disable perl support],,[enable_perl=yes])
++AM_CONDITIONAL(PERL, test x$enable_perl = xyes)
+ AC_ARG_ENABLE(gtk-client,[  --disable-gtk-client    disable compiling the GTK+ frontend],,[enable_gtk_client=no])
+ AM_CONDITIONAL(GTK_CLIENT, test x$enable_gtk_client = xyes)
+ AC_ARG_ENABLE(libdl,[  --disable-libdl         do not use libdl],,[enable_libdl=yes])
+@@ -153,6 +155,38 @@
+ giftperldir=${prefix}/bin
+ AC_SUBST(giftperldir)
+ 
++dnl Check for perl/libperl
++
++if test "$enable_perl" = yes ; then
++	AC_PATH_PROG(sedpath, sed)
++	AC_PATH_PROG(perlpath, perl)
++	AC_MSG_CHECKING(for Perl compile flags)
++	PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
++
++	# grrr @ Debian maintainer!!!
++	PERL_CFLAGS=`echo $PERL_CFLAGS | $sedpath 's/-D_FILE_OFFSET_BITS=[[^ ]]*//'`
++
++	if test "_$PERL_CFLAGS" = _; then
++		AC_MSG_RESULT([not found, building without perl.])
++		enable_perl=no
++	else
++		PERL_LIBS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null |$sedpath 's/-lgdbm //'`
++		PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-ldb //'`
++		PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-lndbm //'`
++		if test "$system" = "Linux"; then
++			PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-lnsl //'`
++			PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-lposix //'`
++		fi
++		PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-lc //'`
++		AC_MSG_RESULT(ok)
++		AC_CHECK_LIB(perl,perl_parse,[
++		AC_SUBST(PERL_CFLAGS)
++		AC_SUBST(PERL_LIBS)
++		AC_DEFINE(USE_PERL)
++		AC_CHECK_FUNCS(Perl_eval_pv)],enable_perl=no,$PERL_LIBS)
++	fi
++fi
++
+ dnl Check for the presence of ZLIB libraries and headers
+ ZLIB_VER=1.1.4
+ 
+@@ -398,6 +432,7 @@
+ echo Build GTK+ Frontend.....: $enable_gtk_client \(deprecated, see giftcurs.sf.net\)
+ echo Use dlopen..............: $enable_libdl
+ echo Use zlib................: $zlib_ok
++echo Use perl................: $enable_perl
+ echo
+ echo $PACKAGE will be installed in $prefix/bin
+ echo
+Index: configure.ac
+===================================================================
+RCS file: /cvsroot/gift/giFT/configure.ac,v
+retrieving revision 1.33
+diff -u -r1.33 configure.ac
+--- configure.ac	11 Jun 2002 08:14:39 -0000	1.33
++++ configure.ac	18 Jun 2002 22:31:48 -0000
+@@ -178,10 +178,11 @@
+ 		fi
+ 		PERL_LIBS=`echo $PERL_LIBS |$sedpath 's/-lc //'`
+ 		AC_MSG_RESULT(ok)
++		AC_CHECK_LIB(perl,perl_parse,[
+ 		AC_SUBST(PERL_CFLAGS)
+ 		AC_SUBST(PERL_LIBS)
+ 		AC_DEFINE(USE_PERL)
+-		AC_CHECK_FUNCS(Perl_eval_pv)
++		AC_CHECK_FUNCS(Perl_eval_pv)],enable_perl=no,$PERL_LIBS)
+ 	fi
+ fi
+ 

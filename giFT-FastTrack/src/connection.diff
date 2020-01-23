@@ -1,0 +1,25 @@
+Index: fst_http_client.c
+===================================================================
+RCS file: /cvsroot/gift-fasttrack/giFT-FastTrack/src/fst_http_client.c,v
+retrieving revision 1.11
+diff -u -r1.11 fst_http_client.c
+--- fst_http_client.c	10 Nov 2004 20:00:57 -0000	1.11
++++ fst_http_client.c	20 Jun 2005 22:03:49 -0000
+@@ -473,7 +473,7 @@
+ 
+ 	if (client->content_received == client->content_length)
+ 	{
+-		char *con_str = strdup (fst_http_header_get_field (client->reply,
++		char *con_str = gift_strdup (fst_http_header_get_field (client->reply,
+ 														   "Connection"));
+ 		string_lower (con_str);
+ 
+@@ -488,7 +488,7 @@
+ 		 * for now we leave the cleaning up to the next request/free for
+ 		 * this client.
+ 		 */
+-		if (client->persistent && strstr (con_str, "keep-alive"))
++		if (client->persistent && con_str && strstr (con_str, "keep-alive"))
+ 		{
+ 			FST_HEAVY_DBG_3 ("received all data keeping alive %s [%s]:%d",
+ 							 client->host, net_ip_str(client->ip), client->port);

@@ -1,0 +1,620 @@
+/*
+ * $Id: ft_search_exec.c,v 1.28 2003/03/06 01:04:07 jasta Exp $
+ *
+ * Copyright (C) 2001-2003 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#include "ft_openft.h"
+
+#include "ft_search.h"
+#include "ft_search_db.h"
+
+#include "stopwatch.h"
+#include "md5.h"
+#include "meta.h"
+
+#include <errno.h>
+
+#include "ft_search_exec.h"
+
+/*****************************************************************************/
+
+struct sdata;
+typedef int (*FTSearchFunc) (struct sdata *sdata, FileShare *File);
+
+/* holds search query info as it passes along through the mechanisms defined
+ * here */
+
+/*
+ * Holds search query information as it passes through the set of functions
+ * defined here.  This is useful to avoid passing multiple arguments at a time
+ * and nothing more.
+ */
+typedef struct sdata
+{
+	FTSHost         *shost;            /* cached shost object during
+	                                    * iteration so that a lookup is not
+	                                    * required every place it is desired */
+	size_t           matches;          /* number of successful matches */
+
+	FTSearchResultFn resultfn;         /* callback when a result is found */
+	void            *udata;            /* user data for the above callback */
+
+	FTSearchType     type;             /* type of search we are performing */
+	FTSearchFunc     sfunc;            /* local matching function for this
+	                                    * search type */
+
+	/**
+	 * @name FT_SEARCH_FILENAME
+	 */
+	unsigned long    avail;            /* cached availability */
+
+	char            *f_query;          /* query string */
+	char            *f_exclude;        /* exclude string */
+	ft_uint32       *f_qtokens;        /* query tokens list */
+	ft_uint32       *f_etokens;        /* exclude tokens list */
+	char            *f_realm;          /* optional realm to filter by */
+
+	/**
+	 * @name FT_SEARCH_MD5
+	 */
+	unsigned char   *m_query;          /* 16-byte md5sum */
+
+	/**
+	 * @name FT_SEARCH_HOST
+	 *
+	 * This is partially deprecated.  It is only used to check incoming
+	 * browse results now.
+	 */
+	in_addr_t        h_query;          /* 4-byte host */
+} SearchData;
+
+static unsigned long max_results = 0;  /* configured max number of results */
+
+/*****************************************************************************/
+/*
+ * COMPARE FUNCTIONS
+ *
+ * NOTE:
+ * These are used primarily on the user node side to verify incoming search
+ * results
+ */
+
+static int cmp_filename (SearchData *sdata, FileShare *file)
+{
+	FTShare  *share;
+	ft_uint32 *tptr;
+	ft_uint32 *ptr;
+	int        ret = TRUE;
+
+#if 0
+	if (sdata->f_realm)
+	{
+		if (strncmp (file->mime, sdata->f_realm, strlen (sdata->f_realm)))
+			return FALSE;
+	}
+#endif
+
+	if (!(share = share_lookup_data (file, "OpenFT")))
+		return FALSE;
+
+	assert (share->tokens != NULL);
+
+	/* check exclusion first */
+	for (ptr = sdata->f_etokens; ptr && *ptr; ptr++)
+	{
+		for (tptr = share->tokens; *tptr; tptr++)
+		{
+			if (*tptr != *ptr)
+				continue;
+
+			/* matched exclusion, bail out */
+			return FALSE;
+		}
+	}
+
+	/* check main token list */
+	for (ptr = sdata->f_qtokens; ptr && *ptr; ptr++)
+	{
+		int matched = FALSE;
+
+		for (tptr = share->tokens; *tptr; tptr++)
+		{
+			if (*tptr == *ptr)
+			{
+				matched = TRUE;
+				break;
+			}
+		}
+
+		if (!matched)
+			return FALSE;
+	}
+
+	return ret;
+}
+
+static int cmp_md5 (SearchData *sdata, FileShare *file)
+{
+	ShareHash *sh;
+
+	if (!(sh = share_hash_get (file, "MD5")))
+		return FALSE;
+
+	return (memcmp (sh->hash, sdata->m_query, sh->len) == 0);
+}
+
+static int cmp_host (SearchData *sdata, FileShare *file)
+{
+	/* non-local search */
+	if (sdata->shost)
+		return (sdata->shost->host == sdata->h_query);
+
+	/*
+	 * local search
+	 *
+	 * NOTE:
+	 * we don't have the ip address of the local node, therefore we cannot
+	 * verify that this was in fact a match
+	 *
+	 * TODO:
+	 * search by host should not be done like this...sigh
+	 */
+	return FALSE;
+}
+
+/*****************************************************************************/
+
+#define TOKEN_PUNCT ",`'!?*"
+#define TOKEN_DELIM "\\/ _-.[]()\t"
+
+/*****************************************************************************/
+
+static void token_remove_punct (char *token)
+{
+	char *ptr;
+
+	if (!token[0])
+		return;
+
+	while ((ptr = string_sep_set (&token, TOKEN_PUNCT)))
+	{
+		if (!token)
+			continue;
+
+		string_move (token - 1, token);
+		token--;
+	}
+}
+
+static ft_uint32 tokenize_str (char *str)
+{
+	ft_uint32 hash = 0;
+
+	if (!str)
+		return 0;
+
+	if (!(hash = *str++))
+		return 0;
+
+	while (*str)
+		hash = (hash << 5) - hash + *str++;
+
+	return hash;
+}
+
+static int cmp_token (const void *a, const void *b)
+{
+	ft_uint32 *ta = (ft_uint32 *) a;
+	ft_uint32 *tb = (ft_uint32 *) b;
+
+	if (*ta < *tb)
+		return -1;
+
+	if (*ta > *tb)
+		return 1;
+
+	return 0;
+}
+
+static int remove_dups (ft_uint32 *tokens, int num)
+{
+	ft_uint32  lt = 0;
+	int        nt;
+	int        t;
+
+	if (num <= 0)
+		return num;
+
+	/* sort first */
+	qsort (tokens, num, sizeof (ft_uint32), cmp_token);
+
+	for (t = 0, nt = 0; t < num && nt < num; t++)
+	{
+		if (lt && tokens[t] == lt)
+			continue;
+
+		lt = tokens[t];
+		tokens[nt++] = tokens[t];
+	}
+
+	tokens[nt] = 0;
+
+	return nt;
+}
+
+static int tokens_resize (ft_uint32 **tokens, int *alloc, int newsize)
+{
+	ft_uint32 *resize;
+
+	if (!(resize = realloc (*tokens, newsize * sizeof (ft_uint32))))
+		return FALSE;
+
+	*tokens = resize;
+	*alloc = newsize;
+
+	return TRUE;
+}
+
+/*
+ * tokens are delimited by the set TOKEN_DELIM
+ * tokens are stripped by the set TOKEN_PUNCT
+ */
+static void token_add_str (ft_uint32 **tokens, int *tok, int *tokalloc,
+                           char *s)
+{
+	char *sdup, *s0;
+	char *tstr;
+
+	if (!*tokalloc)
+	{
+		assert (*tokens == NULL);
+		if (!tokens_resize (tokens, tokalloc, 32))
+			return;
+	}
+
+	if (!(sdup = STRDUP (s)))
+		return;
+
+	s0 = sdup;
+
+	while ((tstr = string_sep_set (&sdup, TOKEN_DELIM)))
+	{
+		if (*tok >= (*tokalloc - 1))
+		{
+			if (!tokens_resize (tokens, tokalloc, *tokalloc * 2))
+				break;
+		}
+
+		token_remove_punct (tstr);
+
+		if (*tstr)
+			(*tokens)[(*tok)++] = tokenize_str (string_lower (tstr));
+	}
+
+	free (s0);
+
+	(*tokens)[*tok] = 0;
+	*tok = remove_dups (*tokens, *tok);
+}
+
+ft_uint32 *ft_search_tokenize (char *string)
+{
+	ft_uint32 *tokens   = NULL;
+	int        tok      = 0;
+	int        tokalloc = 0;
+
+	if (!string)
+		return NULL;
+
+	token_add_str (&tokens, &tok, &tokalloc, string);
+
+	return tokens;
+}
+
+ft_uint32 *ft_search_tokenizef (FileShare *file)
+{
+	ft_uint32 *tokens   = NULL;
+	int        tok      = 0;
+	int        tokalloc = 0;
+
+	if (!file)
+		return NULL;
+
+	token_add_str (&tokens, &tok, &tokalloc, SHARE_DATA(file)->path);
+	token_add_str (&tokens, &tok, &tokalloc, meta_lookup (file, "tracknumber"));
+	token_add_str (&tokens, &tok, &tokalloc, meta_lookup (file, "artist"));
+	token_add_str (&tokens, &tok, &tokalloc, meta_lookup (file, "album"));
+	token_add_str (&tokens, &tok, &tokalloc, meta_lookup (file, "title"));
+	token_add_str (&tokens, &tok, &tokalloc, meta_lookup (file, "genre"));
+
+	return tokens;
+}
+
+/*****************************************************************************/
+
+static int fill_sdata (SearchData *sdata,
+                       FTSearchResultFn resultfn, void *udata,
+                       FTSearchType type, char *realm,
+                       void *query, void *exclude)
+{
+	if (!query)
+		return FALSE;
+
+	memset (sdata, 0, sizeof (SearchData));
+
+	sdata->resultfn = resultfn;
+	sdata->udata    = udata;
+	sdata->type     = type;
+
+	if (sdata->type & FT_SEARCH_FILENAME)
+	{
+		ft_uint32 *qtokens;
+		ft_uint32 *etokens;
+
+		/* hidden searches are pretokenized */
+		if (sdata->type & FT_SEARCH_HIDDEN)
+		{
+			qtokens = query;
+			etokens = exclude;
+
+			query   = NULL;
+			exclude = NULL;
+		}
+		else
+		{
+			qtokens = ft_search_tokenize (query);
+			etokens = ft_search_tokenize (exclude);
+
+			if (!qtokens)
+			{
+				free (qtokens);
+				free (etokens);
+				return FALSE;
+			}
+		}
+
+		sdata->sfunc     = (FTSearchFunc)cmp_filename;
+		sdata->f_query   = query;
+		sdata->f_exclude = exclude;
+		sdata->f_qtokens = qtokens;
+		sdata->f_etokens = etokens;
+		sdata->f_realm   = realm;
+	}
+	else if (sdata->type & FT_SEARCH_MD5)
+	{
+		sdata->sfunc = (FTSearchFunc)cmp_md5;
+
+		if (!(sdata->m_query = md5_bin (query)))
+			return FALSE;
+	}
+	else if (sdata->type & FT_SEARCH_HOST)
+	{
+		sdata->sfunc = (FTSearchFunc)cmp_host;
+
+		if (!(sdata->h_query = net_ip (query)))
+			return FALSE;
+	}
+
+	return (sdata->sfunc ? TRUE : FALSE);
+}
+
+static void clear_sdata (SearchData *sdata)
+{
+	int ret;
+
+	if (sdata->resultfn)
+	{
+		ret = sdata->resultfn (NULL, sdata->udata);
+		assert (ret == TRUE);
+	}
+
+	if (sdata->type & FT_SEARCH_FILENAME)
+	{
+		if (sdata->f_query)
+		{
+			free (sdata->f_qtokens);
+			free (sdata->f_etokens);
+		}
+	}
+	else if (sdata->type & FT_SEARCH_MD5)
+	{
+		free (sdata->m_query);
+	}
+}
+
+static int cmp_sdata (SearchData *sdata, FileShare *file)
+{
+	if (!file)
+		return FALSE;
+
+	return sdata->sfunc (sdata, file);
+}
+
+/*****************************************************************************/
+
+static void add_result (SearchData *sdata, FileShare *file)
+{
+	FTShare *share;
+
+	assert (file != NULL);
+
+	if (sdata->matches >= max_results)
+		return;
+
+	if (!(share = share_lookup_data (file, "OpenFT")))
+	{
+		TRACE (("this shouldnt happen"));
+		return;
+	}
+
+	assert (share->shost != NULL);
+
+	if (!file->p)
+		ft_shost_avail (share->shost->host, sdata->avail);
+
+	ft_share_ref (file);
+
+	if (sdata->resultfn (file, sdata->udata))
+		sdata->matches++;
+}
+
+/*****************************************************************************/
+
+static int final_match (FileShare *file, SearchData *sdata)
+{
+	/* all we really need to require is that the specified realm matches the
+	 * result, if supplied */
+	if (!sdata->f_realm)
+		return TRUE;
+
+	return (strncmp (file->mime, sdata->f_realm, strlen (sdata->f_realm)) == 0);
+}
+
+static int search_remote_result (FileShare *file, SearchData *sdata)
+{
+	/* apply the final clean match on the result to make sure it fits all
+	 * the search criteria */
+	if (final_match (file, sdata))
+		add_result (sdata, file);
+
+	ft_share_unref (file);
+
+	return TRUE;
+}
+
+static void search_remote (SearchData *sdata)
+{
+	List *matches = NULL;
+	int   hits;
+
+	if (sdata->matches >= max_results)
+		return;
+
+	/* set the maximum allowed matches */
+	hits = max_results - sdata->matches;
+
+	if (sdata->type & FT_SEARCH_MD5)
+		matches = ft_search_db_md5 (NULL, sdata->m_query, &hits);
+	else if (sdata->type & FT_SEARCH_FILENAME)
+	{
+		matches = ft_search_db_tokens (NULL, sdata->f_realm,
+		                               sdata->f_qtokens, sdata->f_etokens,
+		                               &hits);
+	}
+
+	/*
+	 * Iterate all matches simply to go through the regular add_result API
+	 * unification.  This is extremely wasteful as we can actually add
+	 * directly to the sdata->results list and increment matches based on the
+	 * new value of hits, so it should eventually be fixed...sigh.
+	 */
+	list_foreach_remove (matches, LIST_FOREACH(search_remote_result), sdata);
+}
+
+static int key_as_md5 (Dataset *d, DatasetNode *node,
+					   SearchData *sdata)
+{
+	if (sdata->matches >= max_results)
+		return FALSE;
+
+	/* use the primitive/slow matching routines */
+	if (sdata->sfunc (sdata, node->value))
+		add_result (sdata, node->value);
+
+	return TRUE;
+}
+
+static void search_local (SearchData *sdata)
+{
+	if (!(sdata->type & FT_SEARCH_LOCAL) || sdata->matches >= max_results)
+		return;
+
+	sdata->avail = upload_availability ();
+
+	sdata->shost = NULL;
+	share_foreach (DATASET_FOREACH (key_as_md5), sdata);
+}
+
+/*****************************************************************************/
+
+/*
+ * and the fun begins...
+ */
+int ft_search (FTSearchResultFn resultfn, void *udata,
+               FTSearchType type, char *realm,
+               void *query, void *exclude)
+{
+	StopWatch *sw;
+	SearchData sdata;
+
+	if (!query)
+		return -1;
+
+	if (!fill_sdata (&sdata, resultfn, udata, type, realm, query, exclude))
+		return -1;
+
+	if (type & FT_SEARCH_LOCAL)
+		max_results = config_get_int (OPENFT->conf, "search/max_local_results=1000");
+	else
+		max_results = config_get_int (OPENFT->conf, "search/max_results=1000");
+
+
+#ifdef DEBUG
+	sw = stopwatch_new (TRUE);
+#endif /* DEBUG */
+
+	/* search the files we are currently sharing */
+	search_local (&sdata);
+
+	/* search the remote nodes databases
+	 * NOTE: this does not mean to search over OpenFT, merely look at
+	 * shares that were submitted via OpenFT from our CHILD nodes */
+	search_remote (&sdata);
+
+#ifdef DEBUG
+	if (!(type & FT_SEARCH_MD5))
+	{
+		TRACE (("%i(%i): %.06fs elapsed", (int)type, (int)sdata.matches,
+		        stopwatch_free_elapsed (sw)));
+	}
+#endif /* DEBUG */
+
+	/* destroy any allocated data we had created in fill_sdata */
+	clear_sdata (&sdata);
+
+	return (int)sdata.matches;
+}
+
+int ft_search_cmp (FileShare *file, FTSearchType type,
+                   char *realm, void *query, void *exclude)
+{
+	FTShare *share;
+	SearchData sdata;
+	int ret;
+
+	if (!query || !ft_share_complete (file))
+		return FALSE;
+
+	if (!fill_sdata (&sdata, NULL, NULL, type, realm, query, exclude))
+		return FALSE;
+
+	if ((share = share_lookup_data (file, "OpenFT")))
+		sdata.shost = share->shost;
+
+	ret = cmp_sdata (&sdata, file);
+
+	clear_sdata (&sdata);
+
+	return ret;
+}

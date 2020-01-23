@@ -1,0 +1,240 @@
+% $Id: faq.tex,v 1.9 2002/07/12 00:28:13 eelcol Exp $
+% Copyright (c) 2001-2002, The giFT Project
+% written by Eelco Lempsink (eelco@wideview.33lc0.net)
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% NOTE: anybody is more than welcome to come up with a better   % 
+% way of deviding the questions into sections                   % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+\documentclass[10pt]{article}
+
+\usepackage{url}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\question}[1]{\item\textbf{\emph{#1}}}
+
+\begin{document}
+
+\begin{center}
+\textsf{\textbf{\Huge{giFT} \\ \huge{F.A.Q.} \\
+\normalsize{Last update: \today}}}
+\end{center}
+
+\begin{center}
+All the questions you shouldn't have asked in the IRC channel
+\end{center}
+
+\tableofcontents
+
+\setlength{\parskip}{1.4ex}
+
+\section{Generic}
+\begin{itemize}
+
+\question {What is giFT?}\\
+giFT is a plugin system that can be used to connect to many
+different networks.  But for now OpenFT is the only network you
+can use. More information about the giFT project is in the
+\href{http://gift.sourceforge.net/docs/?document=whatis.html}{What
+is the giFT project?} document. If you want to write a plugin for
+other networks (Gnutella, OpenNAP), please contact us.  
+
+\question {Where is your IRC channel?}\\
+irc.openprojects.net, join channel \#giFT. 
+
+\question {And, is it usable already?}\\
+Yes it is, very usable, but also very unstable. If you want to
+help us finding bugs, and you promise to update your copy daily,
+you may use it.
+
+\question {Why must I keep my copy up to date?}\\
+Mostly because of OpenFT (see below). The way the network works
+changes a lot, and you can significantly pollute the network if
+you fail to update. Please keep a close eye on the CVS, and update
+daily, or at least once every three days. 
+
+\question {Well then, how do I install and use giFT?}\\
+That question is pretty much what the
+\href{http://gift.sourceforge.net/docs/?document=install.html}{Installation
+Guide} is all about... go read it.
+
+\question {Help! Why does giFT almost bring my system to a halt?}
+Ah, you're running giFT for the first time\ldots  giFT is
+calculating the md5sum (this process is called 'hashing') of all
+your shared files to create a database. The next time you run giFT
+only files that were added or changed will be hashed.
+
+\question {Hmm, I get strange errors when trying to install,
+what's up?}\\
+Most likely you haven't read the
+\href{http://gift.sourceforge.net/docs/?document=install.html}{Installation
+Guide}. You'll have to read it anyway, especially before asking
+questions in our irc channel, but the thing that usually works is
+making sure the needed software is up to date (and updating it if
+it isn't). Make sure you have autoconf 2.5x, automake 1.4 and
+libtool 1.4.x. And read the damn
+\href{http://gift.sourceforge.net/docs/?document=install.html}{Installation
+Guide}  
+
+\question {Why are you against the distributing of binaries?}\\
+giFT isn't ready for that. And if you're unable to build it
+yourself, it's not for you.  We don't want lots different and
+incompatible version floating around, because they pollute our
+current test network.
+
+\question {So, when do you release?}\\
+When it's done. Once all feature users will want are implemented
+and all bugs are squashed, and all documentation is up to date...
+then we'll probably release. This could take a few weeks, it could
+take it few months. Just keep checking :-).
+
+\question {Why do you use a daemon?}\\
+It creates an easy way for people to focus their time on frontends
+instead of all of so much networking code. Also, if the daemon
+changes, all of the frontends will still function the same as they
+had before. This also makes it so we don't end up with 20
+incompatible protocols flying around as standalone clients.
+
+\question {Why the funny/boring/strange name?}\\
+That's kind of historical. When giFT was still related to
+FastTrack (see below), it used to mean 'generic interface to
+FastTrack' (explains the capitalization) or 'giFT isn't
+FastTrack'. A while after we moved away from FastTrack, and
+started developing OpenFT, "nobody" on the forums suggested to
+change the name to 'GNU Internet File Transfer', and we liked it,
+so we changed the name.  A while after that, the name was changed
+again, because we aren't really a GNU project, to 'giFT: Internet
+File Transfer', and so it will probably stay\ldots
+
+\question {How did this all begin?}\\
+Development to create a Linux client to KaZaA was our initial
+goal. After a lot of reverse engineering and packet sniffing, a
+group of talented developers which became known as "the givers"
+stumbled onto our project (at the time "kazaatux"). \\
+Within a few weeks, we had a working daemon that could connect to
+and search the KaZaA network. Shortly after, KaZaA released a new
+version of their client which eventually led to the breaking of
+what we now call giFT. \\
+After the permanent departure of the givers, the giFT team started
+moving development into a new direction; foremost was the desire
+to have a completely open, completely free peer to peer network
+modeled in the image of FastTrack. \\
+Thus OpenFT was born. giFT was moved to a new plugin architecture
+which would allow the creation of plugins that would make it easy
+for one client to be compatible with any number of networks. The
+first of these plugins were to be OpenFT.
+
+\end{itemize}
+
+\section{Contribute}
+\begin{itemize}
+
+\question {How can I help speed up development?}\\
+Use your special skills! If you can code, design a nifty GUI or
+are specialized in Public Relations, or whatever, drop into our
+IRC channel and ask what \emph{you} can do.
+
+\question {Aargh, giFT crashed! What now?}\\
+You've most likely found a bug. Make sure you're using the most
+recent CVS version (it could have been fixed already), and know
+how to use gdb (GNU Debugger). It's wise to
+\href{http://wand.cs.waikato.ac.nz/~dhtrl1/pl5/gdb.html}{do}
+\href{http://web.mit.edu/sipb-iap/unixsoftdev/www/gdb.html}{some} 
+\href{http://bugs.php.net/bugs-generating-backtrace.php}{homework} 
+prior to reporting bugs. Otherwise, you probably won't be very
+helpful. (Note: the 'homework' pages aren't directly applicable to
+giFT, but meant to learn to use gdb.)
+
+\question {I've got an idea! What if...}\\
+You're not the first one. If you want to discuss your idea or the
+way giFT/OpenFT works, please
+\href{http://lists.sourceforge.net/lists/listinfo/gift-openft}{subscribe
+to gift-openft@lists.sourceforge.net}.
+ 
+\question {Will giFT be ported to any other hosts?}\\
+The program was initially designed for Linux, but the recent
+version compiles on *BSD, Solaris, OS X, and Windows (natively)
+too. You're always welcome to port giFT to your platform of
+choice. Please contact us if you're successful. 
+ 
+\question {Front-end Developers}\\
+See the
+\href{http://gift.sourceforge.net/docs/?document=interface.html}{Interface
+Protocol Documentation}. There are already quite a few clients
+available, \href{http://gift.sourceforge.net/dev/clients.php}{our
+client page} lists the ones that work. Searching for 'giFT' on
+SourceForge will find you some more giFT related projects. Please
+check first if you can help an other project, before starting your
+own.
+
+\question {I want to make an OpenFT client!}\\
+No, you don't. You want to make a giFT client. Through giFT,
+OpenFT can be used. Otherwise you'll have to include a framework
+just like giFT in your client, and that would be like reinventing
+the wheel. Please read
+\href{http://gift.sourceforge.net/docs/?document=whatis.html}{What
+is the giFT project?} for more info.
+
+\end{itemize}
+ 
+\section{OpenFT} 
+\begin{itemize}
+
+\question {What's this OpenFT I've been hearing about?}\\
+It's an Open Source "clone" of FastTrack being worked on by the
+giFT project. We welcome anyone with decentralized/p2p experience
+to drop by and poke around at our design. 
+ 
+\question {Can I use OpenFT without giFT?}\\
+Yes, if you write a framework for it, like giFT. So, the real
+answer is: no. If you're still convinced you want to write a new
+framework, maybe even in an other language than C, like Java, C\#
+or whatever, please contact us, and we'll talk you out of it.
+
+\question {Is there documentation available on how OpenFT works?}\\
+No, but the source code is pretty readable :-). The main problem
+is to find someone motivated enough to write this document, if you
+want to do it, contact us through IRC or use
+\href{http://lists.sourceforge.net/lists/listinfo/gift-openft}{the
+mailing list}.
+
+\question {Hey, I can download files with my browser from OpenFT
+hosts, is OpenFT a webserver?}\\
+Uh, no. OpenFT uses an incomplete implementation of the HTTP
+protocol for file transfers from non-firewalled hosts.
+Theoretically you can use it as a webserver for static files, but
+if you do so, you've missed the point :-)
+
+%\question {Does OpenFT mean OpenFastTrack?}\\
+%No, figure it out :-p
+% we need a new name anyway...
+
+\end{itemize}
+ 
+\section{FastTrack (KaZaa, Morpheus, Grokster)}
+\begin{itemize}
+
+\question {What is this "FastTrack"?}\\
+FastTrack is the company that licenses the library that
+KaZaA/Grokster (Morpheus uses Gnutella now) operates off of
+ 
+\question {What's your connection with FastTrack?}\\
+giFT 0.9.x used the FastTrack network. FastTrack changed the
+encryption, end of story. Since October 2001 we've been fully
+focused on the "new" giFT and OpenFT. \textbf{Don't} ask us for a
+FastTrack client, just forget about it.
+
+\question {Are you working on getting back into FastTrack's network?}\\
+No. Although quite a few people made attempts to reverse engineer
+the new encryption, nobody has succeeded, and nobody is working on
+it anymore because OpenFT kicks so much ass nobody even remembers
+FastTrack. 
+ 
+\end{itemize}
+
+\end{document}
+
+% vim:tw=66:

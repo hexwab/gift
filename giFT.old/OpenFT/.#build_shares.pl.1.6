@@ -1,0 +1,147 @@
+#!/usr/bin/perl
+
+use Socket;
+use Digest::MD5;
+
+print "\nUsage: $0 [directory]\n\n" and exit(1) unless (scalar @ARGV > 0);
+
+###############################################################################
+
+if (open (SHARES, "<$ENV{HOME}/.giFT/OpenFT/shares")) {
+	&readshares;
+	close SHARES;
+}
+else {
+	print "Creating new shares file.\n";
+}
+
+open (SHARES, ">$ENV{HOME}/.giFT/OpenFT/shares") || open(SHARES,">>$ENV{HOME}/.giFT/OpenFT/shares") || die "can't create shares file\n";
+close SHARES;
+&buildshares (@ARGV);
+
+&syncshares;
+
+sub readshares
+{
+	print STDOUT "reading shares...\n";
+	while(<SHARES>)
+        {
+		my @handle = split;
+
+		my $mtime = shift(@handle);
+		my $size = shift(@handle);
+		my $hash = shift(@handle);
+		my $file = "@handle";
+
+#		print STDOUT "$mtime $size $hash $file\n";
+
+		my %share = (
+			'mtime' => $mtime,
+			'size' => $size,
+			'hash' => $hash,
+                );
+		$oldshares{$file} = \%share;
+	}
+}
+
+sub buildshares
+{
+	my @dirs = @_;
+	$total = 0;
+
+	print "building shares...\n";
+	foreach (@dirs)
+	{
+		s/\/$//g;
+		print "$_:\n";
+		print "Not absolute path [Ignoring]\n" if $_ !~ /^\//;
+		traverse ($_) if $_ =~ /^\//;
+	}
+
+	print "$total files shared\n";
+}
+
+
+sub traverse
+{
+	my $dir = shift;
+	my $hash;
+
+	opendir (DIR, "$dir");
+	foreach my $item (readdir (DIR))
+	{
+		if ($item !~ /^\.{1,2}$/ && "$dir/$item" ne $0)
+		{
+			if (opendir (TMP, "$dir/$item"))
+			{
+				traverse ("$dir/$item");
+				close TMP;
+			}
+			else
+			{
+				my ($size,$mtime) = gstats ("$dir/$item");
+				if ($mtime eq $oldshares{"$dir/$item"}->{mtime})
+				{
+#					print "** Duplicate\n";
+					$hash = $oldshares{"$dir/$item"}->{hash};
+				}
+				else
+				{
+					$hash = md5 ("$dir/$item");
+					print "Updated ($dir/$item)\n";
+				}
+
+				open (SHARES, ">>$ENV{HOME}/.giFT/OpenFT/shares") || die "cant open shares file\n";
+				print SHARES "$size $hash $dir/$item\n";
+				close (SHARES);
+
+#				print STDOUT "$mtime $size $hash $dir/$item\n";
+
+                                $total++;
+			}
+		}
+	}
+
+	closedir DIR;
+}
+
+sub md5
+{
+	my $file = shift;
+
+	open (FILE, "<$file");
+	read (FILE, my $data, 307200);
+
+	my $md5  = Digest::MD5->new;
+	my $newhash = $md5->add($data)->hexdigest;
+
+	close FILE;
+
+	return $newhash;
+}
+
+sub gstats
+{
+	my $file = shift;
+
+	open (GSTATS, "<$file");
+	@props = stat (GSTATS);
+	close GSTATS;
+
+	return $props[7],$props[9];
+}
+
+sub syncshares
+{
+	$host = "127.0.0.1";
+	$port = "1213";
+
+	$iaddr = inet_aton($host); $paddr = sockaddr_in($port, $iaddr); $proto = getprotobyname('tcp');
+	socket(SOCK, PF_INET, SOCK_STREAM, $proto) or die "Unable to create socket: $!\n";
+	connect(SOCK, $paddr) or die "Unable to connect: $!\n";
+
+	print SOCK "<connect protocol=OpenFT/>\n";
+	print SOCK "<share action=sync/>\n";
+
+	close(SOCK);
+}

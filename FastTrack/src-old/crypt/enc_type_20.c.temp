@@ -1,0 +1,3748 @@
+/*
+ * $Id: enc_type_20.c,v 1.5 2003/07/14 19:34:14 weinholt Exp $
+ *
+ * Copyright (C) 2003 giFT-FastTrack project
+ * http://developer.berlios.de/projects/gift-fasttrack
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+/*
+ * This is the most recent pad mingling code for FastTrack as of 03/04/28
+ * Used for encryption version 0x20
+ */
+
+typedef unsigned int	u32;
+
+/* our crude SEH replacement */
+
+typedef int THROWS_RET;
+#define THROW return 1;
+#define TRY(x) { if((x) == 1) return 0; }
+#define RETURN return 0;
+
+/* some helper funcs */ 
+
+#ifndef __GNUC__
+#define __attribute__(x)
+#endif
+
+/* my_cos() and my_sin() are equal to cos()<0 and sin()<0. */
+int __attribute__((const)) my_cos(unsigned char i)
+{
+	return (unsigned)((i * 39) % 245) - 62 < 122;
+}
+
+int __attribute__((const)) my_sin(unsigned char i)
+{
+	return (i * 46) % 289 > 144;
+}
+
+/* this is (u32) floor(sqrt(((double)(((i))))+1) + 0.001). */
+int __attribute__((const)) my_sqrt(unsigned char i)
+{
+	int j, k;
+	for (j=0,k=0;j++<=i;j+=++k<<1);
+	return k;
+}
+
+static u32 ROR(u32 value, u32 count)
+{
+  count &= 0x1f;
+  return (value >> count) | (value << (32 - count));
+}
+
+static u32 ROL(u32 value, u32 count)
+{
+  count &= 0x1f;
+  return (value << count) | (value >> (32 - count));
+}
+
+/* the entry point of this mess */
+/* this all works on u32s so endianess is not an issue */
+
+THROWS_RET enc_20_mix (u32 *state, u32 seed);
+
+void enc_type_20 (u32 *state, u32 seed)
+{
+	enc_20_mix (state, seed);
+}
+
+/* major functions which make calls to other funcs */
+
+static THROWS_RET enc_20_major_1 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_2 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_3 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_4 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_5 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_6 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_7 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_8 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_9 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_10 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_11 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_12 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_13 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_14 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_15 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_16 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_17 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_18 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_19 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_21 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_22 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_23 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_24 (u32 *state, u32 seed);
+static THROWS_RET enc_20_major_25 (u32 *state, u32 seed);
+
+/* functions which throw exceptions */
+
+static THROWS_RET mix_minor1 (u32 *state, u32 seed);
+static THROWS_RET mix_minor2 (u32 *state, u32 seed);
+static THROWS_RET mix_minor3 (u32 *state);
+static THROWS_RET mix_minor4 (u32 *state);
+static THROWS_RET mix_minor5 (u32 *state);
+static THROWS_RET mix_minor6 (u32 *state);
+static THROWS_RET mix_minor7 (u32 *state);
+static THROWS_RET mix_minor8 (u32 *state);
+static THROWS_RET mix_minor9 (u32 *state, u32 seed);
+static THROWS_RET mix_minor10 (u32 *state, u32 seed);
+static THROWS_RET mix_minor11 (u32 *state, u32 seed);
+static THROWS_RET mix_minor12 (u32 *state, u32 seed);
+static THROWS_RET mix_minor13 (u32 *state);
+
+/* simple key manipulation functions */
+
+static void mix_minor14 (u32 *state, u32 seed);
+static void mix_minor15 (u32 *state, u32 seed);
+static void mix_minor16 (u32 *state, u32 seed);
+static void mix_minor17 (u32 *state);
+static void mix_minor18 (u32 *state, u32 seed);
+static void mix_minor19 (u32 *state);
+static void mix_minor20 (u32 *state);
+static void mix_minor21 (u32 *state, u32 seed);
+static void mix_minor22 (u32 *state);
+static void mix_minor23 (u32 *state, u32 seed);
+static void mix_minor24 (u32 *state, u32 seed);
+static void mix_minor25 (u32 *state, u32 seed);
+
+static void mix_minor26 (u32 *state);
+static void mix_minor27 (u32 *state);
+static void mix_minor28 (u32 *state);
+static void mix_minor29 (u32 *state);
+static void mix_minor30 (u32 *state);
+static void mix_minor31 (u32 *state, u32 seed);
+static void mix_minor32 (u32 *state, u32 seed);
+static void mix_minor33 (u32 *state, u32 seed);
+static void mix_minor34 (u32 *state);
+static void mix_minor35 (u32 *state);
+static void mix_minor36 (u32 *state);
+static void mix_minor37 (u32 *state);
+
+
+/* minor implementation details below this line ;) */
+
+void mix_minor14 (u32 *state, u32 seed)
+{
+	state[4] = ROR(state[4], seed * 31);
+}
+
+void mix_minor15 (u32 *state, u32 seed)
+{
+	state[13] *= seed + 0x0601F603;
+}
+
+void mix_minor16 (u32 *state, u32 seed)
+{
+	state[16] += seed * 73;
+}
+
+void mix_minor17 (u32 *state)
+{
+	state[19] ^= state[7] * 58;
+}
+
+void mix_minor18 (u32 *state, u32 seed)
+{
+	state[9] ^= seed ^ 0x334EC044;
+}
+
+void mix_minor19 (u32 *state)
+{
+	state[6] = ROL(state[6], ROR(state[8], 0x0E));
+}
+
+void mix_minor20 (u32 *state)
+{
+	state[0] &= ROR(state[18], 0x1F);
+}
+
+void mix_minor21 (u32 *state, u32 seed)
+{
+	state[9] &= seed - 0x2507B6E9;
+}
+
+void mix_minor22 (u32 *state)
+{
+	state[3] = ROR(state[3], (state[11] ^ 0x0BBEA527));
+}
+
+void mix_minor23 (u32 *state, u32 seed)
+{
+	state[7] &= (seed * 8 - seed) * 15;
+}
+
+void mix_minor24 (u32 *state, u32 seed)
+{
+	state[12] += seed - 0x075D8F4F;
+}
+
+void mix_minor25 (u32 *state, u32 seed)
+{
+	state[6] ^= seed + 0x25283A4A;
+}
+
+THROWS_RET mix_minor1 (u32 *state, u32 seed)
+{
+	state[8] += my_sin(seed) ? 0x04F0CF8D : seed;
+
+	return state[8] & 1;
+}
+
+THROWS_RET mix_minor2 (u32 *state, u32 seed)
+{
+	state[2] += state[2] < 0x36DEF3E1 ? state[2] : seed;
+
+	return state[2] & 1;
+}
+
+THROWS_RET mix_minor3 (u32 *state)
+{
+	state[10] ^= ROL(state[1], 0x34);
+
+	return state[10] & 1;
+}
+
+THROWS_RET mix_minor4 (u32 *state)
+{
+	state[16] -= state[6];
+
+	return state[16] & 1;
+}
+
+THROWS_RET mix_minor5 (u32 *state)
+{
+	state[10] -= state[9] * 85;
+
+	return state[10] & 1;
+}
+
+THROWS_RET mix_minor6 (u32 *state)
+{
+	state[0] = ROL(state[0], state[19] ^ 0x0290626C);
+
+	return state[0] & 1;
+}
+
+THROWS_RET mix_minor7 (u32 *state)
+{
+	state[17] += state[8] * 0xF6084C92;
+
+	return state[17] & 1;
+}
+
+THROWS_RET mix_minor8 (u32 *state)
+{
+	state[12] ^= state[10] & 0x28ACEC82;
+
+	return state[12] & 1;
+}
+
+THROWS_RET mix_minor9 (u32 *state, u32 seed)
+{
+	state[12] *= state[12] < 0x012D7BED ? state[12] : seed;
+
+	return state[12] & 1;
+}
+
+THROWS_RET mix_minor10 (u32 *state, u32 seed)
+{
+	state[18] += state[5] < 0x0FD0AA3F ? state[5] : seed;
+
+	return state[18] & 1;
+}
+
+THROWS_RET mix_minor11 (u32 *state, u32 seed)
+{
+	state[1] = ROR(state[1], (seed * 0x1592D04));
+
+	return state[1] & 1;
+}
+
+THROWS_RET mix_minor12 (u32 *state, u32 seed)
+{
+	state[11] &= my_cos(state[18]) ? 0x146A49CC : seed;
+
+	return state[11] & 1;
+}
+
+THROWS_RET mix_minor13 (u32 *state)
+{
+	state[2] &= my_cos(state[2]) ? 0x07EBBFDE : state[11];
+
+	return state[2] & 1;
+}
+
+
+void mix_minor26 (u32 *state)
+{
+	state[0] |= my_cos(state[1]) ? 0x056E0E99 : state[8];
+}
+
+void mix_minor27 (u32 *state)
+{
+	state[18] += my_cos(state[15]) ? 0x10D11D00 : state[9];
+}
+
+void mix_minor28 (u32 *state)
+{
+	state[10] -= my_cos(state[15]) ? 0x268CCA84 : state[9];
+}
+
+void mix_minor29 (u32 *state)
+{
+	state[3] -= my_cos(state[6]) ? 0x2031618A : state[8];
+}
+
+void mix_minor30 (u32 *state)
+{
+	state[1] = ROL(state[1], my_sin(state[5]) ? 0x4 : state[6]);
+}
+
+void mix_minor31 (u32 *state, u32 seed)
+{
+	state[17] = ROR(state[17], my_sin(state[6]) ? 0x1d : seed);
+}
+
+void mix_minor32 (u32 *state, u32 seed)
+{
+	state[15] ^= my_sin(state[14]) ? 0x40A33FD4 : seed;
+}
+
+void mix_minor33 (u32 *state, u32 seed)
+{
+	state[9] = ROR(state[9], my_sqrt(seed));
+}
+
+void mix_minor34 (u32 *state)
+{
+	state[7] ^= my_sqrt(state[11]);
+}
+
+void mix_minor35 (u32 *state)
+{
+	state[5] += my_sqrt(state[7]);
+}
+
+
+
+void mix_minor36 (u32 *state)
+{
+	state[3] ^= state[11] * 0xeef27425;
+	state[3] += my_sqrt(state[0]);
+	state[15] *= state[1] ^ 0xD89B4A;
+	state[16] = ROR(state[16], (state[16] & 0x1BEEB131));
+	state[18] *= state[19] + 0xa0d8c0cf;
+	state[7] *= state[0] < 0x6765080e ? state[0] : state[18];
+
+	if(state[5] < 0xe848f43c)
+		state[9] = ROL(state[9], state[5]);
+	state[2] ^= state[5] < 0xa0d8c0cf ? state[5] : state[9] - 0xe848f43c;
+	state[12] = ROL(state[12], ROL(state[9] - 0xe848f43c, 0x8b));
+}
+
+void mix_minor37 (u32 *state)
+{
+	state[2] = ROL(state[2], (state[7] + 0x1259dbb));
+	state[2] ^= state[9] * 0x7941955;
+	state[2] -= 0x796fa0af;
+	state[3] *= my_sin(state[19]) ? 0x5ea67f83 : state[5];
+	state[4] -= state[4] ^ 0x692C9EF9;
+	state[10] += state[1] ^ 0xc43baf0b;
+	state[12] *= state[7] - 0xc43baf0b;
+	state[13] ^= 0xd;
+	state[17] ^= state[17] - 0x1259dbb;
+	state[17] = ROR(state[17], 0xa);
+	state[18] += state[0] ^ 0x3CF1856;
+}
+
+
+THROWS_RET enc_20_major_1 (u32 *state, u32 seed)
+{
+	u32 type = (state[17] ^ state[4] ^ state[13]) % 0x0D;
+
+	if(type == 0x09)
+	{
+		state[7] |= 0x3e73450d;
+		mix_minor31 (state, 0x499C9229);
+		mix_minor36 (state);
+	}
+
+	state[11] &= state[19] & 0x170B54ED;
+
+	if(type == 0x0A)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		mix_minor27 (state);
+		TRY(enc_20_major_23 (state, state[8]));
+	}
+
+	if(state[14] < 0x164D8D96)
+		state[1] = ROR(state[1], state[14]);
+	else
+		state[1] = ROR(state[1], state[4]);
+
+	if(type == 0x0C)
+	{
+		TRY(mix_minor1 (state, 0xC0948CF0));
+		mix_minor28 (state);
+		TRY(enc_20_major_24 (state, state[18]));
+	}
+
+	if(type == 0x00)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		mix_minor31 (state, 0x047FEEB5);
+		TRY(enc_20_major_19 (state, state[12]));
+	}
+
+	state[6] = ROL(state[6], (state[13] ^ 0x0B31DDE2));
+
+	if(type == 0x06)
+	{
+		TRY(mix_minor11 (state, 0x0DA426A1));
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_25 (state, seed));
+	}
+
+	seed += my_sin(seed) ? 0x160DF35D : seed;
+
+	if(type == 0x03)
+	{
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_17 (state, state[15]));
+	}
+
+	if(type == 0x00)
+	{
+		mix_minor19 (state);
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_4 (state, state[8]));
+	}
+
+	seed &= state[19] | 0xe00682c6;
+
+	if(type == 0x01)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_18 (state, state[12]));
+	}
+
+	state[16] += my_sin(seed) ? 0xe00682c6 : state[7];
+
+	if(type == 0x02)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_15 (state, seed));
+	}
+
+	if(type == 0x07)
+	{
+		state[4] -= state[17] ^ 0x2217CF47;
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_3 (state, state[14]));
+	}
+
+	seed += state[15] ^ 0x1777BC26;
+
+	if(type == 0x04)
+	{
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		mix_minor34 (state);
+		TRY(enc_20_major_21 (state, state[18]));
+	}
+
+	state[5] *= my_sqrt(state[9]);
+
+	if(type == 0x0B)
+	{
+		mix_minor14 (state, 0xCFB45C3E);
+		mix_minor32 (state, 0x8517AE30);
+		TRY(enc_20_major_16 (state, state[4]));
+	}
+
+	state[13] &= state[18] - 0x0EB6DEE4;
+
+	if(type == 0x05)
+	{
+		mix_minor30 (state);
+		TRY(mix_minor3 (state));
+		mix_minor36 (state);
+	}
+
+	if(type == 0x08)
+	{
+		state[7] |= 0x7de964ed;
+		TRY(mix_minor4 (state));
+		TRY(enc_20_major_23 (state, state[3]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_2 (u32 *state, u32 seed)
+{
+	u32 type = state[10] & 0x0F;
+
+	if(type == 0x05)
+	{
+		mix_minor27 (state);
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_25 (state, state[0]));
+	}
+
+	state[0] -= seed * 54;
+
+	if(type == 0x0D)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	if(type == 0x0C)
+	{
+		mix_minor25 (state, 0x6E4C891E);
+		mix_minor23 (state, 0x8CD76CBE);
+		TRY(enc_20_major_4 (state, state[14]));
+	}
+
+	state[7] -= state[8] | 0x1A1A9407;
+
+	if(type == 0x6)
+	{
+		mix_minor33 (state, 0x63EDE696);
+		state[3] -= state[0] ^ 0x185F3B0D;
+		TRY(enc_20_major_18 (state, state[14]));
+	}
+
+	state[2] += state[0] + 0x19259d5;
+
+	if(type == 0x8)
+	{
+		state[9] ^= state[7] * 68;
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_15 (state, seed));
+	}
+
+	if(type == 0x0B)
+	{
+		mix_minor34 (state);
+		state[3] -= state[0] ^ 0x185F3B0D;
+		TRY(enc_20_major_3 (state, state[15]));
+	}
+
+	state[16] &= seed -0x1BADCB5;
+
+	if(type == 0x0F)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		mix_minor14 (state, 0x2A42F19F);
+		TRY(enc_20_major_21 (state, state[3]));
+	}
+
+	state[5] -= my_cos(state[4]) ? 0xffcdb92f : state[14];
+
+	if(type == 0x1)
+	{
+		state[13] -= state[1];
+		state[7] |= 0x45e184c5;
+		TRY(enc_20_major_16 (state, state[9]));
+		TRY(mix_minor1 (state, 0x149A97A0));
+		TRY(mix_minor10 (state, 0x0D87D888E));
+		TRY(enc_20_major_1 (state, state[9]));
+	}
+
+	state[5] *= state[8] + 0xffcdb92f;
+
+	if(type == 0x4)
+	{
+		TRY(mix_minor10 (state, 0x130AA218));
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_14 (state, state[6]));
+	}
+
+	if(state[15] < 0xbdc3f45b)
+		state[1] = ROL(state[1], state[15]);
+	else
+		state[1] = ROL(state[1], state[9]);
+
+	if(type == 0x0E)
+	{
+		mix_minor30 (state);
+		mix_minor15 (state, 0x790B68AA);
+		TRY(enc_20_major_6 (state, state[5]));
+	}
+
+	if(type == 0x0)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(mix_minor5 (state));
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	state[6] += state[3] * 121;
+
+	if(type == 0x9)
+	{
+		mix_minor21 (state, 0x63BCA480);
+		mix_minor30 (state);
+		TRY(enc_20_major_25 (state, state[6]));
+	}
+
+	state[16] ^= my_cos(state[7]) ? 0x2D36F243 : state[13];
+
+	if(type == 0x0)
+	{
+		state[0] += state[18] ^ 0x4AC16B8D;
+		mix_minor28 (state);
+		TRY(enc_20_major_17 (state, state[2]));
+	}
+
+	if(type == 0x7)
+	{
+		state[10] += 0x08958821;
+		TRY(mix_minor1 (state, 0x115E64D4));
+		TRY(enc_20_major_4 (state, state[19]));
+	}
+
+	state[14] &= state[3] ^ 0xb8eb772d;
+
+	if(type == 0x0A)
+	{
+		state[13] -= state[1];
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_18 (state, state[8]));
+	}
+
+	state[1] = ROR(state[1], (state[12] * 101));
+
+	if(type == 0x3)
+	{
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		TRY(enc_20_major_15 (state, state[15]));
+	}
+
+	if(type == 0x2)
+	{
+		mix_minor23 (state, 0x785A1B8A);
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_3 (state, state[14]));
+	}
+
+	state[12] ^= my_sin(state[0]) ? 0x96d5a5a4 : state[5];
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_3 (u32 *state, u32 seed)
+{
+	u32 type = (state[5] ^ seed ^ state[12]) % 0x0A;
+	u32 var_14 = 0x3074A456;
+    
+	var_14 += 0x51CE37 - 0x18D0A343;
+	seed *= state[6] | 0x04723B25;
+
+	if(type == 0x0)
+	{
+		mix_minor22 (state);
+		TRY(mix_minor5 (state));
+		mix_minor37 (state);
+	}
+
+	state[2] -= state[4] * 13;
+
+	if(type == 0x5)
+	{
+		state[7] ^= 0x414517EA;
+		mix_minor29 (state);
+		mix_minor36 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x0C736D91;
+	seed = state[12] * 5 + seed + (state[12] * 20);
+
+	if(type == 0x1)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		mix_minor19 (state);
+		TRY(enc_20_major_23 (state, seed));
+	}
+
+	seed += state[7] + var_14;
+
+	if(type == 0x2)
+	{
+		mix_minor29 (state);
+		state[16] += 0x1f5b0c59;
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x6C5479A8;
+	state[15] -= state[0] ^ 0x16BEE8C4;
+
+	if(type == 0x4)
+	{
+		TRY(mix_minor7 (state));
+		mix_minor28 (state);
+		TRY(enc_20_major_19 (state, seed));
+	}
+
+	state[18] ^= state[11] + var_14;
+
+	if(type == 0x6)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(enc_20_major_25 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x1BF2C739;
+	state[14] = ROL(state[14], (state[19]-0x8C1CE40));
+
+	if(type == 0x8)
+	{
+		mix_minor30 (state);
+		state[12] += state[6] + 0x21D7BF61;
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	state[0] = ROR(state[0], (state[13] * 83));
+
+	if(type == 0x9)
+	{
+		TRY(mix_minor2 (state, 0x70DA1D6F));
+		mix_minor29 (state);
+		TRY(enc_20_major_4 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x31D3FEFD;
+
+	if(state[16] < 0x33671DE9)
+		seed ^= state[16];
+	else
+		seed ^= state[17];
+
+	if(type == 0x7)
+	{
+		mix_minor22 (state);
+		TRY(mix_minor3 (state));
+		TRY(enc_20_major_18 (state, state[5]));
+	}
+
+	seed &= seed << 6;
+
+	if(type == 0x3)
+	{
+		mix_minor17 (state);
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_15 (state, state[19]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_4 (u32 *state, u32 seed)
+{
+	u32 type = state[6] % 7;
+	u32 var_14 = 0x775fd18;
+
+	seed ^= ROL(state[3], 0x72);
+
+	if(type == 0x6)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(mix_minor5 (state));
+		mix_minor37 (state);
+	}
+
+	state[15] += seed * 50;
+
+	var_14 += 0x51CE37 - 0x12202C25;
+	state[5] += 0x0C93495E4 - state[14];
+
+	if(type == 0x2)
+	{
+		TRY(mix_minor10 (state, 0x10DB4A9D));
+		state[6] += 0xFE07AF0E - state[3];
+		mix_minor36 (state);
+	}
+
+	state[12] *= my_cos(state[14]) ? var_14 : state[17];
+
+	if(type == 0x0)
+	{
+		mix_minor17 (state);
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_23 (state, state[8]));
+	}
+
+	var_14 += 0x51CE37 - 0x15CE1247;
+	state[6] &= state[7] | var_14;
+
+	state[11] ^= my_cos(state[0]) ? 0x3A2C762B : seed;
+
+	if(type == 0x4)
+	{
+		TRY(mix_minor3 (state));
+		TRY(mix_minor11 (state, 0x44BF5D5F));
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x128DFD61;
+	state[3] -= my_sqrt(state[9]);
+
+	if(type == 0x5)
+	{
+		mix_minor25 (state, 0x0DF523ED5);
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_19 (state, state[18]));
+	}
+
+	seed &= my_cos(state[7]) ? var_14 : state[3];
+
+	var_14 += 0x51CE37 - 0x3DE94AC6;
+	state[0] -= state[15] * 67;
+
+	if(type == 0x1)
+	{
+		mix_minor19 (state);
+		mix_minor25 (state, 0x1D251133);
+		TRY(enc_20_major_25 (state, state[3]));
+	}
+
+	state[1] -=  ROR(state[18], 0x33);
+	var_14 += 0x51CE37 - 0x26BE8A9B;
+
+	state[17] ^= my_sin(state[14]) ? var_14 : state[16];
+
+	if(type == 0x0)
+	{
+		state[3] -= state[0] ^ 0x185F3B0D;
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_17 (state, state[14]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_5 (u32 *state, u32 seed)
+{
+	u32 type = (state[13] ^ state[6] ^ state[16]) & 0x0F;
+	u32 var_18 = 0x0FE1D15;
+
+	if(type == 0x7)
+	{
+		mix_minor20 (state);
+		state[9] += ROL(state[4], 0xE9);
+		TRY(enc_20_major_17 (state, state[15]));
+	}
+
+	var_18 += 0x51CE37 - 0x20B0889D;
+	state[2] ^= state[15] - var_18;
+
+	if(type == 0x0F)
+	{
+		mix_minor31 (state, 0x0C7337307);
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_4 (state, state[10]));
+	}
+
+	if(type == 0x0E)
+	{
+		mix_minor18 (state, 0x32D5440A);
+		state[5] -= state[15];
+		TRY(enc_20_major_18 (state, seed));
+	}
+
+	state[5] += state[8] * 73;
+
+	if(type == 0x4)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(mix_minor8 (state));
+		TRY(enc_20_major_15 (state, state[19]));
+	}
+
+	if(type == 0x1)
+	{
+		mix_minor27 (state);
+		mix_minor17 (state);
+		TRY(enc_20_major_3 (state, state[4]));
+	}
+
+	var_18 += 0x51CE37 - 0x0B2F7E4D;
+
+	if(state[16] < 0x4DFE57F8)
+		seed += state[16];
+	else
+		seed += state[17];
+
+	if(type == 0x2)
+	{
+		mix_minor15 (state, 0x74E11AD9);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_21 (state, state[11]));
+		state[13] *= ROR(state[3], 0xA5);
+		mix_minor20 (state);
+		TRY(enc_20_major_16 (state, state[10]));
+	}
+
+	state[5] += state[6] + var_18;
+
+	if(type == 0x0A)
+	{
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_1 (state, state[10]));
+	}
+
+	if(type == 0x0C)
+	{
+		state[16] += 0x203fdf50;
+		mix_minor20 (state);
+		TRY(enc_20_major_14 (state, state[8]));
+	}
+
+	var_18 += 0x51CE37 - 0x1B56493C;
+
+	state[1] += my_sin(seed) ? var_18 : seed;
+
+	if(type == 0x6)
+	{
+		state[4] ^= ROR(0x51CF3579, 0x85);
+		state[13] -= state[1];
+		TRY(enc_20_major_6 (state, state[14]));
+	}
+
+	if(type == 0x3)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	state[3] |= my_cos(state[3]) ? var_18 : state[17];
+
+	if(type == 0x9)
+	{
+		mix_minor17 (state);
+		state[5] -= state[15];
+		TRY(enc_20_major_2 (state, seed));
+	}
+
+	if(type == 0x0D)
+	{
+		mix_minor14 (state, 0x78EBCA1E);
+		state[4] -= state[17] ^ 0x2217CF47;
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x8B3397E;
+	seed ^= state[2] * var_18;
+
+	if(type == 0x0B)
+	{
+		state[19] += 0x12B9E29D - state[12];
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_4 (state, state[17]));
+	}
+
+	if(type == 0x0)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		mix_minor31 (state, 0x4FF6E927);
+		TRY(enc_20_major_18 (state, seed));
+	}
+
+	state[8] += 0xF1030E9C - state[12];
+
+	if(type == 0x5)
+	{
+		mix_minor25 (state, 0x0C571A70B);
+		state[19] += 0x12B9E29D - state[12];
+		TRY(enc_20_major_15 (state, seed));
+	}
+
+	if(type == 0x8)
+	{
+		mix_minor23 (state, 0x7D6B64A8);
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_3 (state, state[17]));
+	}
+
+	var_18 += 0x51CE37 - 0x9BA58BD;
+	state[15] += var_18 - state[1];
+
+	if(type == 0x0)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[3] -= state[0] ^ 0x185F3B0D;
+		TRY(enc_20_major_21 (state, seed));
+	}
+
+	if(type == 0x1)
+	{
+		TRY(mix_minor3 (state));
+		state[12] *= state[12];
+		TRY(enc_20_major_16 (state, state[12]));
+	}
+
+	state[6] *= state[5] * 29;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_6 (u32 *state, u32 seed)
+{
+	u32 type = state[17] % 0x0F;
+	u32 var_18 = 0x10572198;
+
+	if(type == 0x00)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		mix_minor15 (state, 0x1CDB9F1C);
+		TRY(enc_20_major_24 (state, state[8]));
+	}
+
+	var_18 += 0x51CE37 - 0x2EA3BDA3;
+
+	state[11] -= my_sin(state[9]) ? var_18 : state[7];
+
+	if(type == 0x0D)
+	{
+		TRY(mix_minor11 (state, 0x422E82A9));
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_19 (state, state[0]));
+	}
+
+	state[10] -= state[6] ^ 0x1289DE2;
+
+	if(type == 0x8)
+	{
+		mix_minor33 (state, 0x8FED4B73);
+		TRY(mix_minor13 (state));
+		TRY(enc_20_major_25 (state, state[4]));
+	}
+
+	if(type == 0x5)
+	{
+		mix_minor15 (state, 0x6492D146);
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x1A21C37A;
+	state[16] = ROL(state[16], my_sqrt(state[17]));
+
+	if(type == 0x2)
+	{
+		state[16] += 0x3f147441;
+		TRY(enc_20_major_4 (state, state[16]));
+	}
+
+	state[9] += my_sqrt(state[3]);
+
+	if(type == 0x0E)
+	{
+		mix_minor33 (state, 0xA3D7A7FC);
+		state[13] -= state[1];
+		TRY(enc_20_major_18 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x5B8499EE;
+	seed = state[6] ^ seed ^ 0x202AB323;
+
+	if(type == 0x9)
+	{
+		state[5] += state[0] ^ 0x3E17ADD3;
+		state[4] -= state[17] ^ 0x2217CF47;
+		TRY(enc_20_major_15 (state, state[8]));
+	}
+
+	if(type == 0x6)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(enc_20_major_3 (state, state[16]));
+	}
+
+	state[15] ^= my_sqrt(state[10]);
+
+	if(type == 0x1)
+	{
+		TRY(mix_minor2 (state, 0x0B30D40D0));
+		state[10] *= state[10] - 0x05EAE6BF;
+		TRY(enc_20_major_21 (state, state[13]));
+	}
+
+	var_18 += 0x51CE37 - 0x1DDA929B;
+	state[0] -= state[11] ^ 0x1284AF29;
+
+	if(type == 0x4)
+	{
+		state[5] += state[0] ^ 0x3E17ADD3;
+		mix_minor29 (state);
+		TRY(enc_20_major_16 (state, state[17]));
+	}
+
+	seed = ROL(seed, state[11] << 4);
+
+	if(type == 0x0B)
+	{
+		mix_minor18 (state, 0x2EC1F3E2);
+		TRY(mix_minor9 (state, 0x13EE15C3));
+		TRY(enc_20_major_1 (state, state[19]));
+	}
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor3 (state));
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_14 (state, state[16]));
+	}
+
+	var_18 += 0x51CE37 - 0x5A8079C;
+	state[9] |= state[9] ^ 0x2AD7629;
+
+	if(type == 0x0A)
+	{
+		TRY(mix_minor11 (state, 0x4CDAADC3));
+		TRY(mix_minor9 (state, 0x0E8869877));
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	state[4] *= state[12] * var_18;
+
+	if(type == 0x0C)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		TRY(mix_minor7 (state));
+		TRY(enc_20_major_19 (state, state[5]));
+	}
+
+	if(type == 0x7)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(mix_minor9 (state, 0x0DD1CA541));
+		TRY(enc_20_major_25 (state, state[1]));
+	}
+
+	var_18 += 0x51CE37 - 0x2DE8F3D8;
+	seed *= state[4] + 0x76E5A087;
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor5 (state));
+		TRY(mix_minor1 (state, 0x62F4D3C4));
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_7 (u32 *state, u32 seed)
+{
+	u32 type = (state[10] ^ state[11] ^ state[18]) & 0x0F;
+	u32 var_18 = 0xc6ef5e80;
+
+	if(type == 0x3)
+	{
+		mix_minor27 (state);
+		TRY(mix_minor2 (state, 0x54BCDE17));
+		TRY(enc_20_major_1 (state, state[14]));
+	}
+
+	if(type == 0x9)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		state[13] -= state[1];
+		TRY(enc_20_major_14 (state, state[12]));
+	}
+
+	state[8] |= var_18 + state[1];
+
+	if(type == 0x2)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(enc_20_major_6 (state, state[16]));
+	}
+
+	if(type == 0x5)
+	{
+		state[5] -= state[15];
+		state[16] += 0x3fa3dc2f;
+		TRY(enc_20_major_9 (state, state[5]));
+	}
+
+	if(type == 0x1)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(enc_20_major_2 (state, state[3]));
+	}
+
+	state[15] -= var_18 + state[19];
+
+	if(type == 0x4)
+	{
+		state[2] ^= state[15] << 5;
+		mix_minor28 (state);
+		TRY(enc_20_major_5 (state, state[7]));
+	}
+
+	if(type == 0x1)
+	{
+		state[0] += state[6] * 60;
+		mix_minor31 (state, 0x0CA4795D5);
+		TRY(enc_20_major_12 (state, state[16]));
+	}
+
+	if(type == 0x9)
+	{
+		state[5] += state[0] ^ 0x3E17ADD3;
+		mix_minor21 (state, 0x70E051EB);
+		TRY(enc_20_major_11 (state, state[19]));
+	}
+
+	var_18 += 0x51CE37 - 0x28A8FE0;
+	seed -= state[0] ^ 0x3B61016B;
+
+	if(type == 0x4)
+	{
+		state[5] -= state[15];
+		TRY(mix_minor9 (state, 0x1984A749));
+		TRY(enc_20_major_13 (state, state[3]));
+	}
+
+	if(type == 0x3)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		mix_minor28 (state);
+		TRY(enc_20_major_22 (state, state[4]));
+	}
+
+	if(type == 0x7)
+	{
+		TRY(mix_minor3 (state));
+		mix_minor31 (state, 0x1C91FACD);
+		TRY(enc_20_major_8 (state, state[5]));
+	}
+
+	state[11] = ROL(state[11], (state[10] ^ 0x469FB6FA));
+
+	if(type == 0x8)
+	{
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		state[19] += 0x12B9E29D - state[12];
+		TRY(enc_20_major_10 (state, seed));
+	}
+
+	if(type == 0x0E)
+	{
+		state[19] += 0x12B9E29D - state[12];
+		mix_minor33 (state, 0x0BFD9F90B);
+		TRY(enc_20_major_1 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x4DA526F;
+	seed -= state[14] * var_18;
+
+	if(type == 0x0)
+	{
+		mix_minor25 (state, 0x6FC267C3);
+		mix_minor27 (state);
+		TRY(enc_20_major_14 (state, state[6]));
+	}
+
+	if(type == 0x0D)
+	{
+		mix_minor24 (state, 0x32230D49);
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_6 (state, state[4]));
+	}
+
+	if(type == 0x8)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		state[13] -= state[1];
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	state[4] += 0xA207344D - seed;
+
+	if(type == 0x0C)
+	{
+		TRY(mix_minor2 (state, 0x80A1DA17));
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_2 (state, state[3]));
+	}
+
+	if(type == 0x2)
+	{
+		mix_minor15 (state, 0x64A3D689);
+		mix_minor25 (state, 0x0E5C778D8);
+		TRY(enc_20_major_5 (state, state[9]));
+	}
+
+	if(type == 0x0)
+	{
+		mix_minor31 (state, 0x4A5DE3AB);
+		state[5] += state[0] ^ 0x3E17ADD3;
+		TRY(enc_20_major_12 (state, state[5]));
+	}
+
+	var_18 += 0x51CE37 - 0x352F1985;
+	seed ^= state[18] ^ 0xE6830C9;
+
+	if(type == 0x6)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_11 (state, seed));
+	}
+
+	if(type == 0x7)
+	{
+		state[3] -= state[0] ^ 0x185F3B0D;
+		TRY(mix_minor2 (state, 0x0B11DA063));
+		TRY(enc_20_major_13 (state, state[3]));
+	}
+
+	if(type == 0x0F)
+	{
+		mix_minor34 (state);
+		state[4] ^= ROR(0x3CC69EC8, 0x85);
+		TRY(enc_20_major_22 (state, state[17]));
+	}
+
+	state[0] ^= my_sin(seed) ? var_18 : state[8];
+
+	if(type == 0x0B)
+	{
+		mix_minor28 (state);
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_8 (state, seed));
+	}
+
+	if(type == 0x5)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_10 (state, state[16]));
+	}
+
+	var_18 += 0x51CE37 - 0x50402411;
+	seed += state[1] * 62;
+
+	if(type == 0x6)
+	{
+		mix_minor34 (state);
+		mix_minor14 (state, 0x39DB8DF7);
+		TRY(enc_20_major_1 (state, state[12]));
+	}
+
+	if(type == 0x0A)
+	{
+		mix_minor22 (state);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	state[1] ^= state[2] & var_18;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_8 (u32 *state, u32 seed)
+{
+	u32 type = (state[2] ^ seed ^ state[17]) & 0x0F;
+	u32 var_18 = 0x16332817;
+
+	if(type == 0x7)
+	{
+		state[13] -= state[1];
+		mix_minor26 (state);
+		TRY(enc_20_major_21 (state, seed));
+	}
+
+	if(type == 0x0)
+	{
+		mix_minor35 (state);
+		TRY(mix_minor2 (state, 0x0E0B52E33));
+		TRY(enc_20_major_16 (state, state[15]));
+	}
+
+	var_18 += 0x51CE37 - 0x330C4928;
+	seed -= ROR(state[2], var_18);
+
+	if(type == 0x5)
+	{
+		state[4] ^= ROR(0x355281E1, 0x85);
+		state[5] += state[0] ^ 0x3E17ADD3;
+		TRY(enc_20_major_1 (state, state[12]));
+	}
+
+	if(type == 0x1)
+	{
+		mix_minor22 (state);
+		mix_minor17 (state);
+		TRY(enc_20_major_14 (state, state[1]));
+	}
+
+	state[12] -= state[17] * 116;
+
+	if(type == 0x1)
+	{
+		state[12] += state[6] + 0x21D7BF61;
+		state[13] *= ROR(state[3], 5);
+		TRY(enc_20_major_6 (state, state[5]));
+	}
+
+	if(type == 0x0E)
+	{
+		state[4] ^= ROR(0x35880FD2, 0x85);
+		TRY(mix_minor7 (state));
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x1A275E87;
+	state[3] ^= state[7] + 0x137C9F7D;
+
+	if(type == 0x0)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_2 (state, state[5]));
+	}
+
+	if(type == 0x4)
+	{
+		state[10] += 0x08958821;
+		state[16] += 0x3d2948e4;
+		TRY(enc_20_major_5 (state, state[4]));
+	}
+
+	if(type == 0x3)
+	{
+		state[3] -= state[0] ^ 0x185F3B0D;
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_12 (state, state[12]));
+	}
+
+	if(state[17] < var_18)
+		state[11] += state[17];
+	else
+		state[11] += state[4];
+		
+	if(type == 0x4)
+	{
+		mix_minor18 (state, 0x2F26A2DC);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_11 (state, state[9]));
+	}
+
+	if(type == 0x0D)
+	{
+		state[7] |= 0x378d3869;
+		TRY(mix_minor13 (state));
+		TRY(enc_20_major_13 (state, state[13]));
+	}
+
+	var_18 += 0x51CE37 - 0xC5AF489;
+	seed *= state[12] + var_18;
+
+	if(type == 0x7)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_22 (state, seed));
+	}
+
+	if(type == 0x8)
+	{
+		mix_minor15 (state, 0x17CCEE88);
+		mix_minor30 (state);
+		TRY(enc_20_major_21 (state, seed));
+	}
+
+	state[10] += 0xAA3373FC - state[6]; 
+
+	if(type == 0x5)
+	{
+		mix_minor31 (state, 0x0AE768CE);
+		TRY(mix_minor1 (state, 0x0BC90D50));
+		TRY(enc_20_major_16 (state, seed));
+	}
+
+	if(type == 0x0F)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_1 (state, seed));
+	}
+
+	if(type == 0x6)
+	{
+		mix_minor34 (state);
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x190E1B61;
+
+	if(state[11] < var_18)
+		seed ^= state[11];
+	else
+		seed ^= state[2];
+
+	if(type == 0x6)
+	{
+		state[16] += 0x1a36972b;
+		mix_minor17 (state);
+		TRY(enc_20_major_6 (state, state[5]));
+	}
+
+	if(type == 0x0C)
+	{
+		TRY(mix_minor12 (state, 0x0B6571D3F));
+		state[0] += state[6] * 60;
+		TRY(enc_20_major_9 (state, state[9]));
+	}
+
+	seed *= state[14] + 0x9BAA8DB;
+
+	if(type == 0x9)
+	{
+		TRY(mix_minor9 (state, 0x0E378A0ED));
+		state[5] += state[0] ^ 0x3E17ADD3;
+		TRY(enc_20_major_2 (state, state[8]));
+	}
+
+	if(type == 0x0B)
+	{
+		TRY(mix_minor10 (state, 0x0BD149BD9));
+		mix_minor32 (state, 0x6476F303);
+		TRY(enc_20_major_5 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x11E8B829;
+	state[17] += my_sqrt(state[12]);
+
+	if(type == 0x0A)
+	{
+		state[13] *= 0x0A02FE00;
+		state[12] += state[6] + 0x21D7BF61;
+		TRY(enc_20_major_12 (state, state[19]));
+	}
+
+	if(type == 0x3)
+	{
+		mix_minor15 (state, 0x0B198ECA);
+		mix_minor30 (state);
+		TRY(enc_20_major_11 (state, state[2]));
+	}
+
+	state[7] ^= state[9] * 0x27219096;
+
+	if(type == 0x2)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		mix_minor16 (state, 0x88BE6100);
+		TRY(enc_20_major_13 (state, state[15]));
+		TRY(mix_minor6 (state));
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_22 (state, state[19]));
+	}
+
+	var_18 += 0x51CE37 - 0x2790F4EC;
+	state[2] = ROL(state[2], (var_18 ^ seed));
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_9 (u32 *state, u32 seed)
+{
+	u32 type = state[8] & 0x0F;
+	u32 var_18 = 0x3A6D8FF;
+
+	if(type == 0x0A)
+	{
+		mix_minor29 (state);
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_19 (state, state[0]));
+	}
+
+	var_18 += 0x51CE37 - 0x20E20A59;
+	seed |= seed + 0x20029BC7;
+
+	if(type == 0x3)
+	{
+		state[16] += 0x45e88961;
+		TRY(mix_minor8 (state));
+		TRY(enc_20_major_25 (state, state[15]));
+	}
+
+	if(type == 0x8)
+	{
+		TRY(mix_minor6 (state));
+		mix_minor22 (state);
+		TRY(enc_20_major_17 (state, state[2]));
+	}
+
+	state[8] |= state[9] * 106;
+
+	if(type == 0x0)
+	{
+		mix_minor23 (state, 0x7F3CF484);
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_4 (state, state[11]));
+	}
+
+	if(type == 0x0E)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		TRY(mix_minor7 (state));
+		TRY(enc_20_major_18 (state, state[13]));
+	}
+
+	var_18 += 0x51CE37 - 0x10983F4F;
+	state[10] &= state[6] - 0x1286A10;
+
+	if(type == 0x0C)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		TRY(mix_minor4 (state));
+		TRY(enc_20_major_15 (state, state[17]));
+	}
+
+	if(type == 0x2)
+	{
+		TRY(mix_minor8 (state));
+		mix_minor20 (state);
+		TRY(enc_20_major_3 (state, state[13]));
+	}
+
+	state[14] = ROR(state[14], (ROL(seed, 0x48)));
+
+	if(type == 0x9)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		mix_minor26 (state);
+		TRY(enc_20_major_21 (state, state[5]));
+	}
+
+	var_18 += 0x51CE37 - 0x5CA8FE0;
+	seed += 0x176CF052 - state[12];
+
+	if(type == 0x0F)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_16 (state, seed));
+	}
+
+	if(type == 0x1)
+	{
+		state[13] *= ROR(state[3], 0xA5);
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_1 (state, state[17]));
+	}
+
+	state[8] = ROL(state[8], (state[4] | 0x702AAAF));
+
+	if(type == 0x5)
+	{
+		state[9] ^= state[7] * 68;
+		mix_minor23 (state, 0x77C07A82);
+		TRY(enc_20_major_14 (state, state[6]));
+	}
+
+	if(type == 0x4)
+	{
+		state[5] -= state[15];
+		mix_minor25 (state, 0x5FEA0895);
+		TRY(enc_20_major_6 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0xECDFFDA;
+	state[13] *= state[2] * 101;
+
+	if(type == 0x0)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		TRY(enc_20_major_19 (state, state[10]));
+	}
+
+	if(type == 0x6)
+	{
+		mix_minor29 (state);
+		mix_minor22 (state);
+		TRY(enc_20_major_25 (state, seed));
+	}
+
+	state[11] |= ROR(state[17], 0xFD);
+
+	if(type == 0x0D)
+	{
+		state[10] *= state[10] - 0x05EAE6BF;
+		mix_minor16 (state, 0x981510F3);
+		TRY(enc_20_major_17 (state, state[18]));
+	}
+
+	var_18 += 0x51CE37 - 0x146D65D3;
+	state[17] &= seed * 48;
+
+	if(type == 0x7)
+	{
+		mix_minor27 (state);
+		TRY(mix_minor12 (state, 0x65EC261));
+		TRY(enc_20_major_4 (state, state[0]));
+	}
+
+	if(type == 0x0B)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_18 (state, state[16]));
+	}
+
+	state[13] |= ((state[3] << 5) - state[3]) << 1;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_10 (u32 *state, u32 seed)
+{
+	u32 type = (state[4] ^ state[12] ^ state[17]) & 0x0F;
+	u32 var_18 = 0x7A66DF8;
+
+	if(type == 0x9)
+	{
+		TRY(mix_minor12 (state, 0x9FEBCD24));
+		mix_minor23 (state, 0x7CB379C8);
+		TRY(enc_20_major_16 (state, state[14]));
+	}
+
+	if(type == 0x4)
+	{
+		mix_minor25 (state, 0x82BEBF6F);
+		state[10] *= state[10] - 0x05EAE6BF;
+		TRY(enc_20_major_1 (state, state[2]));
+	}
+
+	var_18 += 0x51CE37 - 0x4204423;
+	state[9] += state[11] < var_18 ? state[11] : state[9];
+
+	if(type == 0x6)
+	{
+		TRY(mix_minor10 (state, 0x0ECE6BFA0));
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	if(type == 0x8)
+	{
+		TRY(mix_minor7 (state));
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_6 (state, state[12]));
+	}
+
+	if(type == 0x2)
+	{
+		state[12] += state[6] + 0x21D7BF61;
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(enc_20_major_9 (state, state[1]));
+	}
+
+	state[10] *= my_cos(seed) ? 0x16B578EE : state[2];
+
+	if(type == 0x6)
+	{
+		mix_minor19 (state);
+		mix_minor29 (state);
+		TRY(enc_20_major_2 (state, state[10]));
+	}
+
+	if(type == 0x0D)
+	{
+		state[9] ^= state[7] * 68;
+		mix_minor35 (state);
+		TRY(enc_20_major_5 (state, state[10]));
+	}
+
+	var_18 += 0x51CE37 - 0x1472F876;
+	state[17] += seed * 77;
+
+	if(type == 0x1)
+	{
+		mix_minor26 (state);
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_12 (state, seed));
+	}
+
+	if(type == 0x0E)
+	{
+		TRY(mix_minor8 (state));
+		mix_minor31 (state, 0x9A35E7);
+		TRY(enc_20_major_11 (state, state[19]));
+	}
+
+	if(type == 0x1)
+	{
+		state[19] ^= state[15] ^ 0x03574ED3;
+		state[10] += 0x9F2550BD;
+		TRY(enc_20_major_13 (state, seed));
+	}
+
+	seed = ROL(seed, (state[7] * 0xD46040D));
+
+	if(type == 0x0C)
+	{
+		mix_minor21 (state, 0x542B84AF);
+		state[10] *= state[10] - 0x05EAE6BF;
+		TRY(enc_20_major_22 (state, state[2]));
+	}
+
+	if(type == 0x3)
+	{
+		mix_minor28 (state);
+		mix_minor26 (state);
+		TRY(enc_20_major_8 (state, state[4]));
+		state[12] *= state[12];
+		TRY(mix_minor6 (state));
+		TRY(enc_20_major_16 (state, state[18]));
+	}
+
+	var_18 += 0x51CE37 - 0xC2920FC;
+
+	state[4] += my_sin(state[0]) ? 0x1873296 : state[1];
+
+	if(type == 0x0A)
+	{
+		mix_minor26 (state);
+		TRY(mix_minor13 (state));
+		TRY(enc_20_major_1 (state, state[8]));
+	}
+
+	if(type == 0x4)
+	{
+		state[12] *= 0x0F44CB55;
+		state[16] += 0x75a864cf;
+		TRY(enc_20_major_14 (state, state[4]));
+	}
+
+	state[12] += 0x1C0BD6DB - state[11];
+
+	if(type == 0x7)
+	{
+		TRY(mix_minor7 (state));
+		mix_minor26 (state);
+		TRY(enc_20_major_6 (state, state[14]));
+	}
+
+	if(type == 0x2)
+	{
+		mix_minor15 (state, 0x11B24BD8);
+		TRY(mix_minor12 (state, 0x8951503F));
+		TRY(enc_20_major_9 (state, state[19]));
+	}
+
+	if(type == 0x0B)
+	{
+		state[0] += state[6] * 60;
+		state[4] -= state[17] ^ 0x2217CF47;
+		TRY(enc_20_major_2 (state, state[8]));
+	}
+
+	var_18 += 0x51CE37 - 0x64E3C4EE;
+	state[18] -= state[6] * 44;
+
+	if(type == 0x7)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		mix_minor29 (state);
+		TRY(enc_20_major_5 (state, state[15]));
+	}
+
+	if(type == 0x0)
+	{
+		mix_minor15 (state, 0x1253B4B9);
+		TRY(mix_minor3 (state));
+		TRY(enc_20_major_12 (state, seed));
+	}
+
+	if(type == 0x5)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_11 (state, state[10]));
+	}
+
+	state[6] ^= state[16] ^ 0x354E354D;
+
+	if(type == 0x0F)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		mix_minor28 (state);
+		TRY(enc_20_major_13 (state, seed));
+	}
+
+	if(type == 0x8)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		mix_minor32 (state, 0x8A0E1AD7);
+		TRY(enc_20_major_22 (state, state[8]));
+	}
+
+	var_18 += 0x51CE37 - 0x43F58A7F;
+	seed += var_18 ^ state[17];
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor8 (state));
+		mix_minor22 (state);
+		TRY(enc_20_major_8 (state, state[8]));
+	}
+
+	if(type == 0x5)
+	{
+		state[6] += 0xFE07AF0E - state[3];
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_16 (state, state[10]));
+	}
+
+	state[3] += state[13] + var_18;
+
+	RETURN;	  
+}
+
+
+THROWS_RET enc_20_major_11 (u32 *state, u32 seed)
+{
+	u32 type = (state[6] ^ seed ^ state[14]) & 0x0F;
+	u32 var_18 = 0x1E171745;
+
+	if(type == 0x2)
+	{
+		state[19] ^= state[15] ^ 0x03574ED3;
+		state[13] -= state[1];
+		TRY(enc_20_major_18 (state, state[0]));
+	}
+
+	if(type == 0x0)
+	{
+		state[7] ^= 0x414517EA;
+		TRY(mix_minor4 (state));
+		TRY(enc_20_major_15 (state, state[13]));
+	}
+
+	var_18 += 0x51CE37 - 0x1A8B0B2;
+	state[14] &= seed * 63;
+
+	if(type == 0x0A)
+	{
+		mix_minor19 (state);
+		mix_minor21 (state, 0x5D0DEC41);
+		TRY(enc_20_major_3 (state, state[10]));
+	}
+
+	if(type == 0x0F)
+	{
+		mix_minor34 (state);
+		mix_minor24 (state, 0x6372112C);
+		TRY(enc_20_major_21 (state, state[11]));
+	}
+
+	state[10] = ROR(state[10], (state[14] * 83));
+
+	if(type == 0x8)
+	{
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_16 (state, seed));
+	}
+
+	if(type == 0x4)
+	{
+		state[3] -= state[0] ^ 0x185F3B0D;
+		mix_minor25 (state, 0x82E916DD);
+		TRY(enc_20_major_1 (state, state[5]));
+	}
+
+	var_18 += 0x51CE37 - 0x141DA8E2;
+	state[11] ^= seed - 0x3C17609C;
+
+	if(type == 0x1)
+	{
+		state[12] += state[6] ^ 0x211F5E40;
+		mix_minor29 (state);
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	if(type == 0x7)
+	{
+		mix_minor33 (state, 0x0B7D63681);
+		TRY(mix_minor3 (state));
+		TRY(enc_20_major_6 (state, state[11]));
+	}
+
+	state[14] += my_sin(state[9]) ? 0x2D3F1771 : state[11];
+
+	if(type == 0x5)
+	{
+		TRY(mix_minor8 (state));
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_9 (state, state[9]));
+	}
+
+	if(type == 0x2)
+	{
+		state[12] *= 0x0F44CB55;
+		mix_minor31 (state, 0x87959F1F);
+		TRY(enc_20_major_2 (state, state[13]));
+	}
+
+	if(type == 0x1)
+	{
+		mix_minor21 (state, 0x643C9851);
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_5 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x287AE3DA;
+	state[18] &= state[17] + 0x21012257;
+
+	if(type == 0x0E)
+	{
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(mix_minor2 (state, 0x51F9A91A));
+		TRY(enc_20_major_12 (state, state[14]));
+	}
+
+	if(type == 0x0C)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		state[16] += 0x485c892b;
+		TRY(enc_20_major_18 (state, state[12]));
+	}
+
+	state[19] &= state[10] ^ 0x6FC516D5;
+
+	if(type == 0x6)
+	{
+		TRY(mix_minor5 (state));
+		state[12] += state[6] ^ 0x211F5E40;
+		TRY(enc_20_major_15 (state, state[13]));
+	}
+
+	if(type == 0x0B)
+	{
+		TRY(mix_minor6 (state));
+		mix_minor28 (state);
+		TRY(enc_20_major_3 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x5875981F;
+	state[8] ^= state[11] * 41 * 3;
+
+	if(type == 0x4)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor26 (state);
+		TRY(enc_20_major_21 (state, state[4]));
+	}
+
+	if(type == 0x3)
+	{
+		state[19] ^= state[15] ^ 0x03574ED3;
+		mix_minor17 (state);
+		TRY(enc_20_major_16 (state, state[9]));
+	}
+
+	state[0] += state[13] + var_18;
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor2 (state, 0x0F10F9D87));
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_1 (state, state[15]));
+	}
+
+	if(type == 0x9)
+	{
+		state[13] -= state[1];
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		TRY(enc_20_major_14 (state, state[18]));
+	}
+
+	var_18 += 0x51CE37 - 0x3809EB5D;
+	seed *= state[8] - 0x44260E37;
+
+	if(type == 0x3)
+	{
+		mix_minor26 (state);
+		state[10] += 0x08958821;
+		TRY(enc_20_major_6 (state, state[8]));
+	}
+
+	if(type == 0x0D)
+	{
+		state[0] += state[18] ^ 0x4AC16B8D;
+		state[7] ^= 0x129D6C5E;
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	state[2] &= ROL(state[19], var_18);
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_12 (u32 *state, u32 seed)
+{
+	u32 type = (state[7] ^ seed ^ state[18]) & 0x0F;
+	u32 var_18 = 0x9E24650;
+
+	if(type == 0x0F)
+	{
+		TRY(mix_minor7 (state));
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		TRY(enc_20_major_4 (state, state[17]));
+	}
+
+	var_18 += 0x51CE37 - 0x28E92C0D;
+	state[8] |= seed + 0xE43FC6B;
+
+	if(type == 0x1)
+	{
+		mix_minor32 (state, 0x979304F6);
+		mix_minor26 (state);
+		TRY(enc_20_major_18 (state, state[6]));
+	}
+
+	if(type == 0x8)
+	{
+		mix_minor20 (state);
+		TRY(mix_minor12 (state, 0x0F7131053));
+		TRY(enc_20_major_15 (state, state[13]));
+	}
+
+	state[19] ^= seed * 75;
+
+	if(type == 0x1)
+	{
+		mix_minor15 (state, 0x7F675F82);
+		state[13] *= 0x2C9514D7;
+		TRY(enc_20_major_3 (state, state[17]));
+	}
+
+	if(type == 0x0A)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(mix_minor1 (state, 0x433A0094));
+		TRY(enc_20_major_21 (state, state[8]));
+	}
+
+	var_18 += 0x51CE37 - 0x5763A27F;
+	state[1] ^= state[14] * 22;
+
+	if(type == 0x0)
+	{
+		mix_minor15 (state, 0x0D644EBB);
+		TRY(mix_minor6 (state));
+		TRY(enc_20_major_16 (state, state[14]));
+	}
+
+	state[7] |= seed ^ 0xE857063;
+
+	if(type == 0x4)
+	{
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		mix_minor24 (state, 0x0FFF1F0B9);
+		TRY(enc_20_major_1 (state, state[6]));
+	}
+
+	if(type == 0x9)
+	{
+		TRY(mix_minor3 (state));
+		mix_minor23 (state, 0x6E480136);
+		TRY(enc_20_major_14 (state, state[7]));
+	}
+
+	var_18 += 0x51CE37 - 0x676F0B3;
+	state[6] = ROR(state[6], (state[9] * var_18));
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor9 (state, 0x0CD88EA76));
+		TRY(mix_minor8 (state));
+		TRY(enc_20_major_6 (state, state[19]));
+	}
+
+	if(type == 0x0D)
+	{
+		mix_minor33 (state, 0x6E062619);
+		TRY(mix_minor11 (state, 0x408B95D2));
+		TRY(enc_20_major_9 (state, state[1]));
+	}
+
+	state[6] -= state[17] < 0x417E2F7B ? state[17] : state[19];
+
+	if(type == 0x5)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		mix_minor19 (state);
+		TRY(enc_20_major_2 (state, state[1]));
+	}
+
+	if(type == 0x0C)
+	{
+		state[13] -= state[1];
+		state[0] += state[6] * 60;
+		TRY(enc_20_major_5 (state, state[7]));
+	}
+
+	var_18 += 0x51CE37 - 0x4496C1CE;
+	state[6] |= my_sqrt(seed);
+
+	if(type == 0x2)
+	{
+		state[2] ^= state[15] << 5;
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_4 (state, seed));
+	}
+
+	state[2] ^= state[8] + 0x3E85747B;
+
+	if(type == 0x0)
+	{
+		mix_minor20 (state);
+		mix_minor21 (state, 0x7F696176);
+		TRY(enc_20_major_18 (state, state[14]));
+	}
+
+	if(type == 0x0B)
+	{
+		state[6] += 0xFE07AF0E - state[3];
+		mix_minor32 (state, 0x0BF47F027);
+		TRY(enc_20_major_15 (state, state[3]));
+	}
+
+	var_18 += 0x51CE37 - 0x345F167D;
+	state[2] &= seed;
+
+	if(type == 0x3)
+	{
+		mix_minor15 (state, 0x69AFA76);
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		TRY(enc_20_major_3 (state, state[4]));
+	}
+
+	if(type == 0x7)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(mix_minor4 (state));
+		TRY(enc_20_major_21 (state, state[14]));
+	}
+
+	seed += state[9] - var_18;
+
+	if(type == 0x0E)
+	{
+		TRY(mix_minor8 (state));
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_16 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x2393ADEE;
+	state[18] += state[11] * 91;
+
+	if(type == 0x2)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		mix_minor17 (state);
+		TRY(enc_20_major_1 (state, state[1]));
+	}
+
+	if(type == 0x6)
+	{
+		state[2] ^= state[15] << 5;
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	state[4] ^= state[4] - var_18;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_13 (u32 *state, u32 seed)
+{
+	u32 type = (state[4] ^ seed ^ state[18]) & 0x0F;
+	u32 var_18 = 0x26334b11;
+
+	if(type == 0x0C)
+	{
+		mix_minor29 (state);
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_15 (state, state[11]));
+	}
+
+	if(type == 0x4)
+	{
+		mix_minor33 (state, 0x0A095474);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_3 (state, seed));
+	}
+
+	seed ^= state[1] * 108;
+
+	if(type == 0x1)
+	{
+		TRY(mix_minor12 (state, 0x0AD86172C));
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_21 (state, state[7]));
+	}
+
+	if(type == 0x9)
+	{
+		state[0] += state[6] * 60;
+		mix_minor21 (state, 0x0C7D3C53A);
+		TRY(enc_20_major_16 (state, state[10]));
+	}
+
+	state[11] += state[8] - 0xEF3B680;
+
+	if(type == 0x5)
+	{
+		mix_minor20 (state);
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		TRY(enc_20_major_1 (state, seed));
+	}
+
+	if(type == 0x2)
+	{
+		mix_minor24 (state, 0x26995743);
+		state[9] += ROL(state[4], 0xE9);
+		TRY(enc_20_major_14 (state, state[3]));
+	}
+
+	var_18 += 0x51CE37 - 0x3B6D1B57;
+	state[19] -= seed ^ 0x42B04005;
+
+	if(type == 0x8)
+	{
+		TRY(mix_minor13 (state));
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_6 (state, state[2]));
+	}
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor13 (state));
+		mix_minor17 (state);
+		TRY(enc_20_major_9 (state, seed));
+	}
+
+	state[0] += my_sqrt(state[16]);
+
+	if(type == 0x0B)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		mix_minor14 (state, 0x3D2FA7C7);
+		TRY(enc_20_major_2 (state, state[19]));
+	}
+
+	if(type == 0x0D)
+	{
+		TRY(mix_minor4 (state));
+		mix_minor26 (state);
+		TRY(enc_20_major_5 (state, state[7]));
+	}
+
+	var_18 += 0x51CE37 - 0x921FDE;
+	seed += state[17] | var_18;
+
+	if(type == 0x1)
+	{
+		TRY(mix_minor1 (state, 0x0D3280A0));
+		state[7] ^= 0x3EB9D37;
+		TRY(enc_20_major_12 (state, state[12]));
+	}
+
+	if(type == 0x0E)
+	{
+		mix_minor28 (state);
+		mix_minor31 (state, 0x994A9D7F);
+		TRY(enc_20_major_11 (state, seed));
+	}
+
+	state[2] = ROR(state[2], (state[15] < 0x3F2998C ? state[15] : seed));
+
+	if(type == 0x5)
+	{
+		TRY(mix_minor12 (state, 0x2DD0E73));
+		mix_minor26 (state);
+		TRY(enc_20_major_15 (state, seed));
+	}
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor9 (state, 0x21602B81));
+		mix_minor15 (state, 0x4CF85493);
+		TRY(enc_20_major_3 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x1979BCBA;
+	state[4] += state[2] ^ 0x1579499;
+
+	if(type == 0x0A)
+	{
+		TRY(mix_minor7 (state));
+		state[5] += state[0] ^ 0x3E17ADD3;
+		TRY(enc_20_major_21 (state, state[5]));
+	}
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor5 (state));
+		state[0] += state[6] * 60;
+		TRY(enc_20_major_16 (state, state[8]));
+	}
+	
+	seed -= state[2] * 116;
+
+	if(type == 0x0)
+	{
+		state[13] -= state[1];
+		state[19] ^= state[15] ^ 0x03574ED3;
+		TRY(enc_20_major_1 (state, seed));
+	}
+
+	if(type == 0x0F)
+	{
+		mix_minor21 (state, 0x58549EB8);
+		TRY(mix_minor10 (state, 0x0BCBC7BB));
+		TRY(enc_20_major_14 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x23629E3F;
+	state[10] -= state[10] | var_18;
+
+	if(type == 0x6)
+	{
+		TRY(mix_minor3 (state));
+		TRY(mix_minor6 (state));
+		TRY(enc_20_major_6 (state, state[11]));
+	}
+
+	if(type == 0x4)
+	{
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		mix_minor15 (state, 0x3F5EC9D);
+		TRY(enc_20_major_9 (state, state[19]));
+	}
+
+	seed += state[17] ^ var_18;
+
+	if(type == 0x7)
+	{
+		TRY(mix_minor8 (state));
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_2 (state, state[8]));
+	}
+
+	if(type == 0x2)
+	{
+		TRY(mix_minor3 (state));
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_5 (state, state[18]));
+	}
+
+	state[16] -= state[11] < 0x1E7D86EE ? state[11] : seed;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_14 (u32 *state, u32 seed)
+{
+	u32 type = (state[8] ^ seed ^ state[11]) % 0x0E;
+	u32 var_18 = 0xf74450ff;
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor1 (state, 0x0E32BDCA0));
+		mix_minor30 (state);
+		TRY(enc_20_major_23 (state, state[19]));
+	}
+
+	seed -= seed ^ var_18;
+	
+	if(type == 0x1)
+	{
+		mix_minor32 (state, 0x788C78A4);
+		state[13] -= state[1];
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	state[13] -= my_cos(state[3]) ? var_18 : state[4];
+
+	if(type == 0x9)
+	{
+		state[9] |= state[7] ^ 0x2A19119F;
+		mix_minor33 (state, 0x79D06B80);
+		TRY(enc_20_major_19 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x2E870A32;
+	state[9] ^= state[6] * 89;
+
+	if(type == 0x7)
+	{
+		mix_minor26 (state);
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(enc_20_major_25 (state, state[11]));
+	}
+
+	if(type == 0x8)
+	{
+		state[13] -= state[1];
+		state[4] ^= ROR(0x292E3197, 0x85);
+		TRY(enc_20_major_17 (state, state[7]));
+	}
+
+	state[1] ^= my_sin(seed) ? var_18 : state[17];
+
+	if(type == 0x0D)
+	{
+		mix_minor21 (state, 0x7EDBE9A7);
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		TRY(enc_20_major_4 (state, state[4]));
+	}
+
+	var_18 += 0x51CE37 - 0x2E50FA12;
+	state[17] += state[13] < 0xAC24EB8 ? state[13] : state[9];
+
+	if(type == 0x5)
+	{
+		state[4] ^= ROR(0x798A34E7, 0x85);
+		mix_minor24 (state, 0x56245E85);
+		TRY(enc_20_major_18 (state, state[1]));
+	}
+
+	seed |= ROR(state[18], 0xEB);
+
+	if(type == 0x3)
+	{
+		mix_minor20 (state);
+		state[5] -= state[15];
+		TRY(enc_20_major_15 (state, state[0]));
+	}
+
+	var_18 += 0x51CE37 - 0x14D04E2A;
+	state[4] += seed + 0xF65EFBD;
+
+	if(type == 0x0A)
+	{
+		TRY(mix_minor5 (state));
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_3 (state, state[5]));
+	}
+
+	if(type == 0x0B)
+	{
+		mix_minor23 (state, 0x7E789968);
+		TRY(mix_minor6 (state));
+		TRY(enc_20_major_21 (state, seed));
+	}
+
+	state[4] ^= ROL(state[8], var_18);
+
+	if(type == 0x6)
+	{
+		TRY(mix_minor10 (state, 0x0EC30BD82));
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_16 (state, state[13]));
+	}
+
+	var_18 += 0x51CE37 - 0x214227C5;
+	seed *= state[6] + 0x6BBEB974;
+
+	if(type == 0x2)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_1 (state, state[6]));
+	}
+
+	state[16] -= state[2] * var_18;
+
+	if(type == 0x0C)
+	{
+		state[19] ^= state[15] ^ 0x03574ED3;
+		mix_minor33 (state, 0x7667AFED);
+		TRY(enc_20_major_23 (state, state[14]));
+	}
+
+	state[13] = ROR(state[13], my_sqrt(seed));
+
+	if(type == 0x4)
+	{
+		mix_minor19 (state);
+		mix_minor17 (state);
+		TRY(enc_20_major_24 (state, state[0]));
+	}
+
+	if(type == 0x0)
+	{
+		state[7] ^= 0x0C9D1F4A2;
+		mix_minor26 (state);
+		TRY(enc_20_major_19 (state, seed));
+	}
+
+	state[12] -= my_sin(state[10]) ? 0x2818AE3C : seed;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_15 (u32 *state, u32 seed)
+{
+	u32 type = (state[17] ^ seed ^ state[19]) % 0x09;
+	u32 var_14 = 0xf9976b51;
+
+	state[19] = ROR(state[19], (state[19] + 0x222C438A));
+
+	if(type == 0x4)
+	{
+		mix_minor19 (state);
+		mix_minor25 (state, 0x0CF99677E);
+		mix_minor37 (state);
+	}
+	
+	state[5] ^= seed + 0x1FF8749D;
+
+	if(type == 0x5)
+	{
+		mix_minor14 (state, 0x95649C47);
+		state[9] += ROL(state[4], 0xE9);
+		mix_minor36 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x4E1FF97A;
+	state[13] ^= state[15] + 0x19AD9D3;
+
+	if(type == 0x0)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		mix_minor26 (state);
+		TRY(enc_20_major_23 (state, state[13]));
+	}
+
+	state[3] = ROR(state[3], my_sqrt(state[9]));
+
+	if(type == 0x1)
+	{
+		state[16] += 0x188ae78f;
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_24 (state, state[12]));
+	}
+
+	var_14 += 0x51CE37 - 0x29D1BF9E;
+	seed ^= state[12] ^ var_14;
+
+	if(type == 0x0)
+	{
+		state[14] |= state[3] ^ 0x04345732;
+		mix_minor23 (state, 0x640D6589);
+		TRY(enc_20_major_19 (state, state[6]));
+	}
+
+	state[0] = ROL(state[0], (var_14 & seed));
+
+	if(type == 0x7)
+	{
+		mix_minor20 (state);
+		TRY(mix_minor9 (state, 0x0D3D79CB4));
+		TRY(enc_20_major_25 (state, state[6]));
+	}
+
+	var_14 += 0x51CE37 - 0x43D4EFBB;
+	state[18] ^= state[9] - 0x5606038;
+
+	if(type == 0x3)
+	{
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		state[16] += 0x6a07a3d0;
+		TRY(enc_20_major_17 (state, state[8]));
+	}
+
+	state[9] |= my_sin(state[7]) ? var_14 : state[6];
+
+	if(type == 0x2)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(mix_minor6 (state));
+		TRY(enc_20_major_4 (state, state[1]));
+	}
+
+	if(type == 0x6)
+	{
+		mix_minor27 (state);
+		mix_minor22 (state);
+		TRY(enc_20_major_18 (state, state[0]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_16 (u32 *state, u32 seed)
+{
+	u32 type = (state[11] ^ seed ^ state[5]) % 0x0C;
+	u32 var_18 = 0x16BFB62C;
+
+	if(type == 0x5)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor22 (state);
+		mix_minor37 (state);
+	}
+
+	var_18 += 0x51CE37 - 0xC1435B7;
+	state[4] ^= seed - var_18;
+
+	if(type == 0x2)
+	{
+		TRY(mix_minor5 (state));
+		state[0] += state[18] ^ 0x4AC16B8D;
+		mix_minor36 (state);
+	}
+
+	state[15] -= var_18 ^ seed;
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor2 (state, 0x80E3E69E));
+		mix_minor33 (state, 0x8BD64F99);
+		TRY(enc_20_major_23 (state, state[4]));
+	}
+
+	var_18 += 0x51CE37 - 0x3E87DD87;
+	state[8] ^= my_sqrt(state[16]);
+
+	if(type == 0x3)
+	{
+		mix_minor18 (state, 0x3BA8DA0B);
+		state[13] -= state[1];
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	if(type == 0x0A)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_19 (state, state[6]));
+	}
+
+	seed -= seed & 0x179DA692;
+
+	if(type == 0x4)
+	{
+		TRY(mix_minor8 (state));
+		TRY(mix_minor5 (state));
+		TRY(enc_20_major_25 (state, state[0]));
+	}
+
+	var_18 += 0x51CE37 - 0xE35570;
+	state[8] ^= state[15] * 95;
+
+	if(type == 0x0)
+	{
+		mix_minor32 (state, 0x6191EFEC);
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		TRY(enc_20_major_17 (state, state[9]));
+	}
+
+	state[6] &= my_sin(seed) ? var_18 : state[14];
+
+	if(type == 0x9)
+	{
+		state[6] += 0xFE07AF0E - state[3];
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_4 (state, state[0]));
+	}
+
+	if(type == 0x6)
+	{
+		state[7] |= 0xa885099;
+		mix_minor18 (state, 0x3E9D8E2F);
+		TRY(enc_20_major_18 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x390A1A2;
+
+	seed -= my_cos(state[19]) ? 0xC818C81 : state[19];
+
+	if(type == 0x7)
+	{
+		mix_minor24 (state, 0x65CCD7B0);
+		state[18] -=  state[13] ^ 0x154ABCDF;
+		TRY(enc_20_major_15 (state, state[14]));
+	}
+
+	state[10] += state[1] + 0x217F7A00;
+
+	if(type == 0x1)
+	{
+		state[0] += state[18] ^ 0x4AC16B8D;
+		mix_minor27 (state);
+		TRY(enc_20_major_3 (state, state[17]));
+	}
+
+	var_18 += 0x51CE37 - 0x3B888541;
+	state[5] &= ROR(state[0], var_18);
+
+	if(type == 0x8)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_21 (state, state[13]));
+	}
+
+	if(type == 0x0B)
+	{
+		mix_minor30 (state);
+		state[13] += state[15] < 0x137BFFEB ? state[15] : state[11];
+		mix_minor37 (state);
+	}
+
+	state[12] |= ROL(state[7], var_18);
+	
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_17 (u32 *state, u32 seed)
+{
+	u32 type = (state[8] ^ state[7] ^ state[12]) % 0x06;
+	u32 var_14 = 0xb87e62ab;
+
+	state[1] |= state[4] ^ 0x10104D4;
+
+	if(type == 0x3)
+	{
+		mix_minor20 (state);
+		mix_minor33 (state, 0x0A9EB159D);
+		mix_minor37 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x3CB4EBF6;
+	seed = ((seed ^ 0x1EA9DA8) + seed) * state[18] * 13;
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor1 (state, 0x10381FF0));
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor36 (state);
+	}
+	
+	state[14] += state[12] * 25;
+	var_14 += 0x51CE37 - 0x14CF48EC;
+	state[2] -= my_sqrt(state[5]);
+
+	if(type == 0x4)
+	{
+		mix_minor16 (state, 0x39E08612);
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_23 (state, seed));
+	}
+
+	state[6] &= state[4] - var_14;
+	var_14 += 0x51CE37 - 0x2A19B6A4;
+	state[1] ^= state[16] + 0x988DB31;
+
+	if(type == 0x0)
+	{
+		state[7] ^= 0x0A98896DD;
+		TRY(mix_minor3 (state));
+		TRY(enc_20_major_24 (state, state[6]));
+	}
+
+	state[6] += ROR(seed, var_14);
+	var_14 += 0x51CE37 - 0x143D834B;
+	seed -= state[0] < var_14 ? state[0] : state[3];
+
+	if(type == 0x2)
+	{
+		mix_minor35 (state);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_19 (state, seed));
+	}
+
+	seed *= my_sqrt(seed);
+	var_14 += 0x51CE37 - 0x9210725;
+
+	state[5] *= my_cos(seed) ? var_14 : state[19];
+
+	if(type == 0x5)
+	{
+		mix_minor28 (state);
+		state[13] *= 0x0A02FE00;
+		TRY(enc_20_major_25 (state, state[13]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_18 (u32 *state, u32 seed)
+{
+	u32 type = (state[14] ^ state[11] ^ state[17]) & 0x07;
+	u32 var_14 = 0x128c2b75;
+
+	state[11] ^= ROR(state[13], var_14);
+
+	if(type == 0x5)
+	{
+		state[6] += state[19] - 0x3F5675D6;
+		mix_minor18 (state, 0x3A03C13B);
+		mix_minor37 (state);
+	}
+
+	state[3] = ROR(state[3], (state[16] * 37 * 3));
+
+	if(type == 0x2)
+	{
+		state[5] += state[0] ^ 0x3E17ADD3;
+		mix_minor34 (state);
+		mix_minor36 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x38937140;
+	state[11] -= my_sqrt(state[9]);
+	state[12] += 0x17267C5B - state[11];
+
+	if(type == 0x3)
+	{
+		mix_minor31 (state, 0x0CA8D3E2B);
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_23 (state, state[0]));
+	}
+
+	var_14 += 0x51CE37 - 0x390FD83B;
+	state[17] ^= seed ^ 0x35EDDEA4; 
+
+	if(type == 0x0)
+	{
+		state[10] += 0x3409139C;
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		TRY(enc_20_major_24 (state, state[6]));
+	}
+
+	state[6] *= state[17] + 0xB89B51C;
+
+	if(type == 0x1)
+	{
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(mix_minor2 (state, 0x90254266));
+		TRY(enc_20_major_19 (state, state[6]));
+	}
+
+	var_14 += 0x51CE37 - 0x4A885C91;
+	state[19] ^= state[3] < var_14 ? state[3] : state[1];
+	state[15] ^= state[12] * 23;
+
+	if(type == 0x7)
+	{
+		state[13] *= ROR(state[3], 0xA5);
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_25 (state, state[9]));
+	}
+
+	var_14 += 0x51CE37 - 0x47CA3B11;
+	state[10] += 0x395F1D29 - seed;
+
+	if(type == 0x0)
+	{
+		mix_minor24 (state, 0x29CFE0BE);
+		mix_minor15 (state, 0x42E1F1A9);
+		TRY(enc_20_major_17 (state, state[16]));
+	}
+
+	state[1] = ROL(state[1], ROL(state[8],var_14));
+	var_14 += 0x51CE37 - 0x466E93D6;
+	seed -= state[9] ^ var_14;
+
+	if(type == 0x6)
+	{
+		TRY(mix_minor2 (state, 0x10B4EAEF));
+		mix_minor24 (state, 0x298D7844);
+		TRY(enc_20_major_4 (state, seed));
+	}
+
+	state[18] = ROL(state[18], (state[7] & 0x34490731));
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_19 (u32 *state, u32 seed)
+{
+	u32 type = (state[18] ^ state[6] ^ state[15]) & 0x03;
+	u32 var_14 = 0xe42c799d;
+
+	{
+		u32 var = state[15] * seed * 0x3C02927;
+		seed = ROR(var, var * 7);
+	}
+
+	if(type == 0x0)
+	{
+		state[12] += state[6] ^ 0x211F5E40;
+		mix_minor18 (state, 0x58053BA7);
+		mix_minor37 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x2B57AC24;
+	seed ^= state[6] ^ 0xC1FCDA0;
+
+	state[5] -= my_cos(state[6]) ? var_14 : state[10];
+
+	if(type == 0x0)
+	{
+		mix_minor18 (state, 0x4370ACC2);
+		mix_minor16 (state, 0x56BB8205);
+		mix_minor36 (state);
+	}
+
+	var_14 += 0x51CE37 - 0x4EADE9E0;
+	seed *= state[19] + 0x11500E47;	
+	state[3] ^= ROL(state[4], 0x34);
+
+	if(type == 0x3)
+	{
+		state[2] ^= state[15] << 5;
+		state[19] ^= state[15] ^ 0x03574ED3;
+		TRY(enc_20_major_23 (state, state[15]));
+	}
+
+	var_14 += 0x51CE37 - 0x399B1DAD;
+	state[13] -= my_sqrt(seed);
+
+	if(my_cos(seed))
+		seed = ROR(seed, 0x7);
+	else
+		seed = ROR(seed, state[10]);
+
+	state[16] *= state[15] * 74;
+
+	if(type == 0x1)
+	{
+		state[7] ^= 0x0B3BB63F;
+		state[4] -= state[17] ^ 0x2217CF47;
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_21 (u32 *state, u32 seed)
+{
+	u32 type = (state[1] ^ state[0] ^ state[16]) % 0x0B;
+	u32 var_14 = 0xcb1d507c;
+
+	if(type == 0x2)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		mix_minor37 (state);
+	}
+
+	state[5] -= seed;
+
+	if(type == 0x8)
+	{
+		state[16] += 0x2b058ae8;
+		state[6] += 0xFE07AF0E - state[3];
+		mix_minor36 (state);
+	}
+
+	state[17] ^= ROL(state[18], var_14);
+
+	if(type == 0x4)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor32 (state, 0x79FB5201);
+		TRY(enc_20_major_23 (state, state[7]));
+	}
+
+	var_14 += 0x51CE37 - 0x419B6D78;
+	state[0] ^= my_sqrt(state[12]);
+
+	if(type == 0x0)
+	{
+		state[19] ^= state[15] ^ 0x03574ED3;
+		TRY(mix_minor5 (state));
+		TRY(enc_20_major_24 (state, state[2]));
+	}
+
+	state[10] ^= seed * 108;
+
+	if(type == 0x9)
+	{
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		mix_minor32 (state, 0x6DDF8C10);
+		TRY(enc_20_major_19 (state, state[10]));
+	}
+
+	var_14 += 0x51CE37 - 0x2CBEEE4;
+
+	state[8] -= my_cos(state[12]) ? var_14 : seed;
+
+	if(type == 0x7)
+	{
+		mix_minor19 (state);
+		mix_minor29 (state);
+		TRY(enc_20_major_25 (state, state[1]));
+	}
+
+	seed ^= my_sin(seed) ? 0x2C99FADE : state[14];
+
+	if(type == 0x1)
+	{
+		TRY(mix_minor12 (state, 0x3FCF3163));
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_17 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x6D17119;
+
+	state[15] += my_cos(state[11]) ? 0x1BEC01F : seed;
+
+	if(type == 0x5)
+	{
+		mix_minor15 (state, 0x15D31F7C);
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(enc_20_major_4 (state, state[15]));
+	}
+
+	state[1] = ROR(state[1], (var_14 * state[16]));
+
+	if(type == 0x0)
+	{
+		TRY(mix_minor10 (state, 0x0FDE30E03));
+		state[9] |= state[7] ^ 0x2A19119F;
+		TRY(enc_20_major_18 (state, seed));
+	}
+
+	var_14 += 0x51CE37 - 0x25D9C0CA;
+	state[7] &= state[15] * 0xA8F285;
+
+	if(type == 0x0A)
+	{
+		state[7] ^= 0x0EF011757;
+		mix_minor33 (state, 0x2412315A);
+		TRY(enc_20_major_15 (state, state[13]));
+	}
+
+	if(type == 0x3)
+	{
+		state[12] += state[6] + 0x21D7BF61;
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(enc_20_major_3 (state, state[10]));
+	}
+
+	state[3] *= my_sin(state[8]) ? var_14 : state[2];
+
+	if(type == 0x6)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		mix_minor22 (state);
+		mix_minor37 (state);
+	}
+
+	state[11] ^= ((state[17] << 4) + state[17]) << 2;
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_22 (u32 *state, u32 seed)
+{
+	u32 type = (state[5] ^ state[0] ^ seed) & 0x0F;
+	u32 var_18 = 0x7C36F793;
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor6 (state));
+		mix_minor31 (state, 0x4BB6BBB3);
+		TRY(enc_20_major_3 (state, seed));
+	}
+
+	if(type == 0x0)
+	{
+		mix_minor25 (state, 0x3B3E4742);
+		state[13] -= state[1];
+		TRY(enc_20_major_21 (state, state[2]));
+	}
+
+	var_18 += 0x51CE37 - 0x513E5C0;
+	state[14] ^= ROL(state[16], 0x76);
+
+	if(type == 0x0C)
+	{
+		state[10] += 0x830BA927;
+		mix_minor32 (state, 0x6F3A3876);
+		TRY(enc_20_major_16 (state, state[8]));
+	}
+
+	if(type == 0x1)
+	{
+		mix_minor34 (state);
+		state[16] += 0x1bc7b861;
+		TRY(enc_20_major_1 (state, state[6]));
+	}
+
+	state[12] ^= state[11] < 0x521B2180 ? state[11] : state[9];
+
+	if(type == 0x1)
+	{
+		mix_minor31 (state, 0x42261FF2);
+		state[0] += state[6] * 60;
+		TRY(enc_20_major_14 (state, state[15]));
+	}
+
+	if(type == 0x8)
+	{
+		TRY(mix_minor5 (state));
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_6 (state, state[13]));
+	}
+
+	if(type == 0x4)
+	{
+		state[9] += ROL(state[4], 0xE9);
+		state[2] *= state[3] + 0x0D6863A6;
+		TRY(enc_20_major_9 (state, state[16]));
+	}
+
+	var_18 += 0x51CE37 - 0x10AD1B5;
+	state[18] &= my_sqrt(state[9]);
+
+	if(type == 0x5)
+	{
+		TRY(mix_minor4 (state));
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_2 (state, state[2]));
+	}
+
+	if(type == 0x6)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		state[6] += 0xFE07AF0E - state[3];
+		TRY(enc_20_major_5 (state, state[14]));
+	}
+
+	state[18] += 0 - (((state[16] * 15) << 3) - state[16]);
+
+	if(type == 0x9)
+	{
+		state[4] ^= ROR(0x12C33EF4, 0x85);
+		mix_minor14 (state, 0x827C0747);
+		TRY(enc_20_major_12 (state, state[10]));
+	}
+
+	if(type == 0x0A)
+	{
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		state[13] *= 0x6CD0251E;
+		TRY(enc_20_major_11 (state, state[0]));
+	}
+
+	if(type == 0x6)
+	{
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor14 (state, 0x9CBCA826);
+		TRY(enc_20_major_13 (state, seed));
+	}
+
+	var_18 += 0x51CE37 - 0x2DDCCCC0;
+	state[13] ^= var_18 ^ seed;
+
+	if(type == 0x2)
+	{
+		state[10] += 0x6467451;
+		state[4] -= state[17] ^ 0x2217CF47;
+		TRY(enc_20_major_3 (state, state[2]));
+	}
+
+	if(type == 0x7)
+	{
+		state[4] -= state[17] ^ 0x2217CF47;
+		state[0] += state[18] ^ 0x4AC16B8D;
+		TRY(enc_20_major_21 (state, state[0]));
+	}
+
+	state[6] -= my_sqrt(state[10]);
+
+	if(type == 0x3)
+	{
+		TRY(mix_minor9 (state, 0x5B9D1F9));
+		state[10] += 0x08958821;
+		TRY(enc_20_major_16 (state, state[8]));
+	}
+
+	if(type == 0x4)
+	{
+		state[13] -= state[1];
+		mix_minor15 (state, 0x6C475699);
+		TRY(enc_20_major_1 (state, seed));
+	}
+
+	if(type == 0x0D)
+	{
+		state[12] += state[6] + 0x21D7BF61;
+		state[13] *= ROR(state[3], 0xA5);
+		TRY(enc_20_major_14 (state, state[2]));
+	}
+
+	var_18 += 0x51CE37 - 0xE3C05FB;
+	seed -= ROR(state[8], 0x91);
+
+	if(type == 0x0F)
+	{
+		state[19] += 0x12B9E29D - state[12];
+		state[0] += state[6] * 60;
+		TRY(enc_20_major_6 (state, state[4]));
+	}
+
+	if(type == 0x2)
+	{
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		mix_minor20 (state);
+		TRY(enc_20_major_9 (state, state[16]));
+	}
+
+	state[14] = ROR(state[14], (seed - var_18));
+
+	if(type == 0x0B)
+	{
+		state[19] ^= my_cos(state[9]) ? 0x057337B8 : state[14];
+		state[9] += ROL(state[4], 0xE9);
+		TRY(enc_20_major_2 (state, state[9]));
+	}
+
+	if(type == 0x5)
+	{
+		state[19] += 0x12B9E29D - state[12];
+		TRY(mix_minor4 (state));
+		TRY(enc_20_major_5 (state, state[6]));
+	}
+
+	if(type == 0x0)
+	{
+		mix_minor20 (state);
+		mix_minor25 (state, 0x849F0F1F);
+		TRY(enc_20_major_12 (state, state[14]));
+	}
+
+	var_18 += 0x51CE37 - 0x31DBA030;
+	state[8] ^= ROR(seed, var_18);
+
+	if(type == 0x0E)
+	{
+		mix_minor24 (state, 0x5159E8CF);
+		state[3] -= state[0] ^ 0x185F3B0D;
+		TRY(enc_20_major_11 (state, seed));
+	}
+
+	state[0] += my_sin(state[0]) ? var_18 : state[14];
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_23 (u32 *state, u32 seed)
+{
+	u32 type = seed & 0x01;
+
+	state[4] += state[8] - 0x16F911E4;
+	state[9] ^= state[2] * 11;
+	state[10] ^= state[7] < 0x402226F ? state[7] : state[2];
+
+	seed |= state[17] - 0x1E97AEB;
+	seed |= state[14] < 0xf3b1e0b3 ? state[14] : state[5];
+
+	if(type == 0x00)
+	{
+		state[7] &= state[13] ^ 0x21AAF758;
+		mix_minor32 (state, 0x640F077D);
+		mix_minor37 (state);
+	}
+
+	state[1] += ((((0 - state[19]) << 2) - state[19]) * 5) << 2;
+	state[1] += seed - 0x18D1B90;
+	state[7] -= state[3] ^ 0x44de1958;
+	state[11] ^= ROL(state[2], 0xA9);
+	state[17] += ROL(state[12], 0x1B);
+
+	if(type == 0)
+	{
+		TRY(mix_minor9 (state, 0xDC306F47));
+		state[9] ^= state[7] * 68;
+		mix_minor36 (state);
+	}
+
+	state[7] = ROR(state[7], (state[13] + 0x16075020));
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_24 (u32 *state, u32 seed)
+{
+	u32 type = (state[2] ^ seed ^ state[7]) % 0x03;
+
+	seed *= my_cos(seed) ? 0x6be8f94 : seed;
+
+	state[2] ^= state[2] + 0x3786364B;
+	state[17] = ROL(state[17], (seed - 0x2A2F6EB0));
+
+	if(type == 0)
+	{
+		mix_minor35 (state);
+		mix_minor27 (state);
+		mix_minor37 (state);
+	}
+
+	seed += state[3] ^ 0xff342d3c;
+	seed = ROL(seed, my_sin(state[11]) ? 0x11 : state[0]);
+	state[5] += my_sin(state[16]) ? 0x3AF2A8E2 : state[16];
+    
+	if(type == 0x00)
+	{
+		TRY(mix_minor5 (state));
+		state[2] *= state[3] + 0x0D6863A6;
+		mix_minor36 (state);
+	}
+
+	state[13] ^= my_cos(state[16]) ? 0xf6951daa : state[1];
+	state[18] |= state[17] & 0x6361A322;
+
+	seed += my_sqrt(state[10]);
+
+	if(type == 0x01)
+	{
+		state[13] *= ROR(state[3], 0xA5);
+		mix_minor15 (state, 0xAC5ABC0C);
+		TRY(enc_20_major_23 (state, state[15]));
+	}
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_major_25 (u32 *state, u32 seed)
+{
+	u32 type = (state[7] ^ state[2] ^ seed) % 0x05;
+
+	state[2] -= 0x31b8a51 & seed;
+
+	if(type == 0x03)
+	{
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		mix_minor21 (state, 0x6EAF97B0);
+		mix_minor37 (state);
+	}
+
+	state[1] &= ROR(seed, 0xBD);
+
+	if(my_cos(state[1]))
+		state[12] = ROL(state[12], 0x1b);
+	else
+		state[12] = ROL(state[12], state[5]);
+
+	if(type == 0x02)
+	{
+		TRY(mix_minor4 (state));
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		mix_minor36 (state);
+	}
+	
+	seed = ROR(seed, my_sqrt(seed));
+	state[17] += (state[19] * 61) << 1;
+
+	if(type == 0x00)
+	{
+		state[10] += 0x08958821;
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_23 (state, state[10]));
+	}
+
+	if(my_cos(state[6]))
+		state[18] = ROR(state[18], 0x11);
+	else
+		state[18] = ROR(state[18], state[1]);
+
+	seed ^= 0xc63d7671 * seed;
+
+	if(type == 0x04)
+	{
+		TRY(mix_minor7 (state));
+		mix_minor18 (state, 0x3006CEAA);
+		TRY(enc_20_major_24 (state, seed));
+	}
+
+	state[10] -= my_sqrt(seed);
+	state[11] &= (seed << 6) - seed;
+
+	if(type == 0x00)
+	{
+		state[18] *= state[10] + 0x466E09CF;
+		mix_minor15 (state, 0x69F5B967);
+		TRY(enc_20_major_19 (state, state[17]));
+	}
+
+	state[1] = ROL(state[1], (state[15] + 0xbbf8f6f9));
+
+	RETURN;
+}
+
+
+THROWS_RET enc_20_mix (u32 *state, u32 seed)
+{
+	u32 type = (state[5] ^ state[9] ^ state[19]) & 0x0F;
+
+	switch (type) {
+	case 0x0:
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		TRY(mix_minor5 (state));
+		TRY(enc_20_major_5 (state, 0x45835EB3));
+		break;
+	case 0x5:
+		TRY(mix_minor8 (state));
+		mix_minor24 (state, 0x3B1AD72C);
+		TRY(enc_20_major_6 (state, state[9]));
+		break;
+	case 0x8:
+		mix_minor28 (state);
+		state[6] += state[19] - 0x3F5675D6;
+		TRY(enc_20_major_9 (state, state[10]));
+		break;
+	case 0x9:
+		TRY(mix_minor7 (state));
+		TRY(mix_minor13 (state));
+		TRY(enc_20_major_14 (state, seed));
+		break;
+	case 0x0A:
+		TRY(mix_minor5 (state));
+		mix_minor25 (state, 0x0E8D8F62);
+		TRY(enc_20_major_2 (state, state[0]));
+		break;
+	}
+
+	state[2] ^= state[6] + 0x1847DE17;
+
+	switch (type) {
+	case 0x1:
+		state[9] ^= 0x1df05ea2;
+		state[19] += 0x12B9E29D - state[12];
+		TRY(enc_20_major_12 (state, 0x45835EB3));
+		break;
+	case 0x0A:
+		mix_minor28 (state);
+		state[12] *= state[12];
+		TRY(enc_20_major_11 (state, state[6]));
+		break;
+	}
+
+	state[19] += (state[12] * 13) << 3;
+
+	switch (type) {
+	case 0x2:
+		mix_minor28 (state);
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		TRY(enc_20_major_13 (state, state[19]));
+		state[6] += state[19] - 0x3F5675D6;
+		mix_minor24 (state, 0x678012FE);
+		TRY(enc_20_major_22 (state, state[0]));
+		break;
+	case 0x6:
+		TRY(mix_minor1 (state, 0x706A6BC));
+		TRY(mix_minor2 (state, 0x82B598A1));
+		TRY(enc_20_major_8 (state, 0x45835EB3));
+		break;
+	}
+
+	state[7] -= state[14] & 0x1ADA7FA;
+
+	switch (type) {
+	case 0x4:
+		mix_minor20 (state);
+		state[12] += state[6] + 0x21D7BF61;
+		TRY(enc_20_major_10 (state, state[16]));
+		break;
+	case 0x6:
+		TRY(mix_minor7 (state));
+		TRY(mix_minor2 (state, 0x0D2950F8C));
+		TRY(enc_20_major_7 (state, 0x45835EB3));
+		break;
+	}
+
+	seed = (state[0] + 0xd092d1bb) & 0x45835EB3;
+
+	switch (type) {
+	case 0x3:
+		TRY(mix_minor5 (state));
+		state[7] &= state[13] ^ 0x21AAF758;
+		TRY(enc_20_major_9 (state, state[17]));
+		break;
+	case 0x4:
+		state[13] -= state[1];
+		state[18] *= state[10] + 0x466E09CF;
+		TRY(enc_20_major_14 (state, state[5]));
+		break;
+	case 0x7:
+		TRY(mix_minor9 (state, 0x6D32760));
+		state[9] ^= state[7] * 68;
+		TRY(enc_20_major_6 (state, state[8]));
+		break;
+	}
+
+	state[8] = ROL(state[8], (state[3] ^ 0x4437EB26));
+
+	switch (type) {
+	case 0x0:
+		state[7] &= state[13] ^ 0x21AAF758;
+		state[14] |= state[3] ^ 0x04345732;
+		TRY(enc_20_major_12 (state, state[9]));
+		break;
+	case 0x5:
+		mix_minor22 (state);
+		mix_minor29 (state);
+		TRY(enc_20_major_2 (state, state[1]));
+		break;
+	case 0x9:
+		state[13] -= state[1];
+		TRY(mix_minor7 (state));
+		TRY(enc_20_major_5 (state, state[2]));
+		break;
+	}
+
+	state[9] *= state[14] | 0xbbf1fbef;
+
+	switch (type) {
+	case 0x0F:
+		state[12] += state[6] ^ 0x211F5E40;
+		state[5] += state[0] ^ 0x3E17ADD3;
+		TRY(enc_20_major_11 (state, state[8]));
+		break;
+	case 0x0C:
+		state[19] ^= state[15] ^ 0x03574ED3;
+		mix_minor30 (state);
+		TRY(enc_20_major_13 (state, state[16]));
+		break;
+	}
+
+	seed *= my_sqrt(state[1]);
+
+	switch (type) {
+	case 0x0B:
+		mix_minor32 (state, 0x678AAE2C);
+		mix_minor22 (state);
+		TRY(enc_20_major_22 (state, state[11]));
+		break;
+	case 0x0E:
+		state[13] *= ROR(state[3], 0xA5);
+		mix_minor35 (state);
+		TRY(enc_20_major_8 (state, state[18]));
+		break;
+	case 0x7:
+		mix_minor14 (state, 0x0CDDA283E);
+		mix_minor33 (state, 0x3A13B215);
+		TRY(enc_20_major_10 (state, state[0]));
+		break;
+	}
+
+	state[3] -= state[7] ^ 0x4E46F05D;
+
+	switch (type) {
+	case 0x3:
+		state[7] ^= 0x0EDA01E71;
+		state[13] -= state[1];
+		TRY(enc_20_major_7 (state, state[11]));
+		break;
+	case 0x8:
+		state[2] ^= my_sin(state[13]) ? 0x0FD08092 : state[10];
+		state[9] += ROL(state[4], 0xE9);
+		TRY(enc_20_major_14 (state, state[2]));
+		break;
+	}
+
+	state[19] ^= 0xb1bdd560 ^ seed;
+
+	switch (type) {
+	case 0x1:
+		state[12] ^= state[15] - 0x0F5CFDE0;
+		state[12] *= state[12];
+		TRY(enc_20_major_9 (state, state[5]));
+		break;
+	case 0x0D:
+		state[18] *= state[10] + 0x466E09CF;
+		state[2] ^= state[15] << 5;
+		TRY(enc_20_major_6 (state, state[15]));
+		break;
+	}
+
+	state[6] ^= my_sqrt(state[5]);
+
+	return 0;
+}

@@ -1,0 +1,252 @@
+$Id: INSTALL.msvc++,v 1.3 2003/05/04 20:53:50 rossta Exp $
+
+This document explains building giFT using Microsoft Visual Studio 6.0.  If you
+have luck building giFT using another version of MSVC, please let us know
+(gift-openft@lists.sf.net).
+
+For information on building a self extracting executable using NullSoft's
+SuperPimp NSIS installer, please see INSTALL.nsis.
+
+You can build giFT on the command line, or from within the Visual Studio IDE.
+
+Before starting, you may wish to install Visual C++ Service Pack 5:
+
+http://download.microsoft.com/download/vstudio60ent/SP5/Wideband-Full/WIN98Me/EN-US/vs6sp5.exe
+(136M!).
+
+I suggest you *not* install the Processor Pack Upgrade, which screwed up 
+my last Visual Studio installation.
+
+=================================
+ID3LIB (& ZLIB) SUPPORT
+=================================
+
+To add support for MP3 ID3 tags and zlib compression, download, compile and
+install id3lib 3.8 or greater.
+
+Download
+
+http://telia.dl.sourceforge.net/sourceforge/id3lib/id3lib-3.8.0.zip
+
+from
+
+http://sourceforge.net/project/showfiles.php?group_id=979
+
+Unzip the file, to say c:\home\me\src\id3lib-3.8.0
+
+=================================
+Building ID3LIB on the Command Line
+=================================
+
+1. cd to the directory where you unzipped id3lib.
+
+2. Type:
+
+   > NMAKE /f "id3lib.mak" CFG="id3lib - Win32 Debug"
+   > NMAKE /f "zlib.mak" CFG="zlib - Win32 Debug"
+
+=================================
+Building ID3LIB within the IDE
+=================================
+
+0. Read prj\win32.readme.first.txt before begginning
+
+1. Open id3lib-3.8.0/libprj/id3lib.dsw
+
+2. Select Project/Settings/C/C++/Code Generation
+
+3. For Win32 Debug, change "Use run-time library" to "Debug Multithreaded"
+
+4. For Win32 Release, change "Use run-time library" to "Multithreaded"
+
+5. Click OK
+
+6. Select Build/Batch Build/Rebuild All
+
+7. Add the library and include directories to MSVC's environment.
+
+=================================
+LIBVORBIS SUPPORT
+=================================
+
+To add support for Libvorbis, download and install the OggVorbis SDK 1.0 or greater.
+
+1. Download
+
+http://www.vorbis.com/files/1.0/windows/OggVorbis-win32sdk-1.0.zip
+
+from
+
+http://www.vorbis.com/download_win.psp
+
+2. Add the library and include directories to MSVC's environment
+
+=================================
+ZLIB SUPPORT
+=================================
+
+To add support for compression, download, compile and install zlib 1.1.4 or greater:
+
+http://prdownloads.sourceforge.net/libpng/zlib114.zip 
+
+=================================
+Building ZLIB on the Command Line
+=================================
+
+1. Copy .\gift\win32\zlib.mak to the zlib directory.
+
+2. cd to the zlib directory.
+
+3. Type:
+
+> nmake /f zlib.mak
+
+To make a release version, type:
+
+> nmake /f zlib.mak RELEASE=1
+
+To make a version that links dynamically, type:
+
+> nmake /f zlib.mak DYNAMIC=1
+
+Use the same options when compiling giFT, below.
+
+4. Add the ZLIB_ROOT environment variable that points to the directory where
+   you unzipped zlib114.zip.
+
+> set ZLIB_ROOT=c:\zlib
+
+=================================
+Building ZLIB within the IDE
+=================================
+
+There isn't a .dsp to build ZLIB from within the IDE.
+Your welcome to contribute one.
+
+
+==================
+Command Line Build
+==================
+
+Before you can build giFT at the command line, make sure you have
+the following environmental variables defined:
+
+  PATH=C:\Program Files\Microsoft Visual Studio\VC98\Bin:%PATH%
+
+Optionally, you use can use the DOS 8.3 name:
+
+  PATH=C:\PROGRA~1\MICROS~2\VC98\Bin:%PATH%
+
+as Cygwin may have problems with spaces in the path.  Plus it's easier to read.
+
+Also define:
+
+  LIB=C:\Program Files\Microsoft Visual Studio\VC98\Lib:%LIB%
+
+  INCLUDE=C:\Program Files\Microsoft Visual Studio\VC98\Include:%INCLUDE%
+
+In Windows 95/98/ME, add these statements to the *end* of C:\AUTOEXEC.BAT.
+In Windows NT/2000/XP, add these to the *end* of each environment variable
+(using Start/Settings/Control Panel/System/Advanced/Environment Variables/
+System).
+
+Making giFT
+-----------
+
+To make giFT, open a Command Prompt window, and type the following:
+
+> c:
+> cd \giFT
+> nmake /f Makefile.msvc
+
+You will need to copy OpenFT\OpenFT?.dll to src\, or somewhere else in
+your path, or add the .\gift\OpenFT directory to your search PATH.
+
+When done, .\src\giFT.exe is created.
+
+To make a release version (not currently recommended), type:
+
+> nmake /f Makefile.msvc RELEASE=1
+
+To make a version that uses zlib compression library, type:
+
+> set ZLIB_ROOT=c:\zlib
+> nmake /f Makefile.msvc ZLIB=1
+
+I'm still getting:
+
+zlibd.lib(gzio.obj) : error LNK2001: unresolved external symbol __imp___fdopen
+zlibd.lib(gzio.obj) : error LNK2001: unresolved external symbol __imp__vsprintf
+zlibd.lib(gzio.obj) : error LNK2001: unresolved external symbol __imp__rewind
+zlibd.lib(gzio.obj) : error LNK2001: unresolved external symbol __imp__fputc
+zlibd.lib(deflate.obj) : error LNK2001: unresolved external symbol __imp__putc
+Debug/giFT.exe : fatal error LNK1120: 5 unresolved externals
+
+when building gift.dsp within the IDE and defining USE_ZLIB.
+Building giftd.dsp doesn't exhibit this problem.
+Any help to fix this would be greatly appreciated.
+
+To make a version that links dynamically, type:
+
+> nmake /f Makefile.msvc DYNAMIC=1
+
+To make a debug version that appends a 'd' to filenames, type:
+
+> nmake /f Makefile.msvc DEXT=1
+
+This will create: giFTd.exe, giFTd.dll, libgiFTd.dll, OpenFTd.dll, etc.
+
+=======================
+Visual Studio IDE Build
+=======================
+
+Making giFT
+-----------
+
+Open the giFT.dsw workspace file:
+
+File/Open Workspace
+
+  .\gift\win32\giFT.dsw
+
+Select Build/Batch Build/Rebuild All.
+
+Please ignore the many warnings that appear.  These warning do not appear when
+building giFT using gcc, the *nix compiler.
+
+When done, .\win32\Debug\giFT.exe is created.
+
+Configuring giFT
+----------------------------
+
+Copy the .conf files from the etc/ directory to the win32/ directory.
+
+  xcopy etc\gift.conf          win32
+  xcopy etc\OpenFT\OpenFT.conf win32\OpenFT\
+
+For debugging, you will need to copy other required files.
+
+In linux, type:
+
+$ cd win32
+$ ./debug_setup.sh
+
+Or, in Windows, type:
+
+> cd win32
+> debug_setup.bat
+
+Running giFT
+------------
+
+To run giFT, type:
+
+> c:
+> cd \gift\src (or \gift\src\Debug if using the IDE)
+> giFT -d
+
+The -d is currently required to run giFT.  This is to remind users to start
+gift via giFTtray, the preferred method for starting giFT in Windows.
+
+Note: This file intentionally contains carriage returns as most readers will be
+      using Windows.

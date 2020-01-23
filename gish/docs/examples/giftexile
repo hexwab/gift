@@ -1,0 +1,268 @@
+#!/usr/bin/perl
+
+use Gift::Interface;
+use Gift::Config;
+use Getopt::Long;
+
+my $Interface = new Gift::Interface;
+my $Config = new Gift::Config;
+
+my $host = $Config->read("ui/ui.conf", "daemon", "host");
+my $port = $Config->read("ui/ui.conf", "daemon", "port");
+
+$Interface->connect ($host, $port) || exit (0);
+
+my $ATTACH = 0;
+my $PIPING = 0;
+my $FUNCTION;
+
+&determine_function;
+
+sub determine_function
+{
+	my ($magnet, $search, $realm, $exclude, $protocol,
+		$uploads, $download, $cancel, $stats, $shares);
+	
+	GetOptions
+	(
+		"magnet=s" => \$magnet,
+		"uri=s" => \$magnet,
+	
+		"locate" => \$locate,
+		"search=s" => \$search,
+		"realm=s" => \$realm,
+		"exclude=s" => \$exclude,
+		"protocol=s" => \$protocol,
+	
+		"download" => \$download,
+
+		"cancel" => \$cancel,
+		"attach" => \$ATTACH,
+		"interactive" => \$ATTACH,
+		"stats" => \$stats,
+	
+		"downloads" => \$downloads,
+		"uploads" => \$uploads,
+		"shares=s" => \$shares,
+	
+		"debug" => sub { $Interface->set_debug(3) }
+	);
+
+	
+	if (-p STDOUT)
+	{
+		$PIPING = 1;
+	}
+
+	
+	if ($magnet)
+	{
+		parse_magnet_url ($magnet);
+	}
+	elsif ($search)
+	{
+		$realm ||= "everything";
+		$Interface->search($realm, $search, $exclude, $protocol);
+	}
+	elsif ($locate)
+	{
+		while ( my $input = <STDIN> )
+		{
+			chop ($input);
+
+			if ($input =~ /^\0/)
+			{
+				my ($empty,$id,$query) = split (/\0/, $input);
+				$Interface->locate ($query);
+			}
+		}
+	}
+				
+	elsif ($download)
+	{
+		while ( my $input = <STDIN> )
+		{
+			chop ($input);
+
+			if ($input =~ /^\0/)
+			{
+				my ($empty, $url, $hash, $size, $save, $user) = split (/\0/, $input);
+
+				print STDERR "Downloading: $save ($size) from $user\n";
+				$Interface->download ($url, $hash, $size, $save, $user);
+			}
+		}
+	}
+	elsif ($stats)
+	{
+		$Interface->stats;
+	}
+	elsif ($uploads || $downloads)
+	{
+		if ($uploads) { $FUNCTION = "uploads" }
+		elsif ($downloads) { $FUNCTION = "downloads" }
+		
+		$Interface->attach;
+		$Interface->detach;
+	}
+	elsif ($cancel)
+	{
+		while ( my $input = <STDIN> )
+		{
+			chop ($input);
+			
+			if ($input =~ /^\0/)
+			{
+				my ($empty, $id, $file, $user) = split (/\0/, $input);
+			
+				$Interface->transfer ($id, "cancel");
+				print STDERR "Cancelled transfer ($id) of $file with $user\n";
+			}
+		}
+		$Interface->detach;
+	}
+	elsif ($shares)
+	{
+		$Interface->share ($shares);
+		print STDERR "Changed share status: $shares\n";
+	}
+}
+
+if ($ATTACH)
+{
+	$Interface->attach ("liFT", "1.0");
+	$Interface->select_stdin;
+}
+
+while ($Interface->can_read)
+{
+	##########################################
+	# Check the daemon socket
+
+	my ($head,%tree) = $Interface->read;
+
+	if ($head eq "STATS")
+	{
+		foreach my $protocol (keys %tree)
+		{
+			print STDERR "$protocol:\n";
+			foreach my $info (keys %{$tree{$protocol}})
+			{
+				print STDERR "\t$info: $tree{$protocol}{$info}\n";
+			}
+		}
+	}
+	
+	elsif ($head eq "ITEM")
+	{
+		#my ($file, $host, $protocol) = $Interface->uri_parse($tree{'url'});
+		
+		my $file;
+		if ($tree{'file'} =~ /^\/(.*)\/(.*)$/)
+		{
+			$file = $2;
+		}
+		else
+		{
+			$file = $tree{'file'};
+		}
+		my $user = $tree{'user'};
+		my $size = $tree{'size'};
+		my $url = $tree{'url'};
+		my $hash = $tree{'hash'};
+		my $protocol = $tree{'node'};
+		
+		if ($PIPING)
+		{
+			print STDOUT "\0$url\0$hash\0$size\0$file\0$user\n";
+		}
+
+		print STDERR "[\e[1;32m!\e[m]\t($tree{'mime'}) $file\n";
+		print STDERR "\tUser: $user\n";
+		print STDERR "\tHash: $hash\n\tSize: $size bytes\n";
+		print STDERR "\tBitrate: $tree{'meta'}{'bitrate'}\n\n";
+	}
+	
+	elsif ($head eq "ATTACH")
+	{
+		$Interface->debug (2, "$tree{'server'} version: $tree{'version'}\n");
+	}
+	
+	elsif ($head eq "ADDUPLOAD")
+	{
+		my $user = $tree{'source'}{'user'};
+		my $id = $tree{'id'};
+		my $file = $tree{'file'};
+
+		if ($PIPING)
+		{
+			if ($FUNCTION eq "uploads")
+			{
+				print STDOUT "\0$id\0$file\0$user\n";
+			}
+		}
+		print STDERR "Upload ($id): $file ($tree{'transmit'}): $user\n";
+	}
+	
+	elsif ($head eq "ADDDOWNLOAD")
+	{
+		my $user = $tree{'source'}{'user'};
+		my $id = $tree{'id'};
+		my $file = $tree{'file'};
+		my $hash = $tree{'hash'};
+
+		if ($PIPING)
+		{
+			if ($FUNCTION eq "downloads")
+			{
+				print STDOUT "\0$id\0$hash\0$file\0$user\n";
+			}
+		}
+		print STDERR "Download ($id): $file ($tree{'transmit'}): $user\n";
+	}
+	
+	##########################################
+	# Handle commands on standard input
+
+	exec_command($Interface->read_stdin);
+}
+	
+sub exec_command
+{
+	my $sdata = shift;
+	if ($sdata =~ /^q(uit)?$/i)
+	{
+		$Interface->detach;
+	}
+	elsif ($sdata =~ /^search (.*?) (.*)/i)
+	{
+		print STDERR "Searching for $2 in $1 ...\n";
+		$Interface->search ("$1", "$2", $ID);
+	}
+	elsif ($sdata =~ /^stats$/i)
+	{
+		$Interface->stats;
+		print STDERR "Current loaded protocols:\n";
+	}
+	elsif ($sdata =~ /^help$/i)
+	{
+		print STDERR "Current commands are: stats, search [realm] [name], share [action]\n";
+	}
+	elsif ($sdata =~ /^share (.*)/i)
+	{
+		print STDERR "${1}ing shares...\n";
+		$Interface->share ($1);
+	}
+}
+
+sub parse_magnet_url
+{
+	my $magnet = shift;
+
+	if ($magnet =~ /^magnet:\?xt=urn:(.*?):(.*)\&?/)
+	{
+		print STDERR "Executing \U$1\E search: $2\n";
+	}
+	
+	$Interface->locate ("\U$1\E:$2");
+}

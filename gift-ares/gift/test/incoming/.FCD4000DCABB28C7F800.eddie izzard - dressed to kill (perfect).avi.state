@@ -1,0 +1,11 @@
+[transfer]
+uniq = FCD4000DCABB28C7F800.eddie izzard - dressed to kill (perfect).avi
+filename = eddie izzard - dressed to kill (perfect).avi
+hash = SHA1:SVZOCMZVRI6SUCB6ASGI2JKDWH3CPDWL
+path = ./incoming/FCD4000DCABB28C7F800.eddie izzard - dressed to kill (perfect).avi
+transmit = 3759104
+total = 684193792
+max_seek = 3759104
+paused = 0
+chunks = 3759104-684193792 
+

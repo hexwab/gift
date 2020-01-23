@@ -1,0 +1,45 @@
+List *fst_peer_add (Dataset *peers, FSTNode *node, FSTNode *peer)
+{
+	List *l = dataset_lookup (peers, peer->host);
+
+	assert (node->session);
+
+	l = list_prepend (l, node);
+
+	dataset_insert (&peers, peer->host, 0, l, sizeof(l));
+
+	ft_node_ref (node);
+
+	return l;
+}
+
+/* node is the one we're connected to, peer is the one we're not */
+/* dataset is keyed by peer, and contains a list of nodes */
+void fst_peer_remove (Dataset *peers, FSTNode *peer, List *nodelink)
+{
+	FSTNode *node = nodelink->data;
+	List *l, *ll;
+
+	l = dataset_lookup (peers, peer->host);
+	ll = list_remove_link (l, nodelink);
+
+	if (l != ll)
+		dataset_insert (&peers, peer->host, 0, ll, sizeof(ll));
+		
+	ft_node_free (node);
+}
+
+void fst_peer_remove_session (Dataset *peers, FSTNode *node, Array *peerlist)
+{
+	int len, i;
+	
+	len = array_count (&peerlist);
+	
+	for (i=0; i<len; i++)
+	{
+		FSTNode *peer;
+		List *nodelink;
+		nodelink = array_index (&peerlist, i);
+		assert (node == (FSTNode *)nodelink->data);
+		
+			

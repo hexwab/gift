@@ -1,0 +1,52 @@
+
+03/05/07
+--------
+
+This is a FastTrack plugin for giFT (www.giftproject.org)
+...just in case you haven't guessed.
+
+Obviosuly I take no responsibility as to what this code does to
+your hardware, data, physical or mental health.
+
+Then again, running KaZaA in wine may destroy all of the above.
+
+
+Compilation & Installation
+--------------------------
+
+Please note that the plugin currently only works on little-endian
+machines. This means MAC users are out of luck, sorry.
+
+Currently there is only a simple make file.
+(You're welcome to provide something better)
+
+So just copy everything into giFT/FastTrack (the giFT source dir
+you got from cvs) and run "make" and "make install" there.
+
+Maybe look at the Makefile first since it makes some
+stupid assumptions about your system.
+
+To test it run "giFT -p /usr/local/lib/giFT/FastTrack.so"
+Or you can add the path to your gift.conf like so:
+
+plugin = OpenFT:/usr/local/lib/giFT/FastTrack.so
+
+
+Contact
+-------
+
+Email:  mkern@users.sourceforge.net  [Original author]
+
+IRC:    #giFT-fasttrack on irc.freenode.net
+
+
+Credits
+-------
+
+Most of the plugin code was taken from OpenFT and old giFT code and
+as such is copyrighted by the gift project.
+
+Thanks to weinholt for reverse engineering most parts of enc_type_1.c
+
+enc_type_2.c is the work of Raimar Falke, I merely cleaned it up a bit.
+

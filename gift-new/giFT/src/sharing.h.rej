@@ -1,0 +1,17 @@
+***************
+*** 36,42 ****
+  
+  	char         *md5;
+  
+- 	unsigned long size;		/* do we want to support >4G size files? */
+  	time_t        mtime;
+  
+  	/* protocol-specific data
+--- 36,42 ----
+  
+  	char         *md5;
+  
++ 	unsigned long size;
+  	time_t        mtime;
+  
+  	/* protocol-specific data

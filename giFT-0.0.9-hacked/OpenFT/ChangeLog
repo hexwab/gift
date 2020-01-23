@@ -1,0 +1,144 @@
+OpenFT 0.0.9-7:
+
+   * Actually, nothing.  It's a trick, but update anyway *g*.
+
+OpenFT 0.0.9-6:
+
+   * Improved FT_NODELIST_REQUEST so that specific classes may be filtered
+     by the remote node in order to produce visual graphs by spidering the
+     network.  Please see the openft-map module from this CVSROOT if you'd
+     like to know exactly how we are doing this...
+
+OpenFT 0.0.9-5:
+
+   * Major search efficiency improvements.  Temporarily removed MD5 search
+     forwarding.
+
+   * Reintroduced the concept of a search termination sentinel.  Each node
+     in the network will wait on all forwarded nodes to respond before it
+     delivers the sentinel so that the original searching node may elegantly
+     terminate the search before the timeout hits.  This feature depends on
+     all other nodes sending the sentinel in the proper order, and as such
+     is only moderately backwards compat to 0.0.9-4.
+
+OpenFT 0.0.9-4:
+
+   * Redesigned push requests and modified search results to properly maintain
+     the original search parent for push purposes.
+
+OpenFT 0.0.9-3:
+
+   * Modified the search response headers to track the original parent.  This
+     will be used to fix the push request problem introduced with the virtual
+     cluster design.
+
+   * Modified FT_NODELIST_{REQUEST,RESPONSE} so that only one packet is
+     exchanged for each direction (instead of one per node exchanged).
+
+OpenFT 0.0.9-2:
+
+   * Search enhancement using an id that can be considered unique for all
+     nodes operating on the search.  This is used for a stronger (and simpler)
+     system of search forwarding that can preserve as much of the original
+     data as possible, as well as detect "loops" in the query system.
+
+OpenFT 0.0.9-1:
+
+   * Major high-level redesign begun.  Initial changes include the formation
+     of virtual clusters through a configurable number of static peer search
+     node connections.  Searches are broadcasted to all peers, which then
+     rebroadcast the search until TTL expires, or the maximum result set is
+     reached.  Several optimizations are planned to improve efficiency in a
+     large scale network.
+
+   * Migrated the code over to the new logging facilities provided through the
+     Protocol structure.
+
+OpenFT 0.0.8-2:
+
+   * More improvements to the search database design.  We are now utilizing a
+     single database environment and all child shares are inserted into the
+     same physical file on disk.
+
+   * Tested and [almost] finished direct browsing.  Currently,
+     ft_packet_sendto is limited to only being able to deliver packets to
+     non-firewalled users.  Hopefully this will be addressed soon.
+
+OpenFT 0.0.8-1:
+
+   * Massive scalability improvements related to the search node database code
+     which organizes and indexes all child shares.  For the more technical of
+     our audience, we have moved to a database design utilizing two master
+     databases for all searching requirements (greatly increasing insert and
+     removal overhead) while reducing the number of file descriptors open at
+     any one time and total memory overhead.
+
+   * Rewrote node, network organization, and connection subsystems for OpenFT.
+     While it has little effect on the network structure directly, I will
+     begin to utilize these new APIs through implementation of node
+     clustering.  Honestly, it's coming soon :)
+
+   * Untested "fix" for direct user browsing.  See 0.0.7-8's entry for more
+     details on this.
+
+OpenFT 0.0.7-8:
+
+   * Direct browsing implemented.  Please note that this code will currently
+     only work if you already have an OpenFT connection with the user you are
+     browsing.  This limitation is strictly client-side and should be
+     considered a "bug".  Will be fixed ASAP.
+
+OpenFT 0.0.7-7:
+
+   * Fixed session handshaking...I know, shut up.
+
+OpenFT 0.0.7-6:
+
+   * Fixed session handshaking for real this time...I promise.
+
+OpenFT 0.0.7-5:
+
+   * Fixed a bug which ignored the need to test supplied ports.  This caused
+     nodes which have been improperly configured (port = non-zero yet it is
+     not remotely accessable, likely because of a firewall) to report as
+     non-firewalled users and reply with a URL as such.  It would thus be
+     impossible to download from these users.
+
+   * Fixed a somewhat related bug which caused session handshaking to
+     prematurely complete.  Fixing this bug causes a minor disruption in
+     handshaking with 0.0.7-4, which worsens the race condition in 0.0.7-4.
+
+OpenFT 0.0.7-4:
+
+   * Deliver node aliases over HTTP and display appropriately for uploads
+     registered this way.
+
+OpenFT 0.0.7-3:
+
+   * Fixed a minor endianness problem when communicating IPv4 addresses over
+     OpenFT.
+
+OpenFT 0.0.7-2:
+
+   * Public "release" of OpenFT 0.0.7.
+
+OpenFT 0.0.7-1:
+
+   * Transparent stream compression over OpenFT.  This system introduces a
+     a bandwidth optimization which greatly reduces the number of OpenFT
+     packets required for writing (by blocking multiple writes into one packet)
+     as well as transparently compressing the writes with ZLIB if available.
+     Currently, the non-zlib code is somewhat broken so ZLIB is a requirement.
+     This will be lifted soon.
+
+   * Strict protocol "handshaking" stage requiring all nodes deliver the
+     required information/packet responses before the stage increases and the
+     true OpenFT session begins.
+
+   * Completely removed old method of browsing due to a severe waste of
+     resources by design.  A new direct browse method which operates over
+     OpenFT using stream compression is expected to be completed shortly.
+
+OpenFT <= 0.0.6:
+
+   * Information lost.

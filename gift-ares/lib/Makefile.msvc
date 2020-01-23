@@ -1,0 +1,101 @@
+# $Id: Makefile.msvc,v 1.31 2005/12/18 16:45:38 mkern Exp $
+
+
+!include ../Make.msvc
+
+MAKEOPTS=-nologo -C BUILD_ROOT=$(BUILD_ROOT)
+
+INCLUDES = -I. -Ilibevent $(INCLUDES)
+
+LIBS = $(LIBS) $(LIBGIFT_LIB) $(LIBGIFTPROTO_LIB) $(GIFT_LIB)
+
+!if defined(GIFT_BUILD)
+DEFS = $(DEFS) -DHAVE_CONFIG -DGIFT_PLUGIN
+!endif
+
+LIBGIFT_OBJECTS = \
+	as_log$(O) \
+	as_event$(O) \
+	as_list$(O) \
+	as_parse$(O) \
+	as_strobj$(O) \
+	as_tcp$(O)
+
+HEX_OPTIMIZATION_OBJECTS = \
+	as_download_state$(O) \
+	as_download_man$(O) \
+	as_download$(O)
+
+OBJECTS = \
+	as_hashtable$(O) \
+	as_ares$(O) \
+	as_file$(O) \
+	as_util$(O) \
+	as_config$(O) \
+	as_crypt$(O) \
+	as_packet$(O) \
+	as_sha1$(O) \
+	as_hash$(O) \
+	as_encoding$(O) \
+	as_meta$(O) \
+	as_node$(O) \
+	as_node_man$(O) \
+	as_session$(O) \
+	as_session_man$(O) \
+	as_netinfo$(O) \
+	as_source$(O) \
+	as_tokenize$(O) \
+	as_search_result$(O) \
+	as_search$(O) \
+	as_search_man$(O) \
+	as_http_header$(O) \
+	as_http_client$(O) \
+	as_http_server$(O) \
+	as_download_conn$(O) \
+	as_download_chunk$(O) \
+	as_incoming$(O) \
+	as_share$(O) \
+	as_share_man$(O) \
+	as_push$(O) \
+	as_push_man$(O) \
+	as_push_reply$(O) \
+	as_upload$(O) \
+	as_upload_man$(O)
+
+
+aslib: $(OBJECTS) $(HEX_OPTIMIZATION_OBJECTS) $(LIBGIFT_OBJECTS)
+	cd libevent
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc
+	cd ..
+
+	$(LT) -nologo -out:$(ASLIB_LIB) $(OBJECTS) $(HEX_OPTIMIZATION_OBJECTS) $(LIBGIFT_OBJECTS) libevent\libevent$(DEXT).lib
+
+
+aslibgift: $(OBJECTS)
+	$(LT) -nologo -out:$(ASLIBGIFT_LIB) $(OBJECTS)
+
+
+install: # all
+#	@copy /y $(ASLIB_LIB) $(BIN_ROOT)\$(ASLIB_LIB)
+
+clean :
+	cd libevent
+	@$(MAKE) $(MAKEOPTS) -f Makefile.msvc clean
+	cd ..
+
+	@-del /Q /F *$(O)
+	@-del /Q /F $(ASLIB_LIB)
+	@-del /Q /F $(ASLIBGIFT_LIB)
+	@-del /Q /F *.exp
+	@-del /Q /F *.idb
+	@-del /Q /F *.ilk
+	@-del /Q /F *.pch
+	@-del /Q /F *.pdb
+	@-del /Q /F *.plg
+
+
+
+.c$(O):
+	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) -Fo$@ -c $<
+
+

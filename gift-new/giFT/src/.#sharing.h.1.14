@@ -1,0 +1,69 @@
+/*
+ * sharing.h
+ *
+ * Copyright (C) 2001-2002 giFT project (gift.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ */
+
+#ifndef __SHARING_H
+#define __SHARING_H
+
+/*****************************************************************************/
+
+typedef struct _file_share
+{
+	char         *root;   /* /data/mp3s                             */
+	char         *path;   /* /data/mp3s/file.mp3                    */
+	char         *hpath;  /*           /file.mp3 (memory from path) */
+	char         *ext;    /*                .mp3 (memory from path) */
+	char         *type;   /* audio/mpeg                             */
+
+	char         *md5;
+	
+	List	     *meta;
+	
+	unsigned long size;
+	time_t        mtime;
+
+	/* protocol-specific data
+	 * NOTE: when local is TRUE, data is a Dataset of protocols...otherwise
+	 * its whatever protocol-specific data that is needed */
+	int           local;
+	void         *data;
+} FileShare;
+
+/*****************************************************************************/
+
+FileShare *share_new          (char *root, size_t root_len, char *path,
+							   char *md5, unsigned long size, time_t mtime);
+void       share_free         (FileShare *file);
+
+void      *share_lookup_data  (FileShare *file, char *protocol);
+void       share_insert_data  (FileShare *file, char *protocol, void *data);
+void       share_remove_data  (FileShare *file, char *protocol);
+
+void       share_write_index  ();
+Dataset   *share_read_index   ();
+void       share_clear_index  ();
+Dataset   *share_index        (unsigned long *files, double *size);
+List      *share_index_sorted ();
+void       share_foreach      (HashFunc foreach_func, void *data);
+
+FileShare *share_find_file    (char *filename);
+char      *share_auth_upload  (char *user, char *filename);
+void       share_disable      ();
+void       share_enable       ();
+int        share_status       ();
+
+/*****************************************************************************/
+
+#endif /* __SHARING_H */

@@ -1,0 +1,38 @@
+# -*- makefile -*-
+
+OBJECTS = main.o conf.o connection.o daemon.o download.o event.o \
+file.o hash.o if_event.o interface.o list.o nb.o network.o parse.o \
+protocol.o queue.o transfer.o upload.o watch.o win32_support.o \
+sharing.o md5.o
+
+TARGET = giFT.exe
+
+CC = gcc
+HEADERS = $(wildcard *.h) ../config.h ../OpenFT/openft.h
+PLUGINS = ../OpenFT/libopenft.a
+CFLAGS = -Wall -g
+DEFS = -DHAVE_CONFIG_H
+INCLUDES = -I. -I.. -I../OpenFT
+LDFLAGS = -g
+LIBS = -lwsock32
+
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CFLAGS)
+LINK = $(CC) $(LDFLAGS) -o $(TARGET) $(OBJECTS) $(PLUGINS) $(LIBS)
+
+.PHONY: clean install
+
+all: $(TARGET)
+
+install: $(TARGET)
+	copy /y $(TARGET) ..\win32-dist\$(TARGET)
+	strip --strip-all ..\win32-dist\$(TARGET)
+
+clean:
+	del $(TARGET)
+	del *.o
+
+$(TARGET): $(OBJECTS) $(PLUGINS)
+	$(LINK)
+
+%.o: %.c $(HEADERS)
+	$(COMPILE) -c $<
